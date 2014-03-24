@@ -97,6 +97,15 @@ public class TestGui_A extends JInternalFrame {
 				
 				JPanel panel = NewGameTab.createJPanel();
 				tabbedPane_1.addTab("New tab", null, panel, null);
+				SpringLayout sl_panel = new SpringLayout();
+				panel.setLayout(sl_panel);
+				
+				JScrollPane scrollPane_1 = new JScrollPane();
+				sl_panel.putConstraint(SpringLayout.NORTH, scrollPane_1, 10, SpringLayout.NORTH, panel);
+				sl_panel.putConstraint(SpringLayout.WEST, scrollPane_1, 10, SpringLayout.WEST, panel);
+				sl_panel.putConstraint(SpringLayout.SOUTH, scrollPane_1, 210, SpringLayout.NORTH, panel);
+				sl_panel.putConstraint(SpringLayout.EAST, scrollPane_1, 135, SpringLayout.WEST, panel);
+				panel.add(scrollPane_1);
 
 			}
 	

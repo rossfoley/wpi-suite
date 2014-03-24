@@ -26,7 +26,11 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.TestGui_A;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Description
@@ -39,6 +43,7 @@ public class PlanningPoker implements IJanewayModule {
 	private ArrayList<JanewayTabModel> tabs;
 	
 	public PlanningPoker() {
+		
 		
 	    tabs = new ArrayList<JanewayTabModel>();
 	    
@@ -62,10 +67,13 @@ public class PlanningPoker implements IJanewayModule {
 	    sl_mainPanel.putConstraint(SpringLayout.WEST, label2, 190, SpringLayout.WEST, mainPanel);
 	    mainPanel.add(label2);
 	    mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
-
+	    //*/
+	    
 	    // Create a tab model that contains the toolbar panel and the main content panel
 	    JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, mainPanel);
 	    
+	    //scroll pane for viewing current planning poker games
+	    //no functionality yet
 	    JScrollPane scrollPane = new JScrollPane();
 	    sl_mainPanel.putConstraint(SpringLayout.NORTH, scrollPane, 27, SpringLayout.NORTH, mainPanel);
 	    sl_mainPanel.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, mainPanel);
@@ -73,14 +81,50 @@ public class PlanningPoker implements IJanewayModule {
 	    sl_mainPanel.putConstraint(SpringLayout.EAST, scrollPane, 110, SpringLayout.WEST, mainPanel);
 	    mainPanel.add(scrollPane);
 	    
-	    JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	    sl_mainPanel.putConstraint(SpringLayout.NORTH, tabbedPane, 6, SpringLayout.SOUTH, label2);
+	    
+	    //planning poker tabs(new game, edit, vote, etc...)
+	    final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	    sl_mainPanel.putConstraint(SpringLayout.NORTH, tabbedPane, 27, SpringLayout.NORTH, mainPanel);
 	    sl_mainPanel.putConstraint(SpringLayout.WEST, tabbedPane, 6, SpringLayout.EAST, scrollPane);
 	    sl_mainPanel.putConstraint(SpringLayout.SOUTH, tabbedPane, -12, SpringLayout.SOUTH, mainPanel);
-	    sl_mainPanel.putConstraint(SpringLayout.EAST, tabbedPane, 326, SpringLayout.EAST, scrollPane);
+	    sl_mainPanel.putConstraint(SpringLayout.EAST, tabbedPane, -12, SpringLayout.EAST, mainPanel);
 	    mainPanel.add(tabbedPane);
 	    
+	    
+	    
+	    //tabbedPane.insertTab("Test", null, new JPanel(), null, 0);
+	    /*
+	    JPanel panel = NewGameTab.createJPanel();
+		tabbedPane.addTab("New tab", null, panel, null);
+		SpringLayout sl_panel = new SpringLayout();
+		panel.setLayout(sl_panel);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		sl_panel.putConstraint(SpringLayout.NORTH, scrollPane_1, 10, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, scrollPane_1, 10, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, scrollPane_1, 210, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, scrollPane_1, 135, SpringLayout.WEST, panel);
+		panel.add(scrollPane_1);
+	    */
+	    
+	    //the toolbar button to create a new game
 	    JButton btnNewGame = new JButton("New Game");
+	    //the function performed on clicking the button
+	    btnNewGame.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseClicked(MouseEvent e) {
+	    		//tabbedPaneTemp = tabbedPane;
+	    		//JPanel panel = NewGameTab.createJPanel();
+				//tabbedPane.addTab("New tab", NewGameTab.createJPanel());
+	    		//int count = tabbedPane.getTabCount();
+				//tabbedPane.insertTab("New Game", null, new JPanel(), null, count+1);
+	    		
+	    		//code to create a new tab
+	    	    JPanel panel = NewGameTab.createJPanel();
+	    		tabbedPane.addTab("New Game", null, panel, null);
+				
+	    	}
+	    });
 	    sl_toolbarPanel.putConstraint(SpringLayout.WEST, btnNewGame, 10, SpringLayout.WEST, toolbarPanel);
 	    sl_toolbarPanel.putConstraint(SpringLayout.SOUTH, btnNewGame, -33, SpringLayout.SOUTH, toolbarPanel);
 	    toolbarPanel.add(btnNewGame);
