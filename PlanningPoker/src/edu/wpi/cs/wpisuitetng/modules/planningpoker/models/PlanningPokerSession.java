@@ -7,7 +7,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author rossfoley
@@ -81,6 +84,11 @@ public class PlanningPokerSession extends AbstractModel {
 	public Boolean identify(Object o) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public static PlanningPokerSession fromJson(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, PlanningPokerSession.class);
 	}
 
 }
