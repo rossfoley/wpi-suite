@@ -34,7 +34,7 @@ public final class NewGameTab {
 		textField.setColumns(10);
 		
 		// create dropdown
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
 		sl_panel.putConstraint(SpringLayout.NORTH, comboBox, 6, SpringLayout.SOUTH, textField);
 		sl_panel.putConstraint(SpringLayout.WEST, comboBox, 73, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.EAST, comboBox, 0, SpringLayout.EAST, textField);
@@ -47,7 +47,7 @@ public final class NewGameTab {
 		panel.add(lblDeck);
 		
 		// creates a second dropdown 
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox<String> comboBox_1 = new JComboBox<String>();
 		sl_panel.putConstraint(SpringLayout.NORTH, comboBox_1, 6, SpringLayout.SOUTH, comboBox);
 		sl_panel.putConstraint(SpringLayout.WEST, comboBox_1, 73, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.EAST, comboBox_1, 0, SpringLayout.EAST, textField);

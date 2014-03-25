@@ -26,6 +26,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.defecttracker.tabs.ClosableTabComponent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.TestGui_A;
 
@@ -122,7 +123,9 @@ public class PlanningPoker implements IJanewayModule {
 	    		//code to create a new tab
 	    	    JPanel panel = NewGameTab.createJPanel();
 	    		tabbedPane.addTab("New Game", null, panel, null);
-				
+	    		int count = tabbedPane.getComponentCount();
+	    		tabbedPane.setTabComponentAt( count, new ClosableTabComponent(tabbedPane));
+	    		//setTabComponentAt()
 	    	}
 	    });
 	    sl_toolbarPanel.putConstraint(SpringLayout.WEST, btnNewGame, 10, SpringLayout.WEST, toolbarPanel);
