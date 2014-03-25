@@ -21,31 +21,53 @@ public class PlanningPokerSession extends AbstractModel {
 	private GregorianCalendar endDate;
 	private Set<Integer> requirementIDs;
 	
-	public Set<Integer> getRequirementIDs() {
-		return requirementIDs;
-	}
 
-	public void setRequirementIDs(Set<Integer> requirementIDs) {
-		this.requirementIDs = requirementIDs;
-	}
-
-	
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name the name to set
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return the endDate
+	 */
 	public GregorianCalendar getEndDate() {
 		return endDate;
 	}
 
+	/**
+	 * @param endDate the endDate to set
+	 */
 	public void setEndDate(GregorianCalendar endDate) {
 		this.endDate = endDate;
 	}
 
+	/**
+	 * @return the requirementIDs
+	 */
+	public Set<Integer> getRequirementIDs() {
+		return requirementIDs;
+	}
+
+	/**
+	 * @param requirementIDs the requirementIDs to set
+	 */
+	public void setRequirementIDs(Set<Integer> requirementIDs) {
+		this.requirementIDs = requirementIDs;
+	}
+
+	/**
+	 * Add a requirement to existing planning poker session.
+	 * @param requirementID
+	 */
 	public void addRequirement(int requirementID) {
 		requirementIDs.add((Integer) requirementID);
 	}
