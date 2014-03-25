@@ -5,6 +5,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
@@ -13,9 +14,38 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  *
  */
 public class PlanningPokerSession extends AbstractModel {
-	
 	private String name;
 	private GregorianCalendar endDate;
+	private Set<Integer> requirementIDs;
+	
+	public Set<Integer> getRequirementIDs() {
+		return requirementIDs;
+	}
+
+	public void setRequirementIDs(Set<Integer> requirementIDs) {
+		this.requirementIDs = requirementIDs;
+	}
+
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public GregorianCalendar getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(GregorianCalendar endDate) {
+		this.endDate = endDate;
+	}
+
+	public void addRequirement(int requirementID) {
+		requirementIDs.add((Integer) requirementID);
+	}
 
 	/* (non-Javadoc)
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
