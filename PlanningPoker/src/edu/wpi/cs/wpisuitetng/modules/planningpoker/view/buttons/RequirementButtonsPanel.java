@@ -29,6 +29,8 @@ import javax.swing.border.EtchedBorder;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+// this class can probably be deleted
+
 /**
  * @author justinhess
  * @version $Revision: 1.0 $

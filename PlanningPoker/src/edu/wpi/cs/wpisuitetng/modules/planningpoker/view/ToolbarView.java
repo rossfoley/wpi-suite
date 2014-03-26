@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
- * Contributors: Team Rolling Thunder
+ * Contributors: The Team8s
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
@@ -35,6 +35,7 @@ public class ToolbarView  extends DefaultToolbarView {
 
 	//public ChartButtonsPanel chartButton = new ChartButtonsPanel();
 	public EditButtonsPanel editButton = new EditButtonsPanel();
+	// contains button for creating a planning poker session
 	public PlanningPokerSessionButtonsPanel sessionButton = new PlanningPokerSessionButtonsPanel(); 
 	//public RequirementButtonsPanel reqButton = new RequirementButtonsPanel();
 	
