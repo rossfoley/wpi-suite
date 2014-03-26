@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
 
 import java.awt.Dimension;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
  * @author justinhess
  * @version $Revision: 1.0 $
  */
+/*
 public class RequirementTabsPanel extends JTabbedPane implements RequirementPanelListener
 {
 	private final List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
@@ -43,6 +44,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 * @param viewMode view mode
 	 * @param currentRequirement current requirement
 	 */
+	/*
 	public RequirementTabsPanel(RequirementPanel parentPanel, ViewMode viewMode, Requirement currentRequirement) 
 	{
 		this.viewMode = viewMode;
@@ -75,13 +77,14 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 		
 		this.setMinimumSize(new Dimension(500,100));		
 	}
-
+*/
 	/**
 	 * Method readyToRemove.
 	
 	
 	 * @return boolean * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove() * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove()
 	 */
+/*
 	public boolean readyToRemove() {
 		boolean readyToRemove = true;
 		for(RequirementPanelListener listener : listeners)
@@ -90,12 +93,13 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 		}
 		return readyToRemove;
 	}
-	
+	*/
 	/**
 	 * Method fireDeleted.
 	 * @param b boolean
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireDeleted(boolean) */
+	/*
 	public void fireDeleted(boolean b)
 	{
 		for(RequirementPanelListener listener : listeners)
@@ -103,48 +107,52 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 			listener.fireDeleted(b);
 		}	
 	}
-
+*/
 	/**
 	 * Method fireValid.
 	 * @param b boolean
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireValid(boolean) */
 	@Override
+	/*
 	public void fireValid(boolean b) {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireValid(b);
 		}		
 	}
-
+*/
 	/**
 	 * Method fireChanges.
 	 * @param b boolean
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireChanges(boolean) */
 	@Override
+	/*
 	public void fireChanges(boolean b) {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireChanges(b);
 		}		
 	}
-
+*/
 	/**
 	 * Method fireRefresh.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireRefresh()
 	 */
 	@Override
+	/*
 	public void fireRefresh() {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireRefresh();
 		}
 	}
-
+*/
 	/**
 	
 	 * @return the note panel */
+	/*
 	public RequirementNotePanel getNotePanel() {
 		return notePanel;
 	}
@@ -153,7 +161,8 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 * Method getTestPanel.
 	 * @return RequirementTestPanel
 	 */
+	/*
 	public RequirementTestPanel getTestPanel() {
 		return testPanel;
 	}
-}
+}*/

@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -25,9 +25,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TestStatus;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TestStatus;
 
 /**
  * Class that creates a panel that is used to represent an acceptance test
@@ -40,9 +40,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.
 public class SingleAcceptanceTestPanel extends JPanel 
 {
 	
-	private AcceptanceTest test;
-	private Requirement requirement;
-	JComboBox<TestStatus> dropdownStatus;
+	//private AcceptanceTest test;
+	//private Requirement requirement;
+	//JComboBox<TestStatus> dropdownStatus;
 
 	/**
 	 * Constructor for the single acceptance test panel panel
@@ -51,8 +51,8 @@ public class SingleAcceptanceTestPanel extends JPanel
 	 */
 	public SingleAcceptanceTestPanel(Requirement req, AcceptanceTest test)
 	{
-		this.requirement = req;
-		this.test = test;
+		//this.requirement = req;
+		//this.test = test;
 		
 		// Set border to black
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -73,6 +73,7 @@ public class SingleAcceptanceTestPanel extends JPanel
 		JLabel testName = new JLabel(" "+test.getName());
 		
 		// Get status and set drop down box to correct status
+		/*
 		dropdownStatus = new JComboBox<TestStatus>(TestStatus.values());
 		dropdownStatus.setBackground(Color.WHITE);
 		if (test.getStatus().equals("")) {
@@ -82,18 +83,18 @@ public class SingleAcceptanceTestPanel extends JPanel
 		} else if (test.getStatus().equals("Failed")) {
 			dropdownStatus.setSelectedItem(TestStatus.STATUS_FAILED);
 		}
-
+*/
 		ItemListener itemListener = new ItemListener() {
 		      public void itemStateChanged(ItemEvent itemEvent) {
-		    	  updateRequirementTest((TestStatus)itemEvent.getItem());
+		    	  //updateRequirementTest((TestStatus)itemEvent.getItem());
 		      }
 		    };
-		dropdownStatus.addItemListener(itemListener);
+		//dropdownStatus.addItemListener(itemListener);
 
 		// Create panel for dropdown status
 		JPanel statusPanel = new JPanel();
 		statusPanel.add(new JLabel("Status: "));
-		statusPanel.add(dropdownStatus);
+		//statusPanel.add(dropdownStatus);
 		
 		// Create a layout manager for this test panel
 		this.setLayout(new GridBagLayout());
@@ -123,8 +124,8 @@ public class SingleAcceptanceTestPanel extends JPanel
 	 * @param newStatus new status
 	 */
 	private void updateRequirementTest(TestStatus newStatus) {
-  	  	requirement.updateTestStatus(test.getId(), newStatus);
-  	  	UpdateRequirementController.getInstance().updateRequirement(requirement);
+  	  	//requirement.updateTestStatus(test.getId(), newStatus);
+  	  	//UpdateRequirementController.getInstance().updateRequirement(requirement);
 	}
 	
 	/**
@@ -147,7 +148,7 @@ public class SingleAcceptanceTestPanel extends JPanel
 		c.insets = new Insets(5,5,5,5); // Creates margins between notes
 		
 		// Get iterator of the list of notes
-		Iterator<AcceptanceTest> itt = req.getTests().iterator();
+		//Iterator<AcceptanceTest> itt = req.getTests().iterator();
 		
 		// Add each note to panel individually
 		while(itt.hasNext())
@@ -170,8 +171,9 @@ public class SingleAcceptanceTestPanel extends JPanel
 	 * Method getDropdownStatus.
 	 * @return JComboBox<TestStatus>
 	 */
+	/*
 	public JComboBox<TestStatus> getDropdownStatus() {
 		return dropdownStatus;
-	}
+	}*/
 
 }
