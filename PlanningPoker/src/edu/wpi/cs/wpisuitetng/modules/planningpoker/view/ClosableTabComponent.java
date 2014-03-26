@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.FlowLayout;
 import java.awt.Insets;
