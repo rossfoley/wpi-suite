@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 
 import java.awt.Cursor;
@@ -27,7 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequir
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  */
@@ -51,6 +51,7 @@ public class OverviewTableTransferHandler extends TransferHandler {
 	 */
 	@Override
 	protected Transferable createTransferable(JComponent c) {
+		/*
 		assert (c == table);
 		Requirement req = (Requirement)table.getValueAt(table.getSelectedRow(), 1);
 		
@@ -58,7 +59,7 @@ public class OverviewTableTransferHandler extends TransferHandler {
 		{
 			return new DataHandler(table.getValueAt(table.getSelectedRow(), 1), localObjectFlavor.getMimeType());
 		}
-		
+		*/
 		return null;	
 	}
 
