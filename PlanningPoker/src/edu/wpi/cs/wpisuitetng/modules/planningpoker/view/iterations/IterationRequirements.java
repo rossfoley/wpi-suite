@@ -8,7 +8,7 @@
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -30,11 +30,11 @@ import javax.swing.table.DefaultTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelector;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelectorListener;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelectorMode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementSelector;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementSelectorListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementSelectorMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
 
 /**
  * 
@@ -77,6 +77,7 @@ public class IterationRequirements extends JPanel implements RequirementSelector
 		removeButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				/*
 				int[] selectedObjects = requirementTable.getSelectedRows();
 				
 				for(int i = 0; i < selectedObjects.length; i++)
@@ -91,6 +92,7 @@ public class IterationRequirements extends JPanel implements RequirementSelector
 				ViewEventController.getInstance().refreshTable();
 				reqSelector.refreshList();
 				parentPanel.refreshEstimate();
+				*/
 			}
 		});
 		removeButton.setEnabled(false);
@@ -159,8 +161,8 @@ public class IterationRequirements extends JPanel implements RequirementSelector
 					int[] selection = requirementTable.getSelectedRows();
 
 					if(selection.length != 1) return;
-					Requirement toEdit = (Requirement)requirementTable.getValueAt(selection[0], 1);
-					ViewEventController.getInstance().editRequirement(toEdit);
+					//Requirement toEdit = (Requirement)requirementTable.getValueAt(selection[0], 1);
+					//ViewEventController.getInstance().editRequirement(toEdit);
 				}
 			}
 		});
@@ -181,7 +183,7 @@ public class IterationRequirements extends JPanel implements RequirementSelector
 		if(viewMode == ViewMode.CREATING) return; 
 		tableModel.setRowCount(0); //clear the table
 
-		List<Requirement> requirements = activeIteration.getRequirements();
+		/*List<Requirement> requirements = activeIteration.getRequirements();
 
 		for (int i = 0; i < requirements.size(); i++) {
 			Requirement req = requirements.get(i);
@@ -197,6 +199,7 @@ public class IterationRequirements extends JPanel implements RequirementSelector
 				});
 			}
 		}
+		*/
 	}
 
 	/**

@@ -95,7 +95,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 			public void mouseMoved(MouseEvent e) {
 				int x = e.getX();
 				int y = e.getY();
-				
+				/*
 				Date forLocation = IterationCalendar.this.getDayAtLocation(x, y);
 				
 				if(forLocation != null)
@@ -119,6 +119,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 						IterationCalendar.this.setToolTipText(null);
 					}
 				}
+				*/
 			}		
 		});
 		
@@ -127,6 +128,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				/*
 				if(e.getClickCount() == 2)
 				{
 					int x = e.getX();
@@ -141,6 +143,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 					}
 					
 				}	
+				*/
 			}
 		});
 		
@@ -158,6 +161,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 	{
 		boolean isFlaggedDate = false;
 		
+		/*
 		if(isOverview)
 		{
 			List<Iteration> forDate = IterationModel.getInstance().getIterationForDate(date);
@@ -176,7 +180,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 				isFlaggedDate |= date.equals(iter.getStart().getDate()) || date.equals(iter.getEnd().getDate());
 			}
 		}
-		
+		*/
 		return isFlaggedDate || super.isFlaggedDate(date);
 	}
 	
@@ -188,6 +192,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 	@Override
 	public boolean isUnselectableDate(Date date) {
 		boolean unselectable = false;
+		/*
 		if(!isOverview)
 		{
 			List<Iteration> forDate = IterationModel.getInstance().getIterationForDate(date);
@@ -196,6 +201,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 			
 			unselectable = forDate.size() == 1 && !isFlaggedDate(date);
 		}
+		*/
 
 		return unselectable || super.isUnselectableDate(date);
 	}
@@ -211,7 +217,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 		Date firstSeen = cal.getTime();
 		cal.add(Calendar.DAY_OF_YEAR, 364);
 		Date lastSeen = cal.getTime();
-		
+		/*
 		if(it == IterationModel.getInstance().getBacklog())
 		{
 			startDate = null;
@@ -230,10 +236,12 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 			
 			setSelectionInterval(startDate, endDate);
 		}
+		*/
 	}
 
 	private void handleSelectionForOverview()
 	{
+		/*
 		if(isOverview)
 		{
 			Date tempStart = this.getSelectionModel().getFirstSelectionDate();
@@ -255,10 +263,12 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 			}
 			return;
 		}
+		*/
 	}
 	
 	private void handleSelectionForPanel()
 	{
+		/*
 		if(!isOverview)
 		{
 			//check that the selected dates are valid dates.
@@ -300,6 +310,7 @@ public class IterationCalendar extends JXMonthView implements ActionListener, Ke
 				}
 			}
 		}
+		*/
 	}
 
 	/**
