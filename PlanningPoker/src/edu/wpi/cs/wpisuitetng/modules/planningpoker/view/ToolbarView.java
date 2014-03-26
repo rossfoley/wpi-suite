@@ -21,6 +21,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 //import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.ChartButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.RequirementButtonsPanel;
 
 /**
@@ -34,15 +35,16 @@ public class ToolbarView  extends DefaultToolbarView {
 
 	//public ChartButtonsPanel chartButton = new ChartButtonsPanel();
 	public EditButtonsPanel editButton = new EditButtonsPanel();
-	public RequirementButtonsPanel reqButton = new RequirementButtonsPanel();
+	public PlanningPokerSessionButtonsPanel sessionButton = new PlanningPokerSessionButtonsPanel(); 
+	//public RequirementButtonsPanel reqButton = new RequirementButtonsPanel();
 	
 	/**
 	 * Creates and positions option buttons in upper toolbar
 	 * @param visible boolean
 	 */
 	public ToolbarView(boolean visible) {
-
-		this.addGroup(reqButton);
+		this.addGroup(sessionButton);
+		//this.addGroup(reqButton);
 		//this.addGroup(chartButton);
 		this.addGroup(editButton);
 
@@ -63,12 +65,22 @@ public class ToolbarView  extends DefaultToolbarView {
 	//public ChartButtonsPanel getChartButton() {
 		//return chartButton;
 	//}
+		
+	/** 
+	 * Method getSessionButton
+	 * 
+	 * @return PlanningPokerSessionButtons Panel
+	 */
+	public PlanningPokerSessionButtonsPanel getSessionButton(){
+		return sessionButton;
+	}
 
 	/**
 	 * Method getReqButton.
 	
 	 * @return RequirementButtonsPanel */
-	public RequirementButtonsPanel getReqButton() {
+	/*public RequirementButtonsPanel getReqButton() {
 		return reqButton;
 	}
+	*/
 }
