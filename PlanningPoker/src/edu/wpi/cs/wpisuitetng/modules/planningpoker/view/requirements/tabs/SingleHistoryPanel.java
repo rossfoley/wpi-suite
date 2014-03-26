@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -24,8 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Transaction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TransactionHistory;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Transaction;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TransactionHistory;
 
 /**
  *
@@ -90,7 +90,7 @@ public class SingleHistoryPanel extends JPanel {
 		c.insets = new Insets(5,5,5,5);
 		
 		// create iterator for transaction history
-		ListIterator<Transaction> historyIterator = list.getIterator(0);
+		//ListIterator<Transaction> historyIterator = list.getIterator(0);
 		
 		// initialize appended message holder and panel creation flag
 		String appendedMessages = "";
@@ -98,7 +98,7 @@ public class SingleHistoryPanel extends JPanel {
 		
 		// set Date and Time format
 		Format format = new SimpleDateFormat("MMMMM d, yyyy 'at' hh:mm:ss aaa");
-		
+		/*
 		// iterate through the transaction history of the requirement
 		while(historyIterator.hasNext()) {
 			// check to see if this is the first transaction by checking to see if 
@@ -175,7 +175,7 @@ public class SingleHistoryPanel extends JPanel {
 				}				
 			}
 		}
-
+*/
 		c.weighty = 1;
 		JPanel dummy = new JPanel();
 		dummy.setBackground(Color.WHITE);

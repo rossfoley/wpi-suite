@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -27,7 +27,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelector;
@@ -42,7 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 public class SubrequirementPanel extends JPanel implements RequirementSelectorListener, RequirementPanelListener
 {
 	private ViewMode viewMode;
-	private Requirement activeRequirement;
+	//private Requirement activeRequirement;
 	private JTable subRequirementTable;
 	private JButton addNewButton;
 	private JButton removeButton;
@@ -55,6 +55,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 	 * @param vm viewmode
 	 * @param requirementBeingEdited the current requirement being edited.
 	 */
+	/*
 	public SubrequirementPanel(RequirementTabsPanel parentPanel, ViewMode vm, Requirement requirementBeingEdited)
 	{
 		this.setLayout(new BorderLayout());
@@ -83,7 +84,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 				
 				for(int i = 0; i < selectedObjects.length; i++)
 				{
-					Requirement toBeRemoved = (Requirement)subRequirementTable.getValueAt(selectedObjects[i], 0);
+					//Requirement toBeRemoved = (Requirement)subRequirementTable.getValueAt(selectedObjects[i], 0);
 					try {
 						toBeRemoved.setParentID(-1);
 					} catch (Exception e1) {
@@ -94,7 +95,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 					ViewEventController.getInstance().refreshEditRequirementPanel(activeRequirement);
 				}
 				existingReqSelector.refreshList();
-				refreshTable();
+				//refreshTable();
 			}
 		});
 		removeButton.setEnabled(false);
@@ -116,7 +117,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 			addNewButton.setEnabled(false);
 			existingReqSelector.enableChildren(false);
 		}
-	}
+	}*/
 
 	/**
 	 * Constructs the jtable that holds all of the subrequirements.
@@ -173,7 +174,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 					int[] selection = subRequirementTable.getSelectedRows();
 
 					if(selection.length != 1) return;
-					Requirement toEdit = (Requirement)subRequirementTable.getValueAt(selection[0], 0);
+					//Requirement toEdit = (Requirement)subRequirementTable.getValueAt(selection[0], 0);
 					ViewEventController.getInstance().editRequirement(toEdit);
 				}
 			}
@@ -193,6 +194,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 	/**
 	 * Populates the subrequirement table with the sub requirements of the requirement being edited.
 	 */
+	/*
 	private void refreshTable()
 	{
 		tableModel.setRowCount(0); //clear the table
@@ -209,7 +211,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 				});
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Overrides the paintComponent method to retrieve the requirements on the first painting.
@@ -217,12 +219,13 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 	 * @param g	The component object to paint
 	 */
 	@Override
+	/*
 	public void paintComponent(Graphics g)
 	{
 		refreshTable();
 		existingReqSelector.refreshList();
 		super.paintComponent(g);
-	}
+	}*/
 
 	/**
 	 * Overrides the requirementSelected method to signal to refresh the table when the
@@ -230,10 +233,11 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 	
 	 * @param requirements Object[]
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelectorListener#requirementSelected() */
-	@Override
+	//@Override
+	/*
 	public void requirementSelected(Object[] requirements) {
 		refreshTable();
-	}
+	}*/
 
 	/**
 	 * Method readyToRemove.
@@ -241,7 +245,7 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 	
 	 * @return boolean * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove() * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove()
 	 */
-	@Override
+	//@Override
 	public boolean readyToRemove() {
 		return true;
 	}
@@ -279,7 +283,13 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 	 */
 	@Override
 	public void fireRefresh() {
-		refreshTable();
+		//refreshTable();
 		existingReqSelector.refreshList();
+	}
+
+	@Override
+	public void requirementSelected(Object[] arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

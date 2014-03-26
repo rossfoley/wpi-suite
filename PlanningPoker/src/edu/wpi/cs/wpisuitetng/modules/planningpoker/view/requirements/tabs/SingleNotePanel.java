@@ -10,7 +10,7 @@
 /**
  * 
  */
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Note;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.NoteList;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Note;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.NoteList;
 
 /**
  * Class to display a note inside the EditRequirementPanel
@@ -103,7 +103,7 @@ public class SingleNotePanel extends JPanel {
 		c.insets = new Insets(5,5,5,5); // Creates margins between notes
 		
 		// Get iterator of the list of notes
-		ListIterator<Note> itt = list.getIterator(0);
+		//ListIterator<Note> itt = list.getIterator(0);
 		
 		// Add each note to panel individually
 		while(itt.hasNext())
