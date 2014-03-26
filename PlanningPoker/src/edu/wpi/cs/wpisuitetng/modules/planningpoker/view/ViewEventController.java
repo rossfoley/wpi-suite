@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -15,18 +15,16 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations.IterationOverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations.IterationPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewTable;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewTreePanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.NewBarChartPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.NewPieChartPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationOverviewPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
 
 
 /**
@@ -115,7 +113,7 @@ public class ViewEventController {
 	 * @param iter Iteration
 	 */
 	public void editIteration(Iteration iter) {
-		if(iter == IterationModel.getInstance().getBacklog()) return;
+		//if(iter == IterationModel.getInstance().getBacklog()) return;
 		
 		IterationPanel exists = null;
 		
@@ -142,56 +140,6 @@ public class ViewEventController {
 			main.setSelectedComponent(exists);
 		}
 	}
-
-	/**
-	 * Opens a new tab for the creation of a pie chart.
-	 * @param title the title of the pie chart
-	 */
-	public void createPieChart(String title){
-		int i;
-		for (i = 0; i < main.getTabCount(); i++) {
-			if (main.getTitleAt(i).equals("Pie Chart")) {
-				if(main.getTabComponentAt(i) instanceof NewPieChartPanel && (((NewPieChartPanel) main.getTabComponentAt(i)).getTitle().equals(title))){
-					main.setSelectedIndex(i);
-					return;
-				}  
-				else{
-					main.remove(i);
-					
-				}				
-			}
-		}
-		NewPieChartPanel newPie = new NewPieChartPanel(title); 
-		main.addTab("Pie Chart", null, newPie, "PieChart");
-		main.invalidate();
-		main.repaint();
-		main.setSelectedComponent(newPie);
-		
-	}
-	
-	/**
-	 * Method createBarChart.
-	 * @param title String
-	 */
-	public void createBarChart(String title){
-		for(int i = 0; i < main.getTabCount(); i++){
-			if(main.getTitleAt(i).equals("Bar Graph")){ 
-					if(main.getTabComponentAt(i) instanceof NewBarChartPanel && (((NewBarChartPanel) main.getTabComponentAt(i)).getTitle().equals(title))){
-						main.setSelectedIndex(i);
-						return;
-					}
-					else{
-						main.remove(i);
-					}
-			}
-		}
-		NewBarChartPanel newBar = new NewBarChartPanel(title);
-		main.addTab("Bar Graph", null, newBar, "BarGraph");
-		main.invalidate();
-		main.repaint();
-		main.setSelectedComponent(newBar);
-	}
-	
 
 
 	/**

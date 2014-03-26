@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -31,9 +31,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations.IterationOverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationOverviewPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
 
 /**
  * This class sets the main view when user goes to the RequirementManager tab
@@ -86,7 +86,7 @@ public class MainView extends JTabbedPane {
 		});
 
 		// add listener for changes in the overview tables
-		ViewEventController.getInstance().getOverviewTable().getModel().addTableModelListener(new TableModelListener() {
+		/*ViewEventController.getInstance().getOverviewTable().getModel().addTableModelListener(new TableModelListener() {
 			@Override
 			public void tableChanged(TableModelEvent e) {
 				// check for Editing Multiple Requirements Mode	and a change not caused by a refresh	
@@ -108,7 +108,7 @@ public class MainView extends JTabbedPane {
 				}
 			}
 		});		
-		
+		*/
 		
 		popup.add(closeAll);
 		popup.add(closeOthers);

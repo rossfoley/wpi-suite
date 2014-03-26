@@ -8,7 +8,7 @@
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -28,8 +28,8 @@ import org.jdesktop.swingx.event.DateSelectionEvent;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
 
 /**
  * @author justinhess
