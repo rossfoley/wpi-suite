@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -32,8 +32,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller.Get
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewTableTransferHandler;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTableTransferHandler;
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
@@ -102,6 +102,7 @@ public class OverviewTable extends JTable
 	 * updates OverviewTable with the contents of the requirement model	 * 
 	 */
 	public void refresh() {
+		/*
 		List<Requirement> requirements = RequirementModel.getInstance().getRequirements();
 		
 		String[] pastEst = new String[requirements.size()];
@@ -142,7 +143,8 @@ public class OverviewTable extends JTable
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
 		
-		System.out.println("finished refreshing the table");		
+		System.out.println("finished refreshing the table");
+		*/		
 	}
 	
 	/**
@@ -155,6 +157,7 @@ public class OverviewTable extends JTable
 	@Override
 	public boolean isCellEditable(int row, int col)
 	{
+		/*
 		// extract the ID number displayed in the row
     	String rowIDstr = this.getValueAt(row, 0).toString();
     	int rowID = Integer.parseInt(rowIDstr);
@@ -167,7 +170,8 @@ public class OverviewTable extends JTable
 										 &&	(req.getStatus() != RequirementStatus.COMPLETE)
 										 &&	(req.getStatus() != RequirementStatus.INPROGRESS)) {
 			return true;
-		}	
+		}
+		*/	
 		
 		return false;
 	}
@@ -213,6 +217,7 @@ public class OverviewTable extends JTable
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		/*
 		if(!initialized)
 		{
 			try 
@@ -228,12 +233,14 @@ public class OverviewTable extends JTable
 		}
 
 		super.paintComponent(g);
+		*/
 	}
 	
 	/**
 	 * saves the changes made to the Overview Table
 	 */
 	public void saveChanges() {
+		/*
 		// Set time stamp for transaction history
 		long timestamp = System.currentTimeMillis();	
 		
@@ -280,12 +287,14 @@ public class OverviewTable extends JTable
 		
 		// refresh table to get rid of cell highlights
 		this.refresh();
+		*/
 	}
 
 	/**	
 	
 	 * @return true if there are unsaved, saveable changes in the Overview Table   */
 	public boolean hasChanges() {
+		/*
 				
 		// iterate through the rows of the overview table
 		for (int row = 0; row < this.tableModel.getRowCount(); row++) {
@@ -318,6 +327,7 @@ public class OverviewTable extends JTable
 			}
 		}
 
+		*/
 		// indicate that no changes were found by returning false
 		return false;
 	}
@@ -341,6 +351,7 @@ public class OverviewTable extends JTable
     }
 	
 	public void validateEdits(){
+		/*
 		boolean errors = false;
 		for (int row = 0; row < this.tableModel.getRowCount(); row++) {		
 			// update the estimate with the value in the cell at row, column 7			
@@ -355,6 +366,7 @@ public class OverviewTable extends JTable
 			}
 		}
 		ViewEventController.getInstance().getToolbar().editButton.setSaveEnabled(!errors);
+		*/
 	}
 	
 }

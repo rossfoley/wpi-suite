@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -21,7 +21,7 @@ import javax.swing.table.TableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * @author justinhess
@@ -65,6 +65,7 @@ public class OverviewTableCellRenderer extends DefaultTableCellRenderer {
         setForeground(Color.black);
         setText(value != null ? value.toString() : "");
 
+        /*
         TableModel model = table.getModel();
         int modelRow = table.getRowSorter().convertRowIndexToModel(row);
         int columnRequirementPosition = 1;
@@ -160,6 +161,7 @@ public class OverviewTableCellRenderer extends DefaultTableCellRenderer {
         		}
         	}
         }
+        */
 
         return this;
     }
