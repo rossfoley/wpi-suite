@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 
 import java.awt.GridLayout;
@@ -32,7 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.Requiremen
  */
 public class ToolbarView  extends DefaultToolbarView {
 
-	public ChartButtonsPanel chartButton = new ChartButtonsPanel();
+	//public ChartButtonsPanel chartButton = new ChartButtonsPanel();
 	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public RequirementButtonsPanel reqButton = new RequirementButtonsPanel();
 	
@@ -43,7 +43,7 @@ public class ToolbarView  extends DefaultToolbarView {
 	public ToolbarView(boolean visible) {
 
 		this.addGroup(reqButton);
-		this.addGroup(chartButton);
+		//this.addGroup(chartButton);
 		this.addGroup(editButton);
 
 	}
@@ -52,7 +52,7 @@ public class ToolbarView  extends DefaultToolbarView {
 	 * Method getEditButton.
 	
 	 * @return EditButtonsPanel */
-	public EditButtonsPanel getEditButton(){
+		public EditButtonsPanel getEditButton(){
 		return editButton;
 	}
 	
@@ -60,9 +60,9 @@ public class ToolbarView  extends DefaultToolbarView {
 	 * Method getChartButton.
 	
 	 * @return ChartButtonsPanel */
-	public ChartButtonsPanel getChartButton() {
-		return chartButton;
-	}
+	//public ChartButtonsPanel getChartButton() {
+		//return chartButton;
+	//}
 
 	/**
 	 * Method getReqButton.
