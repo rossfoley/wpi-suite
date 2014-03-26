@@ -15,6 +15,9 @@ public class RequirementIcon implements Icon {
 	private int height;
 	private int width;
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public RequirementIcon(){
 		height = 5;
 		width = 5;
@@ -24,7 +27,8 @@ public class RequirementIcon implements Icon {
 	 * Method getIconHeight.
 	
 	
-	 * @return int * @see javax.swing.Icon#getIconHeight() */
+	 * @return int * @see javax.swing.Icon#getIconHeight() 
+	 * @wbp.parser.entryPoint*/
 	@Override
 	public int getIconHeight() {
 		return height;

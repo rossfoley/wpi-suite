@@ -86,7 +86,7 @@ public class MainView extends JTabbedPane {
 		});
 
 		// add listener for changes in the overview tables
-		/*ViewEventController.getInstance().getOverviewTable().getModel().addTableModelListener(new TableModelListener() {
+		ViewEventController.getInstance().getOverviewTable().getModel().addTableModelListener(new TableModelListener() {
 			@Override
 			public void tableChanged(TableModelEvent e) {
 				// check for Editing Multiple Requirements Mode	and a change not caused by a refresh	
@@ -108,7 +108,7 @@ public class MainView extends JTabbedPane {
 				}
 			}
 		});		
-		*/
+		
 		
 		popup.add(closeAll);
 		popup.add(closeOthers);
