@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -30,7 +30,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
@@ -40,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
  */
 public class RequirementNotePanel extends JPanel implements RequirementPanelListener {
 	private final ViewMode viewMode;
-	private final Requirement currentRequirement;
+	//private final Requirement currentRequirement;
 	private int notesAdded;
 	private final JTextArea noteMessage = new JTextArea();
 	private final JScrollPane noteScroll;
@@ -54,6 +54,7 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 	 * @param vm view mode
 	 * @param current current requirement
 	 */
+	/*
 	public RequirementNotePanel(RequirementTabsPanel parent, ViewMode vm, Requirement current) {
 		currentRequirement = current;
 		viewMode = vm;
@@ -117,18 +118,20 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 		this.setupListeners();
 		this.refresh();
 	}
-	
+	*/
 	/**
 	 * Refreshes the note panel
 	 */
+	/*
 	private void refresh()
 	{
 		noteScroll.setViewportView(SingleNotePanel.createList(currentRequirement.getNotes()));
 	}
-	
+	*/
 	/**
 	 * Sets up the listeners 
 	 */
+	/*
 	private void setupListeners()
 	{
 		// Listener for add note button
@@ -171,7 +174,7 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 			}
 		});
 	}
-
+*/
 	/**
 	 * Method buildNoteMessage.
 	
@@ -248,11 +251,12 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 	 * Method fireRefresh.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireRefresh()
 	 */
+	/*
 	@Override
 	public void fireRefresh() {
 		this.refresh();
 	}
-	
+	*/
 	/**
 	
 	 * @return the note message text area */
@@ -267,13 +271,14 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 		return buttonAddNote;
 	}
 	
-	/**
 	
+	/*
 	 * @return the requirement this note panel is in */
+	/*
 	public Requirement getRequirement() {
 		return currentRequirement;
 	}
-	
+	*/
 	/**
 	
 	 * @return the number of notes added */

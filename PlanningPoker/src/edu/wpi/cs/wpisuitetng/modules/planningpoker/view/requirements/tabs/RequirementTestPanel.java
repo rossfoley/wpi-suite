@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -27,8 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
@@ -60,8 +60,9 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 	 * @param vm RequirementViewMode
 	 * @param current Requirement
 	 */
+	
 	public RequirementTestPanel(RequirementTabsPanel parent, ViewMode vm, Requirement current) {
-		currentRequirement = current;
+		//currentRequirement = current;
 		viewMode = vm;
 		testsAdded = 0;
 		
@@ -164,17 +165,18 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 		this.add(bottomPanel, c); // Add buttons to the panel
 		
 		this.setupListeners();
-		this.refresh();
+		//this.refresh();
 	}
 	
 	/**
 	 * Refreshes the acceptance tests panel
 	 */
+	/*
 	private void refresh() {
 
 		testsScroll.setViewportView(SingleAcceptanceTestPanel.createList(currentRequirement));
 	}
-	
+	*/
 	/**
 	 * Sets up the listeners 
 	 */
@@ -195,7 +197,7 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 					String msg = testMessage.getText(); // Get text from
 														// noteMessage					
 									
-					AcceptanceTest tempTest = new AcceptanceTest(testsAdded, title, msg);
+					//AcceptanceTest tempTest = new AcceptanceTest(testsAdded, title, msg);
 					// Clear all text areas
 					testTitle.setText("");
 					testMessage.setText("");
@@ -204,13 +206,14 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 					buttonAddTest.setEnabled(false);
 										
 					// Add acceptance test to requirement
-					currentRequirement.addTest(tempTest);
+					//currentRequirement.addTest(tempTest);
 
-					refresh();
+					//refresh();
 					testsAdded++;
 					// Update database so requirement stores new note
+					/*
 					UpdateRequirementController.getInstance()
-							.updateRequirement(currentRequirement);
+							.updateRequirement(currentRequirement);*/
 				}
 			}
 		});
