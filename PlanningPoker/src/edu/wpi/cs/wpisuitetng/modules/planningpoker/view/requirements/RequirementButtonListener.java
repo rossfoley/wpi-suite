@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
 
 
 /**

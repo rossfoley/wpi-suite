@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
 
 import java.awt.Color;
 import java.util.LinkedList;

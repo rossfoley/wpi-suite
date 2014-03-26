@@ -7,14 +7,14 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import org.jfree.chart.plot.PiePlot3D;
+//import org.jfree.chart.plot.PiePlot3D;
 
 /**
  *
@@ -27,21 +27,21 @@ import org.jfree.chart.plot.PiePlot3D;
  */
 public class Rotator extends Timer implements ActionListener {
 
-    /** The plot. */
-    private PiePlot3D plot;
+
 
     /** The angle. */
-    private int angle = 270;
+	/*
+    private int angle = 270; */
 
     /**
      * Constructor.
      *
      * @param plot  the plot.
      */
-    Rotator(final PiePlot3D plot) {
-        super(100, null);
-        this.plot = plot;
-        addActionListener(this);
+    Rotator(/*final PiePlot3D plot*/) {
+         super(100, null);
+        /*this.plot = plot; */
+        addActionListener(this); 
     }
 
     /**
@@ -50,13 +50,15 @@ public class Rotator extends Timer implements ActionListener {
      * @param event  the action event.
     
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent) */
+    
     public void actionPerformed(final ActionEvent event) {
-        this.plot.setStartAngle(this.angle);
+    /*    this.plot.setStartAngle(this.angle);
         this.angle = this.angle + 1;
         if (this.angle == 360) {
             this.angle = 0;
         }
-    }
+        */
+    } 
 
 }
 
