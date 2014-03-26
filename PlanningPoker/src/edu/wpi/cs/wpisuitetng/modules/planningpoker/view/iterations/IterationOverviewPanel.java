@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,9 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  */
@@ -67,11 +67,12 @@ public class IterationOverviewPanel extends JSplitPane {
 		
 		contentPanel.add(buttonPanel, "alignx center, dock north");
 		 		
-		JPanel calendarPanel = new JPanel(new BorderLayout());
+		/*JPanel calendarPanel = new JPanel(new BorderLayout());
 		calendarView = new IterationCalendar(this);
 		calendarPanel.add(calendarView, BorderLayout.CENTER);
 				
-		calendarPanel.add(calendarView, BorderLayout.CENTER);	
+		calendarPanel.add(calendarView, BorderLayout.CENTER);
+		*/	
 		
 		JPanel selectionPanel = new JPanel(new MigLayout("height 100:100:100, width 150:150:150","",""));
 		selectionPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -98,16 +99,16 @@ public class IterationOverviewPanel extends JSplitPane {
 		keyWrapper.add(keyPanel, "wrap");
 		keyWrapper.add(selectionPanel);
 		
-		calendarPanel.add(keyWrapper, BorderLayout.EAST);
+		//calendarPanel.add(keyWrapper, BorderLayout.EAST);
 		
 		
 		
-		contentPanel.add(calendarPanel, "alignx center, push, span");
+		//contentPanel.add(calendarPanel, "alignx center, push, span");
 		
 		scrollPane.setViewportView(contentPanel);
 		this.setRightComponent(scrollPane);
 		this.setDividerLocation(180);
-		ViewEventController.getInstance().setIterationOverview(this);
+	//	ViewEventController.getInstance().setIterationOverview(this);
 	}
 	
 	/**
