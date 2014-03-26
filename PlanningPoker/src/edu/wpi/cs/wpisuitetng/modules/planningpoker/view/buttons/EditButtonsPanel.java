@@ -8,7 +8,7 @@
  *
  * Contributors:
  */
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -27,7 +27,7 @@ import javax.swing.SpringLayout;
 import javax.swing.border.EtchedBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  *
