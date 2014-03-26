@@ -25,9 +25,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TestStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TestStatus;
 
 /**
  * Class that creates a panel that is used to represent an acceptance test
@@ -151,12 +151,12 @@ public class SingleAcceptanceTestPanel extends JPanel
 		//Iterator<AcceptanceTest> itt = req.getTests().iterator();
 		
 		// Add each note to panel individually
-		while(itt.hasNext())
-		{
-			//Create a new NotePanel for each Note and add it to the panel
-			panel.add(new SingleAcceptanceTestPanel(req, itt.next()), c);
-			c.gridy++; //Next Row
-		}
+//		while(itt.hasNext())
+//		{
+//			//Create a new NotePanel for each Note and add it to the panel
+//			panel.add(new SingleAcceptanceTestPanel(req, itt.next()), c);
+//			c.gridy++; //Next Row
+//		}
 		
 		//Create a dummy panel to take up space at the bottom
 		c.weighty = 1;

@@ -24,8 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Transaction;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TransactionHistory;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Transaction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.TransactionHistory;
 
 /**
  *

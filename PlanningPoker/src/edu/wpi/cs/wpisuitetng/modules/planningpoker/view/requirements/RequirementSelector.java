@@ -40,12 +40,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.iterations.IterationModel;
+
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author justinhess
@@ -84,7 +86,7 @@ public class RequirementSelector extends JScrollPane {
 		JScrollPane listScroll = new JScrollPane();
 		listScroll.setPreferredSize(new Dimension(300, 125));
 //		requirementList = new JList<Requirement>();
-		listScroll.setViewportView(requirementList);
+		//listScroll.setViewportView(requirementList);
 
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
@@ -153,8 +155,9 @@ public class RequirementSelector extends JScrollPane {
 			}
 		});
 		this.setViewportView(contentPanel);
+		*/
 	}
-*/
+
 	/**
 	 * Adds a button to the requirement selector at the given index
 	 * 
@@ -210,42 +213,42 @@ public class RequirementSelector extends JScrollPane {
 	 */
 	private void okPressed() {
 		
-		if (mode == RequirementSelectorMode.ITERATION) {
-			selectedList = requirementList.getSelectedValues();
-		}
-		else if (mode == RequirementSelectorMode.POSSIBLE_CHILDREN) {
-			//selectedList = requirementList.getSelectedValues();
-			for (Object obj : selectedList) {
-				//Requirement newChild = (Requirement) obj;
-				try {
-					//newChild.setParent(activeRequirement);
-					ViewEventController.getInstance()
-							.refreshEditRequirementPanel(newChild);
-					/*UpdateRequirementController.getInstance()
-							.updateRequirement(newChild); */
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-			}
-			
-			//ViewEventController.getInstance().refreshEditRequirementPanel(activeRequirement);
-		}
-		else
-		{
-			//Requirement parentRequirement = requirementList.getSelectedValue();
-			try {
-				//activeRequirement.setParent(parentRequirement);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-			//ViewEventController.getInstance().refreshEditRequirementPanel(parentRequirement);
-			//ViewEventController.getInstance().refreshEditRequirementPanel(activeRequirement);
-			//UpdateRequirementController.getInstance().updateRequirement(activeRequirement);
-		}
+//		if (mode == RequirementSelectorMode.ITERATION) {
+//			selectedList = requirementList.getSelectedValues();
+//		}
+//		else if (mode == RequirementSelectorMode.POSSIBLE_CHILDREN) {
+//			//selectedList = requirementList.getSelectedValues();
+//			for (Object obj : selectedList) {
+//				Requirement newChild = (Requirement) obj;
+//				try {
+//					newChild.setParent(activeRequirement);
+////					ViewEventController.getInstance()
+////							.refreshEditRequirementPanel(newChild);
+//					UpdateRequirementController.getInstance()
+//							.updateRequirement(newChild);
+//				} catch (Exception e) {
+//					System.out.println(e.getMessage());
+//				}
+////			}
+//			
+//			ViewEventController.getInstance().refreshEditRequirementPanel(activeRequirement);
+//		}
+//		else
+//		{
+//			//Requirement parentRequirement = requirementList.getSelectedValue();
+//			try {
+//				activeRequirement.setParent(parentRequirement);
+//			} catch (Exception e) {
+//				System.out.println(e.getMessage());
+//			}
+//			ViewEventController.getInstance().refreshEditRequirementPanel(parentRequirement);
+//			ViewEventController.getInstance().refreshEditRequirementPanel(activeRequirement);
+//			UpdateRequirementController.getInstance().updateRequirement(activeRequirement);
+//		}
 
-		listener.requirementSelected(selectedList);
-		this.refreshList();
-		ViewEventController.getInstance().getOverviewTree().refresh();
+//		listener.requirementSelected(selectedList);
+//		this.refreshList();
+//		ViewEventController.getInstance().getOverviewTree().refresh();
 	}
 
 	/**

@@ -33,7 +33,7 @@ import javax.swing.event.TableModelListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
 
 /**
  * This class sets the main view when user goes to the RequirementManager tab
@@ -205,11 +205,11 @@ public class MainView extends JTabbedPane {
 					iterationOverview.revalidate();
 					iterationOverview.repaint();
 				}
-				else if(selected instanceof RequirementPanel)
-				{
-					RequirementPanel req = (RequirementPanel)selected;
-					req.fireRefresh();
-				}
+//				else if(selected instanceof RequirementPanel)
+//				{
+//					RequirementPanel req = (RequirementPanel)selected;
+//					req.fireRefresh();
+//				}
 			}
 		});
 	}

@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Note;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.NoteList;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.NoteList;
 
 /**
  * Class to display a note inside the EditRequirementPanel
@@ -106,12 +106,12 @@ public class SingleNotePanel extends JPanel {
 		//ListIterator<Note> itt = list.getIterator(0);
 		
 		// Add each note to panel individually
-		while(itt.hasNext())
-		{
-			//Create a new NotePanel for each Note and add it to the panel
-			panel.add(new SingleNotePanel(itt.next()),c);
-			c.gridy++; //Next Row
-		}
+//		while(itt.hasNext())
+//		{
+//			//Create a new NotePanel for each Note and add it to the panel
+//			panel.add(new SingleNotePanel(itt.next()),c);
+//			c.gridy++; //Next Row
+//		}
 		
 		//Create a dummy panel to take up space at the bottom
 		c.weighty = 1;

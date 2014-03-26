@@ -18,9 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateRequirementController;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Requirement;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs.RequirementTabsPanel;
 
@@ -35,7 +35,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	private ViewMode viewMode;
 	
 	private RequirementInformationPanel infoPanel;
-	private RequirementTabsPanel tabsPanel;
+	//private RequirementTabsPanel tabsPanel;
 	private RequirementButtonPanel buttonPanel;
 	
 	private boolean readyToClose = false;
@@ -83,17 +83,17 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 */
 	private void buildLayout()
 	{
-		//buttonPanel = new RequirementButtonPanel(this, viewMode, displayRequirement);
-		listeners.add(buttonPanel);
-		//tabsPanel = new RequirementTabsPanel(this, viewMode, displayRequirement);
-		listeners.add(tabsPanel);
-		//infoPanel = new RequirementInformationPanel(this, viewMode, displayRequirement);
-		listeners.add(infoPanel);
+//		buttonPanel = new RequirementButtonPanel(this, viewMode, displayRequirement);
+//		listeners.add(buttonPanel);
+//		tabsPanel = new RequirementTabsPanel(this, viewMode, displayRequirement);
+//		listeners.add(tabsPanel);
+//		infoPanel = new RequirementInformationPanel(this, viewMode, displayRequirement);
+//		listeners.add(infoPanel);
 		
-		JSplitPane contentPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, infoPanel, tabsPanel);
+//		JSplitPane contentPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, infoPanel, tabsPanel);
 		
 		this.setLayout(new BorderLayout());
-		this.add(contentPanel, BorderLayout.CENTER); // Add scroll pane to panel
+//		this.add(contentPanel, BorderLayout.CENTER); // Add scroll pane to panel
 		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
 	/**
@@ -222,7 +222,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	public boolean readyToRemove() {
 		if(readyToClose) return true;
 		
-		
+		return false;
 		/*for(RequirementPanelListener listener : listeners)
 		{
 			readyToRemove &= listener.readyToRemove();
@@ -260,10 +260,11 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	/**
 	
 	 * @return the display requirement. */
-	/*public Requirement getDisplayRequirement() {
-		return displayRequirement;
+	public Requirement getDisplayRequirement() {
+		return new Requirement();
+//		return displayRequirement;
 	}
-*/
+
 	/**
 	
 	 * @return the tabs panel */
