@@ -15,6 +15,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.GregorianCalendar;
 
 public final class NewGameTab {
 	private static JTextField textField;
@@ -139,7 +140,13 @@ public final class NewGameTab {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddSessionController.getInstance().addPlanningPokerSession(new PlanningPokerSession());
+				PlanningPokerSession pokerSession = new PlanningPokerSession();
+				int month = Integer.parseInt(textField_1.getText());
+				int day = Integer.parseInt(textField_2.getText());
+				int year = Integer.parseInt(textField_3.getText());
+				GregorianCalendar date = new GregorianCalendar(year, month, day);
+				pokerSession.setEndDate(date);
+				AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
 			}
 		});
 		

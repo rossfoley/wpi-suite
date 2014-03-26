@@ -109,8 +109,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	@Override
 	public String toJSON() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Gson().toJson(this, PlanningPokerSession.class);
 	}
 
 	/* (non-Javadoc)

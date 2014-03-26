@@ -41,12 +41,12 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 * 
 	 * @param newReq The requirement to be added to the list of requirements in the project
 	 */
-	public void addPlanningPokerSession(PlanningPokerSession newReq){
+	public void addPlanningPokerSession(PlanningPokerSession newSession){
 		// add the requirement
-		planningPokerSessions.add(newReq);
+		planningPokerSessions.add(newSession);
 		try 
 		{
-			AddSessionController.getInstance().addSession(newReq);
+			AddSessionController.getInstance().addPlanningPokerSession(newSession);
 		}
 		catch(Exception e)
 		{

@@ -12,8 +12,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -81,6 +82,7 @@ public class GetSessionController implements ActionListener {
 	 * 
 	 * @param requirements array of requirements received from the server
 	 */
+	/*
 	public void receivedSessions(PlanningPokerSession[] sessions) {
 		// Empty the local model to eliminate duplications
 		PlanningPokerSessionModel.getInstance().emptyModel();
@@ -92,4 +94,5 @@ public class GetSessionController implements ActionListener {
 			PlanningPokerSessionModel.getInstance().addPlanningPokerSessions(sessions);
 		}
 	}
+	*/
 }
