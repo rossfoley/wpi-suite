@@ -56,7 +56,7 @@ public class AddSessionRequestObserver implements RequestObserver {
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(IRequest) */
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to add a session failed.");
+		System.err.println("The request to add a session failed. Response Error");
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class AddSessionRequestObserver implements RequestObserver {
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(IRequest, Exception) */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to add a session failed.");
+		System.err.println("The request to add a session failed. FAIL!");
 	}
 
 }
