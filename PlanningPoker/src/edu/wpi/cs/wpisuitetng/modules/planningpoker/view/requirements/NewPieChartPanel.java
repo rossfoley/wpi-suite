@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements;
+/*package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -36,20 +36,23 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewButtonPanel;
-
+ */
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
+
+/*
 public class NewPieChartPanel extends JScrollPane {
 	private static String title;
 	private ChartPanel pieChart;
-
+*/
 	/**
 	 * @param title
 	 *            the title of the pie chart which determines if we are
 	 *            displaying based on status, iteration, or users assigned to.
 	 */
+/*
 	public NewPieChartPanel(String title) {
 		NewPieChartPanel.title = title;
 		JPanel panel = new JPanel(new BorderLayout());
@@ -63,10 +66,11 @@ public class NewPieChartPanel extends JScrollPane {
 		
 
 	}
-
+*/
 	/**
 	
 	 * @return the specific data set based on the the title of the chart */
+/*
 	private static PieDataset setData() {
 		if (title.equals("Iteration")) {
 			return setDataIteration();
@@ -77,11 +81,15 @@ public class NewPieChartPanel extends JScrollPane {
 		}
 
 	}
+	
+	*/
 
 	/**
 	
 	 * @return the data with the percentage of requirements with a given status
 	 *         to be displayed by the pie chart */
+
+/*
 	private static PieDataset setDataStatus() {
 		int numStatusNew = 0;
 		int numStatusDeleted = 0;
@@ -111,10 +119,11 @@ public class NewPieChartPanel extends JScrollPane {
 		dataSet.setValue("Open", numStatusOpen);
 		return dataSet;
 	}
-
+*/
 	/**
 	
 	 * @return the data of iterations to be displayed by the pie chart */
+/*
 	private static PieDataset setDataIteration() {
 		DefaultPieDataset dataSet = new DefaultPieDataset();
 		List<Iteration> iterations = IterationModel.getInstance()
@@ -138,11 +147,13 @@ public class NewPieChartPanel extends JScrollPane {
 		}
 		return dataSet;
 	}
+	*/
 
 	/**
 	
 	 * @return the data of the number of requirements a user has assigned to
 	 *         them */
+/*
 	private static PieDataset setDataAssignTo() {
 		DefaultPieDataset dataSet = new DefaultPieDataset();
 		ArrayList<String> userNames = new ArrayList<String>();
@@ -179,7 +190,7 @@ public class NewPieChartPanel extends JScrollPane {
 		}
 		return dataSet;
 	}
-
+*/
 	/**
 	 * @param dataset
 	 *            the data to be displayed by the pie chart
@@ -187,6 +198,7 @@ public class NewPieChartPanel extends JScrollPane {
 	 *            the title of the chart
 	
 	 * @return the pie chart to be displayed */
+/*
 	private static JFreeChart createChart(PieDataset dataset, String title) {
 
 		JFreeChart chart = ChartFactory.createPieChart3D(title, // chart title
@@ -208,19 +220,23 @@ public class NewPieChartPanel extends JScrollPane {
 		return chart;
 
 	}
+	*/
 
 	/**
 	 * Creates the piechart panel
 	
 	 * @return the piechart panel */
+/*
 	public static ChartPanel createPanel() {
 		JFreeChart chart = createChart(setData(), title);
 		return new ChartPanel(chart);
 	}
+	*/
 	
 	/**
 	
 	 * @return the title of the chart */
+/*
 	public String getTitle(){
 		return title;
 	}
@@ -228,11 +244,11 @@ public class NewPieChartPanel extends JScrollPane {
 	 * Method paintComponent.
 	 * @param g Graphics
 	 */
-	@Override
-	public void paintComponent(Graphics g){
+	//@Override
+	/*public void paintComponent(Graphics g){
 		pieChart.setChart(createChart(setData(), title));
 		super.paintComponent(g);
-	}
+	}*/
 
-}
+//}
 

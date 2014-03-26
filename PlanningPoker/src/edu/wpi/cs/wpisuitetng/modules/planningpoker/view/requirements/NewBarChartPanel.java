@@ -7,8 +7,8 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements;
+/*
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,26 +37,28 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewBarButton;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewButtonPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewBarButton;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewButtonPanel;
 
+*/
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class NewBarChartPanel extends JScrollPane {
+/*public class NewBarChartPanel extends JScrollPane {
 private static String title;
-private ChartPanel barChart;
+private ChartPanel barChart; */
 
 		/**
 		 * Constructor for NewBarChartPanel.
 		 * @param title String
 		 */
+/*
 		public NewBarChartPanel(String title){
 			NewBarChartPanel.title = title;//title of the chart, either status or iteration
 			JPanel panel = new JPanel(new BorderLayout());
@@ -69,10 +71,12 @@ private ChartPanel barChart;
 			this.setViewportView(panel);
 		}
 		
+		*/
+		
 		/**
 		
 		 * @return the data set depending on the type of data called for either status or iteration */
-		private static CategoryDataset setData() {
+/*		private static CategoryDataset setData() {
 			if (title.equals("Iteration")) {
 				return setDataIteration();
 			} else if (title.equals("Status")) {
@@ -82,10 +86,12 @@ private ChartPanel barChart;
 			}
 
 		}
+		
+		*/
 		/**
 		
 		 * @return the dataset based upon the statuses of all requirements */
-		private static CategoryDataset setDataStatus() {
+		/*private static CategoryDataset setDataStatus() {
 			int numStatusNew = 0;
 			int numStatusDeleted = 0;
 			int numStatusInprogress = 0;
@@ -113,10 +119,12 @@ private ChartPanel barChart;
 			dataSet.setValue(numStatusOpen, "Open", "Status");
 			return dataSet;
 		}
-
+*/
 		/**
 		
 		 * @return the data of iterations to be displayed by the bar chart */
+
+/*
 		private static CategoryDataset setDataIteration() {
 			DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 			List<Iteration> iterations = IterationModel.getInstance()
@@ -140,12 +148,12 @@ private ChartPanel barChart;
 			}
 			return dataSet;
 		}
-
+*/
 		/**
 		
 		 * @return the data of the number of requirements a user has assigned to
 		 *         them */
-		private static CategoryDataset setDataAssignTo() {
+	/*	private static CategoryDataset setDataAssignTo() {
 			DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 			ArrayList<String> userNames = new ArrayList<String>();
 
@@ -181,11 +189,13 @@ private ChartPanel barChart;
 			}
 			return dataSet;
 		}
+		*/
 		/**
 		 * @param dataset the data to be shown by the chart
 		 * @param title the title of the chart(either status or iteration)
 		
 		 * @return the created bar graph */
+/*
 		private static JFreeChart createChart(CategoryDataset dataset, String title){
 			JFreeChart chart = ChartFactory.createBarChart(
 		            title,         // chart title
@@ -210,30 +220,35 @@ private ChartPanel barChart;
 	        
 	        return chart;
 		}
-		
+*/		
 		/**		
 		
 		 * @return the created bar graph **/
+/*
 		public static ChartPanel createPanel() {
 			JFreeChart chart = createChart(setData(), title);
 			
 			return new ChartPanel(chart);
 		}
-		
+	*/	
 		/**
 		
 		 * @return the title of the chart */
+/*
 		public String getTitle(){
 			return title;
 		}
+		*/
 		
 		/**
 		 * Method paintComponent.
 		 * @param g Graphics
 		 */
-		@Override
+		//@Override
+		/*
 		public void paintComponent(Graphics g){
 			barChart.setChart(createChart(setData(), title));
 			super.paintComponent(g);
 		}
-}
+		*/
+//}
