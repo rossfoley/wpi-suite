@@ -174,8 +174,8 @@ public class SubrequirementPanel extends JPanel implements RequirementSelectorLi
 					int[] selection = subRequirementTable.getSelectedRows();
 
 					if(selection.length != 1) return;
-					//Requirement toEdit = (Requirement)subRequirementTable.getValueAt(selection[0], 0);
-					ViewEventController.getInstance().editRequirement(toEdit);
+//					Requirement toEdit = (Requirement)subRequirementTable.getValueAt(selection[0], 0);
+//					ViewEventController.getInstance().editRequirement(toEdit);
 				}
 			}
 		});

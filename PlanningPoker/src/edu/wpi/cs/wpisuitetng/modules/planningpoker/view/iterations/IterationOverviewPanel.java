@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 /**
  */
 public class IterationOverviewPanel extends JSplitPane {	
-	private IterationCalendar calendarView;
+	//private IterationCalendar calendarView;
 	
 	private JButton nextYear;
 	private JButton prevYear;
@@ -57,7 +57,7 @@ public class IterationOverviewPanel extends JSplitPane {
 		prevYear = new JButton("<<");
 		prevYear.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		setupButtonListeners();
+//		setupButtonListeners();
 		
 		buttonPanel.add(prevYear);
 		buttonPanel.add(prevMonth);
@@ -111,135 +111,135 @@ public class IterationOverviewPanel extends JSplitPane {
 	//	ViewEventController.getInstance().setIterationOverview(this);
 	}
 	
-	/**
-	 * Adds action listeners to the year control buttons for the calendar view.
-	 */
-	private void setupButtonListeners()
-	{
-		nextYear.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				nextYear();
-			}	
-		});
-		
-		prevYear.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				previousYear();
-			}
-		});
-		
-		today.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				today();
-			}
-		});
-		
-		prevMonth.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				previousMonth();
-			}
-		});
-		
-		nextMonth.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				nextMonth();
-			}
-		});
-		
-	}
-	
-	/**
-	 * Switches the calendar to the previous year.
-	 */
-	private void previousYear()
-	{
-		Calendar cal = calendarView.getCalendar();
-		cal.add(Calendar.YEAR, -1);
-		calendarView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	/**
-	 * Switches the calendar to the current date
-	 */
-	private void today()
-	{
-		Calendar cal = Calendar.getInstance();
-		calendarView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	/**
-	 * Switches the calendar to the next month.
-	 */
-	private void nextMonth()
-	{
-		Calendar cal = calendarView.getCalendar();
-		cal.add(Calendar.MONTH, 1);
-		calendarView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	/**
-	 * Switches the calendar to the previous month.
-	 */
-	private void previousMonth()
-	{
-		Calendar cal = calendarView.getCalendar();
-		cal.add(Calendar.MONTH, -1);
-		calendarView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	/**
-	 * Switches the calendar to the next year.
-	 */
-	private void nextYear()
-	{
-		Calendar cal = calendarView.getCalendar();
-		cal.add(Calendar.YEAR, +1);
-		calendarView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	/**
-	 * Returns the iteration calendar
-	
-	 * @return the iteration calendar */
-	public IterationCalendar getIterationCalendar()
-	{
-		return this.calendarView;
-	}
-
-	/**
-	 * Highlights the given iteration on the iteration overview
-	 * @param iter the iteration to highlight.
-	 */
-	public void highlight(Iteration iter) {
-		calendarView.highlightIteration(iter);
-		updateSelection(iter);
-	}
-
-	/**
-	 * Updates the selection for the given iteration.
-	 * @param iter
-	 */
-	private void updateSelection(Iteration iter) {
-		if(iter == IterationModel.getInstance().getBacklog())
-		{
-			selectionLabel.setText("<html><b>No Iteration Selected.</b></html>");
-		}
-		else
-		{
-			String selectionText = "<html>";
-			selectionText += "<b>Name: </b>" + iter.getName() + "<br>";
-			selectionText += "<b>Estimate: </b>" + iter.getEstimate() + "<br>";
-			selectionText += "</html>";
-			
-			selectionLabel.setText(selectionText);
-		}
-	}
-	
-	
+//	/**
+//	 * Adds action listeners to the year control buttons for the calendar view.
+//	 */
+//	private void setupButtonListeners()
+//	{
+//		nextYear.addActionListener(new ActionListener()
+//		{
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				nextYear();
+//			}	
+//		});
+//		
+//		prevYear.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				previousYear();
+//			}
+//		});
+//		
+//		today.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				today();
+//			}
+//		});
+//		
+//		prevMonth.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				previousMonth();
+//			}
+//		});
+//		
+//		nextMonth.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				nextMonth();
+//			}
+//		});
+//		
+//	}
+//
+//	/**
+//	 * Switches the calendar to the previous year.
+//	 */
+//	private void previousYear()
+//	{
+//		Calendar cal = calendarView.getCalendar();
+//		cal.add(Calendar.YEAR, -1);
+//		calendarView.setFirstDisplayedDay(cal.getTime());
+//	}
+//	
+//	/**
+//	 * Switches the calendar to the current date
+//	 */
+//	private void today()
+//	{
+//		Calendar cal = Calendar.getInstance();
+//		calendarView.setFirstDisplayedDay(cal.getTime());
+//	}
+//	
+//	/**
+//	 * Switches the calendar to the next month.
+//	 */
+//	private void nextMonth()
+//	{
+//		Calendar cal = calendarView.getCalendar();
+//		cal.add(Calendar.MONTH, 1);
+//		calendarView.setFirstDisplayedDay(cal.getTime());
+//	}
+//	
+//	/**
+//	 * Switches the calendar to the previous month.
+//	 */
+//	private void previousMonth()
+//	{
+//		Calendar cal = calendarView.getCalendar();
+//		cal.add(Calendar.MONTH, -1);
+//		calendarView.setFirstDisplayedDay(cal.getTime());
+//	}
+//	
+//	/**
+//	 * Switches the calendar to the next year.
+//	 */
+//	private void nextYear()
+//	{
+//		Calendar cal = calendarView.getCalendar();
+//		cal.add(Calendar.YEAR, +1);
+//		calendarView.setFirstDisplayedDay(cal.getTime());
+//	}
+//	
+//	/**
+//	 * Returns the iteration calendar
+//	
+//	 * @return the iteration calendar */
+//	public IterationCalendar getIterationCalendar()
+//	{
+//		return this.calendarView;
+//	}
+//
+//	/**
+//	 * Highlights the given iteration on the iteration overview
+//	 * @param iter the iteration to highlight.
+//	 */
+//	public void highlight(Iteration iter) {
+//		calendarView.highlightIteration(iter);
+//		updateSelection(iter);
+//	}
+//
+//	/**
+//	 * Updates the selection for the given iteration.
+//	 * @param iter
+//	 */
+//	private void updateSelection(Iteration iter) {
+//		if(iter == IterationModel.getInstance().getBacklog())
+//		{
+//			selectionLabel.setText("<html><b>No Iteration Selected.</b></html>");
+//		}
+//		else
+//		{
+//			String selectionText = "<html>";
+//			selectionText += "<b>Name: </b>" + iter.getName() + "<br>";
+//			selectionText += "<b>Estimate: </b>" + iter.getEstimate() + "<br>";
+//			selectionText += "</html>";
+//			
+//			selectionLabel.setText(selectionText);
+//		}
+//	}
+//	
+//	
 }

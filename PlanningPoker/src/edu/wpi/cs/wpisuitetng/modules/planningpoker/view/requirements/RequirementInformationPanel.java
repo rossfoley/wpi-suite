@@ -35,14 +35,14 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateRequirementController;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Requirement;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.RequirementModel;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.RequirementPriority;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.RequirementStatus;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.RequirementType;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.iterations.Iteration;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.iterations.IterationModel;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementType;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
@@ -180,46 +180,46 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		boxTotalEstimate.setEnabled(false);
 		errorEstimate = (new JLabel());
 
-		boolean hasChildren = !currentRequirement.getChildren().isEmpty();
-		labelChildEstimate.setVisible(hasChildren);
-		boxChildEstimate.setVisible(hasChildren);
+		//boolean hasChildren = !currentRequirement.getChildren().isEmpty();
+		//labelChildEstimate.setVisible(hasChildren);
+		//boxChildEstimate.setVisible(hasChildren);
 
-		labelTotalEstimate.setVisible(hasChildren);
-		boxTotalEstimate.setVisible(hasChildren);
+		//labelTotalEstimate.setVisible(hasChildren);
+		//boxTotalEstimate.setVisible(hasChildren);
 
 		currentParent = new JLabel();
 		editParent = new JButton("Edit Parent");
 		editParent.setAlignmentX(RIGHT_ALIGNMENT);
 		editParent.addActionListener(new ActionListener()
 		{
-		/*	@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(currentRequirement.getParentID() != -1)
-				{
-					ViewEventController.getInstance().editRequirement(currentRequirement.getParent());
-				}
+//				if(currentRequirement.getParentID() != -1)
+//				{
+//					ViewEventController.getInstance().editRequirement(currentRequirement.getParent());
+//				}
 			}		
-		}); */
+		}); 
 		removeFromParent = new JButton("Remove From Parent");
 		removeFromParent.setAlignmentX(RIGHT_ALIGNMENT);
 		removeFromParent.addActionListener(new ActionListener()
-		/*{
+		{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Requirement oldParent = currentRequirement.getParent();
-				try {
-					currentRequirement.setParentID(-1);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				UpdateRequirementController.getInstance().updateRequirement(currentRequirement);
-				ViewEventController.getInstance().refreshEditRequirementPanel(currentRequirement);
-				ViewEventController.getInstance().refreshEditRequirementPanel(oldParent);
-				ViewEventController.getInstance().getOverviewTree().refresh();
+//				Requirement oldParent = currentRequirement.getParent();
+//				try {
+//					currentRequirement.setParentID(-1);
+//				} catch (Exception e1) {
+//					e1.printStackTrace();
+//				}
+//				UpdateRequirementController.getInstance().updateRequirement(currentRequirement);
+//				ViewEventController.getInstance().refreshEditRequirementPanel(currentRequirement);
+//				ViewEventController.getInstance().refreshEditRequirementPanel(oldParent);
+//				ViewEventController.getInstance().getOverviewTree().refresh();
 			}	
 		});
-		*/
-		parentSelector = new RequirementSelector(this, currentRequirement, RequirementSelectorMode.POSSIBLE_PARENTS, false);
+
+		//parentSelector = new RequirementSelector(this, currentRequirement, RequirementSelectorMode.POSSIBLE_PARENTS, false);
 
 		chooseParent = new JButton("Choose Parent");
 		chooseParent.setAlignmentX(RIGHT_ALIGNMENT);
@@ -229,7 +229,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				chooseParent.setVisible(false);
-				parentSelector.setVisible(true);
+				//parentSelector.setVisible(true);
 				repaint();
 			}
 			
@@ -289,12 +289,12 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireRefresh()
 	 */
 	public void fireRefresh() {
-		parentSelector.refreshList();
-		repopulateIterationInformation();
-		refreshIteration();
-		refreshEstimate();
-		refreshParentInformation();
-		adjustFieldEnability();
+//		parentSelector.refreshList();
+//		repopulateIterationInformation();
+//		refreshIteration();
+//		refreshEstimate();
+//		refreshParentInformation();
+//		adjustFieldEnability();
 	}
 	
 	/**
@@ -371,8 +371,8 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 			removeFromParent.setVisible(false);
 			noParentInfoPanel.setVisible(true);
 		}
+		*/
 	}
-*/
 	/**
 	 * Method fireDeleted.
 	 * @param b boolean
@@ -485,88 +485,89 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		boolean isNameValid;
 		boolean isDescriptionValid;
 		boolean isEstimateValid;
-		
-		parentPanel.removeError("Name can be no more than 100 chars.");
-		parentPanel.removeError("Name is required.");
-		parentPanel.removeError("Description is required.");
-		parentPanel.removeError("Estimate must be non-negative integer");	
-		parentPanel.removeError("Cannot have an estimate of 0 and be assigned to an iteration.");	
-		
-		if (getBoxName().getText().length() >= 100) {
-			isNameValid = false;
-			getErrorName().setText("No more than 100 chars");
-			getBoxName().setBorder(errorBorder);
-			getErrorName().setForeground(Color.RED);
-			parentPanel.displayError("Name can be no more than 100 chars.");
-		} else if (getBoxName().getText().trim().length() <= 0) {
-			isNameValid = false;
-			if(warn)
-			{
-				getErrorName().setText("** Name is REQUIRED");
-				getBoxName().setBorder(errorBorder);
-				getErrorName().setForeground(Color.RED);
-			}
-			parentPanel.displayError("Name is required.");
-		} else {
-			if(warn)
-			{
-				getErrorName().setText("");
-				getBoxName().setBorder(defaultBorder);
-			}
-			isNameValid = true;
 
-		}
-		if (getBoxDescription().getText().trim().length() <= 0) {
-			isDescriptionValid = false;
-			if(warn)
-			{
-				getErrorDescription().setText("** Description is REQUIRED");
-				getErrorDescription().setForeground(Color.RED);
-				getBoxDescription().setBorder(errorBorder);
-			}
-			parentPanel.displayError("Description is required.");
-		} else {
-			if(warn)
-			{
-				getErrorDescription().setText("");
-				getBoxDescription().setBorder(defaultBorder);
-			}
-			isDescriptionValid = true;
-		}
-
-		if (getBoxEstimate().getText().trim().length() <= 0) {
-			getBoxEstimate().setText("");
-			getErrorEstimate().setText("");
-			getBoxEstimate().setBorder(defaultBorder);
-			isEstimateValid = true;
-		} else if (!(isInteger(getBoxEstimate().getText()))) {
-			getErrorEstimate()
-			.setText("Estimate must be non-negative integer");
-			getBoxEstimate().setBorder(errorBorder);
-			getBoxEstimate().setBorder((new JTextField()).getBorder());
-			getErrorEstimate().setForeground(Color.RED);
-			isEstimateValid = false;
-		} else if (Integer.parseInt(getBoxEstimate().getText()) < 0) {
-			getErrorEstimate()
-			.setText("Estimate must be non-negative integer");
-			getBoxEstimate().setBorder(errorBorder);
-			getErrorEstimate().setForeground(Color.RED);
-			isEstimateValid = false;
-		} else if (((Integer.parseInt(getBoxEstimate().getText()) == 0) || (getBoxEstimate().getText().trim().length() == 0))
-				&& !(getBoxIteration().getSelectedItem().equals(IterationModel.getInstance().getBacklog()))) {
-			getErrorEstimate()
-			.setText(
-					"Cannot have an estimate of 0 and be assigned to an iteration.");
-			getBoxEstimate().setBorder(errorBorder);
-			getErrorEstimate().setForeground(Color.RED);
-			isEstimateValid = false;
-		} else {
-			getErrorEstimate().setText("");
-			getBoxEstimate().setBorder(defaultBorder);
-			isEstimateValid = true;
-		}
-		parentPanel.displayError(getErrorEstimate().getText());
-		return isNameValid && isDescriptionValid && isEstimateValid;
+//		parentPanel.removeError("Name can be no more than 100 chars.");
+//		parentPanel.removeError("Name is required.");
+//		parentPanel.removeError("Description is required.");
+//		parentPanel.removeError("Estimate must be non-negative integer");	
+//		parentPanel.removeError("Cannot have an estimate of 0 and be assigned to an iteration.");	
+//		
+//		if (getBoxName().getText().length() >= 100) {
+//			isNameValid = false;
+//			getErrorName().setText("No more than 100 chars");
+//			getBoxName().setBorder(errorBorder);
+//			getErrorName().setForeground(Color.RED);
+//			parentPanel.displayError("Name can be no more than 100 chars.");
+//		} else if (getBoxName().getText().trim().length() <= 0) {
+//			isNameValid = false;
+//			if(warn)
+//			{
+//				getErrorName().setText("** Name is REQUIRED");
+//				getBoxName().setBorder(errorBorder);
+//				getErrorName().setForeground(Color.RED);
+//			}
+//			parentPanel.displayError("Name is required.");
+//		} else {
+//			if(warn)
+//			{
+//				getErrorName().setText("");
+//				getBoxName().setBorder(defaultBorder);
+//			}
+//			isNameValid = true;
+//
+//		}
+//		if (getBoxDescription().getText().trim().length() <= 0) {
+//			isDescriptionValid = false;
+//			if(warn)
+//			{
+//				getErrorDescription().setText("** Description is REQUIRED");
+//				getErrorDescription().setForeground(Color.RED);
+//				getBoxDescription().setBorder(errorBorder);
+//			}
+//			parentPanel.displayError("Description is required.");
+//		} else {
+//			if(warn)
+//			{
+//				getErrorDescription().setText("");
+//				getBoxDescription().setBorder(defaultBorder);
+//			}
+//			isDescriptionValid = true;
+//		}
+//
+//		if (getBoxEstimate().getText().trim().length() <= 0) {
+//			getBoxEstimate().setText("");
+//			getErrorEstimate().setText("");
+//			getBoxEstimate().setBorder(defaultBorder);
+//			isEstimateValid = true;
+//		} else if (!(isInteger(getBoxEstimate().getText()))) {
+//			getErrorEstimate()
+//			.setText("Estimate must be non-negative integer");
+//			getBoxEstimate().setBorder(errorBorder);
+//			getBoxEstimate().setBorder((new JTextField()).getBorder());
+//			getErrorEstimate().setForeground(Color.RED);
+//			isEstimateValid = false;
+//		} else if (Integer.parseInt(getBoxEstimate().getText()) < 0) {
+//			getErrorEstimate()
+//			.setText("Estimate must be non-negative integer");
+//			getBoxEstimate().setBorder(errorBorder);
+//			getErrorEstimate().setForeground(Color.RED);
+//			isEstimateValid = false;
+//		} else if (((Integer.parseInt(getBoxEstimate().getText()) == 0) || (getBoxEstimate().getText().trim().length() == 0))
+//				&& !(getBoxIteration().getSelectedItem().equals(IterationModel.getInstance().getBacklog()))) {
+//			getErrorEstimate()
+//			.setText(
+//					"Cannot have an estimate of 0 and be assigned to an iteration.");
+//			getBoxEstimate().setBorder(errorBorder);
+//			getErrorEstimate().setForeground(Color.RED);
+//			isEstimateValid = false;
+//		} else {
+//			getErrorEstimate().setText("");
+//			getBoxEstimate().setBorder(defaultBorder);
+//			isEstimateValid = true;
+//		}
+//		parentPanel.displayError(getErrorEstimate().getText());
+//		return isNameValid && isDescriptionValid && isEstimateValid;
+		return true;
 	}
 
 	/**
@@ -596,22 +597,22 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		currentRequirement.setWasCreated(wasCreated);
 		*/
 		// Extract the name, release number, and description from the GUI fields
-		String stringName = this.getBoxName().getText();
-		String stringReleaseNum = this.getBoxReleaseNum().getText();
-		String stringDescription = this.getBoxDescription().getText();
-		String stringEstimate = this.getBoxEstimate().getText();
-		String stringIteration = (String) this.getBoxIteration().getSelectedItem().toString();
-
-		if (stringIteration.trim().equals(""))
-			stringIteration = "Backlog";
+//		String stringName = this.getBoxName().getText();
+//		String stringReleaseNum = this.getBoxReleaseNum().getText();
+//		String stringDescription = this.getBoxDescription().getText();
+//		String stringEstimate = this.getBoxEstimate().getText();
+//		String stringIteration = (String) this.getBoxIteration().getSelectedItem().toString();
+//
+//		if (stringIteration.trim().equals(""))
+//			stringIteration = "Backlog";
 
 		/*RequirementPriority priority;
 		RequirementStatus status = (RequirementStatus) this.getDropdownStatus().getSelectedItem();
 		RequirementType type = (RequirementType) getDropdownType()
 				.getSelectedItem();
 */
-		int estimate = stringEstimate.trim().length() == 0 ? 0 : Integer
-				.parseInt(stringEstimate);
+//		int estimate = stringEstimate.trim().length() == 0 ? 0 : Integer
+//				.parseInt(stringEstimate);
 
 /*
 		currentRequirement.setName(stringName);
@@ -739,37 +740,37 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * @return whether any fields have been changed. */
 	private boolean anythingChangedEditing() {
 		// Check if the user has changed the name
-		/*
-		if (!(getBoxName().getText().equals(currentRequirement.getName()))){
-			return true;}
-		// Check if the user has changed the description
-		if (!(getBoxDescription().getText().equals(currentRequirement.getDescription()))){
-			return true;}
-		// Check if the user has changed the release number
-		if (!(getBoxReleaseNum().getText().equals(currentRequirement.getRelease()))){
-			return true;}
-		// Check if the user has changed the iteration number
-		if (!(getBoxIteration().getSelectedItem().toString().equals(currentRequirement.getIteration()))){
-			return true;}
-		// Check if the user has changed the type
-		if (!(((RequirementType)getDropdownType().getSelectedItem()) == currentRequirement.getType())){
-			return true;}
-		// Check if the user has changed the status
-		if (!(((RequirementStatus)getDropdownStatus().getSelectedItem()) == currentRequirement.getStatus())){
-			return true;}
-		// Check if the user has changed the estimate
-		if (!(getBoxEstimate().getText().trim().equals(String.valueOf(currentRequirement.getEstimate())))){
-			return true;}
-
-		RequirementPriority reqPriority = currentRequirement.getPriority();
 		
-		if (reqPriority != dropdownPriority.getSelectedItem())
-		{
-			return true;
-		}
+//		if (!(getBoxName().getText().equals(currentRequirement.getName()))){
+//			return true;}
+//		// Check if the user has changed the description
+//		if (!(getBoxDescription().getText().equals(currentRequirement.getDescription()))){
+//			return true;}
+//		// Check if the user has changed the release number
+//		if (!(getBoxReleaseNum().getText().equals(currentRequirement.getRelease()))){
+//			return true;}
+//		// Check if the user has changed the iteration number
+//		if (!(getBoxIteration().getSelectedItem().toString().equals(currentRequirement.getIteration()))){
+//			return true;}
+//		// Check if the user has changed the type
+//		if (!(((RequirementType)getDropdownType().getSelectedItem()) == currentRequirement.getType())){
+//			return true;}
+//		// Check if the user has changed the status
+//		if (!(((RequirementStatus)getDropdownStatus().getSelectedItem()) == currentRequirement.getStatus())){
+//			return true;}
+//		// Check if the user has changed the estimate
+//		if (!(getBoxEstimate().getText().trim().equals(String.valueOf(currentRequirement.getEstimate())))){
+//			return true;}
+//
+//		RequirementPriority reqPriority = currentRequirement.getPriority();
+//		
+//		if (reqPriority != dropdownPriority.getSelectedItem())
+//		{
+//			return true;
+//		}
 
 		return false;
-		*/
+		
 	}
 
 	/**
@@ -929,9 +930,9 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * 
 	
 	 * @return box iteration */
-	public JComboBox getBoxIteration() {
-		//return boxIteration;
-	}
+//	public JComboBox getBoxIteration() {
+//		return boxIteration;
+//	}
 
 	/**
 	 * 

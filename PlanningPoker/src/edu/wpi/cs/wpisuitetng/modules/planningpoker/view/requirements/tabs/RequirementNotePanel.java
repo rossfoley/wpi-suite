@@ -30,9 +30,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
 
 /**
  * @author justinhess
@@ -54,9 +54,8 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 	 * @param vm view mode
 	 * @param current current requirement
 	 */
-	/*
 	public RequirementNotePanel(RequirementTabsPanel parent, ViewMode vm, Requirement current) {
-		currentRequirement = current;
+//		currentRequirement = current;
 		viewMode = vm;
 		notesAdded = 0;
 		
@@ -115,10 +114,9 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 		c.anchor = GridBagConstraints.WEST; // Anchor buttons to west of panel
 		this.add(bottomPanel, c); // Add buttons to the panel
 		
-		this.setupListeners();
-		this.refresh();
+		//this.setupListeners();
+		//this.refresh();
 	}
-	*/
 	/**
 	 * Refreshes the note panel
 	 */
@@ -251,12 +249,11 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 	 * Method fireRefresh.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireRefresh()
 	 */
-	/*
 	@Override
 	public void fireRefresh() {
-		this.refresh();
+//		this.refresh();
 	}
-	*/
+	
 	/**
 	
 	 * @return the note message text area */

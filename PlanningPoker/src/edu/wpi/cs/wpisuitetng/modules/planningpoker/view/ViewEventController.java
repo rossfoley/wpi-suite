@@ -164,6 +164,7 @@ public class ViewEventController {
 		// set time stamp for transactions
 		toEdit.getHistory().setTimestamp(System.currentTimeMillis());
 		
+		/*
 		for(RequirementPanel panel : listOfEditingPanels)
 		{
 			if(panel.getDisplayRequirement() == toEdit)
@@ -193,7 +194,7 @@ public class ViewEventController {
 		else
 		{
 			main.setSelectedComponent(exists);
-		}
+		}*/
 	}
 
 
