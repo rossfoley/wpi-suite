@@ -19,7 +19,22 @@ public class PlanningPokerSession extends AbstractModel {
 	private String name;
 	private GregorianCalendar endDate;
 	private Set<Integer> requirementIDs;
+	private int ID;
 	
+
+	/**
+	 * @return the ID
+	 */
+	public int getID() {
+		return ID;
+	}
+
+	/**
+	 * @param iD the iD to set
+	 */
+	public void setID(int iD) {
+		ID = iD;
+	}
 
 	/**
 	 * @return the name
