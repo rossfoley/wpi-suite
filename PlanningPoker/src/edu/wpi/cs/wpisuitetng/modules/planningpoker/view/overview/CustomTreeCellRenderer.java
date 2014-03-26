@@ -17,9 +17,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.IterationIcon;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.RequirementIcon;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.PlanningPokerSessionIcon;
 
 /**
  * @author justinhess
@@ -28,11 +30,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.Requirem
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon requirementIcon;
 	Icon iterationIcon;
+	Icon planningPokerSessionIcon;
 
 	public CustomTreeCellRenderer() {
 		super();
 		requirementIcon = new RequirementIcon();
 		iterationIcon = new IterationIcon();
+		planningPokerSessionIcon = new PlanningPokerSessionIcon();
+		
 	}
 
 	/**
@@ -64,18 +69,18 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 				row, hasFocus);
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
-		if (node.getUserObject() instanceof Requirement) {
-			setIcon(requirementIcon);
-		} else {
+		if (node.getUserObject() instanceof PlanningPokerSession) { // was Requirement
+			setIcon(planningPokerSessionIcon);
+		} /*else {
 			setIcon(iterationIcon);
-			/*
+			
 			DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode) tree
 					.getModel().getRoot());
 			tree.setSelectionPath(new TreePath(firstLeaf.getPath()));
 			String label = firstLeaf.toString(); //Does not work
 
-			setToolTipText("" + value);*/
-		}
+			setToolTipText("" + value);
+		}*/
 		return this; 
 	}
 }

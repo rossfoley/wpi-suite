@@ -19,9 +19,9 @@ import javax.swing.border.EtchedBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.ChartButtonsPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.EditButtonsPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.RequirementButtonsPanel;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.ChartButtonsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.RequirementButtonsPanel;
 
 /**
  * Sets up upper toolbar of RequirementManager tab
