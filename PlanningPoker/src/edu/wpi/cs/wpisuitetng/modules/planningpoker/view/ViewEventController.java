@@ -113,7 +113,7 @@ public class ViewEventController {
 	 * @param iter Iteration
 	 */
 	public void editIteration(Iteration iter) {
-		if(iter == IterationModel.getInstance().getBacklog()) return;
+		//if(iter == IterationModel.getInstance().getBacklog()) return;
 		
 		IterationPanel exists = null;
 		
