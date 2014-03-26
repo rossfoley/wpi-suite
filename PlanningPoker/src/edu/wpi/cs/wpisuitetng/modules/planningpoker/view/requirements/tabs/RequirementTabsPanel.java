@@ -18,25 +18,24 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-/*
 public class RequirementTabsPanel extends JTabbedPane implements RequirementPanelListener
 {
 	private final List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
 	private final ViewMode viewMode;
 	private final Requirement currentRequirement;
 	private final RequirementHistoryPanel historyPanel;
-	private final RequirementNotePanel notePanel;
-	private final RequirementTestPanel testPanel;
-	private final SubrequirementPanel subReqPanel;
+//	private final RequirementNotePanel notePanel;
+//	private final RequirementTestPanel testPanel;
+//	private final SubrequirementPanel subReqPanel;
 	
 	/**
 	 * Constructor for the requirement tabs panel
@@ -44,7 +43,6 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 * @param viewMode view mode
 	 * @param currentRequirement current requirement
 	 */
-	/*
 	public RequirementTabsPanel(RequirementPanel parentPanel, ViewMode viewMode, Requirement currentRequirement) 
 	{
 		this.viewMode = viewMode;
@@ -52,12 +50,12 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 		
 		historyPanel = new RequirementHistoryPanel(this, this.viewMode, this.currentRequirement);
 		listeners.add(historyPanel);
-		notePanel = new RequirementNotePanel(this, this.viewMode, this.currentRequirement);
-		listeners.add(notePanel);
-		testPanel = new RequirementTestPanel(this, this.viewMode, this.currentRequirement);
-		listeners.add(testPanel);
-		subReqPanel = new SubrequirementPanel(this, this.viewMode, this.currentRequirement);
-		listeners.add(subReqPanel);
+//		notePanel = new RequirementNotePanel(this, this.viewMode, this.currentRequirement);
+//		listeners.add(notePanel);
+//		testPanel = new RequirementTestPanel(this, this.viewMode, this.currentRequirement);
+//		listeners.add(testPanel);
+//		subReqPanel = new SubrequirementPanel(this, this.viewMode, this.currentRequirement);
+//		listeners.add(subReqPanel);
 		
 		ImageIcon noteIcon = null;
 		ImageIcon historyIcon = null;
@@ -70,21 +68,20 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 		    childrenIcon = new ImageIcon(ImageIO.read(getClass().getResource("children-icon.png")));
 		} catch (IOException ex) {}
 		
-		this.addTab("Notes", noteIcon, notePanel);
+//		this.addTab("Notes", noteIcon, notePanel);
 		this.addTab("Transaction History", historyIcon, historyPanel);
-		this.addTab("Acceptance Tests", acceptanceIcon, testPanel);
-		this.addTab("Subrequirements", childrenIcon, subReqPanel);
+//		this.addTab("Acceptance Tests", acceptanceIcon, testPanel);
+//		this.addTab("Subrequirements", childrenIcon, subReqPanel);
 		
 		this.setMinimumSize(new Dimension(500,100));		
 	}
-*/
+
 	/**
 	 * Method readyToRemove.
 	
 	
 	 * @return boolean * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove() * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove()
 	 */
-/*
 	public boolean readyToRemove() {
 		boolean readyToRemove = true;
 		for(RequirementPanelListener listener : listeners)
@@ -93,13 +90,12 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 		}
 		return readyToRemove;
 	}
-	*/
 	/**
 	 * Method fireDeleted.
 	 * @param b boolean
 	
-	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireDeleted(boolean) */
-	/*
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireDeleted(boolean) 
+	 */
 	public void fireDeleted(boolean b)
 	{
 		for(RequirementPanelListener listener : listeners)
@@ -107,62 +103,56 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 			listener.fireDeleted(b);
 		}	
 	}
-*/
 	/**
 	 * Method fireValid.
 	 * @param b boolean
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireValid(boolean) */
 	@Override
-	/*
 	public void fireValid(boolean b) {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireValid(b);
 		}		
 	}
-*/
+	
 	/**
 	 * Method fireChanges.
 	 * @param b boolean
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireChanges(boolean) */
 	@Override
-	/*
 	public void fireChanges(boolean b) {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireChanges(b);
 		}		
 	}
-*/
+
 	/**
 	 * Method fireRefresh.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireRefresh()
 	 */
 	@Override
-	/*
 	public void fireRefresh() {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireRefresh();
 		}
 	}
-*/
-	/**
-	
-	 * @return the note panel */
-	/*
-	public RequirementNotePanel getNotePanel() {
-		return notePanel;
-	}
 
 	/**
-	 * Method getTestPanel.
-	 * @return RequirementTestPanel
-	 */
-	/*
-	public RequirementTestPanel getTestPanel() {
-		return testPanel;
-	}
-}*/
+	
+//	 * @return the note panel */
+//	public RequirementNotePanel getNotePanel() {
+//		return notePanel;
+//	}
+//
+//	/**
+//	 * Method getTestPanel.
+//	 * @return RequirementTestPanel
+//	 */
+//	public RequirementTestPanel getTestPanel() {
+//		return testPanel;
+//	}
+}

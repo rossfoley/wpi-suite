@@ -216,14 +216,14 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
 		if(node != null)
 		{
-			if(node.getUserObject() instanceof Iteration)
-			{	
-				ViewEventController.getInstance().getIterationOverview().highlight((Iteration)node.getUserObject());
-			}
-			else
-			{
-				ViewEventController.getInstance().getIterationOverview().highlight(IterationModel.getInstance().getBacklog());
-			}
+//			if(node.getUserObject() instanceof Iteration)
+//			{	
+//				ViewEventController.getInstance().getIterationOverview().highlight((Iteration)node.getUserObject());
+//			}
+//			else
+//			{
+//				ViewEventController.getInstance().getIterationOverview().highlight(IterationModel.getInstance().getBacklog());
+//			}
 		}
 	}
 

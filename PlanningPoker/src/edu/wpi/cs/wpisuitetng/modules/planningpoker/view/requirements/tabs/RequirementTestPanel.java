@@ -27,10 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
 
 /**
  * @author Rolling Thunder
@@ -277,7 +277,7 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 	 */
 	@Override
 	public void fireRefresh() {
-		this.refresh();
+		//this.refresh();
 	}
 
 	/**
