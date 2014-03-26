@@ -8,7 +8,7 @@
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -21,9 +21,9 @@ import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelector;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelectorMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementSelector;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementSelectorMode;
 
 /**
  * 
