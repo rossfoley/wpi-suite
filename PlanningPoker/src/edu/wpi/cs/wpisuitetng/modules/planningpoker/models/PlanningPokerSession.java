@@ -116,7 +116,7 @@ public class PlanningPokerSession extends AbstractModel {
 	/* (non-Javadoc)
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public Boolean identify(Object o) {
 		// TODO Auto-generated method stub
 		return null;

@@ -8,7 +8,13 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public final class NewGameTab {
 	private static JTextField textField;
@@ -131,6 +137,13 @@ public final class NewGameTab {
 		textField_3.setColumns(10);
 		
 		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddSessionController.getInstance().addPlanningPokerSession(new PlanningPokerSession());
+			}
+		});
+		
+		
 		sl_panel.putConstraint(SpringLayout.NORTH, btnSubmit, 0, SpringLayout.NORTH, lblModerator);
 		sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, panel);
 		panel.add(btnSubmit);
