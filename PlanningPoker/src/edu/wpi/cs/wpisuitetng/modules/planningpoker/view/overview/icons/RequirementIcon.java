@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.icons;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons;
 
 import java.awt.Color;
 import java.awt.Component;
