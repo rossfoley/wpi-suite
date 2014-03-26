@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
 
@@ -18,8 +18,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.icons.IterationIcon;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.icons.RequirementIcon;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.IterationIcon;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.RequirementIcon;
 
 /**
  * @author justinhess

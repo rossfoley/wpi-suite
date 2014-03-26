@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventControlle
  */
 public class OverviewBarButton extends JPanel {
 	public OverviewBarButton(){
-		JButton buttonStatus = new JButton("Status");
+		/*JButton buttonStatus = new JButton("Status");
 		buttonStatus.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -52,6 +52,6 @@ public class OverviewBarButton extends JPanel {
 		
 		this.add(buttonStatus);
 		this.add(buttonIteration);
-	
+	*/
 	}
 }

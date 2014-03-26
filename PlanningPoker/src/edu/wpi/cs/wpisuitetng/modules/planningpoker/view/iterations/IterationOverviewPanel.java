@@ -14,8 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import net.miginfocom.swing.MigLayout;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**

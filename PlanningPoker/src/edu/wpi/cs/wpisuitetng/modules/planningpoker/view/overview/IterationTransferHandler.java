@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Cursor;
 import java.awt.datatransfer.DataFlavor;
@@ -27,7 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequir
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  */
@@ -121,7 +121,7 @@ public class IterationTransferHandler extends TransferHandler {
 		if(!canImport(support)) {
 			return false;
 		}
-		
+		/*
 		// Get drop location info.
 		JTree.DropLocation dl = (JTree.DropLocation)support.getDropLocation();
 		TreePath dest = dl.getPath();
@@ -150,6 +150,7 @@ public class IterationTransferHandler extends TransferHandler {
 			System.err.println("IO Exception with dragging");
 			e.printStackTrace();
 		}
+		*/
 		
 		return false;
 	}

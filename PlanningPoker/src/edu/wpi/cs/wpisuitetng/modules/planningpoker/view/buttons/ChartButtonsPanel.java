@@ -8,11 +8,9 @@
  *
  * Contributors:
  */
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons;
+/*
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
-/**
- *
- */
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -36,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventControlle
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class ChartButtonsPanel extends ToolbarGroupView{
+/*public class ChartButtonsPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
 	
@@ -85,21 +83,23 @@ public class ChartButtonsPanel extends ToolbarGroupView{
 		
 		this.add(contentPanel);
 	}
-
+*/
 	/**
 	 * Method getBarChartButton.
 	 * @return JButton
 	 */
+/*
 	public JButton getBarChartButton() {
 		return barChart;
 	}
-
+*/
 	/**
 	 * Method getPieChartButton.
 	 * @return JButton
 	 */
+/*
 	public JButton getPieChartButton() {
 		return pieChart;
 	}
 	
-}
+}*/

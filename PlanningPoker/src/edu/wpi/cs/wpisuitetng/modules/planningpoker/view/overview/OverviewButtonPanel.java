@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,9 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.NewPieChartPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.Rotator;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.NewPieChartPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.Rotator;
 
 /**
  * @author justinhess
@@ -34,7 +34,7 @@ public class OverviewButtonPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e){
 				
-				ViewEventController.getInstance().createPieChart("Status");
+				//ViewEventController.getInstance().createPieChart("Status");
 				
 				
 				
@@ -46,7 +46,7 @@ public class OverviewButtonPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e){
 				
-				ViewEventController.getInstance().createPieChart("Iteration");
+				//ViewEventController.getInstance().createPieChart("Iteration");
 				
 				
 				

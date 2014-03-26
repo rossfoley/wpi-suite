@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -35,8 +35,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ErrorPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ErrorPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
 
 /**
  *
@@ -177,9 +177,9 @@ public class IterationPanel extends JPanel implements KeyListener{
 		
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewEventController.getInstance().refreshTable();
-				ViewEventController.getInstance().refreshTree();
-				ViewEventController.getInstance().removeTab(IterationPanel.this);
+				//ViewEventController.getInstance().refreshTable();
+				//ViewEventController.getInstance().refreshTree();
+				//ViewEventController.getInstance().removeTab(IterationPanel.this);
 			}
 		});
 		

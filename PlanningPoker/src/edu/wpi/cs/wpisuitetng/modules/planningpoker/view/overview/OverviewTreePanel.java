@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -30,7 +30,7 @@ import javax.swing.tree.TreeSelectionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
 /**
@@ -45,9 +45,9 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 */
 	public OverviewTreePanel()
 	{
-        this.setViewportView(tree);
-        ViewEventController.getInstance().setOverviewTree(this);
-		this.refresh();  
+        //this.setViewportView(tree);
+        //ViewEventController.getInstance().setOverviewTree(this);
+		//this.refresh();  
 	}
 	
 	/**
