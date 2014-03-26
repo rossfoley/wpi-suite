@@ -56,7 +56,7 @@ public class AddSessionController{
 	 */
 	public void addPlanningPokerSession(PlanningPokerSession newSession) 
 	{
-		final Request request = Network.getInstance().makeRequest("planningpoker/PlanningPokerSession", HttpMethod.PUT); // PUT == create
+		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.PUT); // PUT == create
 		request.setBody(newSession.toJSON()); // put the new Planning Poker Session in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); 
