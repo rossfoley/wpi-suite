@@ -11,6 +11,7 @@ import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -141,12 +142,13 @@ public final class NewGameTab {
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
+				pokerSession.setOpen(true);
 				int month = Integer.parseInt(textField_1.getText());
 				int day = Integer.parseInt(textField_2.getText());
 				int year = Integer.parseInt(textField_3.getText());
 				GregorianCalendar date = new GregorianCalendar(year, month, day);
 				pokerSession.setEndDate(date);
-				AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+				PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
 			}
 		});
 		

@@ -43,6 +43,7 @@ public class AddSessionRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
+		//System.out.println (response);
 		
 		// Parse the session out of the response body
 		final PlanningPokerSession session = PlanningPokerSession.fromJson(response.getBody());		
