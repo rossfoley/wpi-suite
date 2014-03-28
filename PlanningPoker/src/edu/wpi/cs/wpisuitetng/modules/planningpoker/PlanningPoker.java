@@ -28,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.TestGui_A;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -121,7 +122,8 @@ public class PlanningPoker implements IJanewayModule {
 	    		
 	    		//code to create a new tab
 	    	    JPanel panel = NewGameTab.createJPanel();
-	    		tabbedPane.addTab("New Game", null, panel, null);
+	    	    PlanningPokerSession newSession = new PlanningPokerSession();
+	    		tabbedPane.addTab(newSession.getName(), null, panel, null);
 	    		//int count = tabbedPane.getComponentCount();
 	    		//tabbedPane.setTabComponentAt( count, new ClosableTabComponent(tabbedPane));
 	    		//setTabComponentAt()

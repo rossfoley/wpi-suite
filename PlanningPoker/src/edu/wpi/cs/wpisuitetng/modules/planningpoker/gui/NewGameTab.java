@@ -141,6 +141,7 @@ public final class NewGameTab {
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
+				pokerSession.setOpen(true);
 				int month = Integer.parseInt(textField_1.getText());
 				int day = Integer.parseInt(textField_2.getText());
 				int year = Integer.parseInt(textField_3.getText());
