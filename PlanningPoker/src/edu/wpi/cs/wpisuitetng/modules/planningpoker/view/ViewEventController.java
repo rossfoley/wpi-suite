@@ -90,11 +90,26 @@ public class ViewEventController {
 	 * Opens a new tab for the creation of a requirement.
 	 */
 	public void createRequirement() {
-		RequirementPanel newReq = new RequirementPanel(-1);
+//		RequirementPanel newReq = new RequirementPanel(-1); // the issue is with requirementpanel.java in package
+		IterationPanel newReq = new IterationPanel();
 		main.addTab("New Req.", null, newReq, "New Requirement");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
 		main.setSelectedComponent(newReq);
+	}
+	
+	/*
+	 * opens a new tab for creating poker session
+	 * this code is a mockup of createiteration
+	 */
+	public void createPlanningPokerSession() {
+//		RequirementPanel newReq = new RequirementPanel(-1); // the issue is with requirementpanel.java in package
+//		IterationPanel newSession = new IterationPanel();
+		OverviewPanel newSession = new OverviewPanel();
+		main.addTab("New Session.", null, newSession, "New Session");
+		main.invalidate(); //force the tabbedpane to redraw.
+		main.repaint();
+		main.setSelectedComponent(newSession);
 	}
 	
 	/**

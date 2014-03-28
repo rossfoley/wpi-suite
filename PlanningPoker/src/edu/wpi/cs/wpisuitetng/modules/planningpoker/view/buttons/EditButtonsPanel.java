@@ -82,18 +82,34 @@ public class EditButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// check to see if any other tab is currently open
+				
+				/*
+				 * 
+				 * 
+				 * Edit Estimates Button.
+				 * MODIFY PLEASE
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 */
 				// if (ViewEventController.getInstance().getMainView().getTabCount() == 1) {
 				
 					// toggle the editing overview table mode
-					ViewEventController.getInstance().toggleEditingTable(false);
+				
+					//ViewEventController.getInstance().toggleEditingTable(false);
 					// edits the Edit Button text based on whether in editing overview table mode or not
-					if (ViewEventController.getInstance().getOverviewTable().getEditFlag()) {
+					/*
+					 if (ViewEventController.getInstance().getOverviewTable().getEditFlag()) {
+					 
 						ViewEventController.getInstance().getOverviewTable().repaint();
 						setButtonToSave();
 					}	
 					else {
 						setButtonToEdit();
 					}
+					*/
 				}
 			//}
 		});

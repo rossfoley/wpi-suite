@@ -49,7 +49,7 @@ public class MainView extends JTabbedPane {
 	private Image tabImage = null;
 	private Point currentMouseLocation = null;
 	private int draggedTabIndex = 0;
-	private OverviewPanel overview = new OverviewPanel();
+	private OverviewPanel currentSessions = new OverviewPanel();
 	private IterationOverviewPanel iterationOverview = new IterationOverviewPanel();
 	private Component lastTab = null;
 	private final JPopupMenu popup = new JPopupMenu();
@@ -63,8 +63,8 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		this.addTab("Requirement Overview", overview);
-		this.addTab("Iteration Overview", iterationOverview);
+		this.addTab("Current Sessions", currentSessions);
+		this.addTab("Completed Sessions", iterationOverview);
 
 		
 		closeAll.addActionListener(new ActionListener()
@@ -168,7 +168,7 @@ public class MainView extends JTabbedPane {
 					if(tabNumber >= 0) {
 						Component comp = getComponentAt(draggedTabIndex);
 						String title = getTitleAt(draggedTabIndex);
-						if (!title.equals("Overview")) {
+						if (!title.equals("Current Sessions")) {
 							removeTabAt(draggedTabIndex);
 							insertTab(title, null, comp, null, tabNumber);
 							setSelectedIndex(tabNumber);
@@ -187,15 +187,15 @@ public class MainView extends JTabbedPane {
 				
 				ViewEventController.getInstance().getToolbar().getEditButton().getEditButton().setEnabled(false);
 
-				if(selected == overview)
+				if(selected == currentSessions)
 				{
 					ViewEventController.getInstance().getToolbar().getEditButton().getEditButton().setEnabled(true);
 					ViewEventController.getInstance().getOverviewTable().refresh();
 					ViewEventController.getInstance().getOverviewTree().refresh();
-					overview.setLeftComponent(ViewEventController.getInstance().getOverviewTree());
-					overview.setDividerLocation(180);
-					overview.revalidate();
-					overview.repaint();
+					currentSessions.setLeftComponent(ViewEventController.getInstance().getOverviewTree());
+					currentSessions.setDividerLocation(180);
+					currentSessions.revalidate();
+					currentSessions.repaint();
 				}
 				else if(selected == iterationOverview)
 				{
@@ -253,7 +253,7 @@ public class MainView extends JTabbedPane {
 	
 	 * @return OverviewPanel */
 	public OverviewPanel getOverview() {
-		return overview;
+		return currentSessions;
 	}
 	
 	/**
