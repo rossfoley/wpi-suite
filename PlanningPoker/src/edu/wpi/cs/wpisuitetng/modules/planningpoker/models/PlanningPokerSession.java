@@ -10,6 +10,7 @@ import java.util.Set;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author rossfoley
@@ -124,6 +125,19 @@ public class PlanningPokerSession extends AbstractModel {
 	public static PlanningPokerSession fromJson(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, PlanningPokerSession.class);
+	}
+	
+	/**
+	 * Returns an array of PlanningPokerSession parsed from the given JSON-encoded
+	 * string.
+	 * 
+	 * @param json
+	 *            string containing a JSON-encoded array of PlanningPokerSession
+	
+	 * @return an array of PlanningPokerSession deserialized from the given JSON string */
+	public static PlanningPokerSession[] fromJsonArray(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, PlanningPokerSession[].class);
 	}
 
 	public Object getHistory() {

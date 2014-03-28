@@ -3,6 +3,8 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.ArrayList;
+
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
@@ -40,10 +42,15 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		return null;
 	}
 
+	/**
+	 * Retrieves all Planning Poker sessions from the database
+	 * @param s the current session
+	 * @return array of all of the current user's Planning Poker sessions
+	 */
 	@Override
 	public PlanningPokerSession[] getAll(Session s) throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		PlanningPokerSession [] allSessions = db.retrieveAll(new PlanningPokerSession(), s.getProject()).toArray(new PlanningPokerSession[0]);
+		return allSessions;
 	}
 
 	@Override

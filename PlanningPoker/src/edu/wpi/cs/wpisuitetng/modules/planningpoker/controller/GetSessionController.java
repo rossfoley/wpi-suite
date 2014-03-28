@@ -82,7 +82,7 @@ public class GetSessionController implements ActionListener {
 	 * 
 	 * @param requirements array of requirements received from the server
 	 */
-	/*
+	
 	public void receivedSessions(PlanningPokerSession[] sessions) {
 		// Empty the local model to eliminate duplications
 		PlanningPokerSessionModel.getInstance().emptyModel();
@@ -94,5 +94,5 @@ public class GetSessionController implements ActionListener {
 			PlanningPokerSessionModel.getInstance().addPlanningPokerSessions(sessions);
 		}
 	}
-	*/
+	
 }
