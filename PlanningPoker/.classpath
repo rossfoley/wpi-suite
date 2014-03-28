@@ -4,6 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Janeway"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Network"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/RequirementManager"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WPISuite-Interfaces"/>
 	<classpathentry kind="lib" path="C:/Users/Jonathan/softEngWorkspace/wpi-suite/Janeway/lib/gnujaxp.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Jonathan/softEngWorkspace/wpi-suite/Janeway/lib/iText-2.1.5.jar"/>
@@ -11,6 +12,5 @@
 	<classpathentry kind="lib" path="C:/Users/Jonathan/softEngWorkspace/wpi-suite/Janeway/lib/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Jonathan/softEngWorkspace/wpi-suite/Janeway/lib/miglayout-4.0-swing.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Jonathan/softEngWorkspace/wpi-suite/Janeway/lib/swingx-all-1.6.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/RequirementManager"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
