@@ -55,7 +55,7 @@ public class SessionTable extends JTable
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 
-		ViewEventController.getInstance().setOverviewTable(this);
+		//ViewEventController.getInstance().setOverviewTable(this);
 		initialized = false;
 
 		 System.out.println("finished constructing the table");

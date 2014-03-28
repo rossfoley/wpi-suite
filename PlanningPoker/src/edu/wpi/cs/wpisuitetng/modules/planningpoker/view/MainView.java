@@ -82,29 +82,6 @@ public class MainView extends JTabbedPane {
 			}	
 		});
 
-		// add listener for changes in the overview tables
-		ViewEventController.getInstance().getOverviewTable().getModel().addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				// check for Editing Multiple Requirements Mode	and a change not caused by a refresh	
-				if (ViewEventController.getInstance().getOverviewTable().getEditFlag() 
-					&& !ViewEventController.getInstance().getOverviewTable().wasChangedByRefresh() ) { 
-					// find the cell that was changed
-					int otRow = e.getLastRow();
-					int otCol = e.getColumn();
-					// extract the value within the cell
-					Object value = ViewEventController.getInstance().getOverviewTable().getModel().getValueAt(otRow, otCol);
-					// highlight the cell
-					ViewEventController.getInstance().getOverviewTable().getCellRenderer(otRow, otCol).getTableCellRendererComponent(ViewEventController.getInstance().getOverviewTable(), value, true, true, otRow, otCol);
-					
-					// check for changes and enable/disable the Save Changes button accordingly
-					if (ViewEventController.getInstance().getOverviewTable().hasChanges()) {
-						ViewEventController.getInstance().getToolbar().getEditButton().enableCreateEditButton();
-					}					
-					else ViewEventController.getInstance().getToolbar().getEditButton().disableCreateEditButton();						
-				}
-			}
-		});		
 		
 		
 		popup.add(closeAll);

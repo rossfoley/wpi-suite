@@ -118,7 +118,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// toggle the editing overview table mode
-				ViewEventController.getInstance().toggleEditingTable(true);			
+				//ViewEventController.getInstance().toggleEditingTable(true);			
 				setButtonToEdit();
 				createEditButton.setEnabled(true);
 

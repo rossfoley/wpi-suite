@@ -42,6 +42,8 @@ public class PlanningPoker implements IJanewayModule {
 
 		// Create a tab model that contains the toolbar panel and the main content panel
 		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolBar, mainPanel);
+		
+		
 
 		// Add the tab to the list of tabs owned by this module
 		tabs.add(tab1);		

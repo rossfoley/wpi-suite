@@ -27,8 +27,9 @@ public class OverviewPanel extends JSplitPane {
 	{
 		OverviewTreePanel filterPanel = new OverviewTreePanel();
 		
-		String[] columnNames = {"ID", "Name", "Creator", "End Date", "End Time", "Estimate"};
-				
+		//String[] columnNames = {"ID", "Name", "Creator", "End Date", "End Time", "Estimate"};
+		String[] columnNames = {"ID", "Name", "End Date"};
+	
 		Object[][] data = {};
 		
 		OverviewTable table = new OverviewTable(data, columnNames);
@@ -39,15 +40,15 @@ public class OverviewPanel extends JSplitPane {
 		
 		table.getColumnModel().getColumn(1).setMinWidth(250); // Name
 
-		table.getColumnModel().getColumn(2).setMinWidth(90); // Creator
+		//table.getColumnModel().getColumn(2).setMinWidth(90); // Creator
 		
-		table.getColumnModel().getColumn(3).setMinWidth(90); // End Date
+		table.getColumnModel().getColumn(2).setMinWidth(90); // End Date
 		
-		table.getColumnModel().getColumn(4).setMinWidth(105); // End Time
-		table.getColumnModel().getColumn(4).setMaxWidth(105); // End Time
+		//table.getColumnModel().getColumn(4).setMinWidth(105); // End Time
+		//table.getColumnModel().getColumn(4).setMaxWidth(105); // End Time
 		
-		table.getColumnModel().getColumn(5).setMinWidth(85); // Estimate
-		table.getColumnModel().getColumn(5).setMaxWidth(85); // Estimate
+		//table.getColumnModel().getColumn(5).setMinWidth(85); // Estimate
+		//table.getColumnModel().getColumn(5).setMaxWidth(85); // Estimate
 		
 		this.setLeftComponent(filterPanel);
 		this.setRightComponent(tablePanel);

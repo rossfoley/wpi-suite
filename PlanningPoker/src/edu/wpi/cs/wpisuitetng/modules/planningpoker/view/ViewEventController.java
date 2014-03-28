@@ -13,16 +13,16 @@ import java.awt.Component;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 
 
 /**
@@ -87,11 +87,12 @@ public class ViewEventController {
 	 * This code is a mockup of RequirementManager.view.ViewEventController#creatRequirement
 	 */
 	public void createPlanningPokerSession() {
-		SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-		main.addTab("New Session.", null, newSession, "New Session");
+		//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
+		JPanel panel = NewGameTab.createJPanel();
+		main.addTab("New Session.", null, panel, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
-		main.setSelectedComponent(newSession);
+		main.setSelectedComponent(panel);
 	}
 	
 	/**
@@ -183,27 +184,6 @@ public class ViewEventController {
 		}
 	}
 
-
-	/**
-	 * Toggles the Overview Table multiple requirement editing mode
-	 * @param cancel whether to cancel or not
-	 */
-	public void toggleEditingTable(boolean cancel){
-		// check to see if Multiple Requirement Editing Mode is enabled and if the user is editing a cell		
-		if (this.overviewTable.getEditFlag() && this.overviewTable.isEditing()) {
-			// ends the cell editing and stores the entered value			
-			this.overviewTable.getCellEditor().stopCellEditing();
-		}
-		
-		// toggle the edit flag
-		this.overviewTable.setEditFlag(!this.overviewTable.getEditFlag());
-		
-		// check to see if the overview table is now out of editing mode
-		if (!this.overviewTable.getEditFlag()) {
-			if (cancel) this.overviewTable.refresh();			
-			else this.overviewTable.saveChanges();
-		}	
-	}
 
 
 
