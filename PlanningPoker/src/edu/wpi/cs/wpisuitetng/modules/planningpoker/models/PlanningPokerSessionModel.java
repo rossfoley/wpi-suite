@@ -97,7 +97,10 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 
 
 
-	 * @return the number of requirements in the project * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize()
+	 * @return the number of requirements in the project 
+	 * @see javax.swing.ListModel#getSize() 
+	 * @see javax.swing.ListModel#getSize() 
+	 * @see javax.swing.ListModel#getSize()
 	 */
 	public int getSize() {
 		return planningPokerSessions.size();
@@ -118,11 +121,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	/**
 	 * This function takes an index and finds the requirement in the list of requirements
 	 * for the project. Used internally by the JList in NewPlanningPokerSessionModel.
-	 * 
 	 * @param index The index of the requirement to be returned
-
-
-
 	 * @return the requirement associated with the provided index * @see javax.swing.ListModel#getElementAt(int) * @see javax.swing.ListModel#getElementAt(int) * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	public PlanningPokerSession getElementAt(int index) {

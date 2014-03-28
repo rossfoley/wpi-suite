@@ -120,10 +120,9 @@ public class PlanningPoker implements IJanewayModule {
 	    		//int count = tabbedPane.getTabCount();
 				//tabbedPane.insertTab("New Game", null, new JPanel(), null, count+1);
 	    		
-	    		//code to create a new tab
+	    		//code to create a new tab and a new session
 	    	    JPanel panel = NewGameTab.createJPanel();
-	    	    PlanningPokerSession newSession = new PlanningPokerSession();
-	    		tabbedPane.addTab(newSession.getName(), null, panel, null);
+	    		tabbedPane.addTab("New Session", null, panel, null);
 	    		//int count = tabbedPane.getComponentCount();
 	    		//tabbedPane.setTabComponentAt( count, new ClosableTabComponent(tabbedPane));
 	    		//setTabComponentAt()
