@@ -60,6 +60,7 @@ public class RequirementButtonsPanel extends ToolbarGroupView{
 		    this.createIterationButton.setIcon(new ImageIcon(img));
 		    
 		} catch (IOException ex) {}
+		  catch (IllegalArgumentException ex) {}
 		
 		// the action listener for the Create Requirement Button
 		createButton.addActionListener(new ActionListener() {

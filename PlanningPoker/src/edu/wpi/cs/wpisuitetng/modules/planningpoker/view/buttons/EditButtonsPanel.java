@@ -74,6 +74,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		    saveImg = new ImageIcon(ImageIO.read(getClass().getResource("save.png")));
 		    
 		} catch (IOException ex) {}
+		  catch (IllegalArgumentException ex) {}
 		
 		createEditButton.setVisible(true);
 		// the action listener for the Edit Estimates button
