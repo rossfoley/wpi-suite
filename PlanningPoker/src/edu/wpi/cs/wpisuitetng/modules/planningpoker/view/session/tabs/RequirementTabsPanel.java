@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.tabs;
 
 import java.awt.Dimension;
 import java.io.IOException;
@@ -19,17 +19,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.ViewMode;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class RequirementTabsPanel extends JTabbedPane implements RequirementPanelListener
+public class RequirementTabsPanel extends JTabbedPane implements SessionPanelListener
 {
-	private final List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
+	private final List<SessionPanelListener> listeners = new LinkedList<SessionPanelListener>();
 	private final ViewMode viewMode;
 	private final Requirement currentRequirement;
 	private final RequirementHistoryPanel historyPanel;
@@ -43,7 +43,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 * @param viewMode view mode
 	 * @param currentRequirement current requirement
 	 */
-	public RequirementTabsPanel(RequirementPanel parentPanel, ViewMode viewMode, Requirement currentRequirement) 
+	public RequirementTabsPanel(SessionPanel parentPanel, ViewMode viewMode, Requirement currentRequirement) 
 	{
 		this.viewMode = viewMode;
 		this.currentRequirement = currentRequirement;
@@ -84,7 +84,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 */
 	public boolean readyToRemove() {
 		boolean readyToRemove = true;
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			readyToRemove &= listener.readyToRemove();
 		}
@@ -98,7 +98,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 */
 	public void fireDeleted(boolean b)
 	{
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireDeleted(b);
 		}	
@@ -110,7 +110,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireValid(boolean) */
 	@Override
 	public void fireValid(boolean b) {
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireValid(b);
 		}		
@@ -123,7 +123,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireChanges(boolean) */
 	@Override
 	public void fireChanges(boolean b) {
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireChanges(b);
 		}		
@@ -135,7 +135,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 */
 	@Override
 	public void fireRefresh() {
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireRefresh();
 		}

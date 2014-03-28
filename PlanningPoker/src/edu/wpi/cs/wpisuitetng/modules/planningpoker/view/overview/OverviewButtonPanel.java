@@ -19,7 +19,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 //import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.NewPieChartPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.Rotator;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.Rotator;
 
 /**
  * @author justinhess

@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -22,21 +22,21 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequir
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs.RequirementTabsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.tabs.RequirementTabsPanel;
 
 /**
  * @version $Revision: 1.0 $
  * @author Rolling Thunder
  */
-public class RequirementPanel extends JPanel implements RequirementButtonListener
+public class SessionPanel extends JPanel implements SessionButtonListener
 {
-	private List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
+	private List<SessionPanelListener> listeners = new LinkedList<SessionPanelListener>();
 	private Requirement displayRequirement;
 	private ViewMode viewMode;
 	
-	private RequirementInformationPanel infoPanel;
+	private SessionInformationPanel infoPanel;
 	private RequirementTabsPanel tabsPanel;
-	private RequirementButtonPanel buttonPanel;
+	private SessionButtonPanel buttonPanel;
 	
 	private boolean readyToClose = false;
 	private boolean readyToRemove = true;
@@ -47,7 +47,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * Constructor for editing a requirement
 	 * @param editingRequirement requirement to edit
 	 */
-	public RequirementPanel(Requirement editingRequirement)
+	public SessionPanel(Requirement editingRequirement)
 	{
 		viewMode = (ViewMode.EDITING);
 		
@@ -59,7 +59,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * Constructor for creating a requirement
 	 * @param parentID the parent id, or -1 if no parent.
 	 */
-	public RequirementPanel(int parentID)
+	public SessionPanel(int parentID)
 	{ 
 		viewMode = (ViewMode.CREATING);
 		
@@ -82,11 +82,11 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 */
 	private void buildLayout()
 	{
-		buttonPanel = new RequirementButtonPanel(this, viewMode, displayRequirement);
+		buttonPanel = new SessionButtonPanel(this, viewMode, displayRequirement);
 		listeners.add(buttonPanel);
 		tabsPanel = new RequirementTabsPanel(this, viewMode, displayRequirement);
 		listeners.add(tabsPanel);
-		infoPanel = new RequirementInformationPanel(this, viewMode); //, displayRequirement);
+		infoPanel = new SessionInformationPanel(this, viewMode); //, displayRequirement);
 		listeners.add(infoPanel);
 
 		JSplitPane contentPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, infoPanel, tabsPanel);
@@ -153,7 +153,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * @param b whether the requirement has been deleted or not.
 	 */
 	public void fireDeleted(boolean b) {	
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireDeleted(b);
 		}
@@ -164,7 +164,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * @param b whether the requirement is valid or not.
 	 */
 	public void fireValid(boolean b) {		
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireValid(b);
 		}
@@ -175,7 +175,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * @param b whether changes have occured.
 	 */
 	public void fireChanges(boolean b) {	
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireChanges(b);
 		}	
@@ -186,7 +186,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 */
 	public void fireRefresh()
 	{
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			listener.fireRefresh();
 		}	
@@ -216,7 +216,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	public boolean readyToRemove() {
 		if(readyToClose) return true;
 		
-		for(RequirementPanelListener listener : listeners)
+		for(SessionPanelListener listener : listeners)
 		{
 			readyToRemove &= listener.readyToRemove();
 		}
@@ -236,14 +236,14 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	/**
 	
 	 * @return the requirement information panel. */
-	public RequirementInformationPanel getInfoPanel()
+	public SessionInformationPanel getInfoPanel()
 	{
 		return this.infoPanel;
 	}
 	
 	/**
 	 * @return the button panel */
-	public RequirementButtonPanel getButtonPanel()
+	public SessionButtonPanel getButtonPanel()
 	{
 		return this.buttonPanel;
 	}

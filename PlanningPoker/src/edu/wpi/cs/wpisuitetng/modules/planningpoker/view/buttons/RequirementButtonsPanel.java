@@ -71,16 +71,6 @@ public class RequirementButtonsPanel extends ToolbarGroupView{
 					ViewEventController.getInstance();
 			//	}
 			}
-		});		
-		
-		//action listener for the Create Iteration Button
-		createIterationButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//if (!ViewEventController.getInstance().getOverviewTable().getEditFlag()) {
-					ViewEventController.getInstance().createIteration();
-				}
-		//	}
 		});
 			
 		contentPanel.add(createButton);

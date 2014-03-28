@@ -7,14 +7,21 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
+
+import java.util.List;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public enum ViewMode 
+public interface SessionSelectorListener 
 {
-	EDITING,
-	CREATING;
+	/**
+	 * Tells the listener that a requirement was selected.
+	 * @param requirements Object[]
+	 */
+	public void requirementSelected(Object[] requirements);
 }

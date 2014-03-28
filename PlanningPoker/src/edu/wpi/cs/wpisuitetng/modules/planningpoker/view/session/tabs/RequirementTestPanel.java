@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.tabs;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -29,14 +29,14 @@ import javax.swing.border.Border;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.AcceptanceTest;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.ViewMode;
 
 /**
  * @author Rolling Thunder
  * @version $Revision: 1.0 $
  */
-public class RequirementTestPanel extends JPanel implements RequirementPanelListener{
+public class RequirementTestPanel extends JPanel implements SessionPanelListener{
 
 	private Requirement currentRequirement;
 	private RequirementTabsPanel parentPanel;

@@ -7,13 +7,13 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public enum RequirementSelectorMode {
+public enum SessionSelectorMode {
 
 	POSSIBLE_CHILDREN,
 	POSSIBLE_PARENTS,

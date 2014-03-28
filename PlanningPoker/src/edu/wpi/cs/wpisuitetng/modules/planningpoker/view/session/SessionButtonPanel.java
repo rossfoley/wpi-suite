@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -34,9 +34,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class RequirementButtonPanel extends JPanel implements RequirementPanelListener
+public class SessionButtonPanel extends JPanel implements SessionPanelListener
 {
-	private final RequirementPanel parentPanel;
+	private final SessionPanel parentPanel;
 	private final ViewMode viewMode;
 	
 	private final ErrorPanel errorDisplay;
@@ -55,7 +55,7 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 	 * @param mode viewmode for the panel
 	 * @param displayRequirement current requirement
 	 */
-	public RequirementButtonPanel(RequirementPanel parentPanel, ViewMode mode, Requirement displayRequirement)
+	public SessionButtonPanel(SessionPanel parentPanel, ViewMode mode, Requirement displayRequirement)
 	{
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		changes = false;
@@ -146,7 +146,7 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 	 * Method fireDeleted.
 	 * @param b boolean
 	
-	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener#fireDeleted(boolean) */
+	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener#fireDeleted(boolean) */
 	@Override
 	public void fireDeleted(boolean b) 
 	{
@@ -157,7 +157,7 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 	 * Method fireValid.
 	 * @param b boolean
 	
-	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener#fireValid(boolean) */
+	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener#fireValid(boolean) */
 	@Override
 	public void fireValid(boolean b) {
 		valid = b;
@@ -168,7 +168,7 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 	 * Method fireChanges.
 	 * @param b boolean
 	
-	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener#fireChanges(boolean) */
+	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener#fireChanges(boolean) */
 	@Override
 	public void fireChanges(boolean b) {
 		changes = b;
@@ -189,7 +189,7 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 
 	/**
 	 * Method fireRefresh.
-	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener#fireRefresh()
+	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener#fireRefresh()
 	 */
 	@Override
 	public void fireRefresh() {}

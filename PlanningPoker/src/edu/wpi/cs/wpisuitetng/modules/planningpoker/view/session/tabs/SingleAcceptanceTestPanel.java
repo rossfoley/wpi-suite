@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.tabs;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;

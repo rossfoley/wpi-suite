@@ -19,14 +19,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequir
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationOverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanel;
 
 
 /**
@@ -42,9 +38,7 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTable overviewTable = null;
 	private OverviewTreePanel overviewTree = null;
-	private ArrayList<RequirementPanel> listOfEditingPanels = new ArrayList<RequirementPanel>();
-	private ArrayList<IterationPanel> listOfIterationPanels = new ArrayList<IterationPanel>();
-	private IterationOverviewPanel iterationOverview;
+	private ArrayList<SessionPanel> listOfEditingPanels = new ArrayList<SessionPanel>();
 	
 	/**
 	 * Sets the OverviewTable for the controller
@@ -87,42 +81,17 @@ public class ViewEventController {
 		toolbar = tb;
 		toolbar.repaint();
 	}
-
-	/**
-	 * Opens a new tab for the creation of a requirement.
-	 */
-	public void createRequirement() {
-//		RequirementPanel newReq = new RequirementPanel(-1); // the issue is with requirementpanel.java in package
-		IterationPanel newReq = new IterationPanel();
-		main.addTab("New Req.", null, newReq, "New Requirement");
-		main.invalidate(); //force the tabbedpane to redraw.
-		main.repaint();
-		main.setSelectedComponent(newReq);
-	}
 	
-	/*
+	/**
 	 * opens a new tab for creating poker session
-	 * this code is a mockup of createiteration
+	 * This code is a mockup of RequirementManager.view.ViewEventController#creatRequirement
 	 */
 	public void createPlanningPokerSession() {
-//		RequirementPanel newReq = new RequirementPanel(-1); // the issue is with requirementpanel.java in package
-//		IterationPanel newSession = new IterationPanel();
-		OverviewPanel newSession = new OverviewPanel();
+		SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
 		main.addTab("New Session.", null, newSession, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
 		main.setSelectedComponent(newSession);
-	}
-	
-	/**
-	 * Opens a new tab for the creation of a iteration.
-	 */
-	public void createIteration() {
-		IterationPanel newIter = new IterationPanel();
-		main.addTab("New Iter.", null, newIter, "New Iteration");
-		main.invalidate(); //force the tabbedpane to redraw.
-		main.repaint();
-		main.setSelectedComponent(newIter);
 	}
 	
 	/**
@@ -164,7 +133,7 @@ public class ViewEventController {
 	 * @param parentID
 	 */
 	public void createChildRequirement(int parentID) {
-		RequirementPanel newReq = new RequirementPanel(parentID);
+		SessionPanel newReq = new SessionPanel(parentID);
 		main.addTab("Add Child Req.", null, newReq, "Add Child Requirement");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
@@ -176,13 +145,13 @@ public class ViewEventController {
 	 */
 	public void editRequirement(Requirement toEdit)
 	{
-		RequirementPanel exists = null;
+		SessionPanel exists = null;
 		
 		// set time stamp for transactions
 		toEdit.getHistory().setTimestamp(System.currentTimeMillis());
 		
 		
-		for(RequirementPanel panel : listOfEditingPanels)
+		for(SessionPanel panel : listOfEditingPanels)
 		{
 			if(panel.getDisplayRequirement() == toEdit)
 			{
@@ -193,7 +162,7 @@ public class ViewEventController {
 		
 		if(exists == null)
 		{
-			RequirementPanel editPanel = new RequirementPanel(toEdit);
+			SessionPanel editPanel = new SessionPanel(toEdit);
 			
 			StringBuilder tabName = new StringBuilder();
 			tabName.append(toEdit.getId()); 
@@ -259,18 +228,13 @@ public class ViewEventController {
 	 */
 	public void removeTab(JComponent comp)
 	{
-		if(comp instanceof RequirementPanel)
+		if(comp instanceof SessionPanel)
 		{
-			if(!((RequirementPanel)comp).readyToRemove()) return;
+			if(!((SessionPanel)comp).readyToRemove()) return;
 			this.listOfEditingPanels.remove(comp);
 
 		}
-		
-		if(comp instanceof IterationPanel)
-		{
-			if(!((IterationPanel)comp).readyToRemove()) return;
-			this.listOfIterationPanels.remove(comp);
-		}
+
 		main.remove(comp);
 	}
 
@@ -345,19 +309,11 @@ public class ViewEventController {
 			Component toBeRemoved = main.getComponentAt(i);
 
 			if(toBeRemoved instanceof OverviewPanel) continue;
-			
-			if(toBeRemoved instanceof IterationOverviewPanel) continue;
 
-			if(toBeRemoved instanceof RequirementPanel)
+			if(toBeRemoved instanceof SessionPanel)
 			{
-				if(!((RequirementPanel)toBeRemoved).readyToRemove()) continue;
+				if(!((SessionPanel)toBeRemoved).readyToRemove()) continue;
 				this.listOfEditingPanels.remove(toBeRemoved);
-			}
-			
-			if(toBeRemoved instanceof IterationPanel)
-			{
-				if(!((IterationPanel)toBeRemoved).readyToRemove()) continue;
-				this.listOfIterationPanels.remove(toBeRemoved);
 			}
 
 			main.removeTabAt(i);
@@ -380,21 +336,14 @@ public class ViewEventController {
 
 			if(toBeRemoved instanceof OverviewPanel){
 				continue;}
-			if(toBeRemoved instanceof IterationOverviewPanel) continue;
 			if(toBeRemoved == selected){
 				continue;}
 
-			if(toBeRemoved instanceof RequirementPanel)
+			if(toBeRemoved instanceof SessionPanel)
 			{
-				if(!((RequirementPanel)toBeRemoved).readyToRemove()){
+				if(!((SessionPanel)toBeRemoved).readyToRemove()){
 					break;}
 				this.listOfEditingPanels.remove(toBeRemoved);
-			}
-			
-			if(toBeRemoved instanceof IterationPanel)
-			{
-				if(!((IterationPanel)toBeRemoved).readyToRemove()) continue;
-				this.listOfIterationPanels.remove(toBeRemoved);
 			}
 
 			main.removeTabAt(i);
@@ -409,7 +358,7 @@ public class ViewEventController {
 	 * @param newChild req that is being created
 	 */
 	public void refreshEditRequirementPanel(Requirement newChild) {
-		for(RequirementPanel newEditPanel : listOfEditingPanels)
+		for(SessionPanel newEditPanel : listOfEditingPanels)
 		{
 			if(newEditPanel.getDisplayRequirement() == newChild)
 			{
@@ -421,23 +370,6 @@ public class ViewEventController {
 		
 	}
 
-	/**
-	 * Gets the iteration overview
-	 * @return IterationOverviewPanel
-	 */
-	public IterationOverviewPanel getIterationOverview()
-	{
-		return iterationOverview;
-	}
-	
-	/**
-	 * Sets the iteration overview
-	 * @param iOverview iterationoverview
-	 */
-	public void setIterationOverview(IterationOverviewPanel iOverview)
-	{
-		iterationOverview = iOverview;
-	}
 	
 	/**
 	 * Method getOverviewTree.
@@ -469,19 +401,12 @@ public class ViewEventController {
 		}*/
 	}
 
-	/**
-	 * Method getListOfIterationPanels.
-	 * @return ArrayList<IterationPanel>
-	 */
-	public ArrayList<IterationPanel> getListOfIterationPanels() {
-		return listOfIterationPanels;
-	}
 
 	/**
 	 * Method getListOfRequirementPanels.
 	 * @return ArrayList<RequirementPanel>
 	 */
-	public ArrayList<RequirementPanel> getListOfRequirementPanels() {
+	public ArrayList<SessionPanel> getListOfRequirementPanels() {
 		return listOfEditingPanels;
 	}
 }

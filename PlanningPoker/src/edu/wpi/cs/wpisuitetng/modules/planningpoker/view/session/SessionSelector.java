@@ -12,7 +12,7 @@
  * @author Justin Hess
  * @author Christopher Botaish
  */
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -53,15 +53,15 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class RequirementSelector extends JScrollPane {
+public class SessionSelector extends JScrollPane {
 	private final Dimension buttonDimensions = new Dimension(125, 25);
 	//private JList<Requirement> requirementList;
 	private List<JButton> buttonList;
 	private JButton okButton;
 	private JPanel buttonPanel;
-	private RequirementSelectorMode mode;
+	private SessionSelectorMode mode;
 	//private Requirement activeRequirement;
-	private RequirementSelectorListener listener;
+	private SessionSelectorListener listener;
 	private Object[] selectedList;
 	
 	/**
@@ -71,7 +71,7 @@ public class RequirementSelector extends JScrollPane {
 	 * @param mode the mode of the selector
 	 * @param showBorder whether to show border or not
 	 */
-	public RequirementSelector(RequirementSelectorListener listener, Requirement requirement, RequirementSelectorMode mode, boolean showBorder) 
+	public SessionSelector(SessionSelectorListener listener, Requirement requirement, SessionSelectorMode mode, boolean showBorder) 
 	{
 		if(!showBorder) this.setBorder(null);
 		JPanel contentPanel = new JPanel();
@@ -92,7 +92,7 @@ public class RequirementSelector extends JScrollPane {
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 
 		String okText;
-		if (this.mode != RequirementSelectorMode.POSSIBLE_PARENTS) {
+		if (this.mode != SessionSelectorMode.POSSIBLE_PARENTS) {
 			okText = "Add Existing";
 		} else {
 	//		requirementList

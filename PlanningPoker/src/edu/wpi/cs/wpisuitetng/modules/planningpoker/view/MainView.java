@@ -31,9 +31,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanel;
 
 /**
  * This class sets the main view when user goes to the RequirementManager tab
@@ -50,7 +49,6 @@ public class MainView extends JTabbedPane {
 	private Point currentMouseLocation = null;
 	private int draggedTabIndex = 0;
 	private OverviewPanel currentSessions = new OverviewPanel();
-	private IterationOverviewPanel iterationOverview = new IterationOverviewPanel();
 	private Component lastTab = null;
 	private final JPopupMenu popup = new JPopupMenu();
 	private JMenuItem closeAll = new JMenuItem("Close All Tabs");
@@ -63,8 +61,7 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		this.addTab("Current Sessions", currentSessions);
-		this.addTab("Completed Sessions", iterationOverview);
+		this.addTab("Planning Poker Game Sessions", currentSessions);
 
 		
 		closeAll.addActionListener(new ActionListener()
@@ -197,17 +194,9 @@ public class MainView extends JTabbedPane {
 					currentSessions.revalidate();
 					currentSessions.repaint();
 				}
-				else if(selected == iterationOverview)
+				else if(selected instanceof SessionPanel)
 				{
-					ViewEventController.getInstance().getOverviewTree().refresh();
-					iterationOverview.setLeftComponent(ViewEventController.getInstance().getOverviewTree());
-					iterationOverview.setDividerLocation(180);
-					iterationOverview.revalidate();
-					iterationOverview.repaint();
-				}
-				else if(selected instanceof RequirementPanel)
-				{
-					RequirementPanel req = (RequirementPanel)selected;
+					SessionPanel req = (SessionPanel)selected;
 					req.fireRefresh();
 				}
 			}
@@ -243,7 +232,7 @@ public class MainView extends JTabbedPane {
 	public void insertTab(String title, Icon icon, Component component,
 			String tip, int index) {
 		super.insertTab(title, icon, component, tip, index);
-		if (!(component instanceof OverviewPanel) && !(component instanceof IterationOverviewPanel)) {
+		if (!(component instanceof OverviewPanel)) {
 			setTabComponentAt(index, new ClosableTabComponent(this));
 		}
 	}

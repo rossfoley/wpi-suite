@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,11 +49,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class RequirementInformationPanel extends JScrollPane implements KeyListener,
-ItemListener, RequirementPanelListener, RequirementSelectorListener {
+public class SessionInformationPanel extends JScrollPane implements KeyListener,
+ItemListener, SessionPanelListener, SessionSelectorListener {
 	//private Requirement currentRequirement;
 	private ViewMode viewMode;
-	private RequirementPanel parentPanel;
+	private SessionPanel parentPanel;
 
 	private int storedEstimate;
 	//private Iteration storedIteration;
@@ -76,7 +76,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	private JButton removeFromParent;
 	private JButton chooseParent;
 	private JPanel noParentInfoPanel;
-	private RequirementSelector parentSelector;
+	private SessionSelector parentSelector;
 	//private JComboBox<RequirementType> dropdownType;
 	//private JComboBox<RequirementStatus> dropdownStatus;
 	//private JComboBox<RequirementPriority> dropdownPriority;
@@ -95,7 +95,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * @param mode the current view mode.
 	 * @param curr the requirement being edited/created.
 	 */
-	public RequirementInformationPanel(RequirementPanel parentPanel,ViewMode mode /*, Requirement curr */) {
+	public SessionInformationPanel(SessionPanel parentPanel,ViewMode mode /*, Requirement curr */) {
 		//this.currentRequirement = curr;
 		this.parentPanel = parentPanel;
 		this.viewMode = mode;

@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.tabs;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -31,14 +31,14 @@ import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.ViewMode;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class RequirementNotePanel extends JPanel implements RequirementPanelListener {
+public class RequirementNotePanel extends JPanel implements SessionPanelListener {
 	private final ViewMode viewMode;
 	//private final Requirement currentRequirement;
 	private int notesAdded;

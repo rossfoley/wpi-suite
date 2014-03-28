@@ -7,19 +7,19 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.tabs;
 
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.RequirementPanelListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanelListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.ViewMode;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class RequirementHistoryPanel extends JScrollPane implements RequirementPanelListener {
+public class RequirementHistoryPanel extends JScrollPane implements SessionPanelListener {
 
 	private final Requirement currentRequirement;
 	

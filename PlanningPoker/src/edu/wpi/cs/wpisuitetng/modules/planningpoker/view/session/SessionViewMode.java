@@ -7,31 +7,14 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
-
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public interface RequirementButtonListener {
-	/**
-	 * Indicate to the listener that the ok button was pressed.
-	 */
-	public void OKPressed();
-	
-	/**
-	 * Indicate to the listener that the clear button was pressed.
-	 */
-	public void clearPressed();
-	
-	/**
-	 * Indicate to the listener that the cancel button was pressed.
-	 */
-	public void cancelPressed();
-	
-	/**
-	 * Indicate to the listener that the delete button was pressed.
-	 */
-	public void deletePressed();
+public enum SessionViewMode 
+{
+	EDITING,
+	CREATING;
 }

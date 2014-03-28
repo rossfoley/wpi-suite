@@ -7,21 +7,31 @@
  * 
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
-import java.util.List;
-
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public interface RequirementSelectorListener 
-{
+public interface SessionButtonListener {
 	/**
-	 * Tells the listener that a requirement was selected.
-	 * @param requirements Object[]
+	 * Indicate to the listener that the ok button was pressed.
 	 */
-	public void requirementSelected(Object[] requirements);
+	public void OKPressed();
+	
+	/**
+	 * Indicate to the listener that the clear button was pressed.
+	 */
+	public void clearPressed();
+	
+	/**
+	 * Indicate to the listener that the cancel button was pressed.
+	 */
+	public void cancelPressed();
+	
+	/**
+	 * Indicate to the listener that the delete button was pressed.
+	 */
+	public void deletePressed();
 }
