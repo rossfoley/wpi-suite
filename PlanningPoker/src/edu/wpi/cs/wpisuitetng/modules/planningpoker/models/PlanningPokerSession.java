@@ -126,4 +126,9 @@ public class PlanningPokerSession extends AbstractModel {
 		return parser.fromJson(json, PlanningPokerSession.class);
 	}
 
+	public Object getHistory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

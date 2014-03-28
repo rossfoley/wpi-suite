@@ -27,8 +27,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author justinhess
@@ -53,9 +53,9 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 	 * Constructor for the requirement button panel
 	 * @param parentPanel the panel this reports to
 	 * @param mode viewmode for the panel
-	 * @param curr current requirement
+	 * @param displayRequirement current requirement
 	 */
-	public RequirementButtonPanel(RequirementPanel parentPanel, ViewMode mode, Requirement curr)
+	public RequirementButtonPanel(RequirementPanel parentPanel, ViewMode mode, Requirement displayRequirement)
 	{
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		changes = false;
@@ -98,6 +98,7 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 		    img = ImageIO.read(getClass().getResource("delete-icon.png"));
 		    buttonDelete.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {}
+		  catch (IllegalArgumentException ex) {}
 		
 		buttonOK.setText(okString);
 		buttonClear.setText(clearString);

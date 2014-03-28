@@ -18,7 +18,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.iterations.IterationPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
@@ -125,16 +127,16 @@ public class ViewEventController {
 	
 	/**
 	 * Opens a new tab for the editing of a iteration.
-	 * @param iter Iteration
+	 * @param iteration Iteration
 	 */
-	public void editIteration(Iteration iter) {
+	public void editIteration(Iteration iteration) {
 		//if(iter == IterationModel.getInstance().getBacklog()) return;
 		
-		IterationPanel exists = null;
+		/*IterationPanel exists = null;
 		
 		for(IterationPanel panel : listOfIterationPanels)
 		{
-			if(panel.getDisplayIteration() == iter)
+			if(panel.getDisplayIteration() == oldSession)
 			{
 				exists = panel;
 				break;
@@ -143,9 +145,9 @@ public class ViewEventController {
 		
 		if(exists == null)
 		{
-			IterationPanel editIter = new IterationPanel(iter);
+			IterationPanel editIter = new IterationPanel(oldSession);
 			listOfIterationPanels.add(editIter);
-			main.addTab(iter.getName(), null, editIter, "Editing " + iter.getName());
+			main.addTab(oldSession.getName(), null, editIter, "Editing " + oldSession.getName());
 			main.invalidate(); //force the tabbedpane to redraw.
 			main.repaint();
 			main.setSelectedComponent(editIter);
@@ -153,7 +155,7 @@ public class ViewEventController {
 		else
 		{
 			main.setSelectedComponent(exists);
-		}
+		}*/
 	}
 
 
@@ -458,13 +460,13 @@ public class ViewEventController {
 	}
 	
 	public void editSelectedIteration() {
-		DefaultMutableTreeNode selected = (DefaultMutableTreeNode)overviewTree.getTree().getLastSelectedPathComponent();
+		/*DefaultMutableTreeNode selected = (DefaultMutableTreeNode)overviewTree.getTree().getLastSelectedPathComponent();
 		if(selected.getUserObject() instanceof Iteration)
 		{
 			Iteration iter = ((Iteration)((DefaultMutableTreeNode)overviewTree.getTree().getLastSelectedPathComponent()).getUserObject());
 		
 			ViewEventController.getInstance().editIteration(iter);
-		}
+		}*/
 	}
 
 	/**
