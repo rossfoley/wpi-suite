@@ -31,11 +31,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirements.tabs.Requi
 public class RequirementPanel extends JPanel implements RequirementButtonListener
 {
 	private List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
-	//private Requirement displayRequirement;
+	private Requirement displayRequirement;
 	private ViewMode viewMode;
 	
 	private RequirementInformationPanel infoPanel;
-	//private RequirementTabsPanel tabsPanel;
+	private RequirementTabsPanel tabsPanel;
 	private RequirementButtonPanel buttonPanel;
 	
 	private boolean readyToClose = false;
@@ -47,28 +47,27 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * Constructor for editing a requirement
 	 * @param editingRequirement requirement to edit
 	 */
-	/*public RequirementPanel(Requirement editingRequirement)
+	public RequirementPanel(Requirement editingRequirement)
 	{
 		viewMode = (ViewMode.EDITING);
 		
 		displayRequirement = editingRequirement;
 		this.buildLayout();
-	}*/
+	}
 	
 	/**
 	 * Constructor for creating a requirement
 	 * @param parentID the parent id, or -1 if no parent.
 	 */
 	public RequirementPanel(int parentID)
-	{ /*
+	{ 
 		viewMode = (ViewMode.CREATING);
 		
 		displayRequirement = new Requirement();
 		displayRequirement.setId(-2);
-		*/
 		try 
 		{
-			//displayRequirement.setParentID(parentID);
+			displayRequirement.setParentID(parentID);
 		} 
 		catch (Exception e) 
 		{
@@ -83,17 +82,17 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 */
 	private void buildLayout()
 	{
-//		buttonPanel = new RequirementButtonPanel(this, viewMode, displayRequirement);
-//		listeners.add(buttonPanel);
-//		tabsPanel = new RequirementTabsPanel(this, viewMode, displayRequirement);
-//		listeners.add(tabsPanel);
-//		infoPanel = new RequirementInformationPanel(this, viewMode, displayRequirement);
-//		listeners.add(infoPanel);
-		
-//		JSplitPane contentPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, infoPanel, tabsPanel);
-		
+		buttonPanel = new RequirementButtonPanel(this, viewMode, displayRequirement);
+		listeners.add(buttonPanel);
+		tabsPanel = new RequirementTabsPanel(this, viewMode, displayRequirement);
+		listeners.add(tabsPanel);
+		infoPanel = new RequirementInformationPanel(this, viewMode); //, displayRequirement);
+		listeners.add(infoPanel);
+
+		JSplitPane contentPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, infoPanel, tabsPanel);
+
 		this.setLayout(new BorderLayout());
-//		this.add(contentPanel, BorderLayout.CENTER); // Add scroll pane to panel
+		this.add(contentPanel, BorderLayout.CENTER); // Add scroll pane to panel
 		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
 	/**
@@ -138,13 +137,12 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 */
 	public void deletePressed() 
 	{
-		/*if (this.displayRequirement.getStatus() == RequirementStatus.INPROGRESS)
-			return; */
-		//readyToClose = true;
-		/*displayRequirement.setStatus(RequirementStatus.DELETED);
+		if (this.displayRequirement.getStatus() == RequirementStatus.INPROGRESS)
+			return;
+		readyToClose = true;
+		displayRequirement.setStatus(RequirementStatus.DELETED);
 
 		UpdateRequirementController.getInstance().updateRequirement(displayRequirement);
-		*/
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
 		ViewEventController.getInstance().removeTab(this);	
@@ -155,11 +153,10 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * @param b whether the requirement has been deleted or not.
 	 */
 	public void fireDeleted(boolean b) {	
-		/*for(RequirementPanelListener listener : listeners)
+		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireDeleted(b);
 		}
-		*/
 	}
 
 	/**
@@ -167,11 +164,10 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * @param b whether the requirement is valid or not.
 	 */
 	public void fireValid(boolean b) {		
-		/*for(RequirementPanelListener listener : listeners)
+		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireValid(b);
 		}
-		*/
 	}
 	
 	/**
@@ -179,11 +175,10 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 * @param b whether changes have occured.
 	 */
 	public void fireChanges(boolean b) {	
-		/*for(RequirementPanelListener listener : listeners)
+		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireChanges(b);
-		}
-		*/	
+		}	
 	}
 	
 	/**
@@ -191,11 +186,10 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	 */
 	public void fireRefresh()
 	{
-		/*for(RequirementPanelListener listener : listeners)
+		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireRefresh();
-		}
-		*/	
+		}	
 	}
 
 	/**
@@ -222,8 +216,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	public boolean readyToRemove() {
 		if(readyToClose) return true;
 		
-		return false;
-		/*for(RequirementPanelListener listener : listeners)
+		for(RequirementPanelListener listener : listeners)
 		{
 			readyToRemove &= listener.readyToRemove();
 		}
@@ -238,40 +231,36 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 			
 			return result == 0;
 		}
-		*/
 	}
 	
 	/**
 	
 	 * @return the requirement information panel. */
-	/*public RequirementInformationPanel getInfoPanel()
+	public RequirementInformationPanel getInfoPanel()
 	{
 		return this.infoPanel;
 	}
-	*/
-	/**
 	
+	/**
 	 * @return the button panel */
-	/*public RequirementButtonPanel getButtonPanel()
+	public RequirementButtonPanel getButtonPanel()
 	{
 		return this.buttonPanel;
 	}
-	*/
-	/**
 	
-	 * @return the display requirement. */
+	/**
+	* @return the display requirement. */
 	public Requirement getDisplayRequirement() {
-		return new Requirement();
-//		return displayRequirement;
+		return displayRequirement;
 	}
 
 	/**
 	
 	 * @return the tabs panel */
-	/*public RequirementTabsPanel getTabsPanel() {
+	public RequirementTabsPanel getTabsPanel() {
 		return tabsPanel;
 	}
-	*/
+	
 	/**
 	 * Method isReadyToRemove.
 	 * @return boolean
