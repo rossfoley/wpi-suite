@@ -83,15 +83,15 @@ public class GetSessionController implements ActionListener {
 	 * @param requirements array of requirements received from the server
 	 */
 	
-	public void receivedSessions(PlanningPokerSession[] sessions) {
+	public void receivedSessions(PlanningPokerSession[] pokerSessions) {
 		// Empty the local model to eliminate duplications
 		PlanningPokerSessionModel.getInstance().emptyModel();
 		
 		// Make sure the response was not null
-		if (sessions != null) {
+		if (pokerSessions != null) {
 			
 			// add the requirements to the local model
-			PlanningPokerSessionModel.getInstance().addPlanningPokerSessions(sessions);
+			PlanningPokerSessionModel.getInstance().addPlanningPokerSessions(pokerSessions);
 		}
 	}
 	
