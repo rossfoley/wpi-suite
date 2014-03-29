@@ -65,7 +65,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {

@@ -141,6 +141,7 @@ public final class NewGameTab {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Create a new session, have it public by default, and include attributes
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
 				pokerSession.setOpen(true);
 				int month = Integer.parseInt(textField_1.getText());
@@ -148,6 +149,7 @@ public final class NewGameTab {
 				int year = Integer.parseInt(textField_3.getText());
 				GregorianCalendar date = new GregorianCalendar(year, month, day);
 				pokerSession.setEndDate(date);
+				// Add the session to the list of sessions and send it to the DB
 				PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
 			}
 		});
