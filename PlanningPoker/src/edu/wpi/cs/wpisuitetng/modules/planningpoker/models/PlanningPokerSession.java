@@ -20,7 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
- * @author rossfoley
+ * @author rossfoley, aaadkins
  *
  */
 public class PlanningPokerSession extends AbstractModel {
@@ -173,6 +173,19 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setRequirementIDs(Set<Integer> requirementIDs) {
 		this.requirementIDs = requirementIDs;
+	}
+	
+	public boolean validateFields(){
+		GregorianCalendar currentDate = new GregorianCalendar();
+		boolean returnBool = true;
+		if (this.name==null){
+			this.name = this.makeDefaultName();
+		}
+		if ((this.endDate).before(currentDate)){
+			returnBool = false;
+		}
+		// check if other fields are in appropriate range
+		return returnBool;
 	}
 
 	/* (non-Javadoc)

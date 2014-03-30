@@ -151,6 +151,9 @@ public final class NewGameTab {
 				pokerSession.setEndDate(date);
 				PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
 				ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
+				}
+				else {
+					// reprompt for empty fields
 
 			}
 		});
