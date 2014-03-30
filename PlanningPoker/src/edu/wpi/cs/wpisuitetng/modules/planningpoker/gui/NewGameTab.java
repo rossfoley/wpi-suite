@@ -77,27 +77,29 @@ public final class NewGameTab {
 		panel.add(lblTimer);
 		
 		JList list = new JList();
-		sl_panel.putConstraint(SpringLayout.WEST, list, 13, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.SOUTH, list, -10, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.NORTH, list, -140, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, list, 11, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, list, -15, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, list, -421, SpringLayout.EAST, panel);
 		list.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.add(list);
 		
 		JList list_1 = new JList();
-		sl_panel.putConstraint(SpringLayout.SOUTH, list_1, -10, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.NORTH, list_1, 0, SpringLayout.NORTH, list);
+		sl_panel.putConstraint(SpringLayout.WEST, list_1, 348, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, list_1, 0, SpringLayout.SOUTH, list);
 		sl_panel.putConstraint(SpringLayout.EAST, list_1, -40, SpringLayout.EAST, panel);
 		list_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.add(list_1);
 		
 		JButton btnAdd = new JButton("Add");
-		sl_panel.putConstraint(SpringLayout.EAST, btnAdd, -17, SpringLayout.WEST, list_1);
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnAdd, -87, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, btnAdd, -27, SpringLayout.WEST, list_1);
 		panel.add(btnAdd);
 		
 		JButton btnRemove = new JButton("Remove");
-		sl_panel.putConstraint(SpringLayout.EAST, list, -4, SpringLayout.WEST, btnRemove);
-		sl_panel.putConstraint(SpringLayout.NORTH, btnRemove, 363, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, btnRemove, -344, SpringLayout.EAST, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, list_1, 6, SpringLayout.EAST, btnRemove);
-		sl_panel.putConstraint(SpringLayout.SOUTH, btnAdd, -6, SpringLayout.NORTH, btnRemove);
+		sl_panel.putConstraint(SpringLayout.NORTH, btnRemove, 6, SpringLayout.SOUTH, btnAdd);
+		sl_panel.putConstraint(SpringLayout.EAST, btnRemove, 0, SpringLayout.EAST, btnAdd);
 		panel.add(btnRemove);
 		
 		JLabel lblMonth = new JLabel("Month:");
@@ -137,7 +139,8 @@ public final class NewGameTab {
 		textField_3.setColumns(10);
 		
 		JButton btnSubmit = new JButton("Submit");
-		sl_panel.putConstraint(SpringLayout.NORTH, btnSubmit, -1, SpringLayout.NORTH, comboBox);
+		sl_panel.putConstraint(SpringLayout.NORTH, btnSubmit, -4, SpringLayout.NORTH, lblModerator);
+		sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, 0, SpringLayout.EAST, list_1);
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Create a new session, have it public by default, and include attributes
@@ -160,11 +163,9 @@ public final class NewGameTab {
 		panel.add(btnSubmit);
 		
 		JPanel panel_1 = new JPanel();
-		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -177, SpringLayout.SOUTH, panel);
-		sl_panel.putConstraint(SpringLayout.NORTH, list_1, 6, SpringLayout.SOUTH, panel_1);
-		sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, 0, SpringLayout.EAST, panel_1);
-		sl_panel.putConstraint(SpringLayout.NORTH, list, 6, SpringLayout.SOUTH, panel_1);
+		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 203, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 13, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -15, SpringLayout.NORTH, list);
 		sl_panel.putConstraint(SpringLayout.EAST, panel_1, -40, SpringLayout.EAST, panel);
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.add(panel_1);
@@ -179,16 +180,15 @@ public final class NewGameTab {
 		textField_4.setColumns(10);
 		
 		JButton btnAddRequirement = new JButton("Add Requirement");
-		sl_panel_1.putConstraint(SpringLayout.NORTH, btnAddRequirement, 5, SpringLayout.SOUTH, textField_4);
-		sl_panel_1.putConstraint(SpringLayout.WEST, btnAddRequirement, 225, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnAddRequirement, -10, SpringLayout.SOUTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, btnAddRequirement, -11, SpringLayout.EAST, panel_1);
 		panel_1.add(btnAddRequirement);
 		
 		description = new JTextField();
-		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 40, SpringLayout.SOUTH, description);
-		sl_panel.putConstraint(SpringLayout.WEST, description, 0, SpringLayout.WEST, sessionNameField);
-		sl_panel.putConstraint(SpringLayout.EAST, description, 0, SpringLayout.EAST, textField_1);
 		sl_panel.putConstraint(SpringLayout.NORTH, description, 18, SpringLayout.SOUTH, comboBox_1);
-		sl_panel.putConstraint(SpringLayout.SOUTH, description, -287, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, description, 0, SpringLayout.WEST, sessionNameField);
+		sl_panel.putConstraint(SpringLayout.SOUTH, description, 79, SpringLayout.SOUTH, comboBox_1);
+		sl_panel.putConstraint(SpringLayout.EAST, description, 0, SpringLayout.EAST, textField_1);
 		panel.add(description);
 		description.setColumns(10);
 		
