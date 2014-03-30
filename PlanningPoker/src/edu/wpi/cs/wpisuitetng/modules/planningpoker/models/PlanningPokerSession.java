@@ -178,7 +178,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public boolean validateFields(){
 		GregorianCalendar currentDate = new GregorianCalendar();
 		boolean returnBool = true;
-		if (this.name==null){
+		if (this.name==null){ 
 			this.name = this.makeDefaultName();
 		}
 		if ((this.endDate).before(currentDate)){
