@@ -19,7 +19,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionM
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public final class NewGameTab {
-	private static JTextField sessionName;
+	private static JTextField sessionNameField;
 	private static JTextField textField_1;
 	private static JTextField textField_2;
 	private static JTextField textField_3;
@@ -42,19 +42,19 @@ public final class NewGameTab {
 		panel.add(lblModerator);
 		
 		//create text field
-		sessionName = new JTextField();
-		sl_panel.putConstraint(SpringLayout.NORTH, lblModerator, 3, SpringLayout.NORTH, sessionName);
-		sl_panel.putConstraint(SpringLayout.EAST, lblModerator, -6, SpringLayout.WEST, sessionName);
-		sl_panel.putConstraint(SpringLayout.NORTH, sessionName, 10, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, sessionName, 103, SpringLayout.WEST, panel);
-		panel.add(sessionName);
-		sessionName.setColumns(10);
+		sessionNameField = new JTextField();
+		sl_panel.putConstraint(SpringLayout.NORTH, lblModerator, 3, SpringLayout.NORTH, sessionNameField);
+		sl_panel.putConstraint(SpringLayout.EAST, lblModerator, -6, SpringLayout.WEST, sessionNameField);
+		sl_panel.putConstraint(SpringLayout.NORTH, sessionNameField, 10, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, sessionNameField, 103, SpringLayout.WEST, panel);
+		panel.add(sessionNameField);
+		sessionNameField.setColumns(10);
 		
 		// create dropdown
 		JComboBox<String> comboBox = new JComboBox<String>();
-		sl_panel.putConstraint(SpringLayout.NORTH, comboBox, 6, SpringLayout.SOUTH, sessionName);
+		sl_panel.putConstraint(SpringLayout.NORTH, comboBox, 6, SpringLayout.SOUTH, sessionNameField);
 		sl_panel.putConstraint(SpringLayout.WEST, comboBox, 103, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, comboBox, 0, SpringLayout.EAST, sessionName);
+		sl_panel.putConstraint(SpringLayout.EAST, comboBox, 0, SpringLayout.EAST, sessionNameField);
 		panel.add(comboBox);
 		
 		// create label for dropdown menu
@@ -66,7 +66,7 @@ public final class NewGameTab {
 		// creates a second dropdown 
 		JComboBox<String> comboBox_1 = new JComboBox<String>();
 		sl_panel.putConstraint(SpringLayout.NORTH, comboBox_1, 6, SpringLayout.SOUTH, comboBox);
-		sl_panel.putConstraint(SpringLayout.EAST, comboBox_1, 0, SpringLayout.EAST, sessionName);
+		sl_panel.putConstraint(SpringLayout.EAST, comboBox_1, 0, SpringLayout.EAST, sessionNameField);
 		panel.add(comboBox_1);
 		
 		// creates a label for the second dropdown
