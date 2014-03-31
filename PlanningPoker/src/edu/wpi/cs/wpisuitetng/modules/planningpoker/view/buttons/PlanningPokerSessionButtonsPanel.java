@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -42,7 +43,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		//this.createButton.setPreferredSize(new Dimension(200, 200));
 		this.createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		try {
-		    Image img = ImageIO.read(getClass().getResource("new_req.png"));
+		    Image img = ImageIO.read(new File("../src/new_req.png"));
 		    this.createButton.setIcon(new ImageIcon(img));
 		    
 		    //img = ImageIO.read(getClass().getResource("new_itt.png"));

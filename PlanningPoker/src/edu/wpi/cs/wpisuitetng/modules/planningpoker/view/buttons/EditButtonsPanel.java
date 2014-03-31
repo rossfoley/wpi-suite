@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -66,12 +67,12 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		createCancelButton.setVisible(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("cancel.png"));
+		    Image img = ImageIO.read(new File("../src/cancel.png"));
 		    createCancelButton.setIcon(new ImageIcon(img));
 		    
-		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
+		    editImg = new ImageIcon(ImageIO.read(new File("../src/edit.png")));
 		    createEditButton.setIcon(editImg);
-		    saveImg = new ImageIcon(ImageIO.read(getClass().getResource("save.png")));
+		    saveImg = new ImageIcon(ImageIO.read(new File("../src/save.png")));
 		    
 		} catch (IOException ex) {}
 		  catch (IllegalArgumentException ex) {}

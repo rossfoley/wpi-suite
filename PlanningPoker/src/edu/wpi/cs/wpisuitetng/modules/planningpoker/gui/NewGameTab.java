@@ -1,4 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
@@ -11,6 +12,7 @@ import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -31,7 +33,7 @@ public final class NewGameTab {
 	public static JPanel createJPanel() {
 		
 		//create panel to add to planning poker tabs
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
@@ -109,7 +111,7 @@ public final class NewGameTab {
 		sl_panel.putConstraint(SpringLayout.NORTH, lblDay, 3, SpringLayout.NORTH, comboBox);
 		panel.add(lblDay);
 		
-		JLabel lblYear = new JLabel("  Year:");
+		JLabel lblYear = new JLabel("Year:");
 		sl_panel.putConstraint(SpringLayout.EAST, lblDay, 0, SpringLayout.EAST, lblYear);
 		sl_panel.putConstraint(SpringLayout.NORTH, lblYear, 3, SpringLayout.NORTH, comboBox_1);
 		sl_panel.putConstraint(SpringLayout.WEST, lblYear, 208, SpringLayout.WEST, panel);
@@ -147,6 +149,8 @@ public final class NewGameTab {
 				GregorianCalendar date = new GregorianCalendar(year, month, day);
 				pokerSession.setEndDate(date);
 				AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+				ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
+
 			}
 		});
 		
