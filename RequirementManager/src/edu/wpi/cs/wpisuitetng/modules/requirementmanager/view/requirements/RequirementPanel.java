@@ -58,6 +58,7 @@ public class RequirementPanel extends JPanel implements RequirementButtonListene
 	/**
 	 * Constructor for creating a requirement
 	 * @param parentID the parent id, or -1 if no parent.
+	 * @wbp.parser.constructor
 	 */
 	public RequirementPanel(int parentID)
 	{

@@ -110,8 +110,10 @@ public class PlanningPoker implements IJanewayModule {
 				//tabbedPane.insertTab("New Game", null, new JPanel(), null, count+1);
 	    		
 	    		//code to create a new tab
-	    	    JPanel panel = BetterNewGameTab.createJPanel();
-	    	    //PlanningPokerSession newSession = new PlanningPokerSession();
+	    		//NewGameTab newTab = new NewGameTab();
+	    		//JPanel panel = new NewGameTab().createJPanel();
+	    		JPanel panel = new BetterNewGameTab().createJPanel();
+	    		//PlanningPokerSession newSession = new PlanningPokerSession();
 	    		tabbedPane.addTab("New Game", null, panel, null);
 	    		//int count = tabbedPane.getComponentCount();
 	    		//tabbedPane.setTabComponentAt( count, new ClosableTabComponent(tabbedPane));

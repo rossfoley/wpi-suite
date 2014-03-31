@@ -195,8 +195,10 @@ public class PlanningPokerSession extends AbstractModel {
 		if (this.name==null){ 
 			this.name = this.makeDefaultName();
 		}
-		if ((this.endDate).before(currentDate)){
-			returnBool = false;
+		if (this.endDate!=null){
+			if ((this.endDate).before(currentDate)){
+				returnBool = false;
+			}
 		}
 		// check if other fields are in appropriate range
 		return returnBool;

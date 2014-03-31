@@ -8,6 +8,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
  *
  */
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
@@ -25,22 +26,38 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
+
 import javax.swing.SwingConstants;
 
-public class BetterNewGameTab {
+public class BetterNewGameTab { //extends JPanel {
 	private static JTextField textFieldSessionField;
 	private static JTextField textFieldDescription;
-	private static JComboBox<String> comboMonth;
+	JComboBox<Months> comboMonth = new JComboBox<Months>();
+	JComboBox<String> comboDay = new JComboBox<String>();
+	int month;
+	int day;
+	int year;
+	//JPanel panel = new JPanel();
+	
+	
+	//private static JComboBox<String> comboMonth;
 	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public static JPanel createJPanel(){
+	
+	public JPanel createJPanel(){
+		//public BetterNewGameTab(){
+		
+		
+	//public JPanel createJPanel(){
 		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(Color.MAGENTA));
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(Color.RED));
 		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, panel);
@@ -52,6 +69,7 @@ public class BetterNewGameTab {
 		panel.add(btnNext);
 		panel.add(panel_1);
 		SpringLayout sl_panel_1 = new SpringLayout();
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);
 		panel_1.setLayout(sl_panel_1);
 		
 		btnNext.addActionListener(new ActionListener() {
@@ -60,16 +78,15 @@ public class BetterNewGameTab {
 				pokerSession.setOpen(true);
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
-				//int month = Integer.parseInt(comboMonth);
-				//int day = Integer.parseInt(comboDay);
-				//int year = Integer.parseInt(comboYear);
-				GregorianCalendar endDate;
-				if ((month!=null)&&(day!=null)&&(year!=null)){
+				
+
+				GregorianCalendar endDate = null;
+				if ((month!=0)&&(day!=0)&&(year!=0)){
 					endDate = new GregorianCalendar(month, day, year);
 				}
 				else {
 					endDate = null;
-				}
+				} 
 				if (pokerSession.validateFields()){
 					
 				}
@@ -86,6 +103,7 @@ public class BetterNewGameTab {
 				}
 			}
 		});
+		
 		
 		JLabel lblSessionName = new JLabel("Session Name:");
 		sl_panel_1.putConstraint(SpringLayout.NORTH, lblSessionName, 10, SpringLayout.NORTH, panel_1);
@@ -115,25 +133,94 @@ public class BetterNewGameTab {
 		panel_1.add(textFieldDescription);
 		
 		JLabel lblEndDate = new JLabel("Session End Date:");
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboMonth, 10, SpringLayout.EAST, lblEndDate);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, lblEndDate, 6, SpringLayout.SOUTH, textFieldDescription);
 		sl_panel_1.putConstraint(SpringLayout.WEST, lblEndDate, 0, SpringLayout.WEST, lblSessionName);
 		panel_1.add(lblEndDate);
 		
-		JComboBox<String> comboMonth = new JComboBox<String>();
+
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboMonth, 6, SpringLayout.SOUTH, lblEndDate);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboMonth, 0, SpringLayout.WEST, lblEndDate);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboMonth, -10, SpringLayout.EAST, lblEndDate);
+		comboMonth.setModel(new DefaultComboBoxModel<Months>(Months.values()));
+		//comboMonth.setModel(new DefaultComboBoxModel<Months> (new String [] {"<Month>", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}));
+		//int month;
 		panel_1.add(comboMonth);
 		
-		JComboBox<String> comboDay = new JComboBox<String>();
+		
+		comboMonth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				Months monthEnum = (Months) comboMonth.getSelectedItem();
+				switch(monthEnum){
+				case Month:
+					month = 0;
+					setDays31();
+					break;
+				case JANUARY:
+					month = 1;
+					setDays31();
+					break;
+				case FEBRUARY:
+					month = 2;
+					setFebDays();
+					break;
+				case MARCH:
+					month = 3;
+					setDays31();
+					break;
+				case APRIL:
+					month = 4;
+					setDays30();
+					break;
+				case MAY:
+					month = 5;
+					setDays31();
+					break;
+				case JUNE:
+					month = 6;
+					setDays30();
+					break;
+				case JULY:
+					month = 7;
+					setDays31();
+					break;
+				case AUGUST:
+					month = 8;
+					setDays31();
+					break;
+				case SEPTEMBER:
+					month = 9;
+					setDays30();
+					break;
+				case OCTOBER:
+					month = 10;
+					setDays31();
+					break;
+				case NOVEMBER:
+					month = 11;
+					setDays30();
+					break;
+				case DECEMBER:
+					month = 12;
+					setDays31();
+					break;
+				default:
+					month = 0;
+					setDays31();
+					break;
+						
+				}
+			}	
+		});
+		
+		
+		
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboDay, 6, SpringLayout.SOUTH, lblEndDate);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboDay, 6, SpringLayout.EAST, comboMonth);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 50, SpringLayout.EAST, comboMonth);
 		panel_1.add(comboDay);
 		
 		JComboBox<String> comboYear = new JComboBox<String>();
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboYear, 6, SpringLayout.EAST, comboDay);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboYear, 60, SpringLayout.EAST, comboDay);
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboYear, 90, SpringLayout.EAST, comboDay);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboYear, 0, SpringLayout.NORTH, comboMonth);
 		panel_1.add(comboYear);
 		
@@ -169,4 +256,37 @@ public class BetterNewGameTab {
 		
 		return panel;
 	}
+	
+	public void setDays31(){
+		comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
+				"9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20",
+				"21", "22","23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+		System.out.println("Displaying 31 days");
+	}
+	
+	public void setDays30(){
+		comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
+				"9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20",
+				"21", "22","23", "24", "25", "26", "27", "28", "29", "30" }));
+		System.out.println("Displaying 30 days");
+	}
+
+	public void setFebDays(){
+		if (year%4==0){
+			comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
+					"9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20",
+					"21", "22","23", "24", "25", "26", "27", "28", "29"}));
+		}
+		else {
+			comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
+					"9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20",
+					"21", "22","23", "24", "25", "26", "27", "28"}));
+		}
+		System.out.println("Displaying feb days");
+		
+	}
+	
+	/*public JPanel createJPanel(){
+		return panel;
+	} */
 }
