@@ -15,6 +15,8 @@ import javax.swing.ImageIcon;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.BetterNewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.TestGui_A;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
@@ -108,8 +110,8 @@ public class PlanningPoker implements IJanewayModule {
 				//tabbedPane.insertTab("New Game", null, new JPanel(), null, count+1);
 	    		
 	    		//code to create a new tab
-	    	    JPanel panel = NewGameTab.createJPanel();
-	    	    PlanningPokerSession newSession = new PlanningPokerSession();
+	    	    JPanel panel = BetterNewGameTab.createJPanel();
+	    	    //PlanningPokerSession newSession = new PlanningPokerSession();
 	    		tabbedPane.addTab("New Game", null, panel, null);
 	    		//int count = tabbedPane.getComponentCount();
 	    		//tabbedPane.setTabComponentAt( count, new ClosableTabComponent(tabbedPane));

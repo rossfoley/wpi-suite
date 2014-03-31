@@ -173,7 +173,7 @@ public final class NewGameTab {
 		//sl_panel.putConstraint(SpringLayout.WEST, list, 0, SpringLayout.WEST, panel_1);
 		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 203, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 20, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -20, SpringLayout.NORTH, list);
+		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.NORTH, list);
 		//sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -15, SpringLayout.NORTH, list);
 		sl_panel.putConstraint(SpringLayout.EAST, panel_1, -20, SpringLayout.EAST, panel);
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -182,8 +182,8 @@ public final class NewGameTab {
 		panel_1.setLayout(sl_panel_1);
 		
 		textField_4 = new JTextField();
-		sl_panel_1.putConstraint(SpringLayout.WEST, textField_4, 100, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.SOUTH, textField_4, -13, SpringLayout.SOUTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textField_4, 120, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, textField_4, -10, SpringLayout.SOUTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textField_4, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textField_4);
 		textField_4.setColumns(10);
@@ -210,8 +210,8 @@ public final class NewGameTab {
 		
 		JLabel lblNewRequirementName = new JLabel("<html> New Requirement <br/> Name: <html>");
 		sl_panel_1.putConstraint(SpringLayout.NORTH, lblNewRequirementName, 2, SpringLayout.NORTH, btnAddRequirement);
-		sl_panel_1.putConstraint(SpringLayout.WEST, lblNewRequirementName, 0, SpringLayout.WEST, lblDescription);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, lblNewRequirementName, -6, SpringLayout.NORTH, lblDescription);
+		sl_panel_1.putConstraint(SpringLayout.EAST, lblNewRequirementName, 0, SpringLayout.EAST, lblDescription);
 		panel_1.add(lblNewRequirementName);
 		
 		description = new JTextField();
