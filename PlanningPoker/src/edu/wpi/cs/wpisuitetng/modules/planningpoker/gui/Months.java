@@ -4,7 +4,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 /**
- * @author Amanda Adkins
+ * @author mandi1267
  *
  */
 public enum Months {

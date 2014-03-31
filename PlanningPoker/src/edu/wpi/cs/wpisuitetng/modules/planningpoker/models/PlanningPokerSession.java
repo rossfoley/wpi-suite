@@ -16,11 +16,13 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
- * @author rossfoley, aaadkins
+ * @author rossfoley
+*  @author mandi1267 
  *
  */
 public class PlanningPokerSession extends AbstractModel {
@@ -33,7 +35,20 @@ public class PlanningPokerSession extends AbstractModel {
 	private List<Requirement> requirements;
 
 	private String description;
+	private int sessionCreatorID;
 	
+	/**
+	 * @return the sessionCreatorID
+	 */
+	public int getSessionCreatorID() {
+		return sessionCreatorID;
+	}
+	/**
+	 * @param sessionCreatorID the sessionCreatorID to set
+	 */
+	public void setSessionCreatorID(int sessionCreatorID) {
+		this.sessionCreatorID = sessionCreatorID;
+	}
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
@@ -189,7 +204,8 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = requirementIDs;
 	}
 	
-	public boolean validateFields(){
+	public boolean validateFields(int year, int month, int day, int hour, int minute) {
+		
 		GregorianCalendar currentDate = new GregorianCalendar();
 		boolean returnBool = true;
 		if (this.name==null){ 

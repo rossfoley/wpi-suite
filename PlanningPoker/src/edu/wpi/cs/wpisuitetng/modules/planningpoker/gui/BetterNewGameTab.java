@@ -4,7 +4,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 /**
- * @author Amanda
+ * @author mandi1267
  *
  */
 
@@ -37,9 +37,9 @@ public class BetterNewGameTab { //extends JPanel {
 	JComboBox<String> comboYear = new JComboBox<String>();
 	JComboBox<String> comboTime = new JComboBox<String>();
 	JComboBox<String> comboAMPM = new JComboBox<String>();
-	int month;
-	int day;
-	int year;
+	int month = 13;
+	int day = 0;
+	int year = 1;
 	int endHour;
 	int endMinutes;
 	int displayingDays;
@@ -90,6 +90,7 @@ public class BetterNewGameTab { //extends JPanel {
 		
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean canSaveSession = true;
 				System.out.print(year);
 				System.out.print(month);
 				System.out.println(day);
@@ -112,11 +113,12 @@ public class BetterNewGameTab { //extends JPanel {
 					panel_1.add(lblDateError);
 					panel_1.revalidate();
 					panel_1.repaint();
+					canSaveSession = false;
 
 				}
-				else{
+				if (canSaveSession ){
 					pokerSession.setEndDate(endDate);
-					if(pokerSession.validateFields()){
+					if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
 						AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
 						// move to add reqs screen
 					}
@@ -264,6 +266,7 @@ public class BetterNewGameTab { //extends JPanel {
 		comboYear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				String yearString = (String) comboYear.getSelectedItem();
+				System.out.println(yearString);
 				if (yearString.equals("Year")){
 					year = 1;
 				}
