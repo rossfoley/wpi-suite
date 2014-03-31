@@ -27,10 +27,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
 /**
@@ -50,32 +52,23 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		//this.refresh();  
 	}
 	
-	/**
-	 * Method valueChanged.
-	
-	
-	 * @see javax.swing.event.TreeSelectionListener#valueChanged(TreeSelectionEvent) *//*
-	@Override
-	public void valueChanged(TreeSelectionEvent e) {
-		
-	}*/
 	
 	/**
 	 * This will wipe out the current tree and rebuild it
 	 */
 	public void refresh(){
 		
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode(/*ConfigManager.getConfig().getProjectName()*/ "Iteration Tree"); //makes a starting node
+		DefaultMutableTreeNode top = new DefaultMutableTreeNode(ConfigManager.getConfig().getProjectName()); //makes a starting node
 		List<Iteration> iterations = sortIterations(IterationModel.getInstance().getIterations()); //retreive the list of all iterations
 		System.out.println("Num Iterations: " + iterations.size());
 		for(int i=0; i<iterations.size(); i++){
 
 			DefaultMutableTreeNode newIterNode = new DefaultMutableTreeNode(iterations.get(i)); //make a new iteration node to add
-			List<Requirement> requirements = sortRequirements(iterations.get(i).getRequirements()); //gets the list of requirements that is associated with the iteration
+			List<PlanningPokerSession> pPokerSession = null;//sortPPokerSession(iterations.get(i).getPokerSession()); //gets the list of requirements that is associated with the iteration
 
 			//check to see if there are any requirements for the iteration
-			if(requirements.size() > 0){
-				addRequirementsToTree(requirements, newIterNode);
+			if(pPokerSession.size() > 0){
+				addPokerSessionToTree(pPokerSession, newIterNode);
 			}
 
 			top.add(newIterNode); //add the iteration's node to the top node
@@ -101,22 +94,22 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	}
 	
 	/**
-	 * Method addRequirementsToTree.
-	 * @param requirements List<Requirement>
+	 * Method addPokerSessionToTree.
+	 * @param pPokerSession List<Requirement>
 	 * @param parentNode DefaultMutableTreeNode
 	 */
-	private void addRequirementsToTree(List<Requirement> requirements, DefaultMutableTreeNode parentNode) {
+	private void addPokerSessionToTree(List<PlanningPokerSession> pPokerSession, DefaultMutableTreeNode parentNode) {
 		
-		for (int j = 0; j < requirements.size(); j++) {
-			DefaultMutableTreeNode newReqNode = new DefaultMutableTreeNode(requirements.get(j));
-			List<Requirement> children = sortRequirements(requirements.get(j).getChildren());
-//			if((requirements.get(j).getParentID() != -1) && (parentNode.getUserObject() instanceof Iteration)){
-//				System.out.println("breaking for " + requirements.get(j).getName());
-//				continue;
-//			}
+		for (int j = 0; j < pPokerSession.size(); j++) {
+			DefaultMutableTreeNode newReqNode = new DefaultMutableTreeNode(pPokerSession.get(j));
+			List<PlanningPokerSession> children = sortPPokerSession(pPokerSession.get(j).getChildren());
+			if((pPokerSession.get(j).getParentID() != -1) && (parentNode.getUserObject() instanceof Iteration)){
+				System.out.println("breaking for " + pPokerSession.get(j).getName());
+				continue;
+			}
 			if(children.size() > 0)
 			{
-				addRequirementsToTree(children, newReqNode);
+				addPokerSessionToTree(children, newReqNode);
 			}
 			parentNode.add(newReqNode);
 		}
@@ -132,36 +125,34 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		int x = e.getX();
 		int y = e.getY();
 		
-		if (e.getClickCount() == 2)
-		{
-			TreePath treePath = tree.getPathForLocation(e.getX(), e.getY());
-			if(treePath != null)
-			{
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
-				if(node != null)
-				{
-					if(node.getUserObject() instanceof Iteration)
-					{
-						ViewEventController.getInstance().editIteration((Iteration)node.getUserObject());
-					}
-					if(node.getUserObject() instanceof Requirement)
-					{
-						ViewEventController.getInstance().editRequirement((Requirement)node.getUserObject());
-					}
-				}
-			}
-		}
-/*
-		    if (SwingUtilities.isRightMouseButton(e)) {
-
-		        int row = tree.getClosestRowForLocation(e.getX(), e.getY());
-		        tree.setSelectionRow(row);
-		        String label = "popup: ";
-		        JPopupMenu popup = new JPopupMenu();
-				popup.add(new JMenuItem(label));
-				popup.show(tree, x, y);
-		    }
-		    */
+//		if (e.getClickCount() == 2)
+//		{
+//			TreePath treePath = tree.getPathForLocation(e.getX(), e.getY());
+//			if(treePath != null)
+//			{
+//				DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+//				if(node != null)
+//				{
+//					if(node.getUserObject() instanceof Iteration)
+//					{
+//						ViewEventController.getInstance().editIteration((Iteration)node.getUserObject());
+//					}
+//					if(node.getUserObject() instanceof Requirement)
+//					{
+//						ViewEventController.getInstance().editRequirement((Requirement)node.getUserObject());
+//					}
+//				}
+//			}
+//		}
+//		    if (SwingUtilities.isRightMouseButton(e)) {
+//
+//		        int row = tree.getClosestRowForLocation(e.getX(), e.getY());
+//		        tree.setSelectionRow(row);
+//		        String label = "popup: ";
+//		        JPopupMenu popup = new JPopupMenu();
+//				popup.add(new JMenuItem(label));
+//				popup.show(tree, x, y);
+//		    }
 	}
 
 	/**
@@ -270,9 +261,9 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @return the same list sorted by name
 	 * 
 	 */
-	public List<Requirement> sortRequirements(List<Requirement> list) {
+	public List<PlanningPokerSession> sortPPokerSession(List<PlanningPokerSession> list) {
 		
-		Collections.sort(list, new RequirementComparator());
+		Collections.sort(list, new PlanningPokerSessionComparator());
 
 		return list;
 	}
@@ -298,8 +289,8 @@ class IterationComparator implements Comparator<Iteration> {
  * sorts Requirements by name
  *
  */
-class RequirementComparator implements Comparator<Requirement>{
-	public int compare(Requirement R1, Requirement R2){
+class PlanningPokerSessionComparator implements Comparator<PlanningPokerSession>{
+	public int compare(PlanningPokerSession R1, PlanningPokerSession R2){
 		return R1.getName().compareTo(R2.getName());
 	}
 }

@@ -24,6 +24,7 @@ import javax.swing.table.TableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * @author rossfoley
@@ -55,7 +56,7 @@ public class SessionTable extends JTable
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 
-		//ViewEventController.getInstance().setOverviewTable(this);
+		ViewEventController.getInstance().setOverviewTable(this);
 		initialized = false;
 
 		 System.out.println("finished constructing the table");
@@ -65,6 +66,7 @@ public class SessionTable extends JTable
 	 * updates OverviewTable with the contents of the requirement model	 * 
 	 */
 	public void refresh() {
+		/*
 		List<PlanningPokerSession> pokerSessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
 				
 		// clear the table
@@ -80,7 +82,7 @@ public class SessionTable extends JTable
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
-		
+		*/
 		System.out.println("finished refreshing the table");		
 	}
 	

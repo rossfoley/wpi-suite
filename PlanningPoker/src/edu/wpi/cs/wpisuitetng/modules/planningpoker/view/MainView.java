@@ -165,8 +165,8 @@ public class MainView extends JTabbedPane {
 				{
 					ViewEventController.getInstance().getToolbar().getEditButton().getEditButton().setEnabled(true);
 					ViewEventController.getInstance().getOverviewTable().refresh();
-					ViewEventController.getInstance().getOverviewTree().refresh();
-					currentSessions.setLeftComponent(ViewEventController.getInstance().getOverviewTree());
+					//ViewEventController.getInstance().getOverviewTree().refresh();
+					//currentSessions.setLeftComponent(ViewEventController.getInstance().getOverviewTree());
 					currentSessions.setDividerLocation(180);
 					currentSessions.revalidate();
 					currentSessions.repaint();

@@ -145,4 +145,14 @@ public class PlanningPokerSession extends AbstractModel {
 		return null;
 	}
 
+	public int getParentID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public List<PlanningPokerSession> getChildren() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

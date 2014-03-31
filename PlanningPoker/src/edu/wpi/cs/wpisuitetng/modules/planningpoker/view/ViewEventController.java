@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.SessionTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
@@ -36,16 +37,16 @@ public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
 	private ToolbarView toolbar = null;
-	private OverviewTable overviewTable = null;
+	private SessionTable overviewTable = null;
 	private OverviewTreePanel overviewTree = null;
 	private ArrayList<SessionPanel> listOfEditingPanels = new ArrayList<SessionPanel>();
 	
 	/**
 	 * Sets the OverviewTable for the controller
-	 * @param overviewTable a given OverviewTable
+	 * @param sessionTable a given OverviewTable
 	 */
-	public void setOverviewTable(OverviewTable overviewTable) {
-		this.overviewTable = overviewTable;
+	public void setOverviewTable(SessionTable sessionTable) {
+		this.overviewTable = sessionTable;
 	}
 
 	/**
@@ -93,39 +94,6 @@ public class ViewEventController {
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
 		main.setSelectedComponent(panel);
-	}
-	
-	/**
-	 * Opens a new tab for the editing of a iteration.
-	 * @param iteration Iteration
-	 */
-	public void editIteration(Iteration iteration) {
-		//if(iter == IterationModel.getInstance().getBacklog()) return;
-		
-		/*IterationPanel exists = null;
-		
-		for(IterationPanel panel : listOfIterationPanels)
-		{
-			if(panel.getDisplayIteration() == oldSession)
-			{
-				exists = panel;
-				break;
-			}
-		}	
-		
-		if(exists == null)
-		{
-			IterationPanel editIter = new IterationPanel(oldSession);
-			listOfIterationPanels.add(editIter);
-			main.addTab(oldSession.getName(), null, editIter, "Editing " + oldSession.getName());
-			main.invalidate(); //force the tabbedpane to redraw.
-			main.repaint();
-			main.setSelectedComponent(editIter);
-		}
-		else
-		{
-			main.setSelectedComponent(exists);
-		}*/
 	}
 
 
@@ -190,7 +158,7 @@ public class ViewEventController {
 	/** 
 	
 	 * @return overviewTable */
-	public OverviewTable getOverviewTable(){
+	public SessionTable getOverviewTable(){
 		return overviewTable;
 
 	}
