@@ -20,9 +20,9 @@ import java.util.GregorianCalendar;
 
 public final class NewGameTab {
 	private static JTextField textField;
-	private static JTextField textField_1;
-	private static JTextField textField_2;
-	private static JTextField textField_3;
+	private static JTextField textFieldMonth;
+	private static JTextField textFieldDay;
+	private static JTextField textFieldYear;
 	private static JTextField textField_4;
 	/**
 	 * //@wbp.parser.entryPoint
@@ -116,27 +116,27 @@ public final class NewGameTab {
 		sl_panel.putConstraint(SpringLayout.WEST, lblYear, 208, SpringLayout.WEST, panel);
 		panel.add(lblYear);
 		
-		textField_1 = new JTextField();
-		sl_panel.putConstraint(SpringLayout.NORTH, textField_1, -3, SpringLayout.NORTH, lblModerator);
-		textField_1.setToolTipText("month");
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		textFieldMonth = new JTextField();
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldMonth, -3, SpringLayout.NORTH, lblModerator);
+		textFieldMonth.setToolTipText("month");
+		panel.add(textFieldMonth);
+		textFieldMonth.setColumns(10);
 		
-		textField_2 = new JTextField();
-		sl_panel.putConstraint(SpringLayout.EAST, textField_1, 0, SpringLayout.EAST, textField_2);
-		sl_panel.putConstraint(SpringLayout.NORTH, textField_2, 0, SpringLayout.NORTH, comboBox);
-		textField_2.setToolTipText("day");
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		textFieldDay = new JTextField();
+		sl_panel.putConstraint(SpringLayout.EAST, textFieldMonth, 0, SpringLayout.EAST, textFieldDay);
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldDay, 0, SpringLayout.NORTH, comboBox);
+		textFieldDay.setToolTipText("day");
+		panel.add(textFieldDay);
+		textFieldDay.setColumns(10);
 		
-		textField_3 = new JTextField();
-		sl_panel.putConstraint(SpringLayout.EAST, lblYear, -6, SpringLayout.WEST, textField_3);
-		sl_panel.putConstraint(SpringLayout.EAST, textField_2, 0, SpringLayout.EAST, textField_3);
-		sl_panel.putConstraint(SpringLayout.NORTH, textField_3, 0, SpringLayout.NORTH, comboBox_1);
-		sl_panel.putConstraint(SpringLayout.WEST, textField_3, 89, SpringLayout.EAST, comboBox_1);
-		textField_3.setToolTipText("year");
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		textFieldYear = new JTextField();
+		sl_panel.putConstraint(SpringLayout.EAST, lblYear, -6, SpringLayout.WEST, textFieldYear);
+		sl_panel.putConstraint(SpringLayout.EAST, textFieldDay, 0, SpringLayout.EAST, textFieldYear);
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldYear, 0, SpringLayout.NORTH, comboBox_1);
+		sl_panel.putConstraint(SpringLayout.WEST, textFieldYear, 89, SpringLayout.EAST, comboBox_1);
+		textFieldYear.setToolTipText("year");
+		panel.add(textFieldYear);
+		textFieldYear.setColumns(10);
 		
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
@@ -144,9 +144,9 @@ public final class NewGameTab {
 				// Create a new session, have it public by default, and include attributes
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
 				pokerSession.setOpen(true);
-				int month = Integer.parseInt(textField_1.getText());
-				int day = Integer.parseInt(textField_2.getText());
-				int year = Integer.parseInt(textField_3.getText());
+				int month = Integer.parseInt(textFieldMonth.getText());
+				int day = Integer.parseInt(textFieldDay.getText());
+				int year = Integer.parseInt(textFieldYear.getText());
 				GregorianCalendar date = new GregorianCalendar(year, month, day);
 				pokerSession.setEndDate(date);
 				// Add the session to the list of sessions and send it to the DB
