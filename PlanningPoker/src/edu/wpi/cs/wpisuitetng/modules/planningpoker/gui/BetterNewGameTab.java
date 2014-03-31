@@ -34,6 +34,7 @@ public class BetterNewGameTab { //extends JPanel {
 	private static JTextField textFieldDescription;
 	JComboBox<Months> comboMonth = new JComboBox<Months>();
 	JComboBox<String> comboDay = new JComboBox<String>();
+	JComboBox<String> comboYear = new JComboBox<String>();
 	int month;
 	int day;
 	int year;
@@ -81,7 +82,7 @@ public class BetterNewGameTab { //extends JPanel {
 				
 
 				GregorianCalendar endDate = null;
-				if ((month!=0)&&(day!=0)&&(year!=0)){
+				if ((month!=0)&&(day!=0)&&(year!=1)){
 					endDate = new GregorianCalendar(month, day, year);
 				}
 				else {
@@ -212,17 +213,51 @@ public class BetterNewGameTab { //extends JPanel {
 			}	
 		});
 		
+		comboDay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				String dayString = (String) comboDay.getSelectedItem();
+				if (dayString.equals("Day")){
+					day = 0;
+				}
+				else {
+					day = Integer.parseInt(dayString);
+				}
+				System.out.print("Day:");
+				System.out.println(day);
+						
+
+			}	
+		});
 		
 		
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboDay, 6, SpringLayout.SOUTH, lblEndDate);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboDay, 6, SpringLayout.EAST, comboMonth);
+		setDays31();
 		panel_1.add(comboDay);
 		
-		JComboBox<String> comboYear = new JComboBox<String>();
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboYear, 6, SpringLayout.EAST, comboDay);
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboYear, 90, SpringLayout.EAST, comboDay);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboYear, 0, SpringLayout.NORTH, comboMonth);
+		setYearDropdown();
 		panel_1.add(comboYear);
+		
+		comboYear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				String yearString = (String) comboYear.getSelectedItem();
+				if (yearString.equals("Year")){
+					year = 1;
+				}
+				else {
+					year = Integer.parseInt(yearString);
+				}
+				setFebDays();
+				
+				System.out.print("year:");
+				System.out.println(year);
+						
+
+			}	
+		});
 		
 		JLabel lblSessionEndTime = new JLabel("Session End Time:");
 		sl_panel_1.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, comboMonth);
@@ -272,7 +307,7 @@ public class BetterNewGameTab { //extends JPanel {
 	}
 
 	public void setFebDays(){
-		if (year%4==0){
+		if ((year%4)==0){
 			comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
 					"9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20",
 					"21", "22","23", "24", "25", "26", "27", "28", "29"}));
@@ -285,8 +320,12 @@ public class BetterNewGameTab { //extends JPanel {
 		System.out.println("Displaying feb days");
 		
 	}
-	
-	/*public JPanel createJPanel(){
-		return panel;
-	} */
+	public void setYearDropdown(){
+		comboYear.setModel(new DefaultComboBoxModel<String>(new String[] {
+				"Year", "2014", "2015", "2016", "2017", "2018", "2019" , "2020", 
+				"2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", 
+				"2031", "2032", "2033", "2034"}));
+	}
 }
+
+
