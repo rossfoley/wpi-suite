@@ -9,16 +9,19 @@ public class GuiTester {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		LinkedList<String> testObject = new LinkedList<String>();
-		testObject.add("requirement_1");
-		testObject.add("requirement_2");
-		testObject.add("requirement_3");
-		testObject.add("requirement_4");
+		String[] testObject = {"requirement_1", "requirement_2", "requirement_3",
+				"requirement_4", "requirement_5", "requirement_6"};
+		
+		SelectFromListPanel panel = new SelectFromListPanel(testObject);
+		
+		panel.addRequirement("add_test");
+		panel.addRequirement("add_test_2");
 		
 		JFrame frame = new JFrame();
-		frame.add(new SelectFromListPanel(testObject));
+		frame.add(panel);
 		frame.setVisible(true);
-
+		frame.setSize(800, 600);
+		
 	}
 
 }

@@ -13,8 +13,10 @@ import java.util.LinkedList;
 
 public class SelectFromListPanel extends JPanel{
 	
+	// define variables
 	private LinkedList<String> unSelected;
 	private LinkedList<String> selected;
+	private int defaultSize;
 	private String[] unSelectedListData = {};
 	private String[] selectedListData = {};
 	private javax.swing.AbstractListModel unSelectedListModel;
@@ -22,13 +24,30 @@ public class SelectFromListPanel extends JPanel{
 	private javax.swing.AbstractListModel selectedListModel;
 	private javax.swing.JList<String> Selected;
 	
-	SelectFromListPanel(LinkedList<String> unSelected){
+	SelectFromListPanel(String[] unSelected){
+		//set panel layout
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		this.unSelected = unSelected;
+		//initialize the main requirement lists
+		this.unSelected = new LinkedList<String>();
 		this.selected = new LinkedList<String>();
+		//convert the inital data from an array to a list
+		for(String str : unSelected){
+			this.unSelected.addLast(str);
+		}
+		
+		//get the data to populate the initial unselected requirements
 		unSelectedListData = getNames(this.unSelected).toArray(new String[0]);
 		
+		
+		//defaultSize = this.unSelected.size();
+		
+		//populated the initial list of selected requirements
+		for (String str : this.unSelected){
+			this.selected.add(null);
+		}
+		
+		//initializes the default unselected list data
 		this.unSelectedListModel = new javax.swing.AbstractListModel(){
 			String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
@@ -36,31 +55,34 @@ public class SelectFromListPanel extends JPanel{
 		};
 		//this.unSelectedListModel.addListDataListener(new ListDataListener);
 		
+		// initializes the default selected list data
 		this.selectedListModel = new javax.swing.AbstractListModel(){
 			String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
 		
-		
+		// initializes the unselected list
 		this.Unselected = new JList<String>();
 		Unselected.setModel(unSelectedListModel);
 		springLayout.putConstraint(SpringLayout.NORTH, Unselected, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, Unselected, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, Unselected, 355, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, Unselected, 203, SpringLayout.WEST, this);
-		Unselected.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		Unselected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		add(Unselected);
 		
+		// initializes the selected list
 		this.Selected = new JList<String>();
 		Selected.setModel(selectedListModel);
 		springLayout.putConstraint(SpringLayout.NORTH, Selected, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, Selected, -225, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, Selected, 355, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, Selected, -10, SpringLayout.EAST, this);
-		Selected.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		Selected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		add(Selected);
 		
+		// creates the add button and attaches functionality
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -71,18 +93,22 @@ public class SelectFromListPanel extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, btnAdd, 24, SpringLayout.EAST, Unselected);
 		add(btnAdd);
 		
+		// creates the remove button and attaches functionality
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				remove();
 			}
 		});
 		springLayout.putConstraint(SpringLayout.NORTH, btnRemove, 13, SpringLayout.SOUTH, btnAdd);
 		springLayout.putConstraint(SpringLayout.WEST, btnRemove, 0, SpringLayout.WEST, btnAdd);
 		add(btnRemove);
 		//JPanel panel = new JPanel();
+		
 		update();
 	}
 	
+	// refreshes the data from the lists of requirements
 	private void update(){
 		System.out.println("In Update");
 		//section updates the unselected list object
@@ -94,10 +120,17 @@ public class SelectFromListPanel extends JPanel{
 		LinkedList<String> selectedNames = getNames(selected);
 		selectedListData = selectedNames.toArray(new String[0]);
 		
+		updateUnselectedList();
+		updateSelectedList();
+		//this.Selected.updateUI();
 		this.updateUI();
 		
 	}
 	
+	/*
+	 * moves the requirements that are highlighted in the unselected list to
+	 * the selected list
+	 */
 	private void add(){
 		System.out.println("In Add");
 		int selected[] = Unselected.getSelectedIndices();
@@ -106,15 +139,49 @@ public class SelectFromListPanel extends JPanel{
 			//this.selected.add(n, this.unSelected.get(n));
 			if (this.unSelected.get(n) != null){
 				String element = this.unSelected.get(n);
-				this.unSelected.add(n, null);
+				//this.unSelected.add(n, null);
 				System.out.println(element);
-				this.selected.addLast(element);
+				if (!this.selected.contains(element)){
+					int pos = this.unSelected.indexOf(element);
+					this.selected.remove(pos);
+					this.selected.add(pos, element);
+					this.unSelected.remove(pos);
+					this.unSelected.add(pos, null);
+				}
 			}
 		}
 		update();
 		
 	}
 	
+	/*
+	 * moves the requirements that are highlighted from the selected list to 
+	 * the unselected list
+	 */
+	private void remove(){
+		System.out.println("In Remove");
+		int selected[] = Selected.getSelectedIndices();
+		for(int n : selected){
+			System.out.print(n);
+			//this.selected.add(n, this.unSelected.get(n));
+			if (this.selected.get(n) != null){
+				String element = this.selected.get(n);
+				//this.unSelected.add(n, null);
+				System.out.println(element);
+				if (!this.unSelected.contains(element)){
+					int pos = this.selected.indexOf(element);
+					this.unSelected.remove(pos);
+					this.unSelected.add(pos, element);
+					this.selected.remove(pos);
+					this.selected.add(pos, null);
+				}
+			}
+		}
+		update();
+		
+	}
+	
+	// get the name to be displayed by the list from the list of requirements given
 	private LinkedList<String> getNames(LinkedList<String> list){
 		System.out.println("In Get Names");
 		LinkedList<String> rList = new LinkedList<String>();
@@ -129,10 +196,53 @@ public class SelectFromListPanel extends JPanel{
 		return rList;
 	}
 	
-	
-	LinkedList<String> getSelected(){
-		return selected;
+	// update the data displayed in the unselected list
+	void updateUnselectedList(){
+		
+		this.unSelectedListModel = new javax.swing.AbstractListModel(){
+			String[] strings = unSelectedListData;
+			public int getSize(){return strings.length;}
+			public Object getElementAt(int i){return strings[i];}
+		};
+		
+		
+		this.Unselected.setModel(unSelectedListModel);
+		
 		
 	}
-
+	
+	// update the data displayed by the selected list
+	void updateSelectedList(){
+		
+		this.selectedListModel = new javax.swing.AbstractListModel(){
+			String[] strings = selectedListData;
+			public int getSize(){return strings.length;}
+			public Object getElementAt(int i){return strings[i];}
+		};
+		
+		
+		this.Selected.setModel(selectedListModel);
+		
+		
+	}
+	
+	//add a requirement to the list after the object has been created 
+	void addRequirement(String requirement){
+		unSelected.addLast(null);
+		selected.addLast(requirement);
+		update();
+	}
+	
+	// method to get the list of selected requirements
+	String[] getSelected(){
+		LinkedList<String> selection = new LinkedList<String>();
+		for(String str : selected){
+			if (str != null){
+				selection.addFirst(str);
+			}
+		}
+		
+		return selection.toArray(new String[0]);
+		
+	}
 }
