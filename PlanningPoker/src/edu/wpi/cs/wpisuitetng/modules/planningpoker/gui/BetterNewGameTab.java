@@ -43,6 +43,14 @@ public class BetterNewGameTab { //extends JPanel {
 	int endHour;
 	int endMinutes;
 	int displayingDays;
+	JPanel panel_1 = new JPanel();
+	SpringLayout sl_panel_1 = new SpringLayout();
+	JLabel lblEndDate = new JLabel("Session End Date:");
+	
+	/* public BetterNewGameTab(){
+		panel_1.setLayout(sl_panel_1);
+		
+	}  */
 	
 	//JPanel panel = new JPanel();
 	
@@ -62,7 +70,7 @@ public class BetterNewGameTab { //extends JPanel {
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
-		JPanel panel_1 = new JPanel();
+		//JPanel panel_1 = new JPanel();
 		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, panel);
@@ -72,33 +80,49 @@ public class BetterNewGameTab { //extends JPanel {
 		sl_panel.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, panel);
 		sl_panel.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, panel);
 		panel.add(btnNext);
+		panel_1.setForeground(Color.BLACK);
 		panel.add(panel_1);
-		SpringLayout sl_panel_1 = new SpringLayout();
+		//SpringLayout sl_panel_1 = new SpringLayout();
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);
 		panel_1.setLayout(sl_panel_1);
 		
+
+		
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.print(year);
+				System.out.print(month);
+				System.out.println(day);
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
 				pokerSession.setOpen(true);
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
-				
-
 				GregorianCalendar endDate = null;
-				if ((month!=0)&&(day!=0)&&(year!=1)){
+				if ((month!=13)&&(day!=0)&&(year!=1)){
 					endDate = new GregorianCalendar(year, month, day, endHour, endMinutes);
+					System.out.println("Date entered");
 				}
-				else {
-					endDate = null;
-				} 
-				pokerSession.setEndDate(endDate);
-				if(pokerSession.validateFields()){
-					AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
-					// move to add reqs screen
+				else if ((month==13)||(day==0)||(year==1)){
+					//printError();
+					JLabel lblDateError = new JLabel("Please select a value for all date fields");
+					lblDateError.setForeground(Color.RED);
+					
+					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
+					sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
+					panel_1.add(lblDateError);
+					panel_1.revalidate();
+					panel_1.repaint();
+
 				}
-				else {
-					// reprompt for empty fields
+				else{
+					pokerSession.setEndDate(endDate);
+					if(pokerSession.validateFields()){
+						AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+						// move to add reqs screen
+					}
+					else {
+						// reprompt for empty fields
+					}
 				}
 			}
 		});
@@ -131,7 +155,7 @@ public class BetterNewGameTab { //extends JPanel {
 		textFieldDescription.setColumns(10);
 		panel_1.add(textFieldDescription);
 		
-		JLabel lblEndDate = new JLabel("Session End Date:");
+
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboMonth, 10, SpringLayout.EAST, lblEndDate);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, lblEndDate, 6, SpringLayout.SOUTH, textFieldDescription);
 		sl_panel_1.putConstraint(SpringLayout.WEST, lblEndDate, 0, SpringLayout.WEST, lblSessionName);
@@ -246,8 +270,9 @@ public class BetterNewGameTab { //extends JPanel {
 				else {
 					year = Integer.parseInt(yearString);
 				}
-				setFebDays();
-				
+				if (month==1){
+					setFebDays();
+				}
 				System.out.print("year:");
 				System.out.println(year);
 						
@@ -257,6 +282,7 @@ public class BetterNewGameTab { //extends JPanel {
 		
 		
 		JLabel lblSessionEndTime = new JLabel("Session End Time:");
+		lblSessionEndTime.setForeground(Color.BLACK);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, comboMonth);
 		sl_panel_1.putConstraint(SpringLayout.WEST, lblSessionEndTime, 0, SpringLayout.WEST, lblSessionName);
 		panel_1.add(lblSessionEndTime);
@@ -372,6 +398,16 @@ public class BetterNewGameTab { //extends JPanel {
 		System.out.println(endHour);
 		System.out.print("Minute:");
 		System.out.println(endMinutes);
+	}
+	
+	private void printError(){
+		JLabel lblDateError = new JLabel("Please select a value for all date fields");
+		lblDateError.setForeground(Color.RED);
+		
+		sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
+		sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.WEST, lblEndDate);
+		panel_1.add(lblDateError);
+		System.out.println("Error function reached");
 	}
 	
 }
