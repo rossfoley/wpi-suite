@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -75,7 +76,7 @@ public class OverviewTable extends JTable
 			tableModel.addRow(new Object[]{ pokerSession.getID(), 
 					//pokerSession.getName(),
 					"Planning Poker Session Name goes here",
-					pokerSession.getEndDate()
+					DateFormat.getDateInstance(DateFormat.SHORT).format(pokerSession.getEndDate().getTime())
 			});	
 		}
 		// indicate that refresh is no longer affecting the table
