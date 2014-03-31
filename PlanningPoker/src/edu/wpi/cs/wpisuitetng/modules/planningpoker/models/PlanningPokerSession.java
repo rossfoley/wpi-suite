@@ -18,6 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.InvalidDateException;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
@@ -204,9 +205,11 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = requirementIDs;
 	}
 	
-	public boolean validateFields(int year, int month, int day, int hour, int minute) {
+	public boolean validateFields(int year, int month, int day, int hour, int minute) throws InvalidDateException {
 		
 		GregorianCalendar currentDate = new GregorianCalendar();
+		GregorianCalendar newEndDate = null;
+		
 		boolean returnBool = true;
 		if (this.name==null){ 
 			this.name = this.makeDefaultName();

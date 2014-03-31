@@ -95,10 +95,10 @@ public class BetterNewGameTab { //extends JPanel {
 				System.out.print(month);
 				System.out.println(day);
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
-				pokerSession.setOpen(true);
+				//pokerSession.setOpen(true);
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
-				GregorianCalendar endDate = null;
+				/*GregorianCalendar endDate = null;
 				if ((month!=13)&&(day!=0)&&(year!=1)){
 					endDate = new GregorianCalendar(year, month, day, endHour, endMinutes);
 					System.out.println("Date entered");
@@ -117,15 +117,24 @@ public class BetterNewGameTab { //extends JPanel {
 
 				}
 				if (canSaveSession ){
-					pokerSession.setEndDate(endDate);
-					if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
+					pokerSession.setEndDate(endDate); */
+				/*try {
+					boolean acceptableInputs = validateFields(year, month, day, endHour, endMinutes);
+				}
+				catch(Exception ) {
+					
+				} */
+				
+					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
+				if (canSaveSession){
 						AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+				}
 						// move to add reqs screen
-					}
+					/*}
 					else {
 						// reprompt for empty fields
 					}
-				}
+				} */
 			}
 		});
 		
