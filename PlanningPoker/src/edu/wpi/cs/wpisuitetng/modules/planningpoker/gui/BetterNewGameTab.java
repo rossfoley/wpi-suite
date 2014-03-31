@@ -30,6 +30,8 @@ import javax.swing.SwingConstants;
 public class BetterNewGameTab {
 	private static JTextField textFieldSessionField;
 	private static JTextField textFieldDescription;
+	private static JComboBox<String> comboMonth;
+	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -58,23 +60,26 @@ public class BetterNewGameTab {
 				pokerSession.setOpen(true);
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
-				int month = Integer.parseInt(comboMonth);
-				int day = Integer.parseInt(comboDay);
-				int year = Integer.parseInt(comboYear);
-				GregorianCalendar date = new GregorianCalendar()
+				//int month = Integer.parseInt(comboMonth);
+				//int day = Integer.parseInt(comboDay);
+				//int year = Integer.parseInt(comboYear);
+				GregorianCalendar endDate;
+				if ((month!=null)&&(day!=null)&&(year!=null)){
+					endDate = new GregorianCalendar(month, day, year);
+				}
+				else {
+					endDate = null;
+				}
 				if (pokerSession.validateFields()){
 					
 				}
 				else{
 					
 				}
-				int month = Integer.parseInt(textField_1.getText());
-				int day = Integer.parseInt(textField_2.getText());
-				int year = Integer.parseInt(textField_3.getText());
-				GregorianCalendar date = new GregorianCalendar(year, month, day);
-				pokerSession.setEndDate(date);
+				pokerSession.setEndDate(endDate);
 				if(pokerSession.validateFields()){
-					AddSessionController.getInstance().addPlanningPokerSession(pokerSession);	
+					AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+					// move to add reqs screen
 				}
 				else {
 					// reprompt for empty fields

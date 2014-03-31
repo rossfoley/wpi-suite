@@ -32,6 +32,8 @@ public class PlanningPokerSession extends AbstractModel {
 	private boolean isOpen;
 	private List<Requirement> requirements;
 
+	private String description;
+	
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
@@ -80,6 +82,18 @@ public class PlanningPokerSession extends AbstractModel {
 
 	}
 
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	/**
 	 * @return the endDate
 	 */
