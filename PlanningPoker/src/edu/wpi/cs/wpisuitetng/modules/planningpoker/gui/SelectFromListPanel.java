@@ -20,9 +20,11 @@ public class SelectFromListPanel extends JPanel{
 	private String[] unSelectedListData = {};
 	private String[] selectedListData = {};
 	private javax.swing.AbstractListModel unSelectedListModel;
-	private javax.swing.JList<String> Unselected;
+	private javax.swing.JList<String> unSelectedGuiList;
 	private javax.swing.AbstractListModel selectedListModel;
 	private javax.swing.JList<String> Selected;
+	private LinkedList<String> selectedNames;
+	private LinkedList<String> unSelectedNames;
 	
 	SelectFromListPanel(String[] unSelected){
 		//set panel layout
@@ -63,14 +65,14 @@ public class SelectFromListPanel extends JPanel{
 		};
 		
 		// initializes the unselected list
-		this.Unselected = new JList<String>();
-		Unselected.setModel(unSelectedListModel);
-		springLayout.putConstraint(SpringLayout.NORTH, Unselected, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, Unselected, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, Unselected, 355, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, Unselected, 203, SpringLayout.WEST, this);
-		Unselected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		add(Unselected);
+		this.unSelectedGuiList = new JList<String>();
+		unSelectedGuiList.setModel(unSelectedListModel);
+		springLayout.putConstraint(SpringLayout.NORTH, unSelectedGuiList, 10, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, unSelectedGuiList, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, unSelectedGuiList, 355, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, unSelectedGuiList, 203, SpringLayout.WEST, this);
+		unSelectedGuiList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		add(unSelectedGuiList);
 		
 		// initializes the selected list
 		this.Selected = new JList<String>();
@@ -90,7 +92,7 @@ public class SelectFromListPanel extends JPanel{
 			}
 		});
 		springLayout.putConstraint(SpringLayout.NORTH, btnAdd, 152, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, btnAdd, 24, SpringLayout.EAST, Unselected);
+		springLayout.putConstraint(SpringLayout.WEST, btnAdd, 24, SpringLayout.EAST, unSelectedGuiList);
 		add(btnAdd);
 		
 		// creates the remove button and attaches functionality
@@ -112,13 +114,22 @@ public class SelectFromListPanel extends JPanel{
 	private void update(){
 		System.out.println("In Update");
 		//section updates the unselected list object
-		LinkedList<String> unSelectedNames = getNames(unSelected);
-		//unSelectedListModel.
-		//for(int i = 0; i < unSelectedNames.size(); i++){	
-		//}
-		unSelectedListData = unSelectedNames.toArray(new String[0]);
-		LinkedList<String> selectedNames = getNames(selected);
-		selectedListData = selectedNames.toArray(new String[0]);
+		unSelectedNames = getNames(unSelected);
+		LinkedList<String> unSelectedNonNull = new LinkedList<String>();
+		for(String str : unSelectedNames){
+			if (str != null){
+				unSelectedNonNull.addLast(str);
+			}
+		}
+		unSelectedListData = unSelectedNonNull.toArray(new String[0]);
+		selectedNames = getNames(selected);
+		LinkedList<String> selectedNonNull = new LinkedList<String>();
+		for(String str : selectedNames){
+			if (str != null){
+				selectedNonNull.addLast(str);
+			}
+		}
+		selectedListData = selectedNonNull.toArray(new String[0]);
 		
 		updateUnselectedList();
 		updateSelectedList();
@@ -133,16 +144,18 @@ public class SelectFromListPanel extends JPanel{
 	 */
 	private void add(){
 		System.out.println("In Add");
-		int selected[] = Unselected.getSelectedIndices();
+		int selected[] = unSelectedGuiList.getSelectedIndices();
 		for(int n : selected){
 			System.out.print(n);
 			//this.selected.add(n, this.unSelected.get(n));
-			if (this.unSelected.get(n) != null){
-				String element = this.unSelected.get(n);
+			String str = this.unSelectedListData[n];
+			int pos = this.unSelectedNames.indexOf(str);
+			if (this.unSelected.get(pos) != null){
+				String element = this.unSelected.get(pos);
 				//this.unSelected.add(n, null);
 				System.out.println(element);
 				if (!this.selected.contains(element)){
-					int pos = this.unSelected.indexOf(element);
+					
 					this.selected.remove(pos);
 					this.selected.add(pos, element);
 					this.unSelected.remove(pos);
@@ -164,12 +177,13 @@ public class SelectFromListPanel extends JPanel{
 		for(int n : selected){
 			System.out.print(n);
 			//this.selected.add(n, this.unSelected.get(n));
-			if (this.selected.get(n) != null){
-				String element = this.selected.get(n);
+			String str = this.selectedListData[n];
+			int pos = this.selected.indexOf(str);
+			if (this.selected.get(pos) != null){
+				String element = this.selected.get(pos);
 				//this.unSelected.add(n, null);
 				System.out.println(element);
 				if (!this.unSelected.contains(element)){
-					int pos = this.selected.indexOf(element);
 					this.unSelected.remove(pos);
 					this.unSelected.add(pos, element);
 					this.selected.remove(pos);
@@ -206,7 +220,7 @@ public class SelectFromListPanel extends JPanel{
 		};
 		
 		
-		this.Unselected.setModel(unSelectedListModel);
+		this.unSelectedGuiList.setModel(unSelectedListModel);
 		
 		
 	}
