@@ -87,12 +87,12 @@ public final class NewGameTab {
 		
 		JList list_1 = new JList();
 		sl_panel.putConstraint(SpringLayout.NORTH, list_1, 0, SpringLayout.NORTH, list);
-		sl_panel.putConstraint(SpringLayout.WEST, list_1, 348, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.SOUTH, list_1, 0, SpringLayout.SOUTH, list);
 		list_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.add(list_1);
 		
 		JButton btnAdd = new JButton("Add");
+		sl_panel.putConstraint(SpringLayout.WEST, list_1, 6, SpringLayout.EAST, btnAdd);
 		sl_panel.putConstraint(SpringLayout.WEST, btnAdd, 6, SpringLayout.EAST, list);
 		sl_panel.putConstraint(SpringLayout.SOUTH, btnAdd, -90, SpringLayout.SOUTH, panel);
 		//sl_panel.putConstraint(SpringLayout.EAST, btnAdd, -27, SpringLayout.WEST, list_1);
@@ -141,7 +141,10 @@ public final class NewGameTab {
 		textField_3.setColumns(10);
 		
 		JButton btnSubmit = new JButton("Submit");
+		sl_panel.putConstraint(SpringLayout.EAST, list_1, 0, SpringLayout.EAST, btnSubmit);
 		sl_panel.putConstraint(SpringLayout.NORTH, btnSubmit, -4, SpringLayout.NORTH, lblModerator);
+		sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, -20, SpringLayout.EAST, panel);
+		//sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, 0, SpringLayout.EAST, panel);
 		//sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, 0, SpringLayout.EAST, list_1);
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -214,7 +217,7 @@ public final class NewGameTab {
 		description = new JTextField();
 		sl_panel.putConstraint(SpringLayout.NORTH, description, 18, SpringLayout.SOUTH, comboBox_1);
 		sl_panel.putConstraint(SpringLayout.WEST, description, 0, SpringLayout.WEST, sessionNameField);
-		sl_panel.putConstraint(SpringLayout.SOUTH, description, 79, SpringLayout.SOUTH, comboBox_1);
+		sl_panel.putConstraint(SpringLayout.SOUTH, description, -15, SpringLayout.NORTH, panel_1);
 		sl_panel.putConstraint(SpringLayout.EAST, description, 0, SpringLayout.EAST, textField_1);
 		panel.add(description);
 		description.setColumns(10);
