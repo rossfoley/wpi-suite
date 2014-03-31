@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
 public class PlanningPokerSessionModel extends AbstractListModel {
@@ -151,7 +152,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 			if(sessions[i].getID() >= nextID) nextID = sessions[i].getID() + 1;
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
-		//ViewEventController.getInstance().refreshTable();
+		ViewEventController.getInstance().refreshTable();
 		//ViewEventController.getInstance().refreshTree();
 		// Update the UI to reflect the list of sessions
 	}

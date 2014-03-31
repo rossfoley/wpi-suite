@@ -14,6 +14,8 @@ import java.awt.Dimension;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
@@ -53,6 +55,8 @@ public class OverviewPanel extends JSplitPane {
 		this.setLeftComponent(filterPanel);
 		this.setRightComponent(tablePanel);
 		this.setDividerLocation(180);
+		
+		ViewEventController.getInstance().setOverviewTable(table);
 	}
 
 }

@@ -70,12 +70,11 @@ public class OverviewTable extends JTable
 				
 		// clear the table
 		tableModel.setRowCount(0);		
-		
-		for (int i = 0; i < pokerSessions.size(); i++) {
-			PlanningPokerSession pokerSession = pokerSessions.get(i);		
-			
+
+		for (PlanningPokerSession pokerSession : pokerSessions) {	
 			tableModel.addRow(new Object[]{ pokerSession.getID(), 
-					pokerSession.getName(),
+					//pokerSession.getName(),
+					"Planning Poker Session Name goes here",
 					pokerSession.getEndDate()
 			});	
 		}

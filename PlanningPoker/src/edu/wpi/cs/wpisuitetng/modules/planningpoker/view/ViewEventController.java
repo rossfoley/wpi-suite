@@ -16,7 +16,6 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.SessionTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
@@ -37,7 +36,7 @@ public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
 	private ToolbarView toolbar = null;
-	private SessionTable overviewTable = null;
+	private OverviewTable overviewTable = null;
 	private OverviewTreePanel overviewTree = null;
 	private ArrayList<SessionPanel> listOfEditingPanels = new ArrayList<SessionPanel>();
 	
@@ -45,7 +44,7 @@ public class ViewEventController {
 	 * Sets the OverviewTable for the controller
 	 * @param sessionTable a given OverviewTable
 	 */
-	public void setOverviewTable(SessionTable sessionTable) {
+	public void setOverviewTable(OverviewTable sessionTable) {
 		this.overviewTable = sessionTable;
 	}
 
@@ -158,7 +157,7 @@ public class ViewEventController {
 	/** 
 	
 	 * @return overviewTable */
-	public SessionTable getOverviewTable(){
+	public OverviewTable getOverviewTable(){
 		return overviewTable;
 
 	}
