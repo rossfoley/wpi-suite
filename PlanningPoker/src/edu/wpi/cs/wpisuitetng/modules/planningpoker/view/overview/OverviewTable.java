@@ -73,9 +73,8 @@ public class OverviewTable extends JTable
 		tableModel.setRowCount(0);		
 
 		for (PlanningPokerSession pokerSession : pokerSessions) {	
-			tableModel.addRow(new Object[]{ pokerSession.getID(), 
-					//pokerSession.getName(),
-					"Planning Poker Session Name goes here",
+			tableModel.addRow(new Object[]{ pokerSession.getID().toString(), 
+					pokerSession.getName(),
 					DateFormat.getDateInstance(DateFormat.SHORT).format(pokerSession.getEndDate().getTime())
 			});	
 		}

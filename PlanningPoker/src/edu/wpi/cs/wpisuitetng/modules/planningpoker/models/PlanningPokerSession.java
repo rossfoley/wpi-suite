@@ -6,11 +6,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author rossfoley
@@ -20,21 +20,21 @@ public class PlanningPokerSession extends AbstractModel {
 	private String name;
 	private GregorianCalendar endDate;
 	private Set<Integer> requirementIDs;
-	private int ID;
+	private UUID uuid = UUID.randomUUID();
 	
 
 	/**
 	 * @return the ID
 	 */
-	public int getID() {
-		return ID;
+	public UUID getID() {
+		return uuid;
 	}
 
 	/**
 	 * @param iD the iD to set
 	 */
-	public void setID(int iD) {
-		ID = iD;
+	public void setID(UUID iD) {
+		uuid = iD;
 	}
 
 	/**
