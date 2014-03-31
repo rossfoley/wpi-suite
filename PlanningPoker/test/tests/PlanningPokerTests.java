@@ -6,8 +6,6 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
-
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
@@ -40,12 +38,12 @@ public class PlanningPokerTests {
 	
 	/** 
 	 * test if the toJSON() and fromJson() methods preserve the session information 
-	 * (explicitly testing name and ID) 
+	 * by checking that the ID and name fields retain the same values  
 	 */
 	@Test 
 	public void testToAndFromJSONSessionNameID() {
 		testSession.setID(5); 
-		testSession.setName("The name is Test Session");
+		testSession.setName("The name is Test Session"); 
 		String json = testSession.toJSON(); 
 		assertEquals(5, testSession.fromJson(json).getID()); 
 		assertEquals("The name is Test Session", testSession.fromJson(json).getName()); 
