@@ -16,11 +16,14 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.InvalidDateException;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * @author rossfoley
+*  @author mandi1267 
  *
  */
 public class PlanningPokerSession extends AbstractModel {
@@ -32,6 +35,21 @@ public class PlanningPokerSession extends AbstractModel {
 	private boolean isOpen;
 	private List<Requirement> requirements;
 
+	private String description;
+	private int sessionCreatorID;
+	
+	/**
+	 * @return the sessionCreatorID
+	 */
+	public int getSessionCreatorID() {
+		return sessionCreatorID;
+	}
+	/**
+	 * @param sessionCreatorID the sessionCreatorID to set
+	 */
+	public void setSessionCreatorID(int sessionCreatorID) {
+		this.sessionCreatorID = sessionCreatorID;
+	}
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
@@ -80,6 +98,18 @@ public class PlanningPokerSession extends AbstractModel {
 
 	}
 
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	/**
 	 * @return the endDate
 	 */
@@ -173,6 +203,34 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setRequirementIDs(Set<Integer> requirementIDs) {
 		this.requirementIDs = requirementIDs;
+	}
+	
+	public boolean validateFields(int year, int month, int day, int hour, int minute) throws InvalidDateException {
+		
+		
+		boolean returnBool = true;
+		GregorianCalendar currentDate = new GregorianCalendar();
+		GregorianCalendar newEndDate = null;
+		if ((month!=13)&&(day!=0)&&(year!=1)){
+			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
+		}
+		else if ((month==13)||(day==0)||(year==1)){
+			returnBool = false;
+			throw new InvalidDateException();
+		}
+		this.setEndDate(newEndDate);
+		
+
+		if (this.name==null){ 
+			this.name = this.makeDefaultName();
+		}
+		if (this.endDate!=null){
+			if ((this.endDate).before(currentDate)){
+				returnBool = false;
+			}
+		}
+		// check if other fields are in appropriate range
+		return returnBool;
 	}
 
 	/* (non-Javadoc)

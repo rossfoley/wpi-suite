@@ -8,14 +8,19 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.BetterNewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
