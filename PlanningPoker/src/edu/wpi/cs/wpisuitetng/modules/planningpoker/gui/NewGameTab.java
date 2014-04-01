@@ -11,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 import java.awt.Color;
@@ -148,7 +150,7 @@ public final class NewGameTab {
 				int year = Integer.parseInt(textField_3.getText());
 				GregorianCalendar date = new GregorianCalendar(year, month, day);
 				pokerSession.setEndDate(date);
-				AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+				PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
 				ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
 
 			}

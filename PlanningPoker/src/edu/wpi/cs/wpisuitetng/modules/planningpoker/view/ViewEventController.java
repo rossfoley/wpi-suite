@@ -154,19 +154,19 @@ public class ViewEventController {
 
 
 
-	/** 
 	
-	 * @return overviewTable */
-	public OverviewTable getOverviewTable(){
-		return overviewTable;
-
-	}
 
 	/**
 	
 	 * @return toolbar */
 	public ToolbarView getToolbar() {
 		return toolbar;
+	}
+	
+	/** 
+	 * @return overviewTable */
+	public OverviewTable getOverviewTable(){
+		return overviewTable;
 	}
 
 	/**

@@ -33,6 +33,7 @@ import javax.swing.event.TableModelListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 
 /**
  * This class sets the main view when user goes to the RequirementManager tab
