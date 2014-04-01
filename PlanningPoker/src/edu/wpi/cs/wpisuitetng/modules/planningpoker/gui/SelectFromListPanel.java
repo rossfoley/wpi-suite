@@ -21,6 +21,10 @@ import java.awt.Component;
 
 import javax.swing.Box;
 import javax.swing.border.LineBorder;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 import java.awt.Color;
 
 
@@ -40,8 +44,9 @@ public class SelectFromListPanel extends JPanel{
 	private LinkedList<String> selectedNames;
 	private LinkedList<String> unSelectedNames;
 	
-	SelectFromListPanel(List<String> unSelected){
+	SelectFromListPanel(){
 		//initialize the main requirement lists
+		populate
 		this.unSelected = new LinkedList<String>();
 		this.selected = new LinkedList<String>();
 		//convert the inital data from an array to a list
@@ -292,5 +297,21 @@ public class SelectFromListPanel extends JPanel{
 		
 		return selection;
 		
+	}
+	
+	/**
+	 * populate PlanningPokerSession list of requirements
+	 */
+	public void populateRequirements() {
+		/*
+		// Get singleton instance of Requirements Controller
+		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
+		// Manually force a population of the list of requirements in the requirement model
+		requirementsController.retrieveRequirements();
+		// Get the singleton instance of the requirement model to steal it's list of requirements.
+		RequirementModel requirementModel = RequirementModel.getInstance();
+		// Steal list of requirements from requirement model muhahaha.
+		this.requirements = requirementModel.getRequirements();
+		*/
 	}
 }
