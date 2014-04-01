@@ -10,6 +10,20 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.JLabel;
+
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.Component;
+
+import javax.swing.Box;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+
+
 
 public class SelectFromListPanel extends JPanel{
 	
@@ -26,10 +40,7 @@ public class SelectFromListPanel extends JPanel{
 	private LinkedList<String> selectedNames;
 	private LinkedList<String> unSelectedNames;
 	
-	SelectFromListPanel(String[] unSelected){
-		//set panel layout
-		SpringLayout springLayout = new SpringLayout();
-		setLayout(springLayout);
+	SelectFromListPanel(List<String> unSelected){
 		//initialize the main requirement lists
 		this.unSelected = new LinkedList<String>();
 		this.selected = new LinkedList<String>();
@@ -63,48 +74,59 @@ public class SelectFromListPanel extends JPanel{
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
+		setLayout(null);
+		
+		JLabel lblUnselectedRequirements = new JLabel("Unselected Requirements");
+		lblUnselectedRequirements.setBounds(11, 20, 200, 14);
+		add(lblUnselectedRequirements);
+		
+		JLabel lblSelectedRequirements = new JLabel("Selected Requirements");
+		lblSelectedRequirements.setBounds(222, 20, 200, 14);
+		add(lblSelectedRequirements);
 		
 		// initializes the unselected list
 		this.unSelectedGuiList = new JList<String>();
+		unSelectedGuiList.setBounds(11, 45, 200, 150);
+		unSelectedGuiList.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		unSelectedGuiList.setModel(unSelectedListModel);
-		springLayout.putConstraint(SpringLayout.NORTH, unSelectedGuiList, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, unSelectedGuiList, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, unSelectedGuiList, 355, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, unSelectedGuiList, 203, SpringLayout.WEST, this);
 		unSelectedGuiList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		add(unSelectedGuiList);
 		
 		// initializes the selected list
 		this.Selected = new JList<String>();
+		Selected.setBounds(222, 45, 200, 150);
+		Selected.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		Selected.setModel(selectedListModel);
-		springLayout.putConstraint(SpringLayout.NORTH, Selected, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, Selected, -225, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, Selected, 355, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, Selected, -10, SpringLayout.EAST, this);
 		Selected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		add(Selected);
 		
-		// creates the add button and attaches functionality
-		JButton btnAdd = new JButton("Add");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				add();
-			}
-		});
-		springLayout.putConstraint(SpringLayout.NORTH, btnAdd, 152, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, btnAdd, 24, SpringLayout.EAST, unSelectedGuiList);
-		add(btnAdd);
-		
 		// creates the remove button and attaches functionality
 		JButton btnRemove = new JButton("Remove");
+		btnRemove.setBounds(222, 206, 200, 23);
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				remove();
 			}
 		});
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemove, 13, SpringLayout.SOUTH, btnAdd);
-		springLayout.putConstraint(SpringLayout.WEST, btnRemove, 0, SpringLayout.WEST, btnAdd);
+		
+		// creates the add button and attaches functionality
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setBounds(11, 206, 200, 23);
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				add();
+			}
+		});
+		add(btnAdd);
 		add(btnRemove);
+		
+		Component verticalStrut = Box.createVerticalStrut(20);
+		verticalStrut.setBounds(169, 0, 18, 46);
+		add(verticalStrut);
+		
+		Component verticalStrut_1 = Box.createVerticalStrut(20);
+		verticalStrut_1.setBounds(189, 194, 11, 46);
+		add(verticalStrut_1);
 		//JPanel panel = new JPanel();
 		
 		update();
@@ -240,6 +262,18 @@ public class SelectFromListPanel extends JPanel{
 		
 	}
 	
+	//convert the data given into a linked list
+	LinkedList<String> getData(List<String> data){
+		LinkedList<String> list = new LinkedList<String>();
+		
+		String[] tempList = data.toArray(new String[0]);
+		for (String element : tempList){
+			list.addLast(element);
+		}
+		
+		return list;
+	}
+	
 	//add a requirement to the list after the object has been created 
 	void addRequirement(String requirement){
 		unSelected.addLast(null);
@@ -248,15 +282,15 @@ public class SelectFromListPanel extends JPanel{
 	}
 	
 	// method to get the list of selected requirements
-	String[] getSelected(){
-		LinkedList<String> selection = new LinkedList<String>();
+	List<String> getSelected(){
+		List<String> selection = new LinkedList<String>();
 		for(String str : selected){
 			if (str != null){
-				selection.addFirst(str);
+				selection.add(str);
 			}
 		}
 		
-		return selection.toArray(new String[0]);
+		return selection;
 		
 	}
 }
