@@ -144,7 +144,9 @@ public final class NewGameTab {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Create a new session, have it public by default, and include attributes
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
+				pokerSession.setOpen(true);
 				int month = Integer.parseInt(textField_1.getText());
 				int day = Integer.parseInt(textField_2.getText());
 				int year = Integer.parseInt(textField_3.getText());

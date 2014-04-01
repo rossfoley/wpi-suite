@@ -13,7 +13,6 @@ import javax.swing.AbstractListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
-
 public class PlanningPokerSessionModel extends AbstractListModel {
 
 	private List<PlanningPokerSession> planningPokerSessions;
@@ -90,7 +89,10 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 
 
 
-	 * @return the number of PlanningPokerSessions in the project * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize()
+	 * @return the number of requirements in the project 
+	 * @see javax.swing.ListModel#getSize() 
+	 * @see javax.swing.ListModel#getSize() 
+	 * @see javax.swing.ListModel#getSize()
 	 */
 	public int getSize() {
 		return planningPokerSessions.size();
@@ -99,11 +101,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	/**
 	 * This function takes an index and finds the PlanningPokerSession in the list of PlanningPokerSessions
 	 * for the project. Used internally by the JList in NewPlanningPokerSessionModel.
-	 * 
 	 * @param index The index of the PlanningPokerSession to be returned
-
-
-
 	 * @return the PlanningPokerSession associated with the provided index * @see javax.swing.ListModel#getElementAt(int) * @see javax.swing.ListModel#getElementAt(int) * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	public PlanningPokerSession getElementAt(int index) {
@@ -151,6 +149,29 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		return planningPokerSessions;
 	}
 
+	
+//	/**
+//	 * Returns the Requirement with the given ID
+//	 * 
+//	 * @param id The ID number of the requirement to be returned
+//	
+//	 * @return the requirement for the id or null if the requirement is not found */
+//	public Requirement getRequirement(int id)
+//	{
+//		
+//	}
+//	
+//	/**
+//	 * Provides the number of elements in the list of requirements for the project. This
+//	 * function is called internally by the JList in NewRequirementPanel. Returns elements
+//	 * in reverse order, so the newest requirement is returned first.
+//	 * 	
+//	 * @return the number of requirements in the project * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize()
+//	 */
+//	// need to rename part of this function to work in this package
+//	public int requirementsGetSize() {
+//		return ;
+//	}
 
 
 }

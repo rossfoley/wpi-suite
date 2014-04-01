@@ -99,7 +99,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @param parentNode DefaultMutableTreeNode
 	 */
 	private void addPokerSessionToTree(List<PlanningPokerSession> pPokerSession, DefaultMutableTreeNode parentNode) {
-		
+		/*
 		for (int j = 0; j < pPokerSession.size(); j++) {
 			DefaultMutableTreeNode newReqNode = new DefaultMutableTreeNode(pPokerSession.get(j));
 			List<PlanningPokerSession> children = sortPPokerSession(pPokerSession.get(j).getChildren());
@@ -113,6 +113,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			}
 			parentNode.add(newReqNode);
 		}
+		*/
 	}
 
 	/**
