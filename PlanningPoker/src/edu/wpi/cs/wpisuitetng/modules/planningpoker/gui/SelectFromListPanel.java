@@ -209,7 +209,7 @@ public class SelectFromListPanel extends JPanel{
 			System.out.print(n);
 			//this.selected.add(n, this.unSelected.get(n));
 			String str = this.selectedListData[n];
-			int pos = this.selected.indexOf(str);
+			int pos = this.selectedNames.indexOf(str);
 			if (this.selected.get(pos) != null){
 				Requirement element = this.selected.get(pos);
 				//this.unSelected.add(n, null);
@@ -237,7 +237,13 @@ public class SelectFromListPanel extends JPanel{
 			if (element == null){
 				System.out.println("null");
 			}
-			String str = element.getName();
+			String str;
+			try{
+				str = element.getName();
+			}
+			catch(Exception e){
+				str = null;
+			}
 			System.out.println(str);
 			rList.add(str);
 			list.addLast(element);
