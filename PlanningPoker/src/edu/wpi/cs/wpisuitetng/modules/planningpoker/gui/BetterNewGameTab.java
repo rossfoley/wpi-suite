@@ -90,7 +90,7 @@ public class BetterNewGameTab { //extends JPanel {
 		
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean canSaveSession = true;
+				boolean canSaveSession = false;
 				System.out.print(year);
 				System.out.print(month);
 				System.out.println(day);
@@ -118,15 +118,45 @@ public class BetterNewGameTab { //extends JPanel {
 				}
 				if (canSaveSession ){
 					pokerSession.setEndDate(endDate); */
-				/*try {
-					boolean acceptableInputs = validateFields(year, month, day, endHour, endMinutes);
-				}
-				catch(Exception ) {
+				boolean dateCorrect = true;
+				JLabel lblDateError = new JLabel("Please select a value for all date fields");
+				try {
+					dateCorrect = true;
+					canSaveSession = pokerSession.validateFields(year, month, day, endHour, endMinutes);
 					
-				} */
+
+					//after that you need to call this to revalidate and repaint the panel
+
+				}
+				catch(InvalidDateException ex) {
+					dateCorrect = false;
+					canSaveSession = false;
+					lblDateError.setText("Please select a value for all date fields");
+					lblDateError.setForeground(Color.RED);
+					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
+					sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
+					panel_1.add(lblDateError);
+					panel_1.setVisible(true);
+					panel_1.revalidate();
+					panel_1.repaint();
+					System.out.println("Exception thrown");
+				} 
+				finally{
+					if (dateCorrect){
+						//lblDateError.setVisible(false);
+						panel_1.remove(lblDateError);
+						//lblDateError.setText("");
+						System.out.println("trying to remove lblDateError");
+						//panel_1.add(lblDateError);
+					}
+					System.out.println(dateCorrect);
+					panel_1.revalidate(); 
+					panel_1.repaint(); 
+				}
 				
 					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
 				if (canSaveSession){
+					
 						AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
 				}
 						// move to add reqs screen

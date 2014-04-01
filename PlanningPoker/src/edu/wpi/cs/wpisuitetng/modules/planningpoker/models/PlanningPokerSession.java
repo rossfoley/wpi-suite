@@ -207,10 +207,20 @@ public class PlanningPokerSession extends AbstractModel {
 	
 	public boolean validateFields(int year, int month, int day, int hour, int minute) throws InvalidDateException {
 		
-		GregorianCalendar currentDate = new GregorianCalendar();
-		GregorianCalendar newEndDate = null;
 		
 		boolean returnBool = true;
+		GregorianCalendar currentDate = new GregorianCalendar();
+		GregorianCalendar newEndDate = null;
+		if ((month!=13)&&(day!=0)&&(year!=1)){
+			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
+		}
+		else if ((month==13)||(day==0)||(year==1)){
+			returnBool = false;
+			throw new InvalidDateException();
+		}
+		
+		
+
 		if (this.name==null){ 
 			this.name = this.makeDefaultName();
 		}
