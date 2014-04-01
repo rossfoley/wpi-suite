@@ -14,7 +14,7 @@ import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
 /**
- * Tests of the PlanningPoker
+ * Tests of the PlanningPokerSession functions 
  * 
  * @author Rick Wight (fmwight) 
  *
@@ -47,14 +47,12 @@ public class PlanningPokerTests {
 	
 	/**
 	 * test if the get/set/add requirementID functions work correctly 
+	 * NOTE: right now this is flawed, in that setRequirementIDs MUST be called before
+	 * addRequirement, because the set of requirements is not initialized in the 
+	 * constructor. This will be revisited after updated code is merged in. 
 	 */
 	@Test
 	public void testReqIDs() {
-		/* 
-		 * right now this is flawed, in that setRequirementIDs MUST be called before
-		 * addRequirement, because the set of requirements is not initialized in the 
-		 * constructor. This will be revisited after updated code is merged in. 
-		 */
 		HashSet<Integer> aSet = new HashSet<Integer>(); 
 		testSession.setRequirementIDs(aSet); 
 		assertNotNull(testSession.getRequirementIDs()); 
