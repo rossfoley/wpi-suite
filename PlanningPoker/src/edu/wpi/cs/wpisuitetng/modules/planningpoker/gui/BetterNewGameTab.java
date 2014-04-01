@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -170,7 +171,9 @@ public class BetterNewGameTab { //extends JPanel {
 				System.out.println(textFieldSessionField.getText());
 					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
 				if (canSaveSession){
-						AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+						pokerSession.setID(PlanningPokerSessionModel.getInstance().getNextID());
+						PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
+						//AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
 						alreadyVisited = true;
 						// go to next screen
 				}
