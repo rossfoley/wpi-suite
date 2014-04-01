@@ -62,7 +62,7 @@ public class GetSessionController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Send a request to the core to save this requirement
-		final Request request = Network.getInstance().makeRequest("planningpoker/PlanningPokerSession", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.GET); // GET == read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}
@@ -71,7 +71,7 @@ public class GetSessionController implements ActionListener {
 	 * Sends an HTTP request to retrieve all requirements
 	 */
 	public void retrieveSessions() {
-		final Request request = Network.getInstance().makeRequest("planningpoker/PlanningPokerSession", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.GET); // GET == read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}
@@ -82,17 +82,17 @@ public class GetSessionController implements ActionListener {
 	 * 
 	 * @param requirements array of requirements received from the server
 	 */
-	/*
-	public void receivedSessions(PlanningPokerSession[] sessions) {
+	
+	public void receivedSessions(PlanningPokerSession[] pokerSessions) {
 		// Empty the local model to eliminate duplications
 		PlanningPokerSessionModel.getInstance().emptyModel();
 		
 		// Make sure the response was not null
-		if (sessions != null) {
+		if (pokerSessions != null) {
 			
 			// add the requirements to the local model
-			PlanningPokerSessionModel.getInstance().addPlanningPokerSessions(sessions);
+			PlanningPokerSessionModel.getInstance().addPlanningPokerSessions(pokerSessions);
 		}
 	}
-	*/
+	
 }

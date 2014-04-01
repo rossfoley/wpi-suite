@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
@@ -24,7 +25,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private String name;
 	private GregorianCalendar endDate;
 	private Set<Integer> requirementIDs;
-	private int ID;
+	private UUID uuid = UUID.randomUUID();
 	private boolean isOpen;
 	private List<Requirement> requirements;
 
@@ -35,12 +36,18 @@ public class PlanningPokerSession extends AbstractModel {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.isOpen = false;
 	}
+	public UUID getID() {
+		return uuid;
+	}
 	/**
 	 * Add a requirement to existing planning poker session.
 	 * @param requirementID
 	 */
 	public void addRequirement(int requirementID) {
 		requirementIDs.add((Integer) requirementID);
+	}
+	public void setID(UUID iD) {
+		uuid = iD;
 	}
 
 	/* (non-Javadoc)
@@ -57,13 +64,6 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public GregorianCalendar getEndDate() {
 		return endDate;
-	}
-
-	/**
-	 * @return the ID
-	 */
-	public int getID() {
-		return ID;
 	}
 
 	/**
@@ -120,9 +120,7 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @param iD the iD to set
 	 */
-	public void setID(int iD) {
-		ID = iD;
-	}
+
 
 	/**
 	 * @param name the name to set
@@ -189,6 +187,17 @@ public class PlanningPokerSession extends AbstractModel {
 	public int requirementsGetSize() {
 		return requirements.size();
 	}
-
-
+	
+	/**
+	 * Returns an array of PlanningPokerSession parsed from the given JSON-encoded
+	 * string.
+	 * 
+	 * @param json
+	 *            string containing a JSON-encoded array of PlanningPokerSession
+	
+	 * @return an array of PlanningPokerSession deserialized from the given JSON string */
+	public static PlanningPokerSession[] fromJsonArray(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, PlanningPokerSession[].class);
+	}
 }

@@ -39,10 +39,10 @@ public class GetSessionRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of requirements to a Requirement object array
-	//	PlanningPokerSession session = PlanningPokerSession.fromJson(iReq.getResponse().getBody());
+		PlanningPokerSession [] sessions = PlanningPokerSession.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these Requirements to the controller
-	//	controller.receivedSessions(session);
+		controller.receivedSessions(sessions);
 	}
 
 	/**

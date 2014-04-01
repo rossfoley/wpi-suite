@@ -10,10 +10,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+
 
 /**
  * This controller responds when the user clicks the Update button by
