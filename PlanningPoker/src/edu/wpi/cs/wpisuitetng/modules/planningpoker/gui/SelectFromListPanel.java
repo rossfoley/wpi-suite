@@ -56,11 +56,12 @@ public class SelectFromListPanel extends JPanel{
 		
 		//initialize the main requirement lists
 		populateRequirements();
+		System.out.println(this.requirements.size());
 		this.unSelected = new LinkedList<Requirement>();
 		this.selected = new LinkedList<Requirement>();
 		//convert the inital data from an array to a list
-		for(Requirement rqt : unSelected){
-			this.unSelected.addLast(rqt);
+		for(Requirement rqt : requirements){
+			this.unSelected.add(rqt);
 		}
 		
 		//get the data to populate the initial unselected requirements
@@ -233,6 +234,9 @@ public class SelectFromListPanel extends JPanel{
 			System.out.print(i + ":");
 			//rList.add(list.element());
 			Requirement element = list.pollFirst();
+			if (element == null){
+				System.out.println("null");
+			}
 			String str = element.getName();
 			System.out.println(str);
 			rList.add(str);
@@ -308,15 +312,25 @@ public class SelectFromListPanel extends JPanel{
 	 * populate PlanningPokerSession list of requirements
 	 */
 	public void populateRequirements() {
-		/*
+		System.out.println("In Populate Requirements");
+		
 		// Get singleton instance of Requirements Controller
 		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
 		// Manually force a population of the list of requirements in the requirement model
 		requirementsController.retrieveRequirements();
 		// Get the singleton instance of the requirement model to steal it's list of requirements.
 		RequirementModel requirementModel = RequirementModel.getInstance();
-		// Steal list of requirements from requirement model muhahaha.
-		//this.requirements = requirementModel.getRequirements();
+		try {
+			// Steal list of requirements from requirement model muhahaha.
+			this.requirements = requirementModel.getRequirements();
+		
+		}
+		catch(Exception e){
+			System.out.println("error");
+		}/*
+		
+		
+		
 		//*/
 	}
 }
