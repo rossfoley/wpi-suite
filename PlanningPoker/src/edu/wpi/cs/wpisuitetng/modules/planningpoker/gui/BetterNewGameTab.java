@@ -46,6 +46,7 @@ public class BetterNewGameTab { //extends JPanel {
 	JPanel panel_1 = new JPanel();
 	SpringLayout sl_panel_1 = new SpringLayout();
 	JLabel lblEndDate = new JLabel("Session End Date:");
+	boolean alreadyVisited = false;
 	
 	/* public BetterNewGameTab(){
 		panel_1.setLayout(sl_panel_1);
@@ -136,35 +137,43 @@ public class BetterNewGameTab { //extends JPanel {
 					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
 					sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
 					panel_1.add(lblDateError);
-					panel_1.setVisible(true);
+//					panel_1.setVisible(true);
 					panel_1.revalidate();
 					panel_1.repaint();
 					System.out.println("Exception thrown");
 				} 
 				finally{
-					if (dateCorrect){
-						//lblDateError.setVisible(false);
+					//boolean dateIncorrect = !dateCorrect;
+					/*if (dateCorrect){
+						lblDateError.setText("Magic Mike!");
+						lblDateError.setVisible(false);
 						panel_1.remove(lblDateError);
-						//lblDateError.setText("");
+						
+						panel_1.add(overWriteLabel); 
+						
+						//lblDateError.setText("oiwgqhoigwqoefwqhioqfwegiugwqiou");
 						System.out.println("trying to remove lblDateError");
 						//panel_1.add(lblDateError);
-					}
-					System.out.println(dateCorrect);
+						lblDateError.setForeground(Color.BLUE);
+					} */
+					/* if (!dateIncorrect){
+						panel_1.remove(lblDateError);
+						lblDateError.setForeground(Color.BLUE);
+					} */
+					
+					/*System.out.println(dateCorrect);
+					panel_1.invalidate();
 					panel_1.revalidate(); 
-					panel_1.repaint(); 
+					panel_1.repaint(); */ 
 				}
-				
+				System.out.println(textFieldDescription.getText());
+				System.out.println(textFieldSessionField.getText());
 					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
 				if (canSaveSession){
-					
 						AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
+						alreadyVisited = true;
+						// go to next screen
 				}
-						// move to add reqs screen
-					/*}
-					else {
-						// reprompt for empty fields
-					}
-				} */
 			}
 		});
 		
@@ -427,19 +436,21 @@ public class BetterNewGameTab { //extends JPanel {
 	public void parseTimeDropdowns(){
 		String stringTime = (String) comboTime.getSelectedItem();
 		String stringAMPM = (String) comboAMPM.getSelectedItem();
-		String[] partsOfTime = stringTime.split(":");
-		endMinutes = Integer.parseInt(partsOfTime[1]);
-		endHour = Integer.parseInt(partsOfTime[0]);
-		if (endHour == 12){
-			endHour -= 12;
+		if (!(stringTime.equals("Time"))){
+			String[] partsOfTime = stringTime.split(":");
+			endMinutes = Integer.parseInt(partsOfTime[1]);
+			endHour = Integer.parseInt(partsOfTime[0]);
+			if (endHour == 12){
+				endHour -= 12;
+			}
+			if (stringAMPM.equals("PM")){
+				endHour += 12;
+			}
+			System.out.print("Hour:");
+			System.out.println(endHour);
+			System.out.print("Minute:");
+			System.out.println(endMinutes);
 		}
-		if (stringAMPM.equals("PM")){
-			endHour += 12;
-		}
-		System.out.print("Hour:");
-		System.out.println(endHour);
-		System.out.print("Minute:");
-		System.out.println(endMinutes);
 	}
 	
 	private void printError(){

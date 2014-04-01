@@ -218,7 +218,7 @@ public class PlanningPokerSession extends AbstractModel {
 			returnBool = false;
 			throw new InvalidDateException();
 		}
-		
+		this.setEndDate(newEndDate);
 		
 
 		if (this.name==null){ 
