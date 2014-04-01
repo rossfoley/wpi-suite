@@ -32,7 +32,6 @@ public class OverviewPanel extends JSplitPane {
 		// Create the overview table and put it in a scroll pane
 		OverviewTable table = new OverviewTable(data, columnNames);
 		JScrollPane tablePanel = new JScrollPane(table);
-		OverviewTreePanel filterPanel = new OverviewTreePanel();
 			
 		// Set the widths of the columns
 		table.getColumnModel().getColumn(0).setMinWidth(150); // Name
@@ -40,9 +39,8 @@ public class OverviewPanel extends JSplitPane {
 		table.getColumnModel().getColumn(2).setMinWidth(120); // Number of Requirements
 
 		// Put the overview table and sidebar into the tab
-		this.setLeftComponent(filterPanel);
 		this.setRightComponent(tablePanel);
-		this.setDividerLocation(180);
+		this.setDividerLocation(0);
 		
 		// Tell the ViewEventController what the overview table is
 		ViewEventController.getInstance().setOverviewTable(table);

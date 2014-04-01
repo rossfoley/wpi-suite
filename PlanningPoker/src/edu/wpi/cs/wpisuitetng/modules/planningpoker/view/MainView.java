@@ -32,7 +32,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.SessionPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 
 /**
@@ -160,22 +159,12 @@ public class MainView extends JTabbedPane {
 			public void stateChanged(ChangeEvent e) {
 				JComponent selected = (JComponent)MainView.this.getSelectedComponent();
 				
-				ViewEventController.getInstance().getToolbar().getEditButton().getEditButton().setEnabled(false);
-
 				if(selected == currentSessions)
 				{
-					ViewEventController.getInstance().getToolbar().getEditButton().getEditButton().setEnabled(true);
 					ViewEventController.getInstance().getOverviewTable().refresh();
-					//ViewEventController.getInstance().getOverviewTree().refresh();
-					//currentSessions.setLeftComponent(ViewEventController.getInstance().getOverviewTree());
-					currentSessions.setDividerLocation(180);
+					currentSessions.setDividerLocation(0);
 					currentSessions.revalidate();
 					currentSessions.repaint();
-				}
-				else if(selected instanceof SessionPanel)
-				{
-					SessionPanel req = (SessionPanel)selected;
-					req.fireRefresh();
 				}
 			}
 		});
