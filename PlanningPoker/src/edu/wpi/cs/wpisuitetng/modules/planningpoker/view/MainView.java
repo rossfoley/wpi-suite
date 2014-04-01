@@ -162,7 +162,6 @@ public class MainView extends JTabbedPane {
 				if(selected == currentSessions)
 				{
 					ViewEventController.getInstance().getOverviewTable().refresh();
-					currentSessions.setDividerLocation(0);
 					currentSessions.revalidate();
 					currentSessions.repaint();
 				}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
@@ -39,8 +40,9 @@ public class OverviewPanel extends JSplitPane {
 		table.getColumnModel().getColumn(2).setMinWidth(120); // Number of Requirements
 
 		// Put the overview table and sidebar into the tab
-		this.setRightComponent(tablePanel);
-		this.setDividerLocation(0);
+		this.setLeftComponent(tablePanel);
+		this.setRightComponent(new JPanel());  // create empty jpanel for left split screen
+		this.setResizeWeight(1.0);  // set the right screen to not show by default
 		
 		// Tell the ViewEventController what the overview table is
 		ViewEventController.getInstance().setOverviewTable(table);
