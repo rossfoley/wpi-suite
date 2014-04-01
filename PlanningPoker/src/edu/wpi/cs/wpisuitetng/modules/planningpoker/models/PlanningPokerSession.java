@@ -14,7 +14,9 @@ import java.util.UUID;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * @author rossfoley
@@ -35,10 +37,27 @@ public class PlanningPokerSession extends AbstractModel {
 	public PlanningPokerSession () {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.isOpen = false;
+		populateRequirements();
 	}
 	public UUID getID() {
 		return uuid;
 	}
+	/**
+	 * populate PlanningPokerSession list of requirements
+	 */
+	public void populateRequirements() {
+		/*
+		// Get singleton instance of Requirements Controller
+		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
+		// Manually force a population of the list of requirements in the requirement model
+		requirementsController.retrieveRequirements();
+		// Get the singleton instance of the requirement model to steal it's list of requirements.
+		RequirementModel requirementModel = RequirementModel.getInstance();
+		// Steal list of requirements from requirement model muhahaha.
+		this.requirements = requirementModel.getRequirements();
+		*/
+	}
+	
 	/**
 	 * Add a requirement to existing planning poker session.
 	 * @param requirementID
