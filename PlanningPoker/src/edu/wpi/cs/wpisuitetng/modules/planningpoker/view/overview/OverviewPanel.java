@@ -5,11 +5,9 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
- * Contributors: Team Rolling Thunder
+ * Contributors: The Team8s
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
-
-import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -17,45 +15,36 @@ import javax.swing.JSplitPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
- * @author justinhess
+ * @author rossfoley
  * @version $Revision: 1.0 $
  */
 public class OverviewPanel extends JSplitPane {
 	
 	/**
-	 * Sets up directory table of requirements in system
+	 * Sets up directory table of planning poker sessions in system
 	 */
 	public OverviewPanel()
 	{
-		OverviewTreePanel filterPanel = new OverviewTreePanel();
-		
-		//String[] columnNames = {"ID", "Name", "Creator", "End Date", "End Time", "Estimate"};
-		String[] columnNames = {"ID", "Name", "End Date"};
-	
+		// Set the data for the overview table
+		String[] columnNames = {"Name", "End Date", "Requirements"};
 		Object[][] data = {};
 		
+		// Create the overview table and put it in a scroll pane
 		OverviewTable table = new OverviewTable(data, columnNames);
-		
 		JScrollPane tablePanel = new JScrollPane(table);
-				
-		table.getColumnModel().getColumn(0).setMaxWidth(40); // ID
-		
-		table.getColumnModel().getColumn(1).setMinWidth(250); // Name
+		OverviewTreePanel filterPanel = new OverviewTreePanel();
+			
+		// Set the widths of the columns
+		table.getColumnModel().getColumn(0).setMinWidth(150); // Name
+		table.getColumnModel().getColumn(1).setMinWidth(120); // End Date
+		table.getColumnModel().getColumn(2).setMinWidth(120); // Number of Requirements
 
-		//table.getColumnModel().getColumn(2).setMinWidth(90); // Creator
-		
-		table.getColumnModel().getColumn(2).setMinWidth(90); // End Date
-		
-		//table.getColumnModel().getColumn(4).setMinWidth(105); // End Time
-		//table.getColumnModel().getColumn(4).setMaxWidth(105); // End Time
-		
-		//table.getColumnModel().getColumn(5).setMinWidth(85); // Estimate
-		//table.getColumnModel().getColumn(5).setMaxWidth(85); // Estimate
-		
+		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(filterPanel);
 		this.setRightComponent(tablePanel);
 		this.setDividerLocation(180);
 		
+		// Tell the ViewEventController what the overview table is
 		ViewEventController.getInstance().setOverviewTable(table);
 	}
 

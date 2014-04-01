@@ -1,13 +1,7 @@
-/**
- * 
- */
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.List;
 
@@ -15,7 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -25,7 +18,6 @@ import javax.swing.table.TableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * @author rossfoley
@@ -73,9 +65,10 @@ public class OverviewTable extends JTable
 		tableModel.setRowCount(0);		
 
 		for (PlanningPokerSession pokerSession : pokerSessions) {	
-			tableModel.addRow(new Object[]{ pokerSession.getID().toString(), 
+			tableModel.addRow(new Object[]{
 					pokerSession.getName(),
-					DateFormat.getDateInstance(DateFormat.SHORT).format(pokerSession.getEndDate().getTime())
+					DateFormat.getDateInstance(DateFormat.MEDIUM).format(pokerSession.getEndDate().getTime()),
+					Integer.toString(pokerSession.requirementsGetSize())
 			});	
 		}
 		// indicate that refresh is no longer affecting the table
@@ -106,17 +99,11 @@ public class OverviewTable extends JTable
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		if(!initialized)
-		{
-			try 
-			{
+		if(!initialized) {
+			try {
 				GetSessionController.getInstance().retrieveSessions();
 				initialized = true;
-			}
-			catch (Exception e)
-			{
-
-			}
+			} catch (Exception e) {}
 		}
 
 		super.paintComponent(g);

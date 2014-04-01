@@ -1,25 +1,22 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.JButton;
-import javax.swing.border.LineBorder;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.border.LineBorder;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public final class NewGameTab {
 	private static JTextField textField;
@@ -147,7 +144,7 @@ public final class NewGameTab {
 				// Create a new session, have it public by default, and include attributes
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
 				pokerSession.setOpen(true);
-				int month = Integer.parseInt(textField_1.getText());
+				int month = Integer.parseInt(textField_1.getText()) - 1; // Months start at 0
 				int day = Integer.parseInt(textField_2.getText());
 				int year = Integer.parseInt(textField_3.getText());
 				GregorianCalendar date = new GregorianCalendar(year, month, day);

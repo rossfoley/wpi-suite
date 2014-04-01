@@ -5,6 +5,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -37,6 +38,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public PlanningPokerSession () {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.isOpen = false;
+		this.requirements = new ArrayList<Requirement>();
 		populateRequirements();
 	}
 	public UUID getID() {
@@ -108,8 +110,22 @@ public class PlanningPokerSession extends AbstractModel {
 		return null;
 	}
 
+	/**
+	 * @return a boolean indicating if the session is open
+	 */
 	public boolean isOpen() {
 		return isOpen;
+	}
+	
+	/**
+	 * @return "Open" if the session is open, otherwise "Closed"
+	 */
+	public String isOpenAsString() {
+		if (isOpen) {
+			return "Open";
+		} else {
+			return "Closed";
+		}
 	}
 
 	/**
@@ -135,11 +151,6 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setEndDate(GregorianCalendar endDate) {
 		this.endDate = endDate;
 	}
-
-	/**
-	 * @param iD the iD to set
-	 */
-
 
 	/**
 	 * @param name the name to set
