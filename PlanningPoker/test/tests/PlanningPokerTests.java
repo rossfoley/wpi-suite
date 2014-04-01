@@ -6,6 +6,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,5 +88,20 @@ public class PlanningPokerTests {
 		assertEquals(5, testSession.fromJson(json).getID()); 
 		assertEquals("The name is Test Session", testSession.fromJson(json).getName()); 
 	} 
+	
+	/**
+	 * test getting and setting the EndDate field 
+	 */
+	@Test
+	public void testGetSetEndDate() {
+		int month = 8; 
+		int day = 20; 
+		int year = 2002; 
+		GregorianCalendar testDate = new GregorianCalendar(year, month, day); 
+		testSession.setEndDate(testDate); 
+		assertEquals(month, testSession.getEndDate().get(GregorianCalendar.MONTH)); 
+		assertEquals(day, testSession.getEndDate().get(GregorianCalendar.DAY_OF_MONTH));
+		assertEquals(year, testSession.getEndDate().get(GregorianCalendar.YEAR));
+	}
 
 }
