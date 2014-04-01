@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.JList;
@@ -24,6 +25,7 @@ import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import java.awt.Color;
 
@@ -32,8 +34,9 @@ import java.awt.Color;
 public class SelectFromListPanel extends JPanel{
 	
 	// define variables
-	private LinkedList<String> unSelected;
-	private LinkedList<String> selected;
+	private List<Requirement> requirements;
+	private LinkedList<Requirement> unSelected;
+	private LinkedList<Requirement> selected;
 	private int defaultSize;
 	private String[] unSelectedListData = {};
 	private String[] selectedListData = {};
@@ -43,15 +46,21 @@ public class SelectFromListPanel extends JPanel{
 	private javax.swing.JList<String> Selected;
 	private LinkedList<String> selectedNames;
 	private LinkedList<String> unSelectedNames;
+	private JScrollPane unSelectedScrollPane;
+	private JScrollPane selectedScrollPane;
 	
 	SelectFromListPanel(){
+		
+		unSelectedScrollPane = new JScrollPane();
+		selectedScrollPane = new JScrollPane();
+		
 		//initialize the main requirement lists
-		populate
-		this.unSelected = new LinkedList<String>();
-		this.selected = new LinkedList<String>();
+		populateRequirements();
+		this.unSelected = new LinkedList<Requirement>();
+		this.selected = new LinkedList<Requirement>();
 		//convert the inital data from an array to a list
-		for(String str : unSelected){
-			this.unSelected.addLast(str);
+		for(Requirement rqt : unSelected){
+			this.unSelected.addLast(rqt);
 		}
 		
 		//get the data to populate the initial unselected requirements
@@ -61,7 +70,7 @@ public class SelectFromListPanel extends JPanel{
 		//defaultSize = this.unSelected.size();
 		
 		//populated the initial list of selected requirements
-		for (String str : this.unSelected){
+		for (Requirement rqt : this.unSelected){
 			this.selected.add(null);
 		}
 		
@@ -91,19 +100,21 @@ public class SelectFromListPanel extends JPanel{
 		
 		// initializes the unselected list
 		this.unSelectedGuiList = new JList<String>();
-		unSelectedGuiList.setBounds(11, 45, 200, 150);
-		unSelectedGuiList.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		unSelectedScrollPane.setBounds(11, 45, 200, 150);
+		unSelectedScrollPane.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		unSelectedGuiList.setModel(unSelectedListModel);
 		unSelectedGuiList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		add(unSelectedGuiList);
+		add(unSelectedScrollPane);
+		unSelectedScrollPane.setViewportView(unSelectedGuiList);
 		
 		// initializes the selected list
 		this.Selected = new JList<String>();
-		Selected.setBounds(222, 45, 200, 150);
-		Selected.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		selectedScrollPane.setBounds(222, 45, 200, 150);
+		selectedScrollPane.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		Selected.setModel(selectedListModel);
 		Selected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		add(Selected);
+		add(selectedScrollPane);
+		selectedScrollPane.setViewportView(Selected);
 		
 		// creates the remove button and attaches functionality
 		JButton btnRemove = new JButton("Remove");
@@ -124,14 +135,6 @@ public class SelectFromListPanel extends JPanel{
 		});
 		add(btnAdd);
 		add(btnRemove);
-		
-		Component verticalStrut = Box.createVerticalStrut(20);
-		verticalStrut.setBounds(169, 0, 18, 46);
-		add(verticalStrut);
-		
-		Component verticalStrut_1 = Box.createVerticalStrut(20);
-		verticalStrut_1.setBounds(189, 194, 11, 46);
-		add(verticalStrut_1);
 		//JPanel panel = new JPanel();
 		
 		update();
@@ -178,7 +181,7 @@ public class SelectFromListPanel extends JPanel{
 			String str = this.unSelectedListData[n];
 			int pos = this.unSelectedNames.indexOf(str);
 			if (this.unSelected.get(pos) != null){
-				String element = this.unSelected.get(pos);
+				Requirement element = this.unSelected.get(pos);
 				//this.unSelected.add(n, null);
 				System.out.println(element);
 				if (!this.selected.contains(element)){
@@ -207,7 +210,7 @@ public class SelectFromListPanel extends JPanel{
 			String str = this.selectedListData[n];
 			int pos = this.selected.indexOf(str);
 			if (this.selected.get(pos) != null){
-				String element = this.selected.get(pos);
+				Requirement element = this.selected.get(pos);
 				//this.unSelected.add(n, null);
 				System.out.println(element);
 				if (!this.unSelected.contains(element)){
@@ -223,14 +226,16 @@ public class SelectFromListPanel extends JPanel{
 	}
 	
 	// get the name to be displayed by the list from the list of requirements given
-	private LinkedList<String> getNames(LinkedList<String> list){
+	private LinkedList<String> getNames(LinkedList<Requirement> list){
 		System.out.println("In Get Names");
 		LinkedList<String> rList = new LinkedList<String>();
 		for(int i = 0; i < list.size(); i++){
 			System.out.print(i + ":");
-			rList.add(list.element());
-			String element = list.pollFirst();
-			System.out.println(element);
+			//rList.add(list.element());
+			Requirement element = list.pollFirst();
+			String str = element.getName();
+			System.out.println(str);
+			rList.add(str);
 			list.addLast(element);
 			
 		}
@@ -280,16 +285,16 @@ public class SelectFromListPanel extends JPanel{
 	}
 	
 	//add a requirement to the list after the object has been created 
-	void addRequirement(String requirement){
+	void addRequirement(Requirement requirement){
 		unSelected.addLast(null);
 		selected.addLast(requirement);
 		update();
 	}
 	
 	// method to get the list of selected requirements
-	List<String> getSelected(){
-		List<String> selection = new LinkedList<String>();
-		for(String str : selected){
+	List<Requirement> getSelected(){
+		List<Requirement> selection = new LinkedList<Requirement>();
+		for(Requirement str : selected){
 			if (str != null){
 				selection.add(str);
 			}
@@ -311,7 +316,7 @@ public class SelectFromListPanel extends JPanel{
 		// Get the singleton instance of the requirement model to steal it's list of requirements.
 		RequirementModel requirementModel = RequirementModel.getInstance();
 		// Steal list of requirements from requirement model muhahaha.
-		this.requirements = requirementModel.getRequirements();
-		*/
+		//this.requirements = requirementModel.getRequirements();
+		//*/
 	}
 }
