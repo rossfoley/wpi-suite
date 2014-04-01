@@ -95,7 +95,7 @@ public class SelectFromListPanel extends JPanel{
 		add(lblUnselectedRequirements);
 		
 		JLabel lblSelectedRequirements = new JLabel("Selected Requirements");
-		lblSelectedRequirements.setBounds(222, 20, 200, 14);
+		lblSelectedRequirements.setBounds(288, 20, 200, 14);
 		add(lblSelectedRequirements);
 		
 		// initializes the unselected list
@@ -109,7 +109,7 @@ public class SelectFromListPanel extends JPanel{
 		
 		// initializes the selected list
 		this.Selected = new JList<String>();
-		selectedScrollPane.setBounds(222, 45, 200, 150);
+		selectedScrollPane.setBounds(288, 45, 200, 150);
 		selectedScrollPane.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		Selected.setModel(selectedListModel);
 		Selected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -117,8 +117,8 @@ public class SelectFromListPanel extends JPanel{
 		selectedScrollPane.setViewportView(Selected);
 		
 		// creates the remove button and attaches functionality
-		JButton btnRemove = new JButton("Remove");
-		btnRemove.setBounds(222, 206, 200, 23);
+		JButton btnRemove = new JButton("<<");
+		btnRemove.setBounds(221, 131, 57, 23);
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				remove();
@@ -126,8 +126,8 @@ public class SelectFromListPanel extends JPanel{
 		});
 		
 		// creates the add button and attaches functionality
-		JButton btnAdd = new JButton("Add");
-		btnAdd.setBounds(11, 206, 200, 23);
+		JButton btnAdd = new JButton(">>");
+		btnAdd.setBounds(221, 89, 57, 23);
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				add();
