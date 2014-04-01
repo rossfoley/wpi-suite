@@ -9,6 +9,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
  */
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
@@ -22,6 +23,7 @@ import javax.swing.border.LineBorder;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -30,7 +32,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.SwingConstants;
 
-public class BetterNewGameTab { //extends JPanel {
+public class BetterNewGameTab {
 	private static JTextField textFieldSessionField;
 	private static JTextField textFieldDescription;
 	JComboBox<Months> comboMonth = new JComboBox<Months>();
@@ -49,26 +51,12 @@ public class BetterNewGameTab { //extends JPanel {
 	JLabel lblEndDate = new JLabel("Session End Date:");
 	boolean alreadyVisited = false;
 	
-	/* public BetterNewGameTab(){
-		panel_1.setLayout(sl_panel_1);
-		
-	}  */
-	
-	//JPanel panel = new JPanel();
-	
-	
-	//private static JComboBox<String> comboMonth;
-	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
 	
 	public JPanel createJPanel(){
-		//public BetterNewGameTab(){
-		
-		
-	//public JPanel createJPanel(){
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
@@ -84,7 +72,7 @@ public class BetterNewGameTab { //extends JPanel {
 		panel.add(btnNext);
 		panel_1.setForeground(Color.BLACK);
 		panel.add(panel_1);
-		//SpringLayout sl_panel_1 = new SpringLayout();
+
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);
 		panel_1.setLayout(sl_panel_1);
 		
@@ -97,29 +85,9 @@ public class BetterNewGameTab { //extends JPanel {
 				System.out.print(month);
 				System.out.println(day);
 				PlanningPokerSession pokerSession = new PlanningPokerSession();
-				//pokerSession.setOpen(true);
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
-				/*GregorianCalendar endDate = null;
-				if ((month!=13)&&(day!=0)&&(year!=1)){
-					endDate = new GregorianCalendar(year, month, day, endHour, endMinutes);
-					System.out.println("Date entered");
-				}
-				else if ((month==13)||(day==0)||(year==1)){
-					//printError();
-					JLabel lblDateError = new JLabel("Please select a value for all date fields");
-					lblDateError.setForeground(Color.RED);
-					
-					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
-					sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
-					panel_1.add(lblDateError);
-					panel_1.revalidate();
-					panel_1.repaint();
-					canSaveSession = false;
 
-				}
-				if (canSaveSession ){
-					pokerSession.setEndDate(endDate); */
 				boolean dateCorrect = true;
 				JLabel lblDateError = new JLabel("Please select a value for all date fields");
 				try {
@@ -138,44 +106,19 @@ public class BetterNewGameTab { //extends JPanel {
 					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
 					sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
 					panel_1.add(lblDateError);
-//					panel_1.setVisible(true);
 					panel_1.revalidate();
 					panel_1.repaint();
 					System.out.println("Exception thrown");
 				} 
-				finally{
-					//boolean dateIncorrect = !dateCorrect;
-					/*if (dateCorrect){
-						lblDateError.setText("Magic Mike!");
-						lblDateError.setVisible(false);
-						panel_1.remove(lblDateError);
-						
-						panel_1.add(overWriteLabel); 
-						
-						//lblDateError.setText("oiwgqhoigwqoefwqhioqfwegiugwqiou");
-						System.out.println("trying to remove lblDateError");
-						//panel_1.add(lblDateError);
-						lblDateError.setForeground(Color.BLUE);
-					} */
-					/* if (!dateIncorrect){
-						panel_1.remove(lblDateError);
-						lblDateError.setForeground(Color.BLUE);
-					} */
-					
-					/*System.out.println(dateCorrect);
-					panel_1.invalidate();
-					panel_1.revalidate(); 
-					panel_1.repaint(); */ 
-				}
+				finally {}
 				System.out.println(textFieldDescription.getText());
 				System.out.println(textFieldSessionField.getText());
 					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
 				if (canSaveSession){
-						pokerSession.setID(PlanningPokerSessionModel.getInstance().getNextID());
 						PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
-						//AddSessionController.getInstance().addPlanningPokerSession(pokerSession);
 						alreadyVisited = true;
 						// go to next screen
+						ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
 				}
 			}
 		});

@@ -14,7 +14,7 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.BetterNewGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 
@@ -80,7 +80,7 @@ public class ViewEventController {
 	 */
 	public void createPlanningPokerSession() {
 		//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-		JPanel panel = NewGameTab.createJPanel();
+		JPanel panel = new BetterNewGameTab().createJPanel();
 		main.addTab("New Session.", null, panel, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
