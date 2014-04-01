@@ -46,6 +46,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * populate PlanningPokerSession list of requirements
 	 */
 	public void populateRequirements() {
+		/*
 		// Get singleton instance of Requirements Controller
 		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
 		// Manually force a population of the list of requirements in the requirement model
@@ -54,6 +55,7 @@ public class PlanningPokerSession extends AbstractModel {
 		RequirementModel requirementModel = RequirementModel.getInstance();
 		// Steal list of requirements from requirement model muhahaha.
 		this.requirements = requirementModel.getRequirements();
+		*/
 	}
 	
 	/**
