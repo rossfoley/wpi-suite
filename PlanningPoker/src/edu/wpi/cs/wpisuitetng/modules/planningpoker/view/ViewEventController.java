@@ -16,11 +16,11 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.BetterNewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.EditGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 
 
 /**
@@ -35,7 +35,7 @@ public class ViewEventController {
 	private MainView main = null;
 	private ToolbarView toolbar = null;
 	private OverviewTable overviewTable = null;
-	private ArrayList<BetterNewGameTab> listOfEditingPanels = new ArrayList<BetterNewGameTab>();
+	private ArrayList<EditGameTab> listOfEditingPanels = new ArrayList<EditGameTab>();
 	
 	/**
 	 * Sets the OverviewTable for the controller
@@ -191,10 +191,15 @@ public class ViewEventController {
 		int[] selection = overviewTable.getSelectedRows();
 
 		if(selection.length != 1) return;
-
-		//PlanningPokerSession toEdit = (PlanningPokerSession)overviewTable.getValueAt(selection[0],1);
 		
-		editSession(null);//toEdit);
+		String sessionName = (String) overviewTable.getValueAt(selection[0],0);
+		PlanningPokerSession toEdit = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionName);
+		
+		// If the session doesn't exist
+		if (toEdit == null)
+			createPlanningPokerSession();
+		else
+			editSession(toEdit);
 	}
 	
 	/**
@@ -202,14 +207,11 @@ public class ViewEventController {
 	 * @param toEdit the req to edit
 	 */
 	public void editSession(PlanningPokerSession toEdit)
-	{
-		createPlanningPokerSession();
-		
-		/*
-		BetterNewGameTab exists = null;
+	{	
+		EditGameTab exists = null;
 		
 		// Check if the session is already open in a tab
-		for(BetterNewGameTab panel : listOfEditingPanels)
+		for(EditGameTab panel : listOfEditingPanels)
 		{
 			if(panel.getDisplaySession() == toEdit)	// This needs to be implemented
 			{
@@ -218,14 +220,12 @@ public class ViewEventController {
 			}
 		}
 		
-		if(exists == null)
-		{
+//		if(exists == null)
+//		{
 			// eventually want to add session to edit as an argument
-			BetterNewGameTab editPanel = new BetterNewGameTab();//toEdit);  
+			EditGameTab editPanel = new EditGameTab(toEdit);
 			
 			StringBuilder tabName = new StringBuilder();
-			tabName.append("Edit Session");	//toEdit.getId()); 
-			tabName.append(". ");
 			int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
 			tabName.append(toEdit.getName().substring(0,subStringLength));
 			if(toEdit.getName().length() > 6) tabName.append("..");
@@ -235,12 +235,11 @@ public class ViewEventController {
 			main.invalidate();
 			main.repaint();
 			main.setSelectedComponent(editPanel);
-		}
-		else
-		{
-			main.setSelectedComponent(exists);
-		}
-		*/
+//		}
+//		else
+//		{
+//			main.setSelectedComponent(exists);
+//		}
 	}
 
 }
