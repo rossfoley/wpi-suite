@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.Test;
 
@@ -36,8 +37,9 @@ public class PlanningPokerTests {
 	
 	@Test 
 	public void testGetSetID() {
-		testSession.setID(5); 
-		assertEquals(5, testSession.getID()); 
+		UUID testuuid = UUID.randomUUID();
+		testSession.setID(testuuid); 
+		assertEquals(testuuid, testSession.getID()); 
 	}
 	
 	@Test 
@@ -82,10 +84,11 @@ public class PlanningPokerTests {
 	 */
 	@Test 
 	public void testToAndFromJSONSessionNameID() {
-		testSession.setID(5); 
+		UUID testuuid = UUID.randomUUID();
+		testSession.setID(testuuid); 
 		testSession.setName("The name is Test Session"); 
 		String json = testSession.toJSON(); 
-		assertEquals(5, testSession.fromJson(json).getID()); 
+		assertEquals(testuuid, testSession.fromJson(json).getID()); 
 		assertEquals("The name is Test Session", testSession.fromJson(json).getName()); 
 	} 
 	
