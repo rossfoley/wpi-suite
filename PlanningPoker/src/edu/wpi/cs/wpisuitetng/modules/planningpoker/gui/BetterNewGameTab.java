@@ -332,7 +332,7 @@ public class BetterNewGameTab {
 		
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboTime, 6, SpringLayout.SOUTH, lblSessionEndTime);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboTime, 0, SpringLayout.WEST, lblSessionName);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboTime, 60, SpringLayout.WEST, lblSessionName);
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboTime, 80, SpringLayout.WEST, lblSessionName);
 		setTimeDropdown();
 		panel_1.add(comboTime);
 	
