@@ -18,6 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.DateOutOfRangeException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.InvalidDateException;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -205,7 +206,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = requirementIDs;
 	}
 	
-	public boolean validateFields(int year, int month, int day, int hour, int minute, String defaultName) throws InvalidDateException {
+	public boolean validateFields(int year, int month, int day, int hour, int minute, String defaultName) throws InvalidDateException, DateOutOfRangeException {
 		boolean returnBool = true;
 		GregorianCalendar currentDate = new GregorianCalendar();
 		GregorianCalendar newEndDate = null;
@@ -226,6 +227,7 @@ public class PlanningPokerSession extends AbstractModel {
 		if (this.endDate!=null){
 			if ((this.endDate).before(currentDate)){
 				returnBool = false;
+				throw new DateOutOfRangeException();
 			}
 		}
 		// check if other fields are in appropriate range

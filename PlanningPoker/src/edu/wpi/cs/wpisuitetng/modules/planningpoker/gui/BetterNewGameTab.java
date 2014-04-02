@@ -97,7 +97,9 @@ public class BetterNewGameTab {
 				pokerSession.setDescription(textFieldDescription.getText());
 
 				boolean dateCorrect = true;
+				boolean dateInRange = true;
 				JLabel lblDateError = new JLabel("Please select a value for all date fields");
+				JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
 				try {
 					dateCorrect = true;
 					canSaveSession = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
@@ -118,6 +120,18 @@ public class BetterNewGameTab {
 					panel_1.repaint();
 					System.out.println("Exception thrown");
 				} 
+				catch(DateOutOfRangeException ex){
+					dateInRange = false;
+					canSaveSession = false;
+					lblDateOutOfRange.setText("Please select a date after the current date");
+					lblDateOutOfRange.setForeground(Color.RED);
+					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateOutOfRange, 0, SpringLayout.NORTH, lblEndDate);
+					sl_panel_1.putConstraint(SpringLayout.WEST, lblDateOutOfRange, 20, SpringLayout.EAST, lblEndDate);
+					panel_1.add(lblDateOutOfRange);
+					panel_1.revalidate();
+					panel_1.repaint();
+					System.out.println("Exception thrown");
+				}
 				finally {}
 				System.out.println(textFieldDescription.getText());
 				System.out.println(textFieldSessionField.getText());
