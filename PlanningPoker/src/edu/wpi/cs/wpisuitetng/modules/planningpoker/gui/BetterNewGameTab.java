@@ -206,6 +206,7 @@ public class BetterNewGameTab {
 
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboMonth, 6, SpringLayout.SOUTH, lblEndDate);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboMonth, 0, SpringLayout.WEST, lblEndDate);
+		comboMonth.setBackground(Color.WHITE);
 		comboMonth.setModel(new DefaultComboBoxModel<Months>(Months.values()));
 		panel_1.add(comboMonth);
 		
@@ -274,6 +275,7 @@ public class BetterNewGameTab {
 				}
 			}	
 		});
+		comboDay.setBackground(Color.WHITE);
 		
 		comboDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
@@ -301,6 +303,7 @@ public class BetterNewGameTab {
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboYear, 90, SpringLayout.EAST, comboDay);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboYear, 0, SpringLayout.NORTH, comboMonth);
 		setYearDropdown();
+		comboYear.setBackground(Color.WHITE);
 		panel_1.add(comboYear);
 		
 		comboYear.addActionListener(new ActionListener() {
@@ -334,11 +337,13 @@ public class BetterNewGameTab {
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboTime, 0, SpringLayout.WEST, lblSessionName);
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboTime, 80, SpringLayout.WEST, lblSessionName);
 		setTimeDropdown();
+		comboTime.setBackground(Color.WHITE);
 		panel_1.add(comboTime);
 	
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboAMPM, 6, SpringLayout.EAST, comboTime);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, comboAMPM, 0, SpringLayout.SOUTH, comboTime);
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboAMPM, 80, SpringLayout.EAST, comboTime);
+		comboAMPM.setBackground(Color.WHITE);
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
 		parseTimeDropdowns();
 		panel_1.add(comboAMPM);

@@ -213,13 +213,14 @@ public class PlanningPokerSession extends AbstractModel {
 		if ((month!=13)&&(day!=0)&&(year!=1)){
 			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
 		}
+		else if ((month==13)&&(day==0)&&(year==1)){
+			newEndDate = null;
+		}
 		else if ((month==13)||(day==0)||(year==1)){
 			returnBool = false;
 			throw new InvalidDateException();
 		}
 		this.setEndDate(newEndDate);
-		
-
 		if (this.name.equals("")){
 			this.name = defaultName;
 			System.out.println("Empty name");
