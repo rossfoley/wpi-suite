@@ -87,7 +87,6 @@ public class BetterNewGameTab {
 		
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession pokerSession = new PlanningPokerSession();
 				boolean canSaveSession = false;
 				System.out.print(year);
 				System.out.print(month);
