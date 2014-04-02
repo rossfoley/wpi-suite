@@ -338,7 +338,7 @@ public class BetterNewGameTab {
 	
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboAMPM, 6, SpringLayout.EAST, comboTime);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, comboAMPM, 0, SpringLayout.SOUTH, comboTime);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboAMPM, 60, SpringLayout.EAST, comboTime);
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboAMPM, 80, SpringLayout.EAST, comboTime);
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
 		parseTimeDropdowns();
 		panel_1.add(comboAMPM);
