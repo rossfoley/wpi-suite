@@ -57,7 +57,7 @@ public class BetterNewGameTab {
 	
 	public JPanel createJPanel(){
 		final JPanel panel = new JPanel();
-		SpringLayout sl_panel = new SpringLayout();
+		final SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
 		//JPanel panel_1 = new JPanel();
@@ -84,7 +84,7 @@ public class BetterNewGameTab {
 				System.out.print(year);
 				System.out.print(month);
 				System.out.println(day);
-				PlanningPokerSession pokerSession = new PlanningPokerSession();
+				final PlanningPokerSession pokerSession = new PlanningPokerSession();
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
 
@@ -115,10 +115,33 @@ public class BetterNewGameTab {
 				System.out.println(textFieldSessionField.getText());
 					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
 				if (canSaveSession){
-						PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
 						alreadyVisited = true;
 						// go to next screen
-						ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
+						panel.removeAll();
+						
+						// Add the requirements panel
+						final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+						sl_panel.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, panel);
+						sl_panel.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, panel);
+						sl_panel.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, panel);
+						sl_panel.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, panel);
+						
+						JButton btnSubmit = new JButton("Submit");
+						sl_panel.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, panel);
+						sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, panel);
+						panel.add(btnSubmit);
+						panel.add(requirementPanel);
+		
+						panel.revalidate();
+						panel.repaint();
+						
+						btnSubmit.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								pokerSession.setRequirements(requirementPanel.getSelected());
+								PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
+								ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
+							}
+						});
 				}
 			}
 		});
