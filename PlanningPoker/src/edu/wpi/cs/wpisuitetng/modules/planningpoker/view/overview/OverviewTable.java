@@ -2,6 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import javax.swing.table.TableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * @author rossfoley
@@ -52,6 +56,31 @@ public class OverviewTable extends JTable
 		//ViewEventController.getInstance().setOverviewTable(this);
 		initialized = false;
 
+		/* Create double-click event listener */
+		this.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				
+				if(getRowCount() > 0)
+				{
+					int mouseY = e.getY();
+					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
+					int lastRowY = lastRow.y + lastRow.height;
+
+					if(mouseY > lastRowY) 
+					{
+						getSelectionModel().clearSelection();
+						repaint();
+					}
+				}
+				
+				// Open edit session tab after 2 mouse clicks
+				if (e.getClickCount() == 2)
+				{
+					ViewEventController.getInstance().editSelectedSession();
+				}
+			}
+		});
+		
 		 System.out.println("finished constructing the table");
 	}
 	
@@ -128,6 +157,20 @@ public class OverviewTable extends JTable
 		return comp;
 
     }
+	
+	
+	/**
+	 * Overrides the isCellEditable method to ensure no cells are editable.
+	 * 
+	 * @param row	row of OverviewTable cell is located
+	 * @param col	column of OverviewTable cell is located
+	
+	 * @return boolean */
+	@Override
+	public boolean isCellEditable(int row, int col)
+	{
+		return false;
+	}
 	
 }
 

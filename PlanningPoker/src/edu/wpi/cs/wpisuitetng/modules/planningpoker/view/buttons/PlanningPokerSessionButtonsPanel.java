@@ -1,9 +1,14 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -26,6 +31,13 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(350);
 		this.createButton.setHorizontalAlignment(SwingConstants.CENTER);
+		// Add image icon for the create planning poker session button
+		try {
+		    Image img = ImageIO.read(
+		    		new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/new_req.png"));
+		    		//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+		    this.createButton.setIcon(new ImageIcon(img));
+		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
 		
 		// the action listener for the Create Planning Poker Session Button
 		createButton.addActionListener(new ActionListener() {
