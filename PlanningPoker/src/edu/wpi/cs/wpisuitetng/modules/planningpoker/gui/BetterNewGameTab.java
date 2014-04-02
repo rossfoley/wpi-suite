@@ -12,6 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -28,13 +29,16 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.SwingConstants;
 
 public class BetterNewGameTab {
 	private static JTextField textFieldSessionField;
-	private static JTextField textFieldDescription;
+	private static JTextArea textFieldDescription;
 	JComboBox<Months> comboMonth = new JComboBox<Months>();
 	JComboBox<String> comboDay = new JComboBox<String>();
 	JComboBox<String> comboYear = new JComboBox<String>();
@@ -59,6 +63,9 @@ public class BetterNewGameTab {
 		final JPanel panel = new JPanel();
 		final SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
+		
+		final String defaultName = this.makeDefaultName();
+		
 		
 		//JPanel panel_1 = new JPanel();
 		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, panel);
@@ -89,10 +96,12 @@ public class BetterNewGameTab {
 				pokerSession.setDescription(textFieldDescription.getText());
 
 				boolean dateCorrect = true;
+				boolean dateInRange = true;
 				JLabel lblDateError = new JLabel("Please select a value for all date fields");
+				JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
 				try {
 					dateCorrect = true;
-					canSaveSession = pokerSession.validateFields(year, month, day, endHour, endMinutes);
+					canSaveSession = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
 					
 
 					//after that you need to call this to revalidate and repaint the panel
@@ -110,6 +119,18 @@ public class BetterNewGameTab {
 					panel_1.repaint();
 					System.out.println("Exception thrown");
 				} 
+				catch(DateOutOfRangeException ex){
+					dateInRange = false;
+					canSaveSession = false;
+					lblDateOutOfRange.setText("Please select a date after the current date");
+					lblDateOutOfRange.setForeground(Color.RED);
+					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateOutOfRange, 0, SpringLayout.NORTH, lblEndDate);
+					sl_panel_1.putConstraint(SpringLayout.WEST, lblDateOutOfRange, 20, SpringLayout.EAST, lblEndDate);
+					panel_1.add(lblDateOutOfRange);
+					panel_1.revalidate();
+					panel_1.repaint();
+					System.out.println("Exception thrown");
+				}
 				finally {}
 				System.out.println(textFieldDescription.getText());
 				System.out.println(textFieldSessionField.getText());
@@ -155,6 +176,7 @@ public class BetterNewGameTab {
 		panel_1.add(lblSessionName);
 		
 		textFieldSessionField = new JTextField();
+		textFieldSessionField.setText(defaultName);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textFieldSessionField, 6, SpringLayout.SOUTH, lblSessionName);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textFieldSessionField, 10, SpringLayout.WEST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textFieldSessionField, -10, SpringLayout.EAST, panel_1);
@@ -166,7 +188,8 @@ public class BetterNewGameTab {
 		sl_panel_1.putConstraint(SpringLayout.WEST, lblSessionDescription, 0, SpringLayout.WEST, lblSessionName);
 		panel_1.add(lblSessionDescription);
 		
-		textFieldDescription = new JTextField();
+		textFieldDescription = new JTextArea();
+		textFieldDescription.setToolTipText("");
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textFieldDescription, 6, SpringLayout.SOUTH, lblSessionDescription);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textFieldDescription, 0, SpringLayout.WEST, lblSessionName);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, textFieldDescription, -175, SpringLayout.SOUTH, panel_1);
@@ -315,7 +338,7 @@ public class BetterNewGameTab {
 	
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboAMPM, 6, SpringLayout.EAST, comboTime);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, comboAMPM, 0, SpringLayout.SOUTH, comboTime);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboAMPM, 50, SpringLayout.EAST, comboTime);
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboAMPM, 60, SpringLayout.EAST, comboTime);
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
 		parseTimeDropdowns();
 		panel_1.add(comboAMPM);
@@ -422,7 +445,7 @@ public class BetterNewGameTab {
 		}
 	}
 	
-	private void printError(){
+	/* private void printError(){
 		JLabel lblDateError = new JLabel("Please select a value for all date fields");
 		lblDateError.setForeground(Color.RED);
 		
@@ -430,6 +453,15 @@ public class BetterNewGameTab {
 		sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.WEST, lblEndDate);
 		panel_1.add(lblDateError);
 		System.out.println("Error function reached");
+	} */
+	
+	/**
+	 * @return the initial ID
+	 */
+	public String makeDefaultName() {
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		return "Planning Poker " + dateFormat.format(date);
 	}
 	
 }
