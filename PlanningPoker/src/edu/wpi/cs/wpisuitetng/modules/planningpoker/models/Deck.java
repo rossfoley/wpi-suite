@@ -120,4 +120,8 @@ public class Deck extends AbstractModel {
 		this.numbersInDeck = toCopyFrom.numbersInDeck;
 	}
 	
+	public List<Integer> parseDeckNumsFromString(String ){
+		
+	}
+	
 }

@@ -52,6 +52,10 @@ public class DeckListModel extends AbstractListModel {
 		return null;
 	}
 	
+	public int getNextID(){
+		return 0;
+	}
+	
 	
 
 }
