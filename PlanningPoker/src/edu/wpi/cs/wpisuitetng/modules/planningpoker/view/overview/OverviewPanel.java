@@ -41,10 +41,10 @@ public class OverviewPanel extends JSplitPane {
 		OverviewDetailPanel detailPanel = new OverviewDetailPanel(testSession);
 			
 		// Set the widths of the columns
-		//table.getColumnModel().getColumn(0).setMinWidth(50); // ID
-		table.getColumnModel().getColumn(0).setMinWidth(200); // Name
-		table.getColumnModel().getColumn(1).setMinWidth(70); // End Date
-		table.getColumnModel().getColumn(2).setMinWidth(70); // Number of Requirements
+		table.getColumnModel().getColumn(0).setMinWidth(50); // ID
+		table.getColumnModel().getColumn(1).setMinWidth(150); // Name
+		table.getColumnModel().getColumn(2).setMinWidth(70); // End Date
+		table.getColumnModel().getColumn(3).setMinWidth(70); // Number of Requirements
 
 		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(tablePanel);
