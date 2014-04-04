@@ -22,6 +22,8 @@ public class Deck extends AbstractModel {
 		this.numbersInDeck = numbersInDeck;
 	}
 	
+	public Deck(){	}
+	
 	public String toJSON() {
 		return new Gson().toJson(this, Deck.class);
 	}
@@ -73,7 +75,7 @@ public class Deck extends AbstractModel {
 		int listLength = numbersInDeck.size();
 		for (Integer n:numbersInDeck){
 			stringOfDeckNums += n.toString();
-			// if not at last element in the list
+			// if not at last element in the list, add a comma and a space after the number
 			if (loopProgress != (listLength-1)){
 				stringOfDeckNums += ", ";
 			}
