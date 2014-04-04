@@ -13,10 +13,11 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class Deck extends AbstractModel {
 	ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
-	int iD;
+	int id;
 	
 	public Deck(ArrayList<Integer> numbersInDeck){
 		this.numbersInDeck = numbersInDeck;
@@ -85,4 +86,38 @@ public class Deck extends AbstractModel {
 		return stringOfDeckNums;
 		
 	}
+	
+	/**
+	 * @return the numbersInDeck
+	 */
+	public ArrayList<Integer> getNumbersInDeck() {
+		return numbersInDeck;
+	}
+
+	/**
+	 * @param numbersInDeck the numbersInDeck to set
+	 */
+	public void setNumbersInDeck(ArrayList<Integer> numbersInDeck) {
+		this.numbersInDeck = numbersInDeck;
+	}
+
+	/**
+	 * @return the iD
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void copyFrom(Deck toCopyFrom) {
+		this.id = toCopyFrom.id;
+		this.numbersInDeck = toCopyFrom.numbersInDeck;
+	}
+	
 }
