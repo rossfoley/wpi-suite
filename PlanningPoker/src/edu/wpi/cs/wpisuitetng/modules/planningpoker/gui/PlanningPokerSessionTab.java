@@ -34,20 +34,18 @@ public class PlanningPokerSessionTab extends JPanel {
 	
 	private final SpringLayout layout = new SpringLayout();
 	SpringLayout firstPanelLayout = new SpringLayout();
-	JPanel firstPanel = new JPanel();
 	SpringLayout secondPanelLayout = new SpringLayout();
+	JPanel firstPanel = new JPanel();
 	JPanel secondPanel = new JPanel();
 	
 	private ViewMode viewMode;
-	private JTextField textFieldSessionField;
-	private JTextArea textFieldDescription;
 	JComboBox<Months> comboMonth = new JComboBox<Months>();
 	JComboBox<String> comboDay = new JComboBox<String>();
 	JComboBox<String> comboYear = new JComboBox<String>();
 	JComboBox<String> comboTime = new JComboBox<String>();
 	JComboBox<String> comboAMPM = new JComboBox<String>();
+	JComboBox<String> comboDeck = new JComboBox<String>();
 	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
-	JLabel lblEndDate = new JLabel("Session End Date:");
 	
 	int month = 13;
 	int day = 0;
@@ -79,36 +77,33 @@ public class PlanningPokerSessionTab extends JPanel {
 	}
 	
 	public void buildLayouts() {
-		layout.putConstraint(SpringLayout.NORTH, firstPanel, 10, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, firstPanel, 10, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, firstPanel, -10, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, firstPanel, -10, SpringLayout.EAST, this);
-		
+		// Apply the layout and build the panels
 		this.setLayout(layout);
-		this.buildFirstLayout();
-		this.buildSecondLayout();
+		this.buildFirstPanel();
+		this.buildSecondPanel();
 	}
 	
 	/**
 	 * Builds the first screen for creating/editing a session
 	 */
-	private void buildFirstLayout() {	
+	private void buildFirstPanel() {	
 		// Set the layout and colors
 		firstPanel.setLayout(firstPanelLayout);
 		firstPanel.setForeground(Color.BLACK);
 		
 		// Initialize all of the fields on the panel
 		final String defaultName = this.makeDefaultName();
-		textFieldSessionField = new JTextField();
-		JLabel lblSessionName = new JLabel("Session Name:");
-		JLabel lblSessionDescription = new JLabel("Session Description:");
-		textFieldDescription = new JTextArea();
-		JLabel lblSessionEndTime = new JLabel("Session End Time:");
-		textFieldDescription.setToolTipText("");
-		JButton btnNext = new JButton("Next >");
-		JLabel lblDeck = new JLabel("Deck:");
-		JComboBox comboDeck = new JComboBox();
+		final JLabel lblSessionName = new JLabel("Session Name:");
+		final JLabel lblSessionDescription = new JLabel("Session Description:");
+		final JLabel lblEndDate = new JLabel("Session End Date:");
+		final JLabel lblSessionEndTime = new JLabel("Session End Time:");
+		final JLabel lblDeck = new JLabel("Deck:");
+		final JTextField textFieldSessionField = new JTextField();
+		final JTextArea textFieldDescription = new JTextArea();
+		final JButton btnNext = new JButton("Next >");
 		
+		// Setup colors and initial values for the panel elements
+		textFieldDescription.setToolTipText("");
 		textFieldSessionField.setText(defaultName);
 		textFieldSessionField.setColumns(10);
 		textFieldDescription.setColumns(10);
@@ -122,10 +117,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
 		
 		// Apply all of the constraints
-		//layout.putConstraint(SpringLayout.NORTH, lblSessionName, 0, SpringLayout.NORTH, firstPanel);
-		//layout.putConstraint(SpringLayout.WEST, lblSessionName, 40, SpringLayout.EAST, firstPanel);
-		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, this);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, this);
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, firstPanel);
 
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);							
 		
@@ -236,7 +229,39 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				handleNextButton(defaultName);
+				pokerSession.setName(textFieldSessionField.getText());
+				pokerSession.setDescription(textFieldDescription.getText());
+
+				boolean dataValid = false;
+				JLabel lblDateError = new JLabel("Please select a value for all date fields");
+				JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
+				try {
+					dataValid = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
+				}
+				catch(InvalidDateException ex) {
+					lblDateError.setText("Please select a value for all date fields");
+					lblDateError.setForeground(Color.RED);
+					firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
+					firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
+					firstPanel.add(lblDateError);
+					firstPanel.revalidate();
+					firstPanel.repaint();
+					System.out.println("Exception thrown");
+				} 
+				catch(DateOutOfRangeException ex){
+					lblDateOutOfRange.setText("Please select a date after the current date");
+					lblDateOutOfRange.setForeground(Color.RED);
+					firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateOutOfRange, 0, SpringLayout.NORTH, lblEndDate);
+					firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateOutOfRange, 20, SpringLayout.EAST, lblEndDate);
+					firstPanel.add(lblDateOutOfRange);
+					firstPanel.revalidate();
+					firstPanel.repaint();
+				}
+				
+				// If session data is valid, go to the next screen
+				if (dataValid) {
+					displayPanel(secondPanel);
+				}
 			}
 		});
 		
@@ -262,25 +287,25 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Builds the second screen for creating/editing a session.
 	 * This layout displays the requirements to select for a planning poker session.
 	 */
-	private void buildSecondLayout() {
+	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
 		
 		JButton btnSubmit = new JButton("Submit");
 		JButton btnBack = new JButton("Back");
 		
 		// Position the requirements panel
-		secondPanelLayout.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, this);
-		secondPanelLayout.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, this);
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, this);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, this);
+		secondPanelLayout.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, secondPanel);
 		
 		// Position the submit button
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, this);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, this);
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, secondPanel);
 		
 		// Position the back button
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, this);
-		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, -10, SpringLayout.WEST, this);
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
 		
 		// Submit button event handler
 		btnSubmit.addActionListener(new ActionListener() {
@@ -308,12 +333,24 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Makes the second screen the visible panel
 	 */
 	private void displayPanel(JPanel newPanel) {
-		this.removeAll();
+		// Remove the old panel
+		this.remove(firstPanel);
+		this.remove(secondPanel);
+		
+		// Position the new panel
+		layout.putConstraint(SpringLayout.NORTH, newPanel, 10, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, newPanel, 10, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, newPanel, -10, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, newPanel, -10, SpringLayout.EAST, this);
+		
+		// Add the new panel
 		this.add(newPanel);
-		newPanel.revalidate();
-		newPanel.repaint();
+		
+		// Revalidate and repaint the panels
 		this.revalidate();
 		this.repaint();
+		newPanel.revalidate();
+		newPanel.repaint();
 	}
 	
 	private void handleMonthChange() {
@@ -472,7 +509,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		return "Planning Poker " + dateFormat.format(date);
 	}
-
 	
 	/**
 	 * Submits the current session to the database as a new planning poker session
@@ -485,48 +521,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 	}
 
-
 	/**
 	 * @return 
 	 */
 	public PlanningPokerSession getDisplaySession() {
 		return pokerSession;
 	}
-
-
-	private void handleNextButton(final String defaultName) {
-		pokerSession.setName(textFieldSessionField.getText());
-		pokerSession.setDescription(textFieldDescription.getText());
-
-		boolean dataValid = false;
-		JLabel lblDateError = new JLabel("Please select a value for all date fields");
-		JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
-		try {
-			dataValid = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
-		}
-		catch(InvalidDateException ex) {
-			lblDateError.setText("Please select a value for all date fields");
-			lblDateError.setForeground(Color.RED);
-			firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
-			firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
-			firstPanel.add(lblDateError);
-			firstPanel.revalidate();
-			firstPanel.repaint();
-			System.out.println("Exception thrown");
-		} 
-		catch(DateOutOfRangeException ex){
-			lblDateOutOfRange.setText("Please select a date after the current date");
-			lblDateOutOfRange.setForeground(Color.RED);
-			firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateOutOfRange, 0, SpringLayout.NORTH, lblEndDate);
-			firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateOutOfRange, 20, SpringLayout.EAST, lblEndDate);
-			firstPanel.add(lblDateOutOfRange);
-			firstPanel.revalidate();
-			firstPanel.repaint();
-		}
-		
-		// If session data is valid, go to the next screen
-		if (dataValid)
-			displayPanel(secondPanel);
-	}
-	
 }
