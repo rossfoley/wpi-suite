@@ -1,12 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Rolling Thunder
- ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
@@ -15,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.BetterNewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.EditGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
@@ -27,7 +19,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
  * Provides an interface for interaction with the main GUI elements
  * All actions on GUI elements should be conducted through this controller.
  * @version $Revision: 1.0 $
- * @author justinhess
  */
 
 public class ViewEventController {
@@ -35,7 +26,7 @@ public class ViewEventController {
 	private MainView main = null;
 	private ToolbarView toolbar = null;
 	private OverviewTable overviewTable = null;
-	private ArrayList<EditGameTab> listOfEditingPanels = new ArrayList<EditGameTab>();
+	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	
 	/**
 	 * Sets the OverviewTable for the controller
@@ -85,7 +76,7 @@ public class ViewEventController {
 	 */
 	public void createPlanningPokerSession() {
 		//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-		JPanel panel = new BetterNewGameTab().createJPanel();
+		PlanningPokerSessionTab panel = new PlanningPokerSessionTab();
 		main.addTab("New Session.", null, panel, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
@@ -208,10 +199,10 @@ public class ViewEventController {
 	 */
 	public void editSession(PlanningPokerSession toEdit)
 	{	
-		EditGameTab exists = null;
+		PlanningPokerSessionTab exists = null;
 		
 		// Check if the session is already open in a tab
-		for(EditGameTab panel : listOfEditingPanels)
+		for(PlanningPokerSessionTab panel : listOfEditingPanels)
 		{
 			if(panel.getDisplaySession() == toEdit)	// This needs to be implemented
 			{
@@ -223,7 +214,7 @@ public class ViewEventController {
 //		if(exists == null)
 //		{
 			// eventually want to add session to edit as an argument
-			EditGameTab editPanel = new EditGameTab(toEdit);
+			PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
 			
 			StringBuilder tabName = new StringBuilder();
 			int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();

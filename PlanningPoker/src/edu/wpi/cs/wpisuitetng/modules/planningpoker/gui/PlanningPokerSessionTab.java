@@ -9,22 +9,18 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
  */
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JButton;
-import javax.swing.border.LineBorder;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.ViewMode;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -32,13 +28,13 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-import javax.swing.SwingConstants;
-
-public class BetterNewGameTab {
-	private static JTextField textFieldSessionField;
-	private static JTextArea textFieldDescription;
+public class PlanningPokerSessionTab extends JPanel {
+	private final PlanningPokerSession pokerSession;
+	private final SpringLayout sl_panel = new SpringLayout();
+	private ViewMode viewMode;
+	private JTextField textFieldSessionField;
+	private JTextArea textFieldDescription;
 	JComboBox<Months> comboMonth = new JComboBox<Months>();
 	JComboBox<String> comboDay = new JComboBox<String>();
 	JComboBox<String> comboYear = new JComboBox<String>();
@@ -53,63 +49,67 @@ public class BetterNewGameTab {
 	JPanel panel_1 = new JPanel();
 	SpringLayout sl_panel_1 = new SpringLayout();
 	JLabel lblEndDate = new JLabel("Session End Date:");
-	boolean alreadyVisited = false;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * Constructor for creating a planning poker session
 	 */
+	public PlanningPokerSessionTab() {
+		this.pokerSession = new PlanningPokerSession();
+		viewMode = (ViewMode.CREATING);
+		this.buildFirstLayout();
+	}
 	
-	public JPanel createJPanel(){
-		final JPanel panel = new JPanel();
-		final SpringLayout sl_panel = new SpringLayout();
-		panel.setLayout(sl_panel);
+	
+	/**
+	 * Constructor for editing an existing planning poker session
+	 */
+	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
+		
+		this.pokerSession = existingSession;
+		viewMode = (ViewMode.EDITING);
+		this.buildFirstLayout();
+	}
+	
+	/**
+	 * Builds the first screen for creating/editing a session
+	 */
+	private void buildFirstLayout() {
+
+		this.setLayout(sl_panel);
 		
 		final String defaultName = this.makeDefaultName();
-		
-		
-		//JPanel panel_1 = new JPanel();
-		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, panel_1, -10, SpringLayout.EAST, panel);
+
+		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, this);
+		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, this);
+		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, this);
+		sl_panel.putConstraint(SpringLayout.EAST, panel_1, -10, SpringLayout.EAST, this);
 		
 		JButton btnNext = new JButton("Next >");
-		sl_panel.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, panel);
-		panel.add(btnNext);
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, this);
+		sl_panel.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, this);
+		this.add(btnNext);
 		panel_1.setForeground(Color.BLACK);
-		panel.add(panel_1);
+		this.add(panel_1);
 
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);
 		panel_1.setLayout(sl_panel_1);
 		
-
-		
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean canSaveSession = false;
 				System.out.print(year);
 				System.out.print(month);
 				System.out.println(day);
-				final PlanningPokerSession pokerSession = new PlanningPokerSession();
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
 
-				boolean dateCorrect = true;
-				boolean dateInRange = true;
+				boolean dataValid = false;
 				JLabel lblDateError = new JLabel("Please select a value for all date fields");
 				JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
 				try {
-					dateCorrect = true;
-					canSaveSession = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
-					
-
+					dataValid = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
 					//after that you need to call this to revalidate and repaint the panel
-
 				}
 				catch(InvalidDateException ex) {
-					dateCorrect = false;
-					canSaveSession = false;
 					lblDateError.setText("Please select a value for all date fields");
 					lblDateError.setForeground(Color.RED);
 					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
@@ -120,8 +120,6 @@ public class BetterNewGameTab {
 					System.out.println("Exception thrown");
 				} 
 				catch(DateOutOfRangeException ex){
-					dateInRange = false;
-					canSaveSession = false;
 					lblDateOutOfRange.setText("Please select a date after the current date");
 					lblDateOutOfRange.setForeground(Color.RED);
 					sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateOutOfRange, 0, SpringLayout.NORTH, lblEndDate);
@@ -131,39 +129,13 @@ public class BetterNewGameTab {
 					panel_1.repaint();
 					System.out.println("Exception thrown");
 				}
-				finally {}
+				
 				System.out.println(textFieldDescription.getText());
 				System.out.println(textFieldSessionField.getText());
-					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
-				if (canSaveSession){
-						alreadyVisited = true;
-						// go to next screen
-						panel.removeAll();
-						
-						// Add the requirements panel
-						final SelectFromListPanel requirementPanel = new SelectFromListPanel();
-						sl_panel.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, panel);
-						sl_panel.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, panel);
-						sl_panel.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, panel);
-						sl_panel.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, panel);
-						
-						JButton btnSubmit = new JButton("Submit");
-						sl_panel.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, panel);
-						sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, panel);
-						panel.add(btnSubmit);
-						panel.add(requirementPanel);
-		
-						panel.revalidate();
-						panel.repaint();
-						
-						btnSubmit.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								pokerSession.setRequirements(requirementPanel.getSelected());
-								PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
-								ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
-							}
-						});
-				}
+
+				// If session data is valid, go to the next screen
+				if (dataValid)
+					buildSecondLayout();
 			}
 		});
 		
@@ -371,10 +343,42 @@ public class BetterNewGameTab {
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
 		panel_1.add(comboDeck);
 		
-		//System.out.println(panelWidth);
-		
-		return panel;
 	}
+	
+	
+	/**
+	 * Builds the second screen for creating/editing a session.
+	 * This layout displays the requirements to select for a planning poker session.
+	 */
+	private void buildSecondLayout(){
+		// go to next screen
+		this.removeAll();
+		
+		// Add the requirements panel
+		final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+		sl_panel.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, this);
+		sl_panel.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, this);
+		sl_panel.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, this);
+		sl_panel.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, this);
+		
+		JButton btnSubmit = new JButton("Submit");
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, this);
+		sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, this);
+		this.add(btnSubmit);
+		this.add(requirementPanel);
+
+		this.revalidate();
+		this.repaint();
+		
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pokerSession.setRequirements(requirementPanel.getSelected());
+				submitSessionToDatabase();
+			}
+		});
+		
+	}
+	
 	
 	public void setDays31(){
 		if (displayingDays!=31){
@@ -468,7 +472,25 @@ public class BetterNewGameTab {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		return "Planning Poker " + dateFormat.format(date);
 	}
+
+	
+	/**
+	 * Submits the current session to the database as a new planning poker session
+	 * and removes this tab.
+	 */
+	private void submitSessionToDatabase() {
+		
+		PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);		
+		ViewEventController.getInstance().removeTab(this);// this thing closes the tabs
+		
+	}
+
+
+	/**
+	 * @return 
+	 */
+	public PlanningPokerSession getDisplaySession() {
+		return pokerSession;
+	}
 	
 }
-
-

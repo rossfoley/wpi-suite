@@ -19,7 +19,7 @@ import javax.swing.*;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.BetterNewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
