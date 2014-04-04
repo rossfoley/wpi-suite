@@ -25,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionControl
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -36,7 +37,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.SwingConstants;
 
-public class BetterNewGameTab {
+public class EditGameTab extends JPanel {
 	private static JTextField textFieldSessionField;
 	private static JTextArea textFieldDescription;
 	JComboBox<Months> comboMonth = new JComboBox<Months>();
@@ -54,37 +55,33 @@ public class BetterNewGameTab {
 	SpringLayout sl_panel_1 = new SpringLayout();
 	JLabel lblEndDate = new JLabel("Session End Date:");
 	boolean alreadyVisited = false;
+	private PlanningPokerSession displaySession;
 	
-	/**
-	 * @wbp.parser.entryPoint
-	 */
-	
-	public JPanel createJPanel(){
-		final JPanel panel = new JPanel();
-		final SpringLayout sl_panel = new SpringLayout();
-		panel.setLayout(sl_panel);
+	public EditGameTab(PlanningPokerSession toEdit) {
+		
+		this.displaySession = toEdit;
 		
 		final String defaultName = this.makeDefaultName();
-		
+		SpringLayout sl_panel = new SpringLayout();
+		this.setLayout(sl_panel);
 		
 		//JPanel panel_1 = new JPanel();
-		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, panel_1, -10, SpringLayout.EAST, panel);
+		sl_panel.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, this);
+		sl_panel.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, this);
+		sl_panel.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, this);
+		sl_panel.putConstraint(SpringLayout.EAST, panel_1, -10, SpringLayout.EAST, this);
 		
 		JButton btnNext = new JButton("Next >");
-		sl_panel.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, panel);
-		panel.add(btnNext);
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, this);
+		sl_panel.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, this);
+		this.add(btnNext);
 		panel_1.setForeground(Color.BLACK);
-		panel.add(panel_1);
+		this.add(panel_1);
 
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);
 		panel_1.setLayout(sl_panel_1);
 		
 
-		
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean canSaveSession = false;
@@ -138,29 +135,29 @@ public class BetterNewGameTab {
 				if (canSaveSession){
 						alreadyVisited = true;
 						// go to next screen
-						panel.removeAll();
+						removeAll();
 						
 						// Add the requirements panel
 						final SelectFromListPanel requirementPanel = new SelectFromListPanel();
-						sl_panel.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, panel);
-						sl_panel.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, panel);
-						sl_panel.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, panel);
-						sl_panel.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, panel);
+//						sl_panel.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, this);
+//						sl_panel.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, this);
+//						sl_panel.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, this);
+//						sl_panel.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, this);
 						
 						JButton btnSubmit = new JButton("Submit");
-						sl_panel.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, panel);
-						sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, panel);
-						panel.add(btnSubmit);
-						panel.add(requirementPanel);
+//						sl_panel.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, this);
+//						sl_panel.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, this);
+						add(btnSubmit);
+						add(requirementPanel);
 		
-						panel.revalidate();
-						panel.repaint();
+						revalidate();
+						repaint();
 						
 						btnSubmit.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								pokerSession.setRequirements(requirementPanel.getSelected());
 								PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
-								ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
+								ViewEventController.getInstance().removeTab((JComponent)getComponentAt(0,0));// this thing closes the tabs
 							}
 						});
 				}
@@ -206,7 +203,6 @@ public class BetterNewGameTab {
 
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboMonth, 6, SpringLayout.SOUTH, lblEndDate);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboMonth, 0, SpringLayout.WEST, lblEndDate);
-		comboMonth.setBackground(Color.WHITE);
 		comboMonth.setModel(new DefaultComboBoxModel<Months>(Months.values()));
 		panel_1.add(comboMonth);
 		
@@ -275,7 +271,6 @@ public class BetterNewGameTab {
 				}
 			}	
 		});
-		comboDay.setBackground(Color.WHITE);
 		
 		comboDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
@@ -303,7 +298,6 @@ public class BetterNewGameTab {
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboYear, 90, SpringLayout.EAST, comboDay);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboYear, 0, SpringLayout.NORTH, comboMonth);
 		setYearDropdown();
-		comboYear.setBackground(Color.WHITE);
 		panel_1.add(comboYear);
 		
 		comboYear.addActionListener(new ActionListener() {
@@ -335,15 +329,13 @@ public class BetterNewGameTab {
 		
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboTime, 6, SpringLayout.SOUTH, lblSessionEndTime);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboTime, 0, SpringLayout.WEST, lblSessionName);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboTime, 80, SpringLayout.WEST, lblSessionName);
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboTime, 60, SpringLayout.WEST, lblSessionName);
 		setTimeDropdown();
-		comboTime.setBackground(Color.WHITE);
 		panel_1.add(comboTime);
 	
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboAMPM, 6, SpringLayout.EAST, comboTime);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, comboAMPM, 0, SpringLayout.SOUTH, comboTime);
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboAMPM, 80, SpringLayout.EAST, comboTime);
-		comboAMPM.setBackground(Color.WHITE);
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
 		parseTimeDropdowns();
 		panel_1.add(comboAMPM);
@@ -371,9 +363,6 @@ public class BetterNewGameTab {
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
 		panel_1.add(comboDeck);
 		
-		//System.out.println(panelWidth);
-		
-		return panel;
 	}
 	
 	public void setDays31(){
@@ -467,6 +456,10 @@ public class BetterNewGameTab {
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		return "Planning Poker " + dateFormat.format(date);
+	}
+
+	public PlanningPokerSession getDisplaySession() {
+		return displaySession;
 	}
 	
 }

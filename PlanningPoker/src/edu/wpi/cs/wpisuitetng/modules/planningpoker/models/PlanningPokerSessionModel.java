@@ -65,6 +65,18 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		}
 		return temp;
 	}
+	
+	public PlanningPokerSession getPlanningPokerSession(String sessionName) {
+		PlanningPokerSession temp = null;
+		// iterate through list of planningPokerSessions until id is found
+		for (int i=0; i < this.planningPokerSessions.size(); i++){
+			temp = planningPokerSessions.get(i);
+			if (temp.getName().equals(sessionName)) {
+				return temp;
+			}
+		}
+		return null;
+	}
 	/**
 	 * Removes the PlanningPokerSession with the given ID
 	 * 

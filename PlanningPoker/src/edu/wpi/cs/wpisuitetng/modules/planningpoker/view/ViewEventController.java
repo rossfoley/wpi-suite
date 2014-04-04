@@ -1,12 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Rolling Thunder
- ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
@@ -15,19 +7,18 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.BetterNewGameTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.EditGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 
 
 /**
  * Provides an interface for interaction with the main GUI elements
  * All actions on GUI elements should be conducted through this controller.
  * @version $Revision: 1.0 $
- * @author justinhess
  */
 
 public class ViewEventController {
@@ -35,7 +26,7 @@ public class ViewEventController {
 	private MainView main = null;
 	private ToolbarView toolbar = null;
 	private OverviewTable overviewTable = null;
-	private ArrayList<BetterNewGameTab> listOfEditingPanels = new ArrayList<BetterNewGameTab>();
+	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	
 	/**
 	 * Sets the OverviewTable for the controller
@@ -85,7 +76,7 @@ public class ViewEventController {
 	 */
 	public void createPlanningPokerSession() {
 		//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-		JPanel panel = new BetterNewGameTab().createJPanel();
+		PlanningPokerSessionTab panel = new PlanningPokerSessionTab();
 		main.addTab("New Session.", null, panel, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
@@ -191,10 +182,15 @@ public class ViewEventController {
 		int[] selection = overviewTable.getSelectedRows();
 
 		if(selection.length != 1) return;
-
-		//PlanningPokerSession toEdit = (PlanningPokerSession)overviewTable.getValueAt(selection[0],1);
 		
-		editSession(null);//toEdit);
+		String sessionName = (String) overviewTable.getValueAt(selection[0],0);
+		PlanningPokerSession toEdit = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionName);
+		
+		// If the session doesn't exist
+		if (toEdit == null)
+			createPlanningPokerSession();
+		else
+			editSession(toEdit);
 	}
 	
 	/**
@@ -202,14 +198,11 @@ public class ViewEventController {
 	 * @param toEdit the req to edit
 	 */
 	public void editSession(PlanningPokerSession toEdit)
-	{
-		createPlanningPokerSession();
-		
-		/*
-		BetterNewGameTab exists = null;
+	{	
+		PlanningPokerSessionTab exists = null;
 		
 		// Check if the session is already open in a tab
-		for(BetterNewGameTab panel : listOfEditingPanels)
+		for(PlanningPokerSessionTab panel : listOfEditingPanels)
 		{
 			if(panel.getDisplaySession() == toEdit)	// This needs to be implemented
 			{
@@ -218,14 +211,12 @@ public class ViewEventController {
 			}
 		}
 		
-		if(exists == null)
-		{
+//		if(exists == null)
+//		{
 			// eventually want to add session to edit as an argument
-			BetterNewGameTab editPanel = new BetterNewGameTab();//toEdit);  
+			PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
 			
 			StringBuilder tabName = new StringBuilder();
-			tabName.append("Edit Session");	//toEdit.getId()); 
-			tabName.append(". ");
 			int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
 			tabName.append(toEdit.getName().substring(0,subStringLength));
 			if(toEdit.getName().length() > 6) tabName.append("..");
@@ -235,12 +226,11 @@ public class ViewEventController {
 			main.invalidate();
 			main.repaint();
 			main.setSelectedComponent(editPanel);
-		}
-		else
-		{
-			main.setSelectedComponent(exists);
-		}
-		*/
+//		}
+//		else
+//		{
+//			main.setSelectedComponent(exists);
+//		}
 	}
 
 }
