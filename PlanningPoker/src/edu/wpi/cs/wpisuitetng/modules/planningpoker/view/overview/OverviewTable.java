@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -94,9 +95,17 @@ public class OverviewTable extends JTable
 		tableModel.setRowCount(0);		
 
 		for (PlanningPokerSession pokerSession : pokerSessions) {	
+			String endDate;
+			// Handle if there was no end date set
+			try {
+				endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(pokerSession.getEndDate().getTime());
+			} catch (NullPointerException ex) {
+				endDate = new String("No end date");
+			}
+			
 			tableModel.addRow(new Object[]{
 					pokerSession.getName(),
-					DateFormat.getDateInstance(DateFormat.MEDIUM).format(pokerSession.getEndDate().getTime()),
+					endDate,
 					Integer.toString(pokerSession.requirementsGetSize())
 			});	
 		}
