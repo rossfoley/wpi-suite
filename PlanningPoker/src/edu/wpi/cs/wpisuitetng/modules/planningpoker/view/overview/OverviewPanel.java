@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
@@ -33,16 +34,22 @@ public class OverviewPanel extends JSplitPane {
 		// Create the overview table and put it in a scroll pane
 		OverviewTable table = new OverviewTable(data, columnNames);
 		JScrollPane tablePanel = new JScrollPane(table);
+		
+		// Create the detail panel
+		PlanningPokerSession testSession = new PlanningPokerSession();
+		testSession.setName("Test");
+		OverviewDetailPanel detailPanel = new OverviewDetailPanel(testSession);
 			
 		// Set the widths of the columns
-		table.getColumnModel().getColumn(0).setMinWidth(150); // Name
-		table.getColumnModel().getColumn(1).setMinWidth(120); // End Date
-		table.getColumnModel().getColumn(2).setMinWidth(120); // Number of Requirements
+		//table.getColumnModel().getColumn(0).setMinWidth(50); // ID
+		table.getColumnModel().getColumn(0).setMinWidth(200); // Name
+		table.getColumnModel().getColumn(1).setMinWidth(70); // End Date
+		table.getColumnModel().getColumn(2).setMinWidth(70); // Number of Requirements
 
 		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(tablePanel);
-		this.setRightComponent(new JPanel());  // create empty jpanel for left split screen
-		this.setResizeWeight(1.0);  // set the right screen to not show by default
+		this.setRightComponent(detailPanel);
+		this.setResizeWeight(0);  // set the right screen to not show by default
 		
 		// Tell the ViewEventController what the overview table is
 		ViewEventController.getInstance().setOverviewTable(table);
