@@ -80,7 +80,7 @@ public class ManagerLayer {
 		map.put("planningpoker" + "planningpokersession", new PlanningPokerSessionEntityManager(data));
 
 		//add just your module to this list
-		String[] fullModuleList = {"core","defecttracker","postboard","requirementmanager"};
+		String[] fullModuleList = {"core","defecttracker","postboard","requirementmanager","planningpoker"};
 		((ProjectManager)map.get("coreproject")).setAllModules(fullModuleList);
 		String ssid = null;
 		
