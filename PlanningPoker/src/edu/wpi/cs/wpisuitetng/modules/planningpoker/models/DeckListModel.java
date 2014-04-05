@@ -26,6 +26,10 @@ public class DeckListModel extends AbstractListModel {
 	public static DeckListModel getInstance(){
 		if (instance == null){
 			instance = new DeckListModel();
+			// add default deck;
+			ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
+			defaultDeckNums = 
+			
 		}
 		return instance;
 	}
@@ -42,6 +46,7 @@ public class DeckListModel extends AbstractListModel {
 	}
 	
 	public void addDeck(Deck deck){
+		deck.setId(getNextID());
 		existingDecks.add(deck);
 	}
 	

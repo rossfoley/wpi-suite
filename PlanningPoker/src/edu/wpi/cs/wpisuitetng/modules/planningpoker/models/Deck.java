@@ -136,8 +136,14 @@ public class Deck extends AbstractModel {
 		this.numbersInDeck = toCopyFrom.numbersInDeck;
 	}
 	
-	public List<Integer> parseDeckNumsFromString(String ){
-		
+	/*public List<Integer> parseDeckNumsFromString(String ){
+		return null;
+	} */
+	
+	public String autoName(){
+		String newDeckName = "Deck " + Integer.toString(this.id);
+		return newDeckName;
 	}
 	
+
 }
