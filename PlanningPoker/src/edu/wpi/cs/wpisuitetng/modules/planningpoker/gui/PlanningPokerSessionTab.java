@@ -229,7 +229,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+		//JComboBox<String> comboDeck = new JComboBox<String>();
+		sl_panel_1.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
+		sl_panel_1.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblSessionName);
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
+		comboDeck.setBackground(Color.WHITE);
 				pokerSession.setName(textFieldSessionField.getText());
+		setDeckDropdown();
 				pokerSession.setDescription(textFieldDescription.getText());
 
 				boolean dataValid = false;
@@ -483,8 +489,12 @@ public class PlanningPokerSessionTab extends JPanel {
 		(new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
 				"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
 				"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" } ));
-		
-		
+	}
+	
+	public void setDeckDropdown(){
+		comboDeck.setModel(new DefaultComboBoxModel<String>(new String[] {
+				"Default", "(None)", "Deck 1", "Deck 2"}));
+		System.out.println("Set deck dropdown");
 	}
 	
 	/**
