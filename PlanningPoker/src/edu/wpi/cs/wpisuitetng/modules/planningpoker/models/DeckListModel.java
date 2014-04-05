@@ -44,12 +44,18 @@ public class DeckListModel extends AbstractListModel {
 		return existingDecks.get(existingDecks.size() - 1 - index);
 	}
 	
-	public void addDeck(Deck deck){
-		deck.setId(getNextID());
-		if (deck.getDeckName().equals("")){
-			deck.setDeckName(deck.autoName());
+	public void addDeck(Deck newDeck){
+		newDeck.setId(getNextID());
+		if (newDeck.getDeckName().equals("")){
+			newDeck.setDeckName(newDeck.autoName());
 		}
-		existingDecks.add(deck);
+		existingDecks.add(newDeck);
+		try {
+			AddDeckController.getInstance().addDeck(newDeck);	
+		}
+		catch {
+			
+		}
 	}
 	
 	public Deck getDeck(ArrayList<Integer> deckNums){
