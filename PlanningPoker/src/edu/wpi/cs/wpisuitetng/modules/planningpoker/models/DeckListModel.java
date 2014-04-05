@@ -21,15 +21,14 @@ public class DeckListModel extends AbstractListModel {
 	private DeckListModel(){
 		existingDecks = new ArrayList<Deck>();
 		this.nextID = 0;
+		// add Default Deck
+		Deck defaultDeck = makeDefaultDeck();
+		addDeck(defaultDeck);
 	}
 	
 	public static DeckListModel getInstance(){
 		if (instance == null){
 			instance = new DeckListModel();
-			// add default deck;
-			ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
-			defaultDeckNums = 
-			
 		}
 		return instance;
 	}
@@ -47,6 +46,9 @@ public class DeckListModel extends AbstractListModel {
 	
 	public void addDeck(Deck deck){
 		deck.setId(getNextID());
+		if (deck.getDeckName().equals("")){
+			deck.setDeckName(deck.autoName());
+		}
 		existingDecks.add(deck);
 	}
 	
@@ -64,6 +66,17 @@ public class DeckListModel extends AbstractListModel {
 		return this.nextID++;
 	}
 	
-	
-
+	public Deck makeDefaultDeck(){
+		ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
+		defaultDeckNums.add(1);
+		defaultDeckNums.add(1);
+		defaultDeckNums.add(2);
+		defaultDeckNums.add(3);
+		defaultDeckNums.add(5);
+		defaultDeckNums.add(8);
+		defaultDeckNums.add(13);
+		Deck defaultDeck = new Deck(defaultDeckNums);
+		defaultDeck.setDeckName("Default"); 
+		return defaultDeck;
+	}
 }
