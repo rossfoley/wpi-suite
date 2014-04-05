@@ -28,7 +28,7 @@ public class OverviewPanel extends JSplitPane {
 	public OverviewPanel()
 	{
 		// Set the data for the overview table
-		String[] columnNames = {"Name", "End Date", "Requirements"};
+		String[] columnNames = {"", "Name", "End Date", "Requirements"};
 		Object[][] data = {};
 		
 		// Create the overview table and put it in a scroll pane
@@ -41,7 +41,7 @@ public class OverviewPanel extends JSplitPane {
 		OverviewDetailPanel detailPanel = new OverviewDetailPanel(testSession);
 			
 		// Set the widths of the columns
-		table.getColumnModel().getColumn(0).setMinWidth(50); // ID
+		table.getColumnModel().getColumn(0).setMaxWidth(0); // ID
 		table.getColumnModel().getColumn(1).setMinWidth(150); // Name
 		table.getColumnModel().getColumn(2).setMinWidth(70); // End Date
 		table.getColumnModel().getColumn(3).setMinWidth(70); // Number of Requirements
@@ -51,8 +51,10 @@ public class OverviewPanel extends JSplitPane {
 		this.setRightComponent(detailPanel);
 		this.setResizeWeight(0);  // set the right screen to not show by default
 		
-		// Tell the ViewEventController what the overview table is
+		// Tell the ViewEventController what the overview table and the detail panel are
 		ViewEventController.getInstance().setOverviewTable(table);
+		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+
 	}
 
 }

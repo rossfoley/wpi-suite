@@ -74,6 +74,13 @@ public class OverviewTable extends JTable
 					}
 				}
 				
+				// Open detail overview panel after one mouse click
+				if (e.getClickCount() == 1)
+				{
+					ViewEventController.getInstance().displayDetailedSession();
+				}
+				
+				
 				// Open edit session tab after 2 mouse clicks
 				if (e.getClickCount() == 2)
 				{
@@ -104,6 +111,7 @@ public class OverviewTable extends JTable
 			}
 			
 			tableModel.addRow(new Object[]{
+					pokerSession.getID(),
 					pokerSession.getName(),
 					endDate,
 					Integer.toString(pokerSession.requirementsGetSize())
