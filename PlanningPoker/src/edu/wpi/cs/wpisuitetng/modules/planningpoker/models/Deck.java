@@ -16,8 +16,24 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class Deck extends AbstractModel {
+	String deckName;
+	/**
+	 * @return the deckName
+	 */
+	public String getDeckName() {
+		return deckName;
+	}
+
+	/**
+	 * @param deckName the deckName to set
+	 */
+	public void setDeckName(String deckName) {
+		this.deckName = deckName;
+	}
+
 	ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
 	int id;
+	
 	
 	public Deck(ArrayList<Integer> numbersInDeck){
 		this.numbersInDeck = numbersInDeck;

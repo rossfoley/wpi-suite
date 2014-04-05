@@ -14,10 +14,13 @@ import javax.swing.AbstractListModel;
  */
 public class DeckListModel extends AbstractListModel {
 	private List<Deck> existingDecks;
+	private int nextID;
+	
 	private static DeckListModel instance;
 	
 	private DeckListModel(){
 		existingDecks = new ArrayList<Deck>();
+		this.nextID = 0;
 	}
 	
 	public static DeckListModel getInstance(){
@@ -53,7 +56,7 @@ public class DeckListModel extends AbstractListModel {
 	}
 	
 	public int getNextID(){
-		return 0;
+		return this.nextID++;
 	}
 	
 	
