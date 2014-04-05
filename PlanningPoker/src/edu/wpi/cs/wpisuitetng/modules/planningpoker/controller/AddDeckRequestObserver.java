@@ -31,7 +31,7 @@ public class AddDeckRequestObserver implements RequestObserver {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
 		//System.out.println (response);
-		
+		System.out.println("Sent successfully");
 		// Parse the session out of the response body
 		final Deck addedDeck = Deck.fromJson(response.getBody());		
 	}

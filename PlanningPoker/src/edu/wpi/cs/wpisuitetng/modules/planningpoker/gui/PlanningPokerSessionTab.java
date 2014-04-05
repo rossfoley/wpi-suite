@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -28,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
@@ -87,7 +90,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Builds the first screen for creating/editing a session
 	 */
 	private void buildFirstPanel() {	
+		
 		// Set the layout and colors
+		
 		firstPanel.setLayout(firstPanelLayout);
 		firstPanel.setForeground(Color.BLACK);
 		

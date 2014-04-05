@@ -109,5 +109,9 @@ public class DeckListModel extends AbstractListModel {
 		existingDecks.clear();
 	}
 	
+	public List<Deck> getDecks() {
+		return existingDecks;
+	}
+	
 	
 }

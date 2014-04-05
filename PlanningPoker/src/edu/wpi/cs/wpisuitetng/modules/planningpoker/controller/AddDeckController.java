@@ -22,6 +22,7 @@ public class AddDeckController {
 	
 	 */
 	private AddDeckController() {
+		System.out.println("Add deck controller added");
 		observer = new AddDeckRequestObserver(this);
 	}
 	/**
