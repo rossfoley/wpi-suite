@@ -37,6 +37,7 @@ public class Deck extends AbstractModel {
 	
 	public Deck(ArrayList<Integer> numbersInDeck){
 		this.numbersInDeck = numbersInDeck;
+		this.deckName = "";
 	}
 	
 	public Deck(){	}
