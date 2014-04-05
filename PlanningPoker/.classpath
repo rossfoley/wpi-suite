@@ -14,5 +14,7 @@
 	<classpathentry kind="lib" path="../Janeway/lib/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="lib" path="../Janeway/lib/swingx-all-1.6.4.jar"/>
 	<classpathentry kind="lib" path="/Janeway/lib/miglayout-4.0-swing.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kevin/SoftEng/wpi-suite/Janeway/lib/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kevin/SoftEng/wpi-suite/Janeway/lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
