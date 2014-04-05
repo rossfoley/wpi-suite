@@ -22,7 +22,7 @@ public class AddDeckController {
 	
 	 */
 	private AddDeckController() {
-		observer = new AddSessionRequestObserver(this);
+		observer = new AddDeckRequestObserver(this);
 	}
 	/**
 	

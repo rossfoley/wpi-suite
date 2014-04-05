@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
 /**
  * @author mandi1267
  *
@@ -53,7 +56,7 @@ public class DeckListModel extends AbstractListModel {
 		try {
 			AddDeckController.getInstance().addDeck(newDeck);	
 		}
-		catch {
+		catch (Exception e){
 			
 		}
 	}
@@ -72,6 +75,22 @@ public class DeckListModel extends AbstractListModel {
 		return this.nextID++;
 	}
 	
+	/**
+	 * Adds the given array of decks to the list
+	 * 
+	 * @param decks the array of PlanningPokerSessions to add
+	 */
+	public void addDecks(Deck[] decks) {
+		for (int i = 0; i < decks.length; i++) {
+			this.existingDecks.add(decks[i]);
+		}
+		//this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
+		//ViewEventController.getInstance().refreshTable();
+		//ViewEventController.getInstance().refreshTree();
+		// Update the UI to reflect the list of sessions
+	}
+	
+	
 	public Deck makeDefaultDeck(){
 		ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
 		defaultDeckNums.add(1);
@@ -85,4 +104,10 @@ public class DeckListModel extends AbstractListModel {
 		defaultDeck.setDeckName("Default"); 
 		return defaultDeck;
 	}
+	
+	public void emptyModel(){
+		existingDecks.clear();
+	}
+	
+	
 }
