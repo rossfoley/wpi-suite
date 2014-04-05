@@ -49,6 +49,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	JComboBox<String> comboAMPM = new JComboBox<String>();
 	JComboBox<String> comboDeck = new JComboBox<String>();
 	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+	private JPanel textAreaDeckNumbers;
 	
 	int month = 13;
 	int day = 0;
@@ -235,12 +236,26 @@ public class PlanningPokerSessionTab extends JPanel {
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 		//JComboBox<String> comboDeck = new JComboBox<String>();
+		panel_1.add(lblDeck);
+		
+		
 		sl_panel_1.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
 		sl_panel_1.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblSessionName);
 		sl_panel_1.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
 		comboDeck.setBackground(Color.WHITE);
 				pokerSession.setName(textFieldSessionField.getText());
 		setDeckDropdown();
+		panel_1.add(comboDeck);
+		
+		textAreaDeckNumbers = new JPanel();
+		sl_panel_1.putConstraint(SpringLayout.NORTH, textAreaDeckNumbers, 0, SpringLayout.NORTH, comboDeck);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textAreaDeckNumbers, -6, SpringLayout.EAST, lblSessionDescription);
+		sl_panel_1.putConstraint(SpringLayout.EAST, textAreaDeckNumbers, 239, SpringLayout.EAST, lblSessionDescription);
+		//textFieldSessionField.setText(defaultName);
+		sl_panel_1.putConstraint(SpringLayout.NORTH, textFieldSessionField, 6, SpringLayout.SOUTH, lblSessionName);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textFieldSessionField, 10, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, textFieldSessionField, 80, SpringLayout.EAST, panel_1);
+		panel_1.add(textAreaDeckNumbers);
 				pokerSession.setDescription(textFieldDescription.getText());
 
 				boolean dataValid = false;
@@ -501,6 +516,8 @@ public class PlanningPokerSessionTab extends JPanel {
 				"Default", "(None)", "Deck 1", "Deck 2"}));
 		System.out.println("Set deck dropdown");
 	}
+	
+	
 	
 	/**
 	 * takes the strings from the time dropdown menus, parses the strings, and saves the hour and minute to the appopriate fields
