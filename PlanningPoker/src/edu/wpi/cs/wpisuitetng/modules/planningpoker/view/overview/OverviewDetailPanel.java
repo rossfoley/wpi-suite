@@ -40,7 +40,7 @@ public class OverviewDetailPanel extends JPanel {
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // oops?
 		
-		JPanel infoPanel = new JPanel();
+		infoPanel = new JPanel();
 		add(infoPanel);
 		infoPanel.setLayout(null);
 		
@@ -56,8 +56,8 @@ public class OverviewDetailPanel extends JPanel {
 		lblRequirementsLabel.setBounds(10, 110, 258, 14);
 		infoPanel.add(lblRequirementsLabel);
 		
-		DefaultListModel<Requirement> listModel = new DefaultListModel<Requirement>();
-		JList<Requirement> requirementsList = new JList<Requirement>(listModel);
+		listModel = new DefaultListModel<Requirement>();
+		requirementsList = new JList<Requirement>(listModel);
 		requirementsList.setBounds(10, 135, 258, 107);
 		infoPanel.add(requirementsList);
 
@@ -65,7 +65,7 @@ public class OverviewDetailPanel extends JPanel {
 		this.lblSessionName.setBounds(10, 35, 258, 14);
 		infoPanel.add(this.lblSessionName);
 		
-		JLabel lblEndDate = new JLabel("");
+		lblEndDate = new JLabel("");
 		lblEndDate.setBounds(10, 85, 258, 14);
 		infoPanel.add(lblEndDate);
 		
@@ -93,8 +93,10 @@ public class OverviewDetailPanel extends JPanel {
 		this.listModel.clear();
 		if (session.requirementsGetSize() > 0) 
 		{
-			for (int i = 0; i < session.requirementsGetSize(); i++) {
-				this.listModel.addElement(requirements.get(i));
+			for (Requirement requirement : requirements) {
+				if (requirement != null) {
+					this.listModel.addElement(requirement);
+				}
 			}
 		}
 		
