@@ -71,14 +71,12 @@ public class OverviewTable extends JTable
 					{
 						getSelectionModel().clearSelection();
 						repaint();
-					}
-				}
-				
-				// Open detail overview panel after one mouse click
-				if (e.getClickCount() == 1)
-				{
+					}					
+
+					// Open detail overview panel
 					ViewEventController.getInstance().displayDetailedSession();
 				}
+				
 				
 				
 				// Open edit session tab after 2 mouse clicks

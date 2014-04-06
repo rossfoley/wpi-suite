@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.text.DateFormat;
+import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JTextArea;
 import javax.swing.JList;
@@ -35,7 +37,7 @@ public class OverviewDetailPanel extends JPanel {
 	
 	public OverviewDetailPanel(PlanningPokerSession session) {
 		
-		String endDate = "";
+		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // oops?
 		
 		JPanel infoPanel = new JPanel();
@@ -59,11 +61,11 @@ public class OverviewDetailPanel extends JPanel {
 		requirementsList.setBounds(10, 135, 258, 107);
 		infoPanel.add(requirementsList);
 
-		this.lblSessionName = new JLabel(session.getName());
+		this.lblSessionName = new JLabel("");
 		this.lblSessionName.setBounds(10, 35, 258, 14);
 		infoPanel.add(this.lblSessionName);
 		
-		JLabel lblEndDate = new JLabel(endDate);
+		JLabel lblEndDate = new JLabel("");
 		lblEndDate.setBounds(10, 85, 258, 14);
 		infoPanel.add(lblEndDate);
 		
@@ -82,25 +84,31 @@ public class OverviewDetailPanel extends JPanel {
 	public void updatePanel(PlanningPokerSession session)
 	{
 		String endDate = "No end date";
+		List<Requirement> requirements = session.getRequirements();
 		
 		// Change name
 		this.lblSessionName.setText(session.getName());
 		
+		// Change requirements list
+		this.listModel.clear();
+		if (session.requirementsGetSize() > 0) 
+		{
+			for (int i = 0; i < session.requirementsGetSize(); i++) {
+				this.listModel.addElement(requirements.get(i));
+			}
+		}
+		
+		requirementsList = new JList<Requirement>(listModel);
+
 		// Change end date
 		try {
 			endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(session.getEndDate().getTime());
 		} catch (NullPointerException ex) {
 			endDate = new String("No end date");
 		}
+		
+		//System.out.println(endDate);
 		this.lblEndDate.setText(endDate);
-		
-		// Change requirements list
-		for (int i = 0; i < session.requirementsGetSize(); i++) {
-			this.listModel.addElement(session.getRequirements().get(i));
-		}
-		
-		requirementsList = new JList<Requirement>(listModel);
-		
 
 		// redraw panel
 		infoPanel.revalidate();

@@ -36,15 +36,15 @@ public class OverviewPanel extends JSplitPane {
 		JScrollPane tablePanel = new JScrollPane(table);
 		
 		// Create the detail panel
-		PlanningPokerSession testSession = new PlanningPokerSession();
-		testSession.setName("Test");
-		OverviewDetailPanel detailPanel = new OverviewDetailPanel(testSession);
+		OverviewDetailPanel detailPanel = new OverviewDetailPanel(new PlanningPokerSession());
 			
 		// Set the widths of the columns
 		table.getColumnModel().getColumn(0).setMaxWidth(0); // ID
 		table.getColumnModel().getColumn(1).setMinWidth(150); // Name
-		table.getColumnModel().getColumn(2).setMinWidth(70); // End Date
-		table.getColumnModel().getColumn(3).setMinWidth(70); // Number of Requirements
+		table.getColumnModel().getColumn(2).setMaxWidth(80); // End Date
+		table.getColumnModel().getColumn(2).setMinWidth(80); // End Date
+		table.getColumnModel().getColumn(3).setMaxWidth(90); // Number of Requirements
+		table.getColumnModel().getColumn(3).setMinWidth(90); // Number of Requirements
 
 		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(tablePanel);
