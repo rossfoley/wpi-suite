@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -58,8 +59,9 @@ public class OverviewDetailPanel extends JPanel {
 		
 		listModel = new DefaultListModel<Requirement>();
 		requirementsList = new JList<Requirement>(listModel);
-		requirementsList.setBounds(10, 135, 258, 107);
-		infoPanel.add(requirementsList);
+		JScrollPane listContainer = new JScrollPane(requirementsList);
+		listContainer.setBounds(10, 135, 258, 107);
+		infoPanel.add(listContainer);
 
 		this.lblSessionName = new JLabel("");
 		this.lblSessionName.setBounds(10, 35, 258, 14);
