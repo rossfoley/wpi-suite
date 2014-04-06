@@ -49,7 +49,6 @@ public class PlanningPokerSessionTab extends JPanel {
 	JComboBox<String> comboAMPM = new JComboBox<String>();
 	JComboBox<String> comboDeck = new JComboBox<String>();
 	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
-	private JPanel textAreaDeckNumbers;
 	
 	int month = 13;
 	int day = 0;
@@ -57,8 +56,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	int endHour;
 	int endMinutes;
 	int displayingDays;
-	
-	
+	boolean isUsingDeck;
+	Deck sessionDeck;
+	JLabel numbers = new JLabel("Users input non-negative intergers");
+
 	/**
 	 * Constructor for creating a planning poker session
 	 */
@@ -100,6 +101,26 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Initialize all of the fields on the panel
 		final String defaultName = this.makeDefaultName();
 		final JLabel lblSessionName = new JLabel("Session Name:");
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, this);
+		sl_panel.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, this);
+		this.add(btnNext);
+		panel_1.setForeground(Color.BLACK);
+		this.add(panel_1);
+
+		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);
+		panel_1.setLayout(sl_panel_1);
+		
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.print(year);
+				System.out.print(month);
+				System.out.println(day);
+				pokerSession.setName(textFieldSessionField.getText());
+				pokerSession.setSessionDeck(sessionDeck);
+				pokerSession.setUsingDeck(isUsingDeck);
+				pokerSession.setDescription(textFieldDescription.getText());
+
+				boolean dataValid = false;
 		final JLabel lblSessionDescription = new JLabel("Session Description:");
 		final JLabel lblEndDate = new JLabel("Session End Date:");
 		final JLabel lblSessionEndTime = new JLabel("Session End Time:");
@@ -232,9 +253,16 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 		});
 		
-		// Next button event handler
+		comboDeck.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				parseDeckDropdowns();
+			}
+		});
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				parseDeckDropdowns();
+			}
+		});
 		//JComboBox<String> comboDeck = new JComboBox<String>();
 		panel_1.add(lblDeck);
 		
@@ -246,16 +274,15 @@ public class PlanningPokerSessionTab extends JPanel {
 				pokerSession.setName(textFieldSessionField.getText());
 		setDeckDropdown();
 		panel_1.add(comboDeck);
-		
-		textAreaDeckNumbers = new JPanel();
-		sl_panel_1.putConstraint(SpringLayout.NORTH, textAreaDeckNumbers, 0, SpringLayout.NORTH, comboDeck);
-		sl_panel_1.putConstraint(SpringLayout.WEST, textAreaDeckNumbers, -6, SpringLayout.EAST, lblSessionDescription);
-		sl_panel_1.putConstraint(SpringLayout.EAST, textAreaDeckNumbers, 239, SpringLayout.EAST, lblSessionDescription);
 		//textFieldSessionField.setText(defaultName);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textFieldSessionField, 6, SpringLayout.SOUTH, lblSessionName);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textFieldSessionField, 10, SpringLayout.WEST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textFieldSessionField, 80, SpringLayout.EAST, panel_1);
 		panel_1.add(textAreaDeckNumbers);
+		
+		//JLabel numbers = new JLabel("Users input non-negative intergers");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
+		sl_panel_1.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
 				pokerSession.setDescription(textFieldDescription.getText());
 
 				boolean dataValid = false;
@@ -512,11 +539,19 @@ public class PlanningPokerSessionTab extends JPanel {
 	}
 	
 	public void setDeckDropdown(){
-		comboDeck.setModel(new DefaultComboBoxModel<String>(new String[] {
-				"Default", "(None)", "Deck 1", "Deck 2"}));
+		List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
+		String[] deckNames = new String[projectDecks.size() + 1];
+		deckNames[0] = "None";
+		int i = 1;
+		for(Deck d:projectDecks){
+			deckNames[i] = d.getDeckName();
+			i++;
+		}
+		comboDeck.setModel(new DefaultComboBoxModel<String>(deckNames));
 		System.out.println("Set deck dropdown");
 	}
 	
+
 	
 	
 	/**
@@ -542,6 +577,29 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 	}
 	
+	public void parseDeckDropdowns(){
+		String deckName = (String) comboDeck.getSelectedItem();
+		List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
+		String deckNumbers = "";
+		if (deckName.equals("None")){
+			isUsingDeck = false;
+			sessionDeck = null;
+			deckNumbers = "Users input non-negative intergers";
+		}
+		else {
+			for (Deck d:projectDecks){
+				if (deckName.equals(d.getDeckName())){
+					sessionDeck = d;
+					isUsingDeck = true;
+					deckNumbers = d.changeNumbersToString();	
+				}
+			}
+		}
+		System.out.println(deckNumbers);
+		numbers.setText(deckNumbers);
+		numbers.revalidate();
+		numbers.repaint();
+	}
 	
 	/**
 	 * @return the default name for the planning poker session
