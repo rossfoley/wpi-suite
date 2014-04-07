@@ -16,7 +16,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
- * @author mandi1267
+ * @author Amanda Adkins
  *
  */
 public class DeckEntityManager implements EntityManager<Deck> {

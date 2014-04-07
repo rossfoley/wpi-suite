@@ -24,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * @author rossfoley
-*  @author mandi1267 
+*  @author Amanda Adkins
  *
  */
 public class PlanningPokerSession extends AbstractModel {

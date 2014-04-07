@@ -16,7 +16,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import java.awt.event.ActionListener;
 
 /**
- * @author mandi1267
+ * @author Amanda Adkins
  *
  */
 public class GetDeckController implements ActionListener {

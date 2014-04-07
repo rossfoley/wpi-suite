@@ -12,7 +12,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
- * @author mandi1267
+ * @author Amanda Adkins
  *
  */
 public class DeckListModel extends AbstractListModel {
@@ -84,15 +84,12 @@ public class DeckListModel extends AbstractListModel {
 		for (int i = 0; i < decks.length; i++) {
 			this.existingDecks.add(decks[i]);
 		}
-		//this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
-		//ViewEventController.getInstance().refreshTable();
-		//ViewEventController.getInstance().refreshTree();
-		// Update the UI to reflect the list of sessions
 	}
 	
 	
 	public Deck makeDefaultDeck(){
 		ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
+		defaultDeckNums.add(0);
 		defaultDeckNums.add(1);
 		defaultDeckNums.add(1);
 		defaultDeckNums.add(2);

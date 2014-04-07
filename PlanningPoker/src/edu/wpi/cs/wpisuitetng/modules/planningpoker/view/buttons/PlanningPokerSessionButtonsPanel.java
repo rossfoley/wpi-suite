@@ -18,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
 /**
- * @author Amanda
+ * @author Amanda Adkins
  *
  */
 public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{

@@ -10,7 +10,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
- * @author mandi1267
+ * @author Amanda Adkins
  *
  */
 public class AddDeckRequestObserver implements RequestObserver {

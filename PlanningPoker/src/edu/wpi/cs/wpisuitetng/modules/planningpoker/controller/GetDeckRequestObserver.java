@@ -11,7 +11,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 /**
  * This observer handles responses to request for all requirements
  * 
- * @author mandi1267
+ * @author Amanda Adkins
  *
  */
 public class GetDeckRequestObserver implements RequestObserver {

@@ -10,7 +10,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * @author mandi1267
+ * @author Amanda Adkins
  *
  */
 public class AddDeckController {

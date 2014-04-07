@@ -4,7 +4,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 /**
- * @author mandi1267
+ * @author Amanda Adkins
  *
  */
 
