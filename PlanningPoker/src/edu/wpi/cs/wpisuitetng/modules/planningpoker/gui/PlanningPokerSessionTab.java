@@ -195,13 +195,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Day dropdown event handler
 		comboDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
-				String dayString = (String) comboDay.getSelectedItem();
-				if (dayString.equals("Day")){
-					day = 0;
-				}
-				else {
-					day = Integer.parseInt(dayString);
-				}
+				 parseDayDropdown();
 			}	
 		});
 		
@@ -209,7 +203,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboYear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				String yearString = (String) comboYear.getSelectedItem();
-				System.out.println(yearString);
 				if (yearString.equals("Year")) {
 					year = 1;
 				}
@@ -219,6 +212,7 @@ public class PlanningPokerSessionTab extends JPanel {
 				if (month == 1) {
 					setFebDays();
 				}
+				parseDayDropdown();
 			}	
 		});
 		
@@ -430,8 +424,8 @@ public class PlanningPokerSessionTab extends JPanel {
 			month = 0;
 			setDays31();
 			break;
-				
 		}
+		parseDayDropdown();
 	}
 	
 	/** 
@@ -442,7 +436,6 @@ public class PlanningPokerSessionTab extends JPanel {
 			comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
 					"9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20",
 					"21", "22","23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-			System.out.println("Displaying 31 days");
 			displayingDays = 31;
 		}
 	}
@@ -455,7 +448,6 @@ public class PlanningPokerSessionTab extends JPanel {
 			comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
 					"9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20",
 					"21", "22","23", "24", "25", "26", "27", "28", "29", "30" }));
-			System.out.println("Displaying 30 days");
 			displayingDays = 30;
 		}
 	}
@@ -480,7 +472,6 @@ public class PlanningPokerSessionTab extends JPanel {
 				displayingDays = 28;
 			}
 		}
-		System.out.println("Displaying feb days");
 	}
 	
 	/**
@@ -513,7 +504,6 @@ public class PlanningPokerSessionTab extends JPanel {
 			i++;
 		}
 		comboDeck.setModel(new DefaultComboBoxModel<String>(deckNames));
-		System.out.println("Set deck dropdown");
 	}
 	
 
@@ -535,10 +525,6 @@ public class PlanningPokerSessionTab extends JPanel {
 			if (stringAMPM.equals("PM")){
 				endHour += 12;
 			}
-			System.out.print("Hour:");
-			System.out.println(endHour);
-			System.out.print("Minute:");
-			System.out.println(endMinutes);
 		}
 	}
 	
@@ -591,4 +577,16 @@ public class PlanningPokerSessionTab extends JPanel {
 	public PlanningPokerSession getDisplaySession() {
 		return pokerSession;
 	}
+
+	
+	public void parseDayDropdown(){
+		String dayString = (String) comboDay.getSelectedItem();
+		if (dayString.equals("Day")){
+			day = 0;
+		}
+		else {
+			day = Integer.parseInt(dayString);
+		}
+	}
+
 }
