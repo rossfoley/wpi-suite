@@ -317,6 +317,10 @@ public class PlanningPokerSession extends AbstractModel {
 		return parser.fromJson(json, PlanningPokerSession[].class);
 	}
 	
+	public List<Requirement> getRequirements() {
+		return this.requirements;
+	}
+	
 	/**
 	 * @param selected the list of requirements to add to the session
 	 */

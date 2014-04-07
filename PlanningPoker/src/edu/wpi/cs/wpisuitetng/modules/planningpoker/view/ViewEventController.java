@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -11,6 +12,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.EditGameTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 
@@ -26,6 +28,7 @@ public class ViewEventController {
 	private MainView main = null;
 	private ToolbarView toolbar = null;
 	private OverviewTable overviewTable = null;
+	private OverviewDetailPanel overviewDetailPanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	
 	/**
@@ -34,6 +37,14 @@ public class ViewEventController {
 	 */
 	public void setOverviewTable(OverviewTable sessionTable) {
 		this.overviewTable = sessionTable;
+	}
+	
+	/**
+	 * Sets the OverviewDetailPanel for the controller
+	 * @param sessionTable a given OverviewDetailPanel
+	 */
+	public void setOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
+		this.overviewDetailPanel= sessionPanel;
 	}
 
 	/**
@@ -173,6 +184,24 @@ public class ViewEventController {
 		main.repaint();
 
 	}
+
+	
+	/**
+	 * Displays the details of the session that is clicked on 
+	 */
+	public void displayDetailedSession() 
+	{
+		int[] selection = overviewTable.getSelectedRows();
+		
+		if (selection.length != 1) return;
+		
+		UUID sessionID = (UUID) overviewTable.getValueAt(selection[0],0);
+		System.out.println("Edit: UUID " + sessionID);
+		PlanningPokerSession displaySession = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionID);
+		
+		overviewDetailPanel.updatePanel(displaySession);
+		
+	}
 	
 	/**
 	 * Edits the currently selected planning poker session.  If more than 1 session is selected, does nothing.
@@ -183,12 +212,15 @@ public class ViewEventController {
 
 		if(selection.length != 1) return;
 		
-		String sessionName = (String) overviewTable.getValueAt(selection[0],0);
-		PlanningPokerSession toEdit = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionName);
+		UUID sessionID = (UUID) overviewTable.getValueAt(selection[0],0);
+		System.out.println("Edit: UUID " + sessionID);
+		PlanningPokerSession toEdit = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionID);
 		
 		// If the session doesn't exist
-		if (toEdit == null)
+		if (toEdit == null) {
+			System.out.println("Session not found");
 			createPlanningPokerSession();
+		}
 		else
 			editSession(toEdit);
 	}
@@ -231,6 +263,12 @@ public class ViewEventController {
 //		{
 //			main.setSelectedComponent(exists);
 //		}
+			
+	}
+	
+	public void viewSession(PlanningPokerSession session) 
+	{
+		
 	}
 
 }
