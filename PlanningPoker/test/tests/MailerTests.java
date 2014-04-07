@@ -1,10 +1,9 @@
 package tests;
 
 import static org.junit.Assert.*;
+import notification.Mailer;
 
 import org.junit.Test;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.Mailer;
 
 public class MailerTests {
 

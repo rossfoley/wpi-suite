@@ -36,6 +36,8 @@ import java.util.GregorianCalendar;
 
 import javax.swing.SwingConstants;
 
+import notification.*;
+
 public class BetterNewGameTab {
 	private static JTextField textFieldSessionField;
 	private static JTextArea textFieldDescription;
@@ -54,6 +56,8 @@ public class BetterNewGameTab {
 	SpringLayout sl_panel_1 = new SpringLayout();
 	JLabel lblEndDate = new JLabel("Session End Date:");
 	boolean alreadyVisited = false;
+	
+	MockNotification sessionCreatedNotification = new MockNotification();
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -161,6 +165,7 @@ public class BetterNewGameTab {
 								pokerSession.setRequirements(requirementPanel.getSelected());
 								PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
 								ViewEventController.getInstance().removeTab((JComponent)panel.getComponentAt(0,0));// this thing closes the tabs
+								sessionCreatedNotification.sessionStartedNotification();
 							}
 						});
 				}
