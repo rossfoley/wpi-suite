@@ -92,35 +92,13 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Builds the first screen for creating/editing a session
 	 */
 	private void buildFirstPanel() {	
-		
 		// Set the layout and colors
-		
 		firstPanel.setLayout(firstPanelLayout);
 		firstPanel.setForeground(Color.BLACK);
 		
 		// Initialize all of the fields on the panel
 		final String defaultName = this.makeDefaultName();
 		final JLabel lblSessionName = new JLabel("Session Name:");
-		sl_panel.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, this);
-		sl_panel.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, this);
-		this.add(btnNext);
-		panel_1.setForeground(Color.BLACK);
-		this.add(panel_1);
-
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);
-		panel_1.setLayout(sl_panel_1);
-		
-		btnNext.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.print(year);
-				System.out.print(month);
-				System.out.println(day);
-				pokerSession.setName(textFieldSessionField.getText());
-				pokerSession.setSessionDeck(sessionDeck);
-				pokerSession.setUsingDeck(isUsingDeck);
-				pokerSession.setDescription(textFieldDescription.getText());
-
-				boolean dataValid = false;
 		final JLabel lblSessionDescription = new JLabel("Session Description:");
 		final JLabel lblEndDate = new JLabel("Session End Date:");
 		final JLabel lblSessionEndTime = new JLabel("Session End Time:");
@@ -139,6 +117,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboYear.setBackground(Color.WHITE);
 		comboTime.setBackground(Color.WHITE);
 		comboAMPM.setBackground(Color.WHITE);
+		comboDeck.setBackground(Color.WHITE);
 		lblSessionEndTime.setForeground(Color.BLACK);
 		comboMonth.setModel(new DefaultComboBoxModel<Months>(Months.values()));
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
@@ -196,11 +175,15 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblSessionName);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
 		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
+		
 		// Handle the time dropdowns
 		setDays31();
 		setTimeDropdown();
 		setYearDropdown();
 		parseTimeDropdowns();
+		setDeckDropdown();
 		
 		// Month dropdown event handler
 		comboMonth.addActionListener(new ActionListener() {
@@ -258,32 +241,14 @@ public class PlanningPokerSessionTab extends JPanel {
 				parseDeckDropdowns();
 			}
 		});
+
+		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				parseDeckDropdowns();
-			}
-		});
-		//JComboBox<String> comboDeck = new JComboBox<String>();
-		panel_1.add(lblDeck);
-		
-		
-		sl_panel_1.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
-		sl_panel_1.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblSessionName);
-		sl_panel_1.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
-		comboDeck.setBackground(Color.WHITE);
 				pokerSession.setName(textFieldSessionField.getText());
-		setDeckDropdown();
-		panel_1.add(comboDeck);
-		//textFieldSessionField.setText(defaultName);
-		sl_panel_1.putConstraint(SpringLayout.NORTH, textFieldSessionField, 6, SpringLayout.SOUTH, lblSessionName);
-		sl_panel_1.putConstraint(SpringLayout.WEST, textFieldSessionField, 10, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, textFieldSessionField, 80, SpringLayout.EAST, panel_1);
-		panel_1.add(textAreaDeckNumbers);
-		
-		//JLabel numbers = new JLabel("Users input non-negative intergers");
-		sl_panel_1.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
-		sl_panel_1.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
 				pokerSession.setDescription(textFieldDescription.getText());
+				pokerSession.setSessionDeck(sessionDeck);
+				pokerSession.setUsingDeck(isUsingDeck);
 
 				boolean dataValid = false;
 				JLabel lblDateError = new JLabel("Please select a value for all date fields");
@@ -299,7 +264,6 @@ public class PlanningPokerSessionTab extends JPanel {
 					firstPanel.add(lblDateError);
 					firstPanel.revalidate();
 					firstPanel.repaint();
-					System.out.println("Exception thrown");
 				} 
 				catch(DateOutOfRangeException ex){
 					lblDateOutOfRange.setText("Please select a date after the current date");
@@ -333,6 +297,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.add(comboTime);
 		firstPanel.add(comboAMPM);
 		firstPanel.add(comboDeck);
+		firstPanel.add(numbers);
 	}
 	
 	
@@ -595,7 +560,6 @@ public class PlanningPokerSessionTab extends JPanel {
 				}
 			}
 		}
-		System.out.println(deckNumbers);
 		numbers.setText(deckNumbers);
 		numbers.revalidate();
 		numbers.repaint();
