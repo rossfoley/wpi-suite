@@ -22,6 +22,8 @@ import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -34,6 +36,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 
@@ -60,6 +63,8 @@ public class EditGameTab extends JPanel {
 	public EditGameTab(PlanningPokerSession toEdit) {
 		
 		this.displaySession = toEdit;
+		
+
 		
 		final String defaultName = this.makeDefaultName();
 		SpringLayout sl_panel = new SpringLayout();
@@ -461,6 +466,8 @@ public class EditGameTab extends JPanel {
 	public PlanningPokerSession getDisplaySession() {
 		return displaySession;
 	}
+	
+
 	
 }
 

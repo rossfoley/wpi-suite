@@ -35,9 +35,11 @@ public class PlanningPokerSession extends AbstractModel {
 	private UUID uuid = UUID.randomUUID();
 	private boolean isOpen;
 	private List<Requirement> requirements;
+	private boolean isUsingDeck;
 
 	private String description;
 	private int sessionCreatorID;
+	private Deck sessionDeck;
 	
 	/**
 	 * @return the sessionCreatorID
@@ -50,6 +52,18 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setSessionCreatorID(int sessionCreatorID) {
 		this.sessionCreatorID = sessionCreatorID;
+	}
+	/**
+	 * @return the isUsingDeck
+	 */
+	public boolean isUsingDeck() {
+		return isUsingDeck;
+	}
+	/**
+	 * @param isUsingDeck the isUsingDeck to set
+	 */
+	public void setUsingDeck(boolean isUsingDeck) {
+		this.isUsingDeck = isUsingDeck;
 	}
 	/**
 	 * Constructor for PlanningPokerSession
@@ -278,6 +292,18 @@ public class PlanningPokerSession extends AbstractModel {
 		return requirements.size();
 	}
 	
+	/**
+	 * @return the sessionDeck
+	 */
+	public Deck getSessionDeck() {
+		return sessionDeck;
+	}
+	/**
+	 * @param sessionDeck the sessionDeck to set
+	 */
+	public void setSessionDeck(Deck sessionDeck) {
+		this.sessionDeck = sessionDeck;
+	}
 	/**
 	 * Returns an array of PlanningPokerSession parsed from the given JSON-encoded
 	 * string.

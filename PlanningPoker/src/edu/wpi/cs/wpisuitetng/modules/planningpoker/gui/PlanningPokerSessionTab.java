@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -28,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
@@ -53,8 +56,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	int endHour;
 	int endMinutes;
 	int displayingDays;
-	
-	
+	boolean isUsingDeck;
+	Deck sessionDeck;
+	JLabel numbers = new JLabel("Users input non-negative intergers");
+
 	/**
 	 * Constructor for creating a planning poker session
 	 */
@@ -112,6 +117,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboYear.setBackground(Color.WHITE);
 		comboTime.setBackground(Color.WHITE);
 		comboAMPM.setBackground(Color.WHITE);
+		comboDeck.setBackground(Color.WHITE);
 		lblSessionEndTime.setForeground(Color.BLACK);
 		comboMonth.setModel(new DefaultComboBoxModel<Months>(Months.values()));
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
@@ -169,11 +175,15 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblSessionName);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
 		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
+		
 		// Handle the time dropdowns
 		setDays31();
 		setTimeDropdown();
 		setYearDropdown();
 		parseTimeDropdowns();
+		setDeckDropdown();
 		
 		// Month dropdown event handler
 		comboMonth.addActionListener(new ActionListener() {
@@ -226,11 +236,19 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 		});
 		
+		comboDeck.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				parseDeckDropdowns();
+			}
+		});
+
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pokerSession.setName(textFieldSessionField.getText());
 				pokerSession.setDescription(textFieldDescription.getText());
+				pokerSession.setSessionDeck(sessionDeck);
+				pokerSession.setUsingDeck(isUsingDeck);
 
 				boolean dataValid = false;
 				JLabel lblDateError = new JLabel("Please select a value for all date fields");
@@ -246,7 +264,6 @@ public class PlanningPokerSessionTab extends JPanel {
 					firstPanel.add(lblDateError);
 					firstPanel.revalidate();
 					firstPanel.repaint();
-					System.out.println("Exception thrown");
 				} 
 				catch(DateOutOfRangeException ex){
 					lblDateOutOfRange.setText("Please select a date after the current date");
@@ -280,6 +297,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.add(comboTime);
 		firstPanel.add(comboAMPM);
 		firstPanel.add(comboDeck);
+		firstPanel.add(numbers);
 	}
 	
 	
@@ -416,7 +434,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 	}
 	
-	
+	/** 
+	 * chanes the day dropdown to have 31 days
+	 */
 	public void setDays31(){
 		if (displayingDays!=31){
 			comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
@@ -427,6 +447,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 	}
 	
+	/**
+	 * changes the day dropdown to have 30 days
+	 */
 	public void setDays30(){
 		if (displayingDays!=30){
 			comboDay.setModel(new DefaultComboBoxModel<String>(new String[] {"Day", "1", "2", "3", "4","5", "6", "7", "8",
@@ -437,6 +460,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 	}
 
+	/**
+	 * repopulate the day dropdown menu if February is selected 
+	 */
 	public void setFebDays(){
 		if ((year%4)==0){
 			if (displayingDays!=29){
@@ -456,21 +482,46 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 		System.out.println("Displaying feb days");
 	}
+	
+	/**
+	 * populates the drop down menu for the year
+	 */
 	public void setYearDropdown(){
 		comboYear.setModel(new DefaultComboBoxModel<String>(new String[] {
 				"Year", "2014", "2015", "2016", "2017", "2018", "2019" , "2020", 
 				"2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", 
 				"2031", "2032", "2033", "2034"}));
 	}
+	
+	/**
+	 * populates the drop down menu for the time
+	 */
 	public void setTimeDropdown(){
 		comboTime.setModel(new DefaultComboBoxModel<String>
 		(new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
 				"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
 				"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" } ));
-		
-		
 	}
 	
+	public void setDeckDropdown(){
+		List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
+		String[] deckNames = new String[projectDecks.size() + 1];
+		deckNames[0] = "None";
+		int i = 1;
+		for(Deck d:projectDecks){
+			deckNames[i] = d.getDeckName();
+			i++;
+		}
+		comboDeck.setModel(new DefaultComboBoxModel<String>(deckNames));
+		System.out.println("Set deck dropdown");
+	}
+	
+
+	
+	
+	/**
+	 * takes the strings from the time dropdown menus, parses the strings, and saves the hour and minute to the appopriate fields
+	 */
 	public void parseTimeDropdowns(){
 		String stringTime = (String) comboTime.getSelectedItem();
 		String stringAMPM = (String) comboAMPM.getSelectedItem();
@@ -491,18 +542,31 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 	}
 	
-	/* private void printError(){
-		JLabel lblDateError = new JLabel("Please select a value for all date fields");
-		lblDateError.setForeground(Color.RED);
-		
-		sl_panel_1.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
-		sl_panel_1.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.WEST, lblEndDate);
-		panel_1.add(lblDateError);
-		System.out.println("Error function reached");
-	} */
+	public void parseDeckDropdowns(){
+		String deckName = (String) comboDeck.getSelectedItem();
+		List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
+		String deckNumbers = "";
+		if (deckName.equals("None")){
+			isUsingDeck = false;
+			sessionDeck = null;
+			deckNumbers = "Users input non-negative intergers";
+		}
+		else {
+			for (Deck d:projectDecks){
+				if (deckName.equals(d.getDeckName())){
+					sessionDeck = d;
+					isUsingDeck = true;
+					deckNumbers = d.changeNumbersToString();	
+				}
+			}
+		}
+		numbers.setText(deckNumbers);
+		numbers.revalidate();
+		numbers.repaint();
+	}
 	
 	/**
-	 * @return the initial ID
+	 * @return the default name for the planning poker session
 	 */
 	public String makeDefaultName() {
 		Date date = new Date();
