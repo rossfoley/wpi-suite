@@ -19,7 +19,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 /**this class manages all decks and keeps track of a list of all of them
  * 
  * 
- * @author Amanda Adkins
+ * @author amandaadkins
  *
  */
 public class DeckListModel extends AbstractListModel {

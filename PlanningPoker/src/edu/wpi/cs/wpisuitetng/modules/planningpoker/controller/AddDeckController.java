@@ -15,8 +15,9 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * @author Amanda Adkins
- *
+ * This controller responds when a deck is added and sends a request over the network to save the deck 
+ * 
+ * @author amandaadkins
  */
 public class AddDeckController {
 	private static AddDeckController instance;
@@ -27,7 +28,6 @@ public class AddDeckController {
 	
 	 */
 	private AddDeckController() {
-		System.out.println("Add deck controller added");
 		observer = new AddDeckRequestObserver(this);
 	}
 	/**

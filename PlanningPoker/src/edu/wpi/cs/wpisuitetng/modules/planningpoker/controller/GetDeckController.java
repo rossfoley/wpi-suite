@@ -21,7 +21,10 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import java.awt.event.ActionListener;
 
 /**
- * @author Amanda Adkins
+ *  This controller coordinates retrieving all of the decks
+ * from the server.
+ * 
+ * @author amandaadkins
  *
  */
 public class GetDeckController implements ActionListener {

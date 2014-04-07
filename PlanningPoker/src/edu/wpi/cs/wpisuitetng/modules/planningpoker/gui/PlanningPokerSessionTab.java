@@ -9,7 +9,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 /**
- * @author Amanda Adkins
+ * This class makes up the panel that is used to create a game
+ * It takes in fields from the user, displays appropriate messages, and stores information 
+ * to a session and then passes it to the PlanningPokerSessionModel to be saved in the database
+ * 
+ * @author amandaadkins
  *
  */
 
