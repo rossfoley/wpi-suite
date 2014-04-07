@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.*;
 
 import java.awt.Color;
@@ -39,6 +40,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -361,15 +363,30 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
 		
+		
 		// Submit button event handler
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pokerSession.setRequirements(requirementPanel.getSelected());
+				JLabel norequirements = new JLabel("Please select requirements before creating the session.");
+				List<Requirement> requirements =  requirementPanel.getSelected();
+				if(requirements.isEmpty()){
+					norequirements.setText("Requirements must be selected before creating the session.");
+					norequirements.setForeground(Color.RED);
+					secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -15, SpringLayout.SOUTH, secondPanel);
+					secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -110, SpringLayout.EAST, secondPanel);
+					secondPanel.add(norequirements);
+					secondPanel.revalidate();
+					secondPanel.repaint();
+					System.out.println("FAILURE");
+				}
+				else{
+				pokerSession.setRequirements(requirements);
 				submitSessionToDatabase();
 				
 				MockNotification mock = new MockNotification();
 				mock.sessionStartedNotification();
 				
+			}
 			}
 		});
 		
