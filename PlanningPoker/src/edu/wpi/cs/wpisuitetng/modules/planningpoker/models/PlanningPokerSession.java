@@ -40,6 +40,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private UUID uuid = UUID.randomUUID();
 	private boolean isOpen;
 	private List<Requirement> requirements;
+	private List<Estimate> estimates;
 	private boolean isUsingDeck;
 
 	private String description;
@@ -130,6 +131,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	/**
 	 * @return the endDate
 	 */
@@ -350,5 +352,24 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setRequirements(List<Requirement> selected) {
 		this.requirements = selected;
+	}
+	/**
+	 * @return the estimates
+	 */
+	public List<Estimate> getEstimates() {
+		return estimates;
+	}
+	/**
+	 * @param estimates the estimates to set
+	 */
+	public void setEstimates(List<Estimate> estimates) {
+		this.estimates = estimates;
+	}
+	
+	/**
+	 * @param estimate the estimate to add to the session
+	 */
+	public void addEstimate(Estimate estimate) {
+		this.estimates.add(estimate);
 	}
 }
