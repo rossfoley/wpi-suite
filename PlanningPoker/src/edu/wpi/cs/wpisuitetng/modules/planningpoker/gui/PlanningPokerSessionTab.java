@@ -578,7 +578,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		return pokerSession;
 	}
 
-	
+	/**
+	 * parse the day dropdown menu and set the day field appropriately
+	 */
 	public void parseDayDropdown(){
 		String dayString = (String) comboDay.getSelectedItem();
 		if (dayString.equals("Day")){
