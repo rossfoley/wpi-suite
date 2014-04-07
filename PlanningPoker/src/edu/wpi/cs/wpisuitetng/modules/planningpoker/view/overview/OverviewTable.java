@@ -32,7 +32,7 @@ public class OverviewTable extends JTable
 {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
-	private boolean changedByRefresh = false;	
+	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
 	
 	/**
@@ -49,7 +49,7 @@ public class OverviewTable extends JTable
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
-
+    
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
@@ -91,15 +91,25 @@ public class OverviewTable extends JTable
 	}
 	
 	/**
+	 * whatever
+	 */
+	
+	public List<PlanningPokerSession> getSessions() {
+		return PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
+	}
+	
+	
+	/**
 	 * updates OverviewTable with the contents of the requirement model	 * 
 	 */
 	public void refresh() {
-		List<PlanningPokerSession> pokerSessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
+				
+		List<PlanningPokerSession> pokerSessions = getSessions();
 				
 		// clear the table
 		tableModel.setRowCount(0);		
 
-		for (PlanningPokerSession pokerSession : pokerSessions) {	
+		for (PlanningPokerSession pokerSession : pokerSessions) {
 			String endDate, createrName, deckName;
 			// Handle if there was no end date set
 			try {

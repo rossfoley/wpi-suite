@@ -21,23 +21,31 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * @version $Revision: 1.0 $
  */
 public class OverviewPanel extends JSplitPane {
-	
+
 	/**
 	 * Sets up directory table of planning poker sessions in system
 	 */
-	public OverviewPanel()
+	public OverviewPanel(boolean isOpen)
 	{
 		// Set the data for the overview table
 		String[] columnNames = {"", "Name", "End Date", "Requirements", "Deck", "Creator Username"};
 		Object[][] data = {};
-		
+
 		// Create the overview table and put it in a scroll pane
-		OverviewTable table = new OverviewTable(data, columnNames);
+
+		if (isOpen) {
+			table = new OpenOverviewTable(data, columnNames);
+			ViewEventController.getInstance().setOpenOverviewTable(table);
+		} 
+		else {
+			table = new ClosedOverviewTable(data, columnNames);
+			ViewEventController.getInstance().setClosedOverviewTable(table);
+		}
 		JScrollPane tablePanel = new JScrollPane(table);
-		
+
 		// Create the detail panel
 		OverviewDetailPanel detailPanel = new OverviewDetailPanel(new PlanningPokerSession());
-			
+
 		// Set the widths of the columns
 		table.getColumnModel().getColumn(0).setMaxWidth(0); // ID
 		table.getColumnModel().getColumn(1).setMinWidth(150); // Name
@@ -50,9 +58,8 @@ public class OverviewPanel extends JSplitPane {
 		this.setLeftComponent(tablePanel);
 		this.setRightComponent(detailPanel);
 		this.setResizeWeight(0);  // set the right screen to not show by default
-		
+
 		// Tell the ViewEventController what the overview table and the detail panel are
-		ViewEventController.getInstance().setOverviewTable(table);
 		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
 
 	}
