@@ -253,7 +253,7 @@ public class PlanningPokerSession extends AbstractModel {
 			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
 		}
 		else if ((month==13)&&(day==0)&&(year==1)){
-			newEndDate = null;
+			newEndDate = null;	
 		}
 		else if ((month==13)||(day==0)||(year==1)){
 			errors.add(CreatePokerSessionErrors.MissingDateFields);

@@ -65,6 +65,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	JLabel nameErrorMessage = new JLabel("");
 	JLabel descriptionErrorMessage = new JLabel("");
 	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
 	
 	int month = 13;
 	int day = 0;
@@ -349,6 +350,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		JButton btnSubmit = new JButton("Submit");
 		JButton btnBack = new JButton("Back");
 		
+		//Position the error message for requirements
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -15, SpringLayout.SOUTH, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -110, SpringLayout.EAST, secondPanel);
+		
 		// Position the requirements panel
 		secondPanelLayout.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, secondPanel);
@@ -367,21 +372,18 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Submit button event handler
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JLabel norequirements = new JLabel("Please select requirements before creating the session.");
 				List<Requirement> requirements =  requirementPanel.getSelected();
 				if(requirements.isEmpty()){
 					norequirements.setText("Requirements must be selected before creating the session.");
 					norequirements.setForeground(Color.RED);
-					secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -15, SpringLayout.SOUTH, secondPanel);
-					secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -110, SpringLayout.EAST, secondPanel);
-					secondPanel.add(norequirements);
 					secondPanel.revalidate();
 					secondPanel.repaint();
 				}
 				else{
 				pokerSession.setRequirements(requirements);
 				submitSessionToDatabase();
-				
+				norequirements.setText("");
+
 				MockNotification mock = new MockNotification();
 				mock.sessionStartedNotification();
 				
@@ -401,6 +403,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanel.add(btnSubmit);
 		secondPanel.add(btnBack);
 		secondPanel.add(requirementPanel);
+		secondPanel.add(norequirements);
 	}
 	
 	/**
