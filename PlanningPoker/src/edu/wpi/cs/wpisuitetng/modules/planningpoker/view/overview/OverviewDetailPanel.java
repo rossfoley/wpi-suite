@@ -126,6 +126,12 @@ public class OverviewDetailPanel extends JPanel {
 		
 		//System.out.println(endDate);
 		this.lblEndDate.setText(endDate);
+		
+		// Check if the edit session button should appear
+		remove(editButton);
+		if (session.isEditable()) {
+			add(editButton);
+		}
 
 		// redraw panel
 		infoPanel.revalidate();

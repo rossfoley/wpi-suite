@@ -372,4 +372,12 @@ public class PlanningPokerSession extends AbstractModel {
 	public void addEstimate(Estimate estimate) {
 		this.estimates.add(estimate);
 	}
+	
+	
+	/**
+	 * @return true if the session is allowed to be edited
+	 */
+	public boolean isEditable() {
+		return (!this.isOpen || this.estimates.size() == 0);
+	}
 }
