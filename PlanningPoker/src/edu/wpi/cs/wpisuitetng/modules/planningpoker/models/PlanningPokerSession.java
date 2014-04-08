@@ -201,6 +201,8 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	/**
 	 * validates the fields of a planning poker session
+	 * @param haveEndDate if true, the user is specifying an end date, if false, no end date (null)
+	 * @param dateHasBeenSet if true, the user has set an end date, if false, they haven't touched the date picker and it's still the default date
 	 * @param year year to set as the end year
 	 * @param month month to set as the end month (integer for gregorian calendar)
 	 * @param day day to set as the end day

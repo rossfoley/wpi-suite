@@ -463,9 +463,6 @@ public class PlanningPokerSessionTab extends JPanel {
 			else if (errors.contains(CreatePokerSessionErrors.NoDateSelected)){
 				dateErrorMessage.setText("Please select a date or disable end date");
 			}
-			/*else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
-				dateErrorMessage.setText("Please select a value for all date fields");
-			} */
 			else {
 				dateErrorMessage.setText("");
 			}
@@ -473,7 +470,12 @@ public class PlanningPokerSessionTab extends JPanel {
 			return false;
 		}
 	}
-	
+	/**
+	 * this method gets the contents of the checkbox and if it is unchecked, disables the time dropdown menus, 
+	 * and removes the end date related error messages
+	 * if it is checked, it enables the time dropdowns and shows the pertinent date error message again
+	 * @return boolean indicating if the user wants to specify an end date
+	 */
 	public boolean handleCheckBox(){
 		boolean boxChecked = endDateCheckBox.isSelected();
 		if (boxChecked){
