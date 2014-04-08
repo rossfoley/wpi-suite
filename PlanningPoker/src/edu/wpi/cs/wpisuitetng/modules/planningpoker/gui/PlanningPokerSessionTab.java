@@ -67,6 +67,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	JDatePicker datePicker;
 	JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	
+	boolean dateHasBeenSet = false;
 	boolean haveEndDate;
 	int endHour;
 	int endMinutes;
@@ -199,13 +200,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, (JPanel) datePicker, 6, SpringLayout.SOUTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, (JPanel) datePicker, 0, SpringLayout.WEST, lblEndDate);	
 		firstPanelLayout.putConstraint(SpringLayout.EAST, (JPanel) datePicker, 0, SpringLayout.EAST, comboAMPM);	
-		DateModel selectedDate = datePicker.getModel();
-		System.out.println(selectedDate.getYear());
-		System.out.println(selectedDate.getMonth());
-		System.out.println(selectedDate.getDay());
-		
-		
-		
+
 		// Handle the time dropdowns
 		setTimeDropdown();
 		parseTimeDropdowns();
@@ -239,6 +234,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		datePicker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dateHasBeenSet = true;
 				validateFields();
 			}
 		});
@@ -436,10 +432,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		ArrayList<CreatePokerSessionErrors> errors;
 		DateModel selectedDate = datePicker.getModel();
 		
-		errors = pokerSession.validateFields(haveEndDate, selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay(), endHour, endMinutes, description, name);
+		errors = pokerSession.validateFields(haveEndDate, dateHasBeenSet, selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay(), endHour, endMinutes, description, name);
 		// if there are no errors
 		if (errors.size() == 0) {
-			System.out.println("No errors");
 			descriptionErrorMessage.setText("");
 			nameErrorMessage.setText("");
 			dateErrorMessage.setText("");
@@ -463,8 +458,10 @@ public class PlanningPokerSessionTab extends JPanel {
 			
 			// handle date errors
 			if (errors.contains(CreatePokerSessionErrors.EndDateTooEarly)){
-				System.out.println("End date too early");
 				dateErrorMessage.setText("Please enter a date after the current date");
+			}
+			else if (errors.contains(CreatePokerSessionErrors.NoDateSelected)){
+				dateErrorMessage.setText("Please select a date or disable end date");
 			}
 			/*else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
 				dateErrorMessage.setText("Please select a value for all date fields");
