@@ -47,8 +47,8 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				if(flag == true){
 					ViewEventController.getInstance().createPlanningPokerSession();
 					ViewEventController.getInstance().closeAllTabs();
+					flag = false;
 				}
-				flag = false;
 				ViewEventController.getInstance().createPlanningPokerSession();
 				
 			}
