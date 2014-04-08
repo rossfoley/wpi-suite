@@ -7,14 +7,15 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 /**
- * This class contains the exceptions for when the user enters an date that is out of range
+ * this enum contains the different types of errors that can happen in the create game tab
  * 
  * @author amandaadkins
+ *
  */
-public class DateOutOfRangeException extends Exception {
-	public DateOutOfRangeException(){}
+public enum CreatePokerSessionErrors {
+	NoName, MissingDateFields, EndDateTooEarly, NoDescription
+
 }

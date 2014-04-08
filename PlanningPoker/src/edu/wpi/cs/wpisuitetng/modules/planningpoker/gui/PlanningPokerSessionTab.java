@@ -32,12 +32,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.*;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +59,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	JComboBox<String> comboTime = new JComboBox<String>();
 	JComboBox<String> comboAMPM = new JComboBox<String>();
 	JComboBox<String> comboDeck = new JComboBox<String>();
+	JLabel dateErrorMessage = new JLabel("");
+	JLabel nameErrorMessage = new JLabel("");
+	JLabel descriptionErrorMessage = new JLabel("");
 	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
 	
 	int month = 13;
@@ -130,6 +135,14 @@ public class PlanningPokerSessionTab extends JPanel {
 		lblSessionEndTime.setForeground(Color.BLACK);
 		comboMonth.setModel(new DefaultComboBoxModel<Months>(Months.values()));
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
+		descriptionErrorMessage.setForeground(Color.RED);
+		nameErrorMessage.setForeground(Color.RED);
+		dateErrorMessage.setForeground(Color.RED);
+		
+
+		
+		
+
 		
 		// Apply all of the constraints
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
@@ -186,6 +199,15 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
+		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, nameErrorMessage, 0, SpringLayout.NORTH, lblSessionName);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, nameErrorMessage, 20, SpringLayout.EAST, lblSessionName);
+		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, descriptionErrorMessage, 0, SpringLayout.NORTH, lblSessionDescription);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, descriptionErrorMessage, 20, SpringLayout.EAST, lblSessionDescription);
+		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, dateErrorMessage, 0, SpringLayout.NORTH, lblEndDate);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, dateErrorMessage, 20, SpringLayout.EAST, lblEndDate);
 		
 		// Handle the time dropdowns
 		setDays31();
@@ -248,40 +270,48 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pokerSession.setName(textFieldSessionField.getText());
-				pokerSession.setDescription(textFieldDescription.getText());
+				String name = textFieldSessionField.getText();
+				String description = textFieldDescription.getText();
 				pokerSession.setSessionDeck(sessionDeck);
 				pokerSession.setUsingDeck(isUsingDeck);
+				ArrayList<CreatePokerSessionErrors> errors;
 
-				boolean dataValid = false;
-				JLabel lblDateError = new JLabel("Please select a value for all date fields");
-				JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
-				try {
-					dataValid = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
-				}
-				catch(InvalidDateException ex) {
-					lblDateError.setText("Please select a value for all date fields");
-					lblDateError.setForeground(Color.RED);
-					firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
-					firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
-					firstPanel.add(lblDateError);
-					firstPanel.revalidate();
-					firstPanel.repaint();
-				} 
-				catch(DateOutOfRangeException ex){
-					lblDateOutOfRange.setText("Please select a date after the current date");
-					lblDateOutOfRange.setForeground(Color.RED);
-					firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateOutOfRange, 0, SpringLayout.NORTH, lblEndDate);
-					firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateOutOfRange, 20, SpringLayout.EAST, lblEndDate);
-					firstPanel.add(lblDateOutOfRange);
-					firstPanel.revalidate();
-					firstPanel.repaint();
-				}
 				
-				// If session data is valid, go to the next screen
-				if (dataValid) {
+				errors = pokerSession.validateFields(year, month, day, endHour, endMinutes, description, name);
+				// if there are no errors
+				if (errors.size()==0) {
 					displayPanel(secondPanel);
 				}
+				else { // display all error messages
+					// handle description error
+					if (errors.contains(CreatePokerSessionErrors.NoDescription)){
+						descriptionErrorMessage.setText("Please enter a description");
+					}
+					else {
+						descriptionErrorMessage.setText("");
+					}
+					
+					// handle name error
+					if (errors.contains(CreatePokerSessionErrors.NoName)){
+						nameErrorMessage.setText("Please enter a name");
+					}
+					else {
+						nameErrorMessage.setText("");
+					}
+					
+					// handle date errors
+					if (errors.contains(CreatePokerSessionErrors.EndDateTooEarly)){
+						dateErrorMessage.setText("Please enter a date after the current date");
+					}
+					else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
+						dateErrorMessage.setText("Please select a value for all date fields");
+					}
+					else {
+						dateErrorMessage.setText("");
+					}	
+				}
+
+
 			}
 		});
 		
@@ -301,6 +331,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.add(comboAMPM);
 		firstPanel.add(comboDeck);
 		firstPanel.add(numbers);
+		firstPanel.add(descriptionErrorMessage);
+		firstPanel.add(nameErrorMessage);
+		firstPanel.add(dateErrorMessage);
 	}
 	
 	
@@ -333,6 +366,10 @@ public class PlanningPokerSessionTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				pokerSession.setRequirements(requirementPanel.getSelected());
 				submitSessionToDatabase();
+				
+				MockNotification mock = new MockNotification();
+				mock.sessionStartedNotification();
+				
 			}
 		});
 		
