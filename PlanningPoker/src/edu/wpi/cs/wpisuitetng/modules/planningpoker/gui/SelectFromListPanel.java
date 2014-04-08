@@ -345,17 +345,6 @@ public class SelectFromListPanel extends JPanel{
 	 * @param selected the list of requirements that are selected
 	 */
 	public void setSelectedRequirements(List<Requirement> selectedRequirements) {
-//		for (Requirement requirement : selectedRequirements) {
-//			this.selected.addLast(requirement);
-//			List<Requirement> toRemove = new LinkedList<Requirement>();
-//			for (Requirement unselectedRequirement : this.unSelected) {
-//				if (unselectedRequirement.getId() == requirement.getId()) {
-//					toRemove.add(unselectedRequirement);
-//				}
-//			}
-//			this.unSelected.removeAll(toRemove);
-//		}
-//		update();
 		for(Requirement requirement : selectedRequirements){
 			int pos = this.unSelectedNames.indexOf(requirement.getName());
 			if (this.unSelected.get(pos) != null){
