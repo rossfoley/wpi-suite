@@ -182,12 +182,12 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, comboAMPM, 0, SpringLayout.SOUTH, comboTime);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboAMPM, 80, SpringLayout.EAST, comboTime);						
 		
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDeck, 0, SpringLayout.NORTH, lblEndDate);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, lblDeck, 250, SpringLayout.WEST, lblSessionName);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDeck, 6, SpringLayout.SOUTH, comboTime);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, lblDeck, 0, SpringLayout.WEST, lblSessionName);
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblDeck);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 100, SpringLayout.EAST, lblDeck);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, comboAMPM);
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
