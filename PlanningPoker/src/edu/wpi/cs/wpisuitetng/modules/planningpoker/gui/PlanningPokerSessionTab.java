@@ -68,7 +68,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	JDatePicker datePicker;
 	JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	
-	boolean dateHasBeenSet = false;
+	boolean dateHasBeenSet;
 	boolean haveEndDate;
 	int endHour;
 	int endMinutes;
@@ -85,6 +85,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	public PlanningPokerSessionTab() {
 		this.pokerSession = new PlanningPokerSession();
 		viewMode = (ViewMode.CREATING);
+		dateHasBeenSet = false;
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
 	}
@@ -95,6 +96,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		this.pokerSession = existingSession;
 		viewMode = (ViewMode.EDITING);
+		// Set the end date checkbox and update fields.
+		dateHasBeenSet = (existingSession.getEndDate() != null);
+		endDateCheckBox.setSelected(dateHasBeenSet);
+
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
 	}
@@ -207,6 +212,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		setTimeDropdown();
 		parseTimeDropdowns();
 		setDeckDropdown();
+		handleCheckBox();
 
 		// Time dropdown event handler
 		comboTime.addActionListener(new ActionListener(){
