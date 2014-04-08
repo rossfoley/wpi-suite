@@ -146,6 +146,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		descriptionErrorMessage.setForeground(Color.RED);
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
+		requirementPanel.setSelectedRequirements(this.pokerSession.getRequirements());
 		
 		// Apply all of the constraints
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
