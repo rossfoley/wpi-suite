@@ -106,11 +106,12 @@ public class NewBarChartPanelTest {
 		assertEquals(2, vec.getMainView().getTabCount());
 		vec.createBarChart("Data");
 		assertEquals(3, vec.getMainView().getTabCount());
-	}//*/
+	}//
 	
 	@Test
 	public void testGetBarChartTitle() {
 		NewBarChartPanel bc = new NewBarChartPanel("The Name");
 		assertEquals("The Name", bc.getTitle());
 	}
+	*/
 }
