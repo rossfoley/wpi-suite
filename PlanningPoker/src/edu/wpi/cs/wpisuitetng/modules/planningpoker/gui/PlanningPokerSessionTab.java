@@ -199,6 +199,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, (JPanel) datePicker, 6, SpringLayout.SOUTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, (JPanel) datePicker, 0, SpringLayout.WEST, lblEndDate);	
 		firstPanelLayout.putConstraint(SpringLayout.EAST, (JPanel) datePicker, 0, SpringLayout.EAST, comboAMPM);	
+		DateModel selectedDate = datePicker.getModel();
+		System.out.println(selectedDate.getYear());
+		System.out.println(selectedDate.getMonth());
+		System.out.println(selectedDate.getDay());
+		
 		
 		
 		// Handle the time dropdowns
@@ -434,6 +439,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		errors = pokerSession.validateFields(haveEndDate, selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay(), endHour, endMinutes, description, name);
 		// if there are no errors
 		if (errors.size() == 0) {
+			System.out.println("No errors");
+			descriptionErrorMessage.setText("");
+			nameErrorMessage.setText("");
+			dateErrorMessage.setText("");
 			return true;
 		} else { // display all error messages
 			// handle description error
@@ -454,6 +463,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			
 			// handle date errors
 			if (errors.contains(CreatePokerSessionErrors.EndDateTooEarly)){
+				System.out.println("End date too early");
 				dateErrorMessage.setText("Please enter a date after the current date");
 			}
 			/*else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
@@ -473,11 +483,15 @@ public class PlanningPokerSessionTab extends JPanel {
 			comboAMPM.setEnabled(true);
 			comboTime.setEnabled(true);
 			parseTimeDropdowns();
+			dateErrorMessage.setVisible(true);
 		}
 		else {
 			comboAMPM.setEnabled(false);
-			comboTime.setEnabled(false);			
+			comboTime.setEnabled(false);	
+			dateErrorMessage.setVisible(false);
 		}
+		firstPanel.revalidate();
+		firstPanel.repaint();
 		return boxChecked;
 	}
 }

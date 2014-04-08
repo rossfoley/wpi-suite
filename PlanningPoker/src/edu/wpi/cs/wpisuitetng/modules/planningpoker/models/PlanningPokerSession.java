@@ -219,6 +219,7 @@ public class PlanningPokerSession extends AbstractModel {
 			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
 			if (newEndDate.before(currentDate)){
 				errors.add(CreatePokerSessionErrors.EndDateTooEarly);
+				System.out.println("Ending too early");
 			}
 		}
 		else {
