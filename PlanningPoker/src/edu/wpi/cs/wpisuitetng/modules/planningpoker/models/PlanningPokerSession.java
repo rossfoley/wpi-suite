@@ -211,24 +211,18 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return List<CreatePokerSessionErrors> which is a list of that type of enum 
 	 * which correspond to the possible errors with the different fields
 	 */
-	public ArrayList<CreatePokerSessionErrors> validateFields(int year, int month, int day, int hour, int minute, String newDescription, String newName) {
+	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, int year, int month, int day, int hour, int minute, String newDescription, String newName) {
 		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
 		GregorianCalendar currentDate = new GregorianCalendar();
 		GregorianCalendar newEndDate = null;
-		if ((month!=13)&&(day!=0)&&(year!=1)){
-			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
-		}
-		else if ((month==13)&&(day==0)&&(year==1)){
-			newEndDate = null;
-		}
-		else if ((month==13)||(day==0)||(year==1)){
-			errors.add(CreatePokerSessionErrors.MissingDateFields);
-		}
-		else {
+		if (haveEndDate){
 			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
 			if (newEndDate.before(currentDate)){
 				errors.add(CreatePokerSessionErrors.EndDateTooEarly);
 			}
+		}
+		else {
+			newEndDate = null;
 		}
 		this.setEndDate(newEndDate);
 		

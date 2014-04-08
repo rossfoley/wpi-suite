@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import javax.swing.JCheckBox;
 
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
@@ -64,12 +65,16 @@ public class PlanningPokerSessionTab extends JPanel {
 	JLabel numbers = new JLabel("Users input non-negative intergers");
 	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
 	JDatePicker datePicker;
+	JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	
+	boolean haveEndDate;
 	int endHour;
 	int endMinutes;
 	int displayingDays;
 	boolean isUsingDeck;
 	Deck sessionDeck;
+	private JLabel lblSessionEndTime;
+	private JLabel lblEndDate;
 	
 
 	/**
@@ -110,12 +115,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Initialize all of the fields on the panel
 		final JLabel lblSessionName = new JLabel("Session Name:");
 		final JLabel lblSessionDescription = new JLabel("Session Description:");
-		final JLabel lblEndDate = new JLabel("Session End Date:");
-		final JLabel lblSessionEndTime = new JLabel("Session End Time:");
+		lblEndDate = new JLabel("Session End Date:");
+		lblSessionEndTime = new JLabel("Session End Time:");
 		final JLabel lblDeck = new JLabel("Deck:");
 		
 		final JButton btnNext = new JButton("Next >");
 		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
+		
 		
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
@@ -125,6 +131,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		textFieldDescription.setColumns(10);
 		comboTime.setBackground(Color.WHITE);
 		comboAMPM.setBackground(Color.WHITE);
+		comboTime.setEnabled(false);
+		comboAMPM.setEnabled(false);
 		comboDeck.setBackground(Color.WHITE);
 		lblSessionEndTime.setForeground(Color.BLACK);
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
@@ -136,10 +144,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, firstPanel);
 		
-		firstPanelLayout.putConstraint(SpringLayout.EAST, (JPanel) datePicker, 10, SpringLayout.EAST, lblEndDate);
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, (JPanel) datePicker, 6, SpringLayout.SOUTH, lblEndDate);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, (JPanel) datePicker, 0, SpringLayout.WEST, lblEndDate);					
-		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionName, 10, SpringLayout.NORTH, firstPanel);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionName, 10, SpringLayout.WEST, firstPanel);		
 			
@@ -148,32 +152,37 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldSessionField, -10, SpringLayout.EAST, firstPanel);		
 			
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionDescription, 6, SpringLayout.SOUTH, textFieldSessionField);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionDescription, 0, SpringLayout.WEST, lblSessionName);		
+		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionDescription, 0, SpringLayout.WEST, lblSessionName);
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, textFieldDescription, 6, SpringLayout.SOUTH, lblSessionDescription);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, textFieldDescription, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -175, SpringLayout.SOUTH, firstPanel);
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -225, SpringLayout.SOUTH, firstPanel);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldDescription, -10, SpringLayout.EAST, firstPanel);					
 
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblEndDate, 6, SpringLayout.SOUTH, textFieldDescription);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, lblEndDate, 0, SpringLayout.WEST, lblSessionName);		
-
+		firstPanelLayout.putConstraint(SpringLayout.WEST, endDateCheckBox, 0, SpringLayout.WEST, lblSessionName);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, endDateCheckBox, 6, SpringLayout.SOUTH, textFieldDescription);
+		
+		
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionEndTime, 0, SpringLayout.WEST, lblSessionName);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, endDateCheckBox);
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, comboTime, 6, SpringLayout.SOUTH, lblSessionEndTime);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboTime, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, comboTime, 80, SpringLayout.WEST, lblSessionName);		
+		firstPanelLayout.putConstraint(SpringLayout.EAST, comboTime, 80, SpringLayout.WEST, lblSessionName);
+		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblEndDate, 6, SpringLayout.SOUTH, comboTime);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, lblEndDate, 0, SpringLayout.WEST, lblSessionName);
 	
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboAMPM, 6, SpringLayout.EAST, comboTime);
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, comboAMPM, 0, SpringLayout.SOUTH, comboTime);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboAMPM, 80, SpringLayout.EAST, comboTime);						
 		
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDeck, 6, SpringLayout.SOUTH, comboTime);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, lblDeck, 0, SpringLayout.WEST, lblSessionName);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDeck, 0, SpringLayout.NORTH, lblSessionEndTime);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, lblDeck, 250, SpringLayout.WEST, lblSessionName);
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, lblEndDate);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblDeck);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 100, SpringLayout.EAST, lblDeck);
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
@@ -186,6 +195,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, dateErrorMessage, 0, SpringLayout.NORTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, dateErrorMessage, 20, SpringLayout.EAST, lblEndDate);
+		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, (JPanel) datePicker, 6, SpringLayout.SOUTH, lblEndDate);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, (JPanel) datePicker, 0, SpringLayout.WEST, lblEndDate);	
+		firstPanelLayout.putConstraint(SpringLayout.EAST, (JPanel) datePicker, 0, SpringLayout.EAST, comboAMPM);	
+		
 		
 		// Handle the time dropdowns
 		setTimeDropdown();
@@ -209,6 +223,12 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboDeck.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				parseDeckDropdowns();
+			}
+		});
+		
+		endDateCheckBox.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				haveEndDate = handleCheckBox();
 			}
 		});
 		
@@ -244,6 +264,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.add(descriptionErrorMessage);
 		firstPanel.add(nameErrorMessage);
 		firstPanel.add(dateErrorMessage);
+		firstPanel.add(endDateCheckBox);
 	}
 	
 	
@@ -410,8 +431,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		ArrayList<CreatePokerSessionErrors> errors;
 		DateModel selectedDate = datePicker.getModel();
 		
-		errors = pokerSession.validateFields(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay(), endHour, endMinutes, description, name);
-		
+		errors = pokerSession.validateFields(haveEndDate, selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay(), endHour, endMinutes, description, name);
 		// if there are no errors
 		if (errors.size() == 0) {
 			return true;
@@ -436,14 +456,28 @@ public class PlanningPokerSessionTab extends JPanel {
 			if (errors.contains(CreatePokerSessionErrors.EndDateTooEarly)){
 				dateErrorMessage.setText("Please enter a date after the current date");
 			}
-			else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
+			/*else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
 				dateErrorMessage.setText("Please select a value for all date fields");
-			}
+			} */
 			else {
 				dateErrorMessage.setText("");
 			}
 			
 			return false;
 		}
+	}
+	
+	public boolean handleCheckBox(){
+		boolean boxChecked = endDateCheckBox.isSelected();
+		if (boxChecked){
+			comboAMPM.setEnabled(true);
+			comboTime.setEnabled(true);
+			parseTimeDropdowns();
+		}
+		else {
+			comboAMPM.setEnabled(false);
+			comboTime.setEnabled(false);			
+		}
+		return boxChecked;
 	}
 }
