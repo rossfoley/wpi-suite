@@ -8,35 +8,28 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
  *
  */
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SpringLayout;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.JButton;
-import javax.swing.border.LineBorder;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-import javax.swing.SwingConstants;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
-import notification.*;
+import notification.Mailer;
+import notification.MockNotification;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class BetterNewGameTab {
 	private static JTextField textFieldSessionField;
@@ -58,6 +51,7 @@ public class BetterNewGameTab {
 	boolean alreadyVisited = false;
 	
 	MockNotification sessionCreatedNotification = new MockNotification();
+	Mailer mail = new Mailer();
 	
 	/**
 	 * @wbp.parser.entryPoint
