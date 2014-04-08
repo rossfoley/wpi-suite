@@ -98,6 +98,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		this.displayPanel(firstPanel);
 	}
 	
+	//extra test ignore this line 
 	public void buildLayouts() {
 		// Apply the layout and build the panels
 		this.setLayout(layout);
