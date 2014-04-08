@@ -1,10 +1,15 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 /**
- * @author mandi1267
+ * @author amandaadkins
  *
  */
 
@@ -16,7 +21,10 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class Deck extends AbstractModel {
-	String deckName;
+	private String deckName;
+	private ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
+	private int id;
+	
 	/**
 	 * @return the deckName
 	 */
@@ -31,21 +39,36 @@ public class Deck extends AbstractModel {
 		this.deckName = deckName;
 	}
 
-	ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
-	int id;
-	
-	
+	/** constructor for Decks that takes in a list to use as the deck
+	 * 
+	 * @param numbersInDeck numbers to use in the new deck
+	 */
 	public Deck(ArrayList<Integer> numbersInDeck){
 		this.numbersInDeck = numbersInDeck;
 		this.deckName = "";
 	}
+	/**
+	 * constructor for decks that does not have a list given at initialization
+	 * 
+	 * deckName is set to "" as a default
+	 */
+	public Deck(){
+		this.deckName = "";
+	}
 	
-	public Deck(){	}
-	
+	/** 
+	 * converts deck object to a JSON
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
+	 */
 	public String toJSON() {
 		return new Gson().toJson(this, Deck.class);
 	}
 	
+	/** parses a deck object from a Json string
+	 * 
+	 * @param json json-encoded deck 
+	 * @return Deck object that was encoded in json string
+	 */
 	public static Deck fromJson(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, Deck.class);
@@ -132,15 +155,24 @@ public class Deck extends AbstractModel {
 		this.id = id;
 	}
 
+	
+	/**
+	 * Copies traits of another deck to this deck 
+	 * used to update decks in the database
+	 * 
+	 * @param toCopyFrom deck to copy attributes from
+	 */
 	public void copyFrom(Deck toCopyFrom) {
-		this.id = toCopyFrom.id;
-		this.numbersInDeck = toCopyFrom.numbersInDeck;
+		this.id = toCopyFrom.getId();
+		this.numbersInDeck = toCopyFrom.getNumbersInDeck();
+		this.deckName = toCopyFrom.getDeckName();
 	}
 	
-	/*public List<Integer> parseDeckNumsFromString(String ){
-		return null;
-	} */
-	
+	/**
+	 * returns the default name for a deck (which is Deck followed by a space and then it's id number
+	 * 
+	 * @return string containing the default name for a deck
+	 */
 	public String autoName(){
 		String newDeckName = "Deck " + Integer.toString(this.id);
 		return newDeckName;

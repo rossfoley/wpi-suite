@@ -1,10 +1,19 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 /**
- * @author mandi1267
+ * This class makes up the panel that is used to create a game
+ * It takes in fields from the user, displays appropriate messages, and stores information 
+ * to a session and then passes it to the PlanningPokerSessionModel to be saved in the database
+ * 
+ * @author amandaadkins
  *
  */
 
