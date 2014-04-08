@@ -20,9 +20,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -34,6 +32,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import net.sourceforge.jdatepicker.DateModel;
 import net.sourceforge.jdatepicker.JDateComponentFactory;
 import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
@@ -41,24 +40,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.ViewMode;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.*;
-
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import java.util.GregorianCalendar;
-import net.sourceforge.jdatepicker.*;
-import net.sourceforge.jdatepicker.DateModel;
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
 
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
@@ -73,20 +56,21 @@ public class PlanningPokerSessionTab extends JPanel {
 	JComboBox<String> comboTime = new JComboBox<String>();
 	JComboBox<String> comboAMPM = new JComboBox<String>();
 	JComboBox<String> comboDeck = new JComboBox<String>();
+	JTextField textFieldSessionField = new JTextField();
+	JTextArea textFieldDescription = new JTextArea();
 	JLabel dateErrorMessage = new JLabel("");
 	JLabel nameErrorMessage = new JLabel("");
 	JLabel descriptionErrorMessage = new JLabel("");
+	JLabel numbers = new JLabel("Users input non-negative intergers");
 	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+	JDatePicker datePicker;
 	
-	int month = 13;
-	int day = 0;
-	int year = 1;
 	int endHour;
 	int endMinutes;
 	int displayingDays;
 	boolean isUsingDeck;
 	Deck sessionDeck;
-	JLabel numbers = new JLabel("Users input non-negative intergers");
+	
 
 	/**
 	 * Constructor for creating a planning poker session
@@ -108,7 +92,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		this.displayPanel(firstPanel);
 	}
 	
-	public void buildLayouts() {
+	private void buildLayouts() {
 		// Apply the layout and build the panels
 		this.setLayout(layout);
 		this.buildFirstPanel();
@@ -129,24 +113,14 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JLabel lblEndDate = new JLabel("Session End Date:");
 		final JLabel lblSessionEndTime = new JLabel("Session End Time:");
 		final JLabel lblDeck = new JLabel("Deck:");
-		final JTextField textFieldSessionField = new JTextField();
-		final JTextArea textFieldDescription = new JTextArea();
+		
 		final JButton btnNext = new JButton("Next >");
-		final JDatePicker datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
+		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 		
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
-		final String sessionName;
-		// Set the fields based on the existing session if in editing mode
-		if (this.viewMode == ViewMode.EDITING) {
-			sessionName = this.pokerSession.getName();
-			textFieldDescription.setText(this.pokerSession.getDescription());
-		}
-		// Set the fields based on defaults or empty if creating a new session
-		else {
-			sessionName = this.makeDefaultName();
-		}
-		textFieldSessionField.setText(sessionName);
+		textFieldDescription.setText(this.pokerSession.getDescription());
+		textFieldSessionField.setText(this.pokerSession.getName());
 		textFieldSessionField.setColumns(10);
 		textFieldDescription.setColumns(10);
 		comboTime.setBackground(Color.WHITE);
@@ -157,11 +131,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		descriptionErrorMessage.setForeground(Color.RED);
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
-		
-
-		
-		
-
 		
 		// Apply all of the constraints
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
@@ -242,52 +211,19 @@ public class PlanningPokerSessionTab extends JPanel {
 				parseDeckDropdowns();
 			}
 		});
+		
+		datePicker.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				validateFields();
+			}
+		});
 
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String name = textFieldSessionField.getText();
-				String description = textFieldDescription.getText();
-				pokerSession.setSessionDeck(sessionDeck);
-				pokerSession.setUsingDeck(isUsingDeck);
-				ArrayList<CreatePokerSessionErrors> errors;
-
-				
-				errors = pokerSession.validateFields(year, month, day, endHour, endMinutes, description, name);
-				// if there are no errors
-				if (errors.size()==0) {
+				if (validateFields()) {
 					displayPanel(secondPanel);
 				}
-				else { // display all error messages
-					// handle description error
-					if (errors.contains(CreatePokerSessionErrors.NoDescription)){
-						descriptionErrorMessage.setText("Please enter a description");
-					}
-					else {
-						descriptionErrorMessage.setText("");
-					}
-					
-					// handle name error
-					if (errors.contains(CreatePokerSessionErrors.NoName)){
-						nameErrorMessage.setText("Please enter a name");
-					}
-					else {
-						nameErrorMessage.setText("");
-					}
-					
-					// handle date errors
-					if (errors.contains(CreatePokerSessionErrors.EndDateTooEarly)){
-						dateErrorMessage.setText("Please enter a date after the current date");
-					}
-					else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
-						dateErrorMessage.setText("Please select a value for all date fields");
-					}
-					else {
-						dateErrorMessage.setText("");
-					}	
-				}
-
-
 			}
 		});
 		
@@ -300,9 +236,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.add(lblSessionDescription);
 		firstPanel.add(textFieldDescription);
 		firstPanel.add(lblEndDate);
-		/*firstPanel.add(comboMonth);
-		firstPanel.add(comboDay);
-		firstPanel.add(comboYear);*/
 		firstPanel.add(comboTime);
 		firstPanel.add(comboAMPM);
 		firstPanel.add(comboDeck);
@@ -453,27 +386,64 @@ public class PlanningPokerSessionTab extends JPanel {
 	}
 	
 	/**
-	 * @return the default name for the planning poker session
-	 */
-	public String makeDefaultName() {
-		Date date = new Date();
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		return "Planning Poker " + dateFormat.format(date);
-	}
-	
-	/**
 	 * Submits the current session to the database as a new planning poker session
 	 * and removes this tab.
 	 */
 	private void submitSessionToDatabase() {
-		PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);		
+		PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
+		this.removeAll(); // This should prevent the date picker from remaining on the screen
 		ViewEventController.getInstance().removeTab(this);// this thing closes the tabs
 	}
 
 	/**
-	 * @return 
+	 * @return the session that is currently being modified
 	 */
 	public PlanningPokerSession getDisplaySession() {
 		return pokerSession;
+	}
+	
+	private boolean validateFields() {
+		String name = textFieldSessionField.getText();
+		String description = textFieldDescription.getText();
+		pokerSession.setSessionDeck(sessionDeck);
+		pokerSession.setUsingDeck(isUsingDeck);
+		ArrayList<CreatePokerSessionErrors> errors;
+		DateModel selectedDate = datePicker.getModel();
+		
+		errors = pokerSession.validateFields(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay(), endHour, endMinutes, description, name);
+		
+		// if there are no errors
+		if (errors.size() == 0) {
+			return true;
+		} else { // display all error messages
+			// handle description error
+			if (errors.contains(CreatePokerSessionErrors.NoDescription)){
+				descriptionErrorMessage.setText("Please enter a description");
+			}
+			else {
+				descriptionErrorMessage.setText("");
+			}
+			
+			// handle name error
+			if (errors.contains(CreatePokerSessionErrors.NoName)){
+				nameErrorMessage.setText("Please enter a name");
+			}
+			else {
+				nameErrorMessage.setText("");
+			}
+			
+			// handle date errors
+			if (errors.contains(CreatePokerSessionErrors.EndDateTooEarly)){
+				dateErrorMessage.setText("Please enter a date after the current date");
+			}
+			else if (errors.contains(CreatePokerSessionErrors.MissingDateFields)){
+				dateErrorMessage.setText("Please select a value for all date fields");
+			}
+			else {
+				dateErrorMessage.setText("");
+			}
+			
+			return false;
+		}
 	}
 }

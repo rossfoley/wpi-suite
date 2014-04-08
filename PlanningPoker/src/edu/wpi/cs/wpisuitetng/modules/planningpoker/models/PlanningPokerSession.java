@@ -78,25 +78,9 @@ public class PlanningPokerSession extends AbstractModel {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.isOpen = false;
 		this.requirements = new ArrayList<Requirement>();
-		populateRequirements();
 	}
 	public UUID getID() {
 		return uuid;
-	}
-	/**
-	 * populate PlanningPokerSession list of requirements
-	 */
-	public void populateRequirements() {
-		/*
-		// Get singleton instance of Requirements Controller
-		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
-		// Manually force a population of the list of requirements in the requirement model
-		requirementsController.retrieveRequirements();
-		// Get the singleton instance of the requirement model to steal it's list of requirements.
-		RequirementModel requirementModel = RequirementModel.getInstance();
-		// Steal list of requirements from requirement model muhahaha.
-		this.requirements = requirementModel.getRequirements();
-		*/
 	}
 	
 	/**
@@ -167,17 +151,6 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public boolean isOpen() {
 		return isOpen;
-	}
-	
-	/**
-	 * @return "Open" if the session is open, otherwise "Closed"
-	 */
-	public String isOpenAsString() {
-		if (isOpen) {
-			return "Open";
-		} else {
-			return "Closed";
-		}
 	}
 
 	/**
