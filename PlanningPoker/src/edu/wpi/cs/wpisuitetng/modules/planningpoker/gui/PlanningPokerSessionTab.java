@@ -43,6 +43,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.sourceforge.jdatepicker.*;
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
+
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
 	
@@ -120,6 +124,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JTextField textFieldSessionField = new JTextField();
 		final JTextArea textFieldDescription = new JTextArea();
 		final JButton btnNext = new JButton("Next >");
+		final JDatePanel datePicker = new JDatePanelImpl(new UtilCalendarModel(pokerSession.getEndDate()));
 		
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
@@ -147,6 +152,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Apply all of the constraints
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, firstPanel);
+		
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, (JPanel) datePicker, -10, SpringLayout.SOUTH, firstPanel);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, (JPanel) datePicker, 10, SpringLayout.WEST, firstPanel);
 
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDay, 70, SpringLayout.EAST, comboMonth);							
 		
@@ -331,6 +339,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.add(comboAMPM);
 		firstPanel.add(comboDeck);
 		firstPanel.add(numbers);
+		firstPanel.add((JPanel) datePicker);
 		firstPanel.add(descriptionErrorMessage);
 		firstPanel.add(nameErrorMessage);
 		firstPanel.add(dateErrorMessage);
