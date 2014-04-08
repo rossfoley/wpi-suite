@@ -143,11 +143,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
 		
-
-		
-		
-
-		
 		// Apply all of the constraints
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, firstPanel);

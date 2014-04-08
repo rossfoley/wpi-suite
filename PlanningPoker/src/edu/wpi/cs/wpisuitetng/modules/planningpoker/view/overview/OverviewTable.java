@@ -112,7 +112,9 @@ public class OverviewTable extends JTable
 					pokerSession.getID(),
 					pokerSession.getName(),
 					endDate,
-					Integer.toString(pokerSession.requirementsGetSize())
+					Integer.toString(pokerSession.requirementsGetSize()), 
+					pokerSession.getSessionDeck().getDeckName(), 
+					pokerSession.getSessionCreatorName()
 			});	
 		}
 		// indicate that refresh is no longer affecting the table
