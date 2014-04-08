@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.*;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -333,6 +334,10 @@ public class PlanningPokerSessionTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				pokerSession.setRequirements(requirementPanel.getSelected());
 				submitSessionToDatabase();
+				
+				MockNotification mock = new MockNotification();
+				mock.sessionStartedNotification();
+				
 			}
 		});
 		
