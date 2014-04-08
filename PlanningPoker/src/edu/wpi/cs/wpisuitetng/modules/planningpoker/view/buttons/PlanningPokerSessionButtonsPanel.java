@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private JButton createButton = new JButton("<html>Create<br />Planning Poker Session</html>");
 	private final JPanel contentPanel = new JPanel();
+	public boolean flag = true;
 	
 	public PlanningPokerSessionButtonsPanel(){
 		super("");
@@ -43,7 +44,13 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		createButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(flag == true){
+					ViewEventController.getInstance().createPlanningPokerSession();
+					ViewEventController.getInstance().closeAllTabs();
+				}
+				flag = false;
 				ViewEventController.getInstance().createPlanningPokerSession();
+				
 			}
 		});		
 			
