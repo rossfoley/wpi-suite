@@ -101,9 +101,9 @@ public class EditGameTab extends JPanel {
 				boolean dateInRange = true;
 				JLabel lblDateError = new JLabel("Please select a value for all date fields");
 				JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
-				try {
+				/*try {
 					dateCorrect = true;
-					canSaveSession = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
+					//canSaveSession = pokerSession.validateFields(year, month, day, endHour, endMinutes, defaultName);
 					
 
 					//after that you need to call this to revalidate and repaint the panel
@@ -132,8 +132,8 @@ public class EditGameTab extends JPanel {
 					panel_1.revalidate();
 					panel_1.repaint();
 					System.out.println("Exception thrown");
-				}
-				finally {}
+				} */
+				//finally {}
 				System.out.println(textFieldDescription.getText());
 				System.out.println(textFieldSessionField.getText());
 					//if(pokerSession.validateFields(year, month, day, endHour, endMinutes)){
