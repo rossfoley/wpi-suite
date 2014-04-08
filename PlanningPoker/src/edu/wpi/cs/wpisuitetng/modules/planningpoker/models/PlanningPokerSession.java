@@ -278,10 +278,6 @@ public class PlanningPokerSession extends AbstractModel {
 		}
 		this.name = newName.trim();
 
-		if (this.description.equals("")){
-			returnBool = false;
-			throw new NoDescriptionException();
-		}
 		// check if other fields are in appropriate range
 		return errors;
 	}
