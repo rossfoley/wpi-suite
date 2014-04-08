@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
 import javax.swing.JCheckBox;
 
 public class PlanningPokerSessionTab extends JPanel {
@@ -123,7 +124,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JButton btnNext = new JButton("Next >");
 		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 		
-		
+
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
 		textFieldDescription.setText(this.pokerSession.getDescription());
@@ -177,13 +178,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboTime, 0, SpringLayout.WEST, lblSessionName);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboTime, 80, SpringLayout.WEST, lblSessionName);
 		
-
-	
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboAMPM, 6, SpringLayout.EAST, comboTime);
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, comboAMPM, 0, SpringLayout.SOUTH, comboTime);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboAMPM, 80, SpringLayout.EAST, comboTime);						
 		
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDeck, 0, SpringLayout.NORTH, lblSessionEndTime);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDeck, 0, SpringLayout.NORTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblDeck, 250, SpringLayout.WEST, lblSessionName);
 		
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
