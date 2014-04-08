@@ -43,30 +43,32 @@ public class ViewEventControllerTest {
 		vec.setToolBar(new ToolbarView(true));
 		RequirementModel.getInstance().addRequirement(new Requirement(1, "Name", "desc."));
 	}
-
+	/*
 	@Test
 	public void testCreatingARequirementTab() {
 		int prevTabCount = vec.getMainView().getTabCount();
 		vec.createRequirement();
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
-	}
+	}//*/
 
+	/*
 	@Test
 	public void testCreatingAnIterationTab() {
 		int prevTabCount = vec.getMainView().getTabCount();
 		vec.createIteration();
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
-	}
+	}//*/
 	
+	/*
 	@Test
 	public void testTheRemovalOfACreatedTab() {
 		int prevTabCount = vec.getMainView().getTabCount();
 		vec.createRequirement();
 		vec.getMainView().removeTabAt(prevTabCount);
 		assertEquals(prevTabCount, vec.getMainView().getTabCount());
-	}
+	}//*/
 	
-	
+	/*
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testCreatingAPanelAndTabForEditingAnIteration() {
@@ -76,8 +78,9 @@ public class ViewEventControllerTest {
 		vec.editIteration(itr);
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
 		assertEquals(numItrs + 1, vec.getListOfIterationPanels().size());
-	}
+	}//*/
 	
+	/*
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testThatAnotherTabIsNotOpenedForAnIterationThatAlreadyHasATabOpen() {
@@ -90,7 +93,7 @@ public class ViewEventControllerTest {
 		vec.editIteration(itr);
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
 		assertEquals(numItrs + 1, vec.getListOfIterationPanels().size());
-	}
+	}//*/
 	
 	@Test
 	public void testCreationOfTheFirstPieChart() {
@@ -123,7 +126,7 @@ public class ViewEventControllerTest {
 		vec.createBarChart("Status");
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
 	}
-	
+	/*
 	@Test
 	public void testCreatingAPanelAndTabForEditingARequirement() {
 		int prevTabCount = vec.getMainView().getTabCount();
@@ -132,8 +135,8 @@ public class ViewEventControllerTest {
 		vec.editRequirement(req);
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
 		assertEquals(numReqs + 1, vec.getListOfRequirementPanels().size());
-	}
-	
+	}//*/
+	/*
 	@Test
 	public void testThatAnotherTabIsNotOpenedForARequirementThatAlreadyHasATabOpen() {
 		int prevTabCount = vec.getMainView().getTabCount();
@@ -145,8 +148,8 @@ public class ViewEventControllerTest {
 		vec.editRequirement(req);
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
 		assertEquals(numReqs + 1, vec.getListOfRequirementPanels().size());
-	}
-	
+	}//*/
+	/*
 	@Test
 	public void testThatATabCanBeOpenedForCreatingAChildRequirement() {
 		int prevTabCount = vec.getMainView().getTabCount();
@@ -155,5 +158,5 @@ public class ViewEventControllerTest {
 		// multiple children can be made for the same parent
 		vec.createChildRequirement(1);
 		assertEquals(prevTabCount + 2, vec.getMainView().getTabCount());
-	}
+	}//*/
 }
