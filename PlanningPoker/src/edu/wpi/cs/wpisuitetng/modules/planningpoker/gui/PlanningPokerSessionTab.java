@@ -377,7 +377,6 @@ public class PlanningPokerSessionTab extends JPanel {
 					secondPanel.add(norequirements);
 					secondPanel.revalidate();
 					secondPanel.repaint();
-					System.out.println("FAILURE");
 				}
 				else{
 				pokerSession.setRequirements(requirements);
