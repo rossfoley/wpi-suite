@@ -24,8 +24,10 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.DateOutOfRangeException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.InvalidDateException;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoNameException;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
@@ -225,10 +227,12 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = requirementIDs;
 	}
 	
-	public boolean validateFields(int year, int month, int day, int hour, int minute, String defaultName) throws InvalidDateException, DateOutOfRangeException {
-		boolean returnBool = true;
+	public ArrayList<CreatePokerSessionErrors> validateFields(int year, int month, int day, int hour, int minute, String newDescription, String newName) {//throws InvalidDateException, DateOutOfRangeException, NoNameException {
+		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
+		//boolean returnBool = true;
 		GregorianCalendar currentDate = new GregorianCalendar();
 		GregorianCalendar newEndDate = null;
+		//validate date 
 		if ((month!=13)&&(day!=0)&&(year!=1)){
 			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
 		}
@@ -236,22 +240,39 @@ public class PlanningPokerSession extends AbstractModel {
 			newEndDate = null;
 		}
 		else if ((month==13)||(day==0)||(year==1)){
-			returnBool = false;
-			throw new InvalidDateException();
+			//returnBool = false;
+			//throw new InvalidDateException();
+			errors.add(CreatePokerSessionErrors.MissingDateFields);
 		}
-		this.setEndDate(newEndDate);
-		if (this.name.equals("")){
-			this.name = defaultName;
-			System.out.println("Empty name");
-		}
-		if (this.endDate!=null){
-			if ((this.endDate).before(currentDate)){
-				returnBool = false;
-				throw new DateOutOfRangeException();
+		else {
+			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
+			if (newEndDate.before(currentDate)){
+				//returnBool = false;
+				//throw new DateOutOfRangeException();
+				errors.add(CreatePokerSessionErrors.EndDateTooEarly);
 			}
 		}
+		this.setEndDate(newEndDate);
+		
+		// description validation
+		if (newDescription.trim().equals("")){
+			//returnBool = false;
+			//throw new NoNameException();
+			errors.add(CreatePokerSessionErrors.NoDescription);
+		}
+		this.description = newDescription;
+		
+		// name validation
+		if (newName.trim().equals("")){
+			//returnBool = false;
+			//throw new NoNameException();
+			errors.add(CreatePokerSessionErrors.NoName);
+		}
+		this.name = newName.trim();
+
 		// check if other fields are in appropriate range
-		return returnBool;
+		//return returnBool;
+		return errors;
 	}
 
 	/* (non-Javadoc)
