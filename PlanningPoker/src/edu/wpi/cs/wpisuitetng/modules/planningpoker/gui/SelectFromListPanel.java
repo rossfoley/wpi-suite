@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.*;
 
 import javax.swing.JLabel;
 
@@ -361,9 +360,7 @@ public class SelectFromListPanel extends JPanel{
 		return selection;
 		
 	}
-	
-	
-	
+			
 	/**
 	 * populate PlanningPokerSession list of requirements
 	 */
