@@ -24,12 +24,12 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.DateOutOfRangeException;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.InvalidDateException;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * @author rossfoley
+*  @author amandaadkins 
  *
  */
 public class PlanningPokerSession extends AbstractModel {
@@ -224,9 +224,20 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setRequirementIDs(Set<Integer> requirementIDs) {
 		this.requirementIDs = requirementIDs;
 	}
-	
-	public boolean validateFields(int year, int month, int day, int hour, int minute, String defaultName) throws InvalidDateException, DateOutOfRangeException {
-		boolean returnBool = true;
+	/**
+	 * validates the fields of a planning poker session
+	 * @param year year to set as the end year
+	 * @param month month to set as the end month (integer for gregorian calendar)
+	 * @param day day to set as the end day
+	 * @param hour hour to set as the end hour
+	 * @param minute minute to set as the end minute
+	 * @param newDescription text to set as description
+	 * @param newName text to set as name
+	 * @return List<CreatePokerSessionErrors> which is a list of that type of enum 
+	 * which correspond to the possible errors with the different fields
+	 */
+	public ArrayList<CreatePokerSessionErrors> validateFields(int year, int month, int day, int hour, int minute, String newDescription, String newName) {
+		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
 		GregorianCalendar currentDate = new GregorianCalendar();
 		GregorianCalendar newEndDate = null;
 		if ((month!=13)&&(day!=0)&&(year!=1)){
@@ -236,22 +247,30 @@ public class PlanningPokerSession extends AbstractModel {
 			newEndDate = null;
 		}
 		else if ((month==13)||(day==0)||(year==1)){
-			returnBool = false;
-			throw new InvalidDateException();
+			errors.add(CreatePokerSessionErrors.MissingDateFields);
 		}
-		this.setEndDate(newEndDate);
-		if (this.name.equals("")){
-			this.name = defaultName;
-			System.out.println("Empty name");
-		}
-		if (this.endDate!=null){
-			if ((this.endDate).before(currentDate)){
-				returnBool = false;
-				throw new DateOutOfRangeException();
+		else {
+			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
+			if (newEndDate.before(currentDate)){
+				errors.add(CreatePokerSessionErrors.EndDateTooEarly);
 			}
 		}
+		this.setEndDate(newEndDate);
+		
+		// description validation
+		if (newDescription.trim().equals("")){
+			errors.add(CreatePokerSessionErrors.NoDescription);
+		}
+		this.description = newDescription;
+		
+		// name validation
+		if (newName.trim().equals("")){
+			errors.add(CreatePokerSessionErrors.NoName);
+		}
+		this.name = newName.trim();
+
 		// check if other fields are in appropriate range
-		return returnBool;
+		return errors;
 	}
 
 	/* (non-Javadoc)
