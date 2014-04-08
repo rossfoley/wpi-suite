@@ -269,20 +269,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//pokerSession.setName(textFieldSessionField.getText());
 				String name = textFieldSessionField.getText();
 				String description = textFieldDescription.getText();
 				pokerSession.setSessionDeck(sessionDeck);
 				pokerSession.setUsingDeck(isUsingDeck);
 				ArrayList<CreatePokerSessionErrors> errors;
 
-				/*JLabel dateErrorMessage = new JLabel("");
-				JLabel nameErrorMessage = new JLabel("");
-				JLabel descriptionErrorMessage = new JLabel(""); */
-				//boolean dataValid = false;
-				//String errorText = "";
-				//JLabel lblDateError = new JLabel("Please select a value for all date fields");
-				//JLabel lblDateOutOfRange = new JLabel("Please select a date after the current date");
+				
 				errors = pokerSession.validateFields(year, month, day, endHour, endMinutes, description, name);
 				// if there are no errors
 				if (errors.size()==0) {
@@ -316,50 +309,7 @@ public class PlanningPokerSessionTab extends JPanel {
 						dateErrorMessage.setText("");
 					}	
 				}
-				
-				/*
-				descriptionErrorMessage.setForeground(Color.RED);
-				nameErrorMessage.setForeground(Color.RED);
-				dateErrorMessage.setForeground(Color.RED);
-				
-				firstPanelLayout.putConstraint(SpringLayout.NORTH, nameErrorMessage, 0, SpringLayout.NORTH, lblSessionName);
-				firstPanelLayout.putConstraint(SpringLayout.WEST, nameErrorMessage, 10, SpringLayout.EAST, lblSessionName);
-				firstPanelLayout.putConstraint(SpringLayout.NORTH, descriptionErrorMessage, 0, SpringLayout.NORTH, lblSessionDescription);
-				firstPanelLayout.putConstraint(SpringLayout.WEST, descriptionErrorMessage, 10, SpringLayout.EAST, lblSessionDescription);
-				firstPanelLayout.putConstraint(SpringLayout.NORTH, dateErrorMessage, 0, SpringLayout.NORTH, lblEndDate);
-				firstPanelLayout.putConstraint(SpringLayout.WEST, dateErrorMessage, 10, SpringLayout.EAST, lblEndDate);
-				
-				
-				firstPanel.add(descriptionErrorMessage);
-				firstPanel.add(nameErrorMessage);
-				firstPanel.add(dateErrorMessage); */
-				
-				firstPanel.revalidate();
-				firstPanel.repaint();
-				
-				/*catch(InvalidDateException ex) {
-					lblDateError.setText("Please select a value for all date fields");
-					lblDateError.setForeground(Color.RED);
-					firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateError, 0, SpringLayout.NORTH, lblEndDate);
-					firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateError, 20, SpringLayout.EAST, lblEndDate);
-					firstPanel.add(lblDateError);
-					firstPanel.revalidate();
-					firstPanel.repaint();
-				} 
-				catch(DateOutOfRangeException ex){
-					lblDateOutOfRange.setText("Please select a date after the current date");
-					lblDateOutOfRange.setForeground(Color.RED);
-					firstPanelLayout.putConstraint(SpringLayout.NORTH, lblDateOutOfRange, 0, SpringLayout.NORTH, lblEndDate);
-					firstPanelLayout.putConstraint(SpringLayout.WEST, lblDateOutOfRange, 20, SpringLayout.EAST, lblEndDate);
-					firstPanel.add(lblDateOutOfRange);
-					firstPanel.revalidate();
-					firstPanel.repaint();
-				}
-				catch (NoNameException ex){
-					
-				} */
-				
-				// If session data is valid, go to the next screen
+
 
 			}
 		});
