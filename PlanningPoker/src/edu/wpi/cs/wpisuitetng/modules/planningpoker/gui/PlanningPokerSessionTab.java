@@ -213,7 +213,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		setTimeDropdown();
 		parseTimeDropdowns();
 		setDeckDropdown();
-		handleCheckBox();
+		haveEndDate = handleCheckBox();
 
 		// Time dropdown event handler
 		comboTime.addActionListener(new ActionListener(){
