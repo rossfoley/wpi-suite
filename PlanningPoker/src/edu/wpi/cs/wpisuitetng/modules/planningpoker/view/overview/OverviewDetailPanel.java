@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JList;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import java.awt.event.ActionListener;
@@ -84,6 +85,8 @@ public class OverviewDetailPanel extends JPanel {
 		editButton = new JButton("Edit Session");
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Have the event controller open a new edit session tab
+				ViewEventController.getInstance().editSelectedSession();
 			}
 		});
 		editButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);

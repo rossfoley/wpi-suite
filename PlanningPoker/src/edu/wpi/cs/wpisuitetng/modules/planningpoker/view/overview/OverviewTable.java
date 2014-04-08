@@ -77,13 +77,6 @@ public class OverviewTable extends JTable
 					ViewEventController.getInstance().displayDetailedSession();
 				}
 				
-				
-				
-				// Open edit session tab after 2 mouse clicks
-				if (e.getClickCount() == 2)
-				{
-					ViewEventController.getInstance().editSelectedSession();
-				}
 			}
 		});
 		
