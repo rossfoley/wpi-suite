@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import java.util.GregorianCalendar;
 import net.sourceforge.jdatepicker.*;
 import net.sourceforge.jdatepicker.DateModel;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -63,10 +64,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
 	
 	private final SpringLayout layout = new SpringLayout();
-	SpringLayout firstPanelLayout = new SpringLayout();
-	SpringLayout secondPanelLayout = new SpringLayout();
-	JPanel firstPanel = new JPanel();
-	JPanel secondPanel = new JPanel();
+	private SpringLayout firstPanelLayout = new SpringLayout();
+	private SpringLayout secondPanelLayout = new SpringLayout();
+	private JPanel firstPanel = new JPanel();
+	private JPanel secondPanel = new JPanel();
 	
 	private ViewMode viewMode;
 	JComboBox<String> comboTime = new JComboBox<String>();
@@ -123,7 +124,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.setForeground(Color.BLACK);
 		
 		// Initialize all of the fields on the panel
-		final String defaultName = this.makeDefaultName();
 		final JLabel lblSessionName = new JLabel("Session Name:");
 		final JLabel lblSessionDescription = new JLabel("Session Description:");
 		final JLabel lblEndDate = new JLabel("Session End Date:");
@@ -136,7 +136,17 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
-		textFieldSessionField.setText(defaultName);
+		final String sessionName;
+		// Set the fields based on the existing session if in editing mode
+		if (this.viewMode == ViewMode.EDITING) {
+			sessionName = this.pokerSession.getName();
+			textFieldDescription.setText(this.pokerSession.getDescription());
+		}
+		// Set the fields based on defaults or empty if creating a new session
+		else {
+			sessionName = this.makeDefaultName();
+		}
+		textFieldSessionField.setText(sessionName);
 		textFieldSessionField.setColumns(10);
 		textFieldDescription.setColumns(10);
 		comboTime.setBackground(Color.WHITE);
