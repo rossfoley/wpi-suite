@@ -44,6 +44,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.sourceforge.jdatepicker.*;
+import net.sourceforge.jdatepicker.DateModel;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
 
@@ -124,7 +125,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JTextField textFieldSessionField = new JTextField();
 		final JTextArea textFieldDescription = new JTextArea();
 		final JButton btnNext = new JButton("Next >");
-		final JDatePanel datePicker = new JDatePanelImpl(new UtilCalendarModel(pokerSession.getEndDate()));
+		final JDatePicker datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 		
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
