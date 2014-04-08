@@ -29,7 +29,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * @author rossfoley
-*  @author amandaadkins 
  *
  */
 public class PlanningPokerSession extends AbstractModel {
@@ -201,6 +200,8 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	/**
 	 * validates the fields of a planning poker session
+	 * @param haveEndDate if true, the user is specifying an end date, if false, no end date (null)
+	 * @param dateHasBeenSet if true, the user has set an end date, if false, they haven't touched the date picker and it's still the default date
 	 * @param year year to set as the end year
 	 * @param month month to set as the end month (integer for gregorian calendar)
 	 * @param day day to set as the end day
@@ -211,24 +212,23 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return List<CreatePokerSessionErrors> which is a list of that type of enum 
 	 * which correspond to the possible errors with the different fields
 	 */
-	public ArrayList<CreatePokerSessionErrors> validateFields(int year, int month, int day, int hour, int minute, String newDescription, String newName) {
+	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet, int year, int month, int day, int hour, int minute, String newDescription, String newName) {
 		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
 		GregorianCalendar currentDate = new GregorianCalendar();
 		GregorianCalendar newEndDate = null;
-		if ((month!=13)&&(day!=0)&&(year!=1)){
-			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
-		}
-		else if ((month==13)&&(day==0)&&(year==1)){
-			newEndDate = null;
-		}
-		else if ((month==13)||(day==0)||(year==1)){
-			errors.add(CreatePokerSessionErrors.MissingDateFields);
+		if (haveEndDate){
+			if (dateHasBeenSet){
+				newEndDate = new GregorianCalendar(year, month, day, hour, minute);
+				if (newEndDate.before(currentDate)){
+					errors.add(CreatePokerSessionErrors.EndDateTooEarly);
+				}
+			}
+			else {
+				errors.add(CreatePokerSessionErrors.NoDateSelected);
+			}
 		}
 		else {
-			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
-			if (newEndDate.before(currentDate)){
-				errors.add(CreatePokerSessionErrors.EndDateTooEarly);
-			}
+			newEndDate = null;
 		}
 		this.setEndDate(newEndDate);
 		
