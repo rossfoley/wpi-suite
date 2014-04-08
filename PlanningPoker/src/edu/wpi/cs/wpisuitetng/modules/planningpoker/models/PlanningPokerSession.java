@@ -26,6 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
@@ -279,7 +280,7 @@ public class PlanningPokerSession extends AbstractModel {
 
 		if (this.description.equals("")){
 			returnBool = false;
-			System.out.println("ADD A DESCRIPTION");
+			throw new NoDescriptionException();
 		}
 		// check if other fields are in appropriate range
 		return errors;

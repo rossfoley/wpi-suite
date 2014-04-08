@@ -277,7 +277,7 @@ public class PlanningPokerSessionTab extends JPanel {
 				pokerSession.setSessionDeck(sessionDeck);
 				pokerSession.setUsingDeck(isUsingDeck);
 				ArrayList<CreatePokerSessionErrors> errors;
-
+				String description = textFieldDescription.getText();
 				
 				errors = pokerSession.validateFields(year, month, day, endHour, endMinutes, description, name);
 				// if there are no errors
