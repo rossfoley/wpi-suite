@@ -34,6 +34,7 @@ public class OverviewDetailPanel extends JPanel {
 	JLabel lblEndDate;
 	DefaultListModel<Requirement> listModel;
 	JList<Requirement> requirementsList;
+	JButton editButton;
 	
 	
 	public OverviewDetailPanel(PlanningPokerSession session) {
@@ -79,6 +80,15 @@ public class OverviewDetailPanel extends JPanel {
 		btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		add(btnVote);
+		
+		editButton = new JButton("Edit Session");
+		editButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		editButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		editButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		add(editButton);
 		
 		
 	}
