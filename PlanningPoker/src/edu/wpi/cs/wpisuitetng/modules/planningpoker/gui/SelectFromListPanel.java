@@ -360,7 +360,7 @@ public class SelectFromListPanel extends JPanel{
 		return selection;
 		
 	}
-	
+			
 	/**
 	 * populate PlanningPokerSession list of requirements
 	 */
