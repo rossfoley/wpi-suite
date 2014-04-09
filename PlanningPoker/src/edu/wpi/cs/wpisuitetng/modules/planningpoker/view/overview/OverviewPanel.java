@@ -29,7 +29,7 @@ public class OverviewPanel extends JSplitPane {
 	{
 		// Set the data for the overview table
 		OverviewTable table;
-		String[] columnNames = {"", "Name", "End Date", "Requirements", "Deck", "Creator Username"};
+		String[] columnNames = {"", "Name", "End Date", "Requirements", "Deck", "Creator"};
 		Object[][] data = {};
 
 		// Create the detail panel
@@ -56,8 +56,8 @@ public class OverviewPanel extends JSplitPane {
 		table.getColumnModel().getColumn(1).setMinWidth(150); // Name
 		table.getColumnModel().getColumn(2).setMaxWidth(80); // End Date
 		table.getColumnModel().getColumn(3).setMaxWidth(90); // Number of Requirements
-		table.getColumnModel().getColumn(4).setMinWidth(90);
-		table.getColumnModel().getColumn(5).setMaxWidth(120);
+		table.getColumnModel().getColumn(4).setMaxWidth(70); // Deck
+		table.getColumnModel().getColumn(5).setMaxWidth(120); // Creator
 		
 		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(tablePanel);
