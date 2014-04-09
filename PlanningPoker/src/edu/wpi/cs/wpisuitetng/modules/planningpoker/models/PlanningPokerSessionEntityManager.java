@@ -64,12 +64,12 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 * Method update.
 	 * @param session Session
 	 * @param content String
-	 * @return PlanningPokerSession * @throws WPISuiteException * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String) * @throws WPISuiteException
+	 * @return PlanningPokerSession 
+	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	@Override
 	public PlanningPokerSession update(Session session, String content) throws WPISuiteException {
-		
 		PlanningPokerSession updatedSession = PlanningPokerSession.fromJson(content);
 		/*
 		 * Because of the disconnected objects problem in db4o, we can't just save PlanningPokerSession.
@@ -78,19 +78,19 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		 */
 		List<Model> oldSessions = db.retrieve(PlanningPokerSession.class, "uuid", updatedSession.getID(), session.getProject());
 		if(oldSessions.size() < 1 || oldSessions.get(0) == null) {
+			System.out.println("Problem with finding by the UUID");
 			throw new BadRequestException("PlanningPokerSession with UUID does not exist.");
 		}
 				
 		PlanningPokerSession existingSession = (PlanningPokerSession)oldSessions.get(0);		
-
-		// Delete the old session
-		db.delete(existingSession);
+		existingSession.copyFrom(updatedSession);
 		
-		if(!db.save(updatedSession, session.getProject())) {
+		if(!db.save(existingSession, session.getProject())) {
+			System.out.println("Couldn't save the updated session");
 			throw new WPISuiteException();
 		}
 		
-		return updatedSession;
+		return existingSession;
 	}
 
 	/* (non-Javadoc)

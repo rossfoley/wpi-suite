@@ -53,7 +53,7 @@ public class UpdatePlanningPokerSessionController {
 	 */
 	public void updatePlanningPokerSession(PlanningPokerSession newSession) 
 	{
-		Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.POST); // POST == update
+		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.POST); // POST == update
 		request.setBody(newSession.toJSON()); // put the new session in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); 
