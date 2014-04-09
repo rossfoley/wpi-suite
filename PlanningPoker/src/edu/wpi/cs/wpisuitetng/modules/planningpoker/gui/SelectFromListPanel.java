@@ -46,7 +46,7 @@ public class SelectFromListPanel extends JPanel{
 		
 		//initialize the main requirement lists
 		populateRequirements();
-		//System.out.println(this.requirements.size());
+		System.out.println(this.requirements.size());
 		this.unSelected = new LinkedList<Requirement>();
 		this.selected = new LinkedList<Requirement>();
 		//convert the inital data from an array to a list
@@ -374,14 +374,15 @@ public class SelectFromListPanel extends JPanel{
 		RequirementModel requirementModel = RequirementModel.getInstance();
 		try {
 			// Steal list of requirements from requirement model muhahaha.
-			this.requirements = requirementModel.getRequirements();
-			/*this.requirements.clear();
 			List<Requirement> reqsList = requirementModel.getRequirements();
+			List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
 			for (Requirement r:reqsList){
+				System.out.println(r.getIteration());
 				if (r.getIteration().equals("Backlog")){
-					this.requirements.add(r);
+					reqsInBacklog.add(r);
 				}
-			} */
+			} 
+			this.requirements = reqsInBacklog;
 		
 		}
 		catch (Exception e) {}
