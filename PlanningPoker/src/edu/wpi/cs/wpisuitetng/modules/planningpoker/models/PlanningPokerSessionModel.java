@@ -80,7 +80,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		// iterate through list of planningPokerSessions until id is found
 		for (int i=0; i < this.planningPokerSessions.size(); i++){
 			temp = planningPokerSessions.get(i);
-			if (temp.getID() == id){
+			if (temp.getID().equals(id)){
 				break;
 			}
 		}
@@ -119,9 +119,6 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 * function is called internally by the JList in NewPlanningPokerSessionPanel. Returns elements
 	 * in reverse order, so the newest PlanningPokerSession is returned first.
 	 * 
-
-
-
 	 * @return the number of requirements in the project 
 	 * @see javax.swing.ListModel#getSize() 
 	 * @see javax.swing.ListModel#getSize() 
