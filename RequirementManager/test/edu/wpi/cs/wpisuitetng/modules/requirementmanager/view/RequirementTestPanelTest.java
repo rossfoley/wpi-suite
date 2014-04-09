@@ -33,19 +33,19 @@ public class RequirementTestPanelTest {
 	
 	 * @throws Exception
 	 * @throws java.lang.Exception */
-	@Before
-	public void setUp() throws Exception {
-		req = new Requirement(1, "Name", "Description");
-		reqPan = new RequirementPanel(req);
-
-		// Mock Network
-		Network.initNetwork(new MockNetwork());
-		Network.getInstance().setDefaultNetworkConfiguration(
-				new NetworkConfiguration("http://wpisuitetng"));
-		// Mock Iteration
-		Iteration iterationTest = new Iteration(0,"Backlog");
-		IterationModel.getInstance().setBacklog(iterationTest);	 
-	}
+//	@Before
+//	public void setUp() throws Exception {
+//		req = new Requirement(1, "Name", "Description");
+//		reqPan = new RequirementPanel(req);
+//
+//		// Mock Network
+//		Network.initNetwork(new MockNetwork());
+//		Network.getInstance().setDefaultNetworkConfiguration(
+//				new NetworkConfiguration("http://wpisuitetng"));
+//		// Mock Iteration
+//		Iteration iterationTest = new Iteration(0,"Backlog");
+//		IterationModel.getInstance().setBacklog(iterationTest);	 
+//	}
 	/*
 	@Test
 	public void testForAddingATestWithoutTheProperFieldsFilledIn() {

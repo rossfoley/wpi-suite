@@ -24,7 +24,7 @@ public class MainViewTest {
 	/**
 	
 	
-	 * @throws Exception * @throws java.lang.Exception */
+	 * @throws Exception * @throws java.lang.Exception 
 	@Before
 	public void setUp() throws Exception {
 		
@@ -41,6 +41,7 @@ public class MainViewTest {
 		RequirementModel.getInstance().addRequirement(new Requirement(1, "Name", "desc."));
 		
 	}
+	*/
 	/*
 	@Test
 	public void numberOfCreatedtest() {

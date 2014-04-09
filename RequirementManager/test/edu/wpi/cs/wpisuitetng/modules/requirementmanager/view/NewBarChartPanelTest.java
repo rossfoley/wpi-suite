@@ -51,25 +51,25 @@ public class NewBarChartPanelTest {
 	
 	 * @throws Exception
 	 * @throws java.lang.Exception */
-	@BeforeClass
-	public static void setUp() throws Exception {
-		String [][] exData = new String[1][8];
-		
-		for(int i=0; i<8; i++){
-			exData[0][i] = "1";
-		}
-		
-		vec = ViewEventController.getInstance();
-		vec.setMainView(new MainView());
-		vec.setOverviewTable(new OverviewTable(exData, exData[0]));
-		vec.setToolBar(new ToolbarView(true));
-		
-		bob = new User("bob", "bob", "1234", 27);
-		sue = new User("sue", "sue", "4321", 26);
-	
-		req1 = new Requirement(1,  "reqName", "The description");
-		req2 = new Requirement(2, "anotherReq", "another description");
-	}
+//	@BeforeClass
+//	public static void setUp() throws Exception {
+//		String [][] exData = new String[1][8];
+//		
+//		for(int i=0; i<8; i++){
+//			exData[0][i] = "1";
+//		}
+//		
+//		vec = ViewEventController.getInstance();
+//		vec.setMainView(new MainView());
+//		vec.setOverviewTable(new OverviewTable(exData, exData[0]));
+//		vec.setToolBar(new ToolbarView(true));
+//		
+//		bob = new User("bob", "bob", "1234", 27);
+//		sue = new User("sue", "sue", "4321", 26);
+//	
+//		req1 = new Requirement(1,  "reqName", "The description");
+//		req2 = new Requirement(2, "anotherReq", "another description");
+//	}
 	/*
 	@Test
 	public void creationOfStatusBarChartTabTest() {

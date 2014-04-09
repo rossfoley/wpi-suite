@@ -29,20 +29,20 @@ public class ViewEventControllerTest {
 	
 	 * @throws Exception
 	 * @throws java.lang.Exception */
-	@Before
-	public void setUp() throws Exception {
-		String [][] exData = new String[1][8];
-		
-		for(int i=0; i<8; i++){
-			exData[0][i] = "1";
-		}
-		
-		vec = ViewEventController.getInstance();
-		vec.setMainView(new MainView());
-		vec.setOverviewTable(new OverviewTable(exData, exData[0]));
-		vec.setToolBar(new ToolbarView(true));
-		RequirementModel.getInstance().addRequirement(new Requirement(1, "Name", "desc."));
-	}
+//	@Before
+//	public void setUp() throws Exception {
+//		String [][] exData = new String[1][8];
+//		
+//		for(int i=0; i<8; i++){
+//			exData[0][i] = "1";
+//		}
+//		
+//		vec = ViewEventController.getInstance();
+//		vec.setMainView(new MainView());
+//		vec.setOverviewTable(new OverviewTable(exData, exData[0]));
+//		vec.setToolBar(new ToolbarView(true));
+//		RequirementModel.getInstance().addRequirement(new Requirement(1, "Name", "desc."));
+//	}
 	/*
 	@Test
 	public void testCreatingARequirementTab() {
@@ -94,7 +94,7 @@ public class ViewEventControllerTest {
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
 		assertEquals(numItrs + 1, vec.getListOfIterationPanels().size());
 	}//*/
-	
+	/*
 	@Test
 	public void testCreationOfTheFirstPieChart() {
 		int prevTabCount = vec.getMainView().getTabCount();
@@ -125,7 +125,7 @@ public class ViewEventControllerTest {
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
 		vec.createBarChart("Status");
 		assertEquals(prevTabCount + 1, vec.getMainView().getTabCount());
-	}
+	} */
 	/*
 	@Test
 	public void testCreatingAPanelAndTabForEditingARequirement() {

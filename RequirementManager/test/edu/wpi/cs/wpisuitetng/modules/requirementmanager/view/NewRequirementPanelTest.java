@@ -34,17 +34,17 @@ public class NewRequirementPanelTest {
 	 * Setting up using Network and Iteration
 	
 	 * @throws Exception */
-	@Before
-	public void setUp() throws Exception {
-		// Mock Network
-		Network.initNetwork(new MockNetwork());
-		Network.getInstance().setDefaultNetworkConfiguration(
-				new NetworkConfiguration("http://wpisuitetng"));
-		// Mock Iteration
-		Iteration iterationTest = new Iteration(0,"Backlog");
-		IterationModel.getInstance().setBacklog(iterationTest);
-		 
-	}
+//	@Before
+//	public void setUp() throws Exception {
+//		// Mock Network
+//		Network.initNetwork(new MockNetwork());
+//		Network.getInstance().setDefaultNetworkConfiguration(
+//				new NetworkConfiguration("http://wpisuitetng"));
+//		// Mock Iteration
+//		Iteration iterationTest = new Iteration(0,"Backlog");
+//		IterationModel.getInstance().setBacklog(iterationTest);
+//		 
+//	}
 
 	/**
 	 * check whether the field is enabled or not as default
