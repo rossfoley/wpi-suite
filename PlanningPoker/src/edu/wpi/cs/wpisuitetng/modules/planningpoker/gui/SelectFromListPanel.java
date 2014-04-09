@@ -192,23 +192,25 @@ public class SelectFromListPanel extends JPanel{
 	 * the selected list
 	 */
 	private void add(){
-		//System.out.println("In Add");
 		int selected[] = unSelectedGuiList.getSelectedIndices();
+		LinkedList<String> name = new LinkedList<String>();
 		for(int n : selected){
-			System.out.print(n);
-			//this.selected.add(n, this.unSelected.get(n));
 			String str = this.unSelectedListData[n];
+			name.add(str);
+		}
+		for(String str : name){
+			//this.selected.add(n, this.unSelected.get(n));
 			int pos = this.unSelectedNames.indexOf(str);
 			if (this.unSelected.get(pos) != null){
 				Requirement element = this.unSelected.get(pos);
 				//this.unSelected.add(n, null);
 				//System.out.println(element);
 				if (!this.selected.contains(element)){
-					
 					this.selected.remove(pos);
 					this.selected.add(pos, element);
 					this.unSelected.remove(pos);
 					this.unSelected.add(pos, null);
+					update();
 				}
 			}
 		}
@@ -237,10 +239,15 @@ public class SelectFromListPanel extends JPanel{
 	private void remove(){
 		//System.out.println("In Remove");
 		int selected[] = Selected.getSelectedIndices();
+		LinkedList<String> name = new LinkedList<String>();
 		for(int n : selected){
+			String str = this.selectedListData[n];
+			name.add(str);
+		}
+		for(String str : name){
 			//System.out.print(n);
 			//this.selected.add(n, this.unSelected.get(n));
-			String str = this.selectedListData[n];
+			//String str = this.selectedListData[n];
 			int pos = this.selectedNames.indexOf(str);
 			if (this.selected.get(pos) != null){
 				Requirement element = this.selected.get(pos);
@@ -251,6 +258,7 @@ public class SelectFromListPanel extends JPanel{
 					this.unSelected.add(pos, element);
 					this.selected.remove(pos);
 					this.selected.add(pos, null);
+					update();
 				}
 			}
 		}
