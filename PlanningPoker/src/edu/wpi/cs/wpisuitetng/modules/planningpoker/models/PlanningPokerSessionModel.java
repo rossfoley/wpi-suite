@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class PlanningPokerSessionModel extends AbstractListModel {
@@ -47,6 +48,26 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 
 		}
 	}
+	
+	/**
+	 * Adds a single PlanningPokerSession to the PlanningPokerSessions of the project
+	 * 
+	 * @param newReq The PlanningPokerSession to be added to the list of PlanningPokerSessions in the project
+	 */
+	public void updatePlanningPokerSession(PlanningPokerSession currentSession){
+		// add the PlanningPokerSession
+		removePlanningPokerSession(currentSession.getID());
+		planningPokerSessions.add(currentSession);
+		try 
+		{
+			UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(currentSession);
+		}
+		catch(Exception e)
+		{
+
+		}
+	}
+	
 	/**
 	 * Returns the PlanningPokerSession with the given ID
 	 * 
@@ -85,7 +106,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	public void removePlanningPokerSession(UUID removeId){
 		// iterate through list of PlanningPokerSessions until id of project is found
 		for (int i=0; i < this.planningPokerSessions.size(); i++){
-			if (planningPokerSessions.get(i).getID() == removeId){
+			if (planningPokerSessions.get(i).getID().equals(removeId)) {
 				// remove the id
 				planningPokerSessions.remove(i);
 				break;

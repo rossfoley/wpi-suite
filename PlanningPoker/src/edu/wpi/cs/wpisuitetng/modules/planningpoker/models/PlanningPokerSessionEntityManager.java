@@ -4,6 +4,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -12,6 +13,8 @@ import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author rossfoley
@@ -53,11 +56,37 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		return allSessions;
 	}
 
+	/**
+	 * Method update.
+	 * @param session Session
+	 * @param content String
+	 * @return PlanningPokerSession * @throws WPISuiteException * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String) * @throws WPISuiteException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
+	 */
 	@Override
-	public PlanningPokerSession update(Session s, String content)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+	public PlanningPokerSession update(Session session, String content) throws WPISuiteException {
+		
+		PlanningPokerSession updatedSession = PlanningPokerSession.fromJson(content);
+		/*
+		 * Because of the disconnected objects problem in db4o, we can't just save PlanningPokerSession.
+		 * We have to get the original defect from db4o, copy properties from updatedSession,
+		 * then save the original PlanningPokerSession again.
+		 */
+		List<Model> oldSessions = db.retrieve(PlanningPokerSession.class, "uuid", updatedSession.getID(), session.getProject());
+		if(oldSessions.size() < 1 || oldSessions.get(0) == null) {
+			throw new BadRequestException("PlanningPokerSession with UUID does not exist.");
+		}
+				
+		PlanningPokerSession existingSession = (PlanningPokerSession)oldSessions.get(0);		
+
+		// copy values to old planning poker session and fill in our changeset appropriately
+		existingSession.copyFrom(updatedSession);
+		
+		if(!db.save(existingSession, session.getProject())) {
+			throw new WPISuiteException();
+		}
+		
+		return existingSession;
 	}
 
 	@Override

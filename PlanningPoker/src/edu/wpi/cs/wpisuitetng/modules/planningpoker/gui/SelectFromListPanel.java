@@ -1,33 +1,23 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.SpringLayout;
-import javax.swing.JList;
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.AbstractListModel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Component;
-
-import javax.swing.Box;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
-import java.awt.Color;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 
 
@@ -40,9 +30,9 @@ public class SelectFromListPanel extends JPanel{
 	private int defaultSize;
 	private String[] unSelectedListData = {};
 	private String[] selectedListData = {};
-	private javax.swing.AbstractListModel unSelectedListModel;
-	private javax.swing.JList<String> unSelectedGuiList;
-	private javax.swing.AbstractListModel selectedListModel;
+	private AbstractListModel unSelectedListModel;
+	private JList<String> unSelectedGuiList;
+	private AbstractListModel selectedListModel;
 	private javax.swing.JList<String> Selected;
 	private LinkedList<String> selectedNames;
 	private LinkedList<String> unSelectedNames;
@@ -301,32 +291,22 @@ public class SelectFromListPanel extends JPanel{
 	
 	// update the data displayed in the unselected list
 	void updateUnselectedList(){
-		
-		this.unSelectedListModel = new javax.swing.AbstractListModel(){
+		this.unSelectedListModel = new AbstractListModel(){
 			String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		
-		
-		this.unSelectedGuiList.setModel(unSelectedListModel);
-		
-		
+		this.unSelectedGuiList.setModel(unSelectedListModel);	
 	}
 	
 	// update the data displayed by the selected list
 	void updateSelectedList(){
-		
-		this.selectedListModel = new javax.swing.AbstractListModel(){
+		this.selectedListModel = new AbstractListModel(){
 			String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		
-		
 		this.Selected.setModel(selectedListModel);
-		
-		
 	}
 	
 	//convert the data given into a linked list
@@ -362,6 +342,25 @@ public class SelectFromListPanel extends JPanel{
 	}
 			
 	/**
+	 * @param selected the list of requirements that are selected
+	 */
+	public void setSelectedRequirements(List<Requirement> selectedRequirements) {
+		for(Requirement requirement : selectedRequirements){
+			int pos = this.unSelectedNames.indexOf(requirement.getName());
+			if (this.unSelected.get(pos) != null){
+				Requirement element = this.unSelected.get(pos);
+				if (!this.selected.contains(element)){
+					this.selected.remove(pos);
+					this.selected.add(pos, element);
+					this.unSelected.remove(pos);
+					this.unSelected.add(pos, null);
+				}
+			}
+		}
+		update();
+	}
+	
+	/**
 	 * populate PlanningPokerSession list of requirements
 	 */
 	public void populateRequirements() {
@@ -378,12 +377,6 @@ public class SelectFromListPanel extends JPanel{
 			this.requirements = requirementModel.getRequirements();
 		
 		}
-		catch(Exception e){
-			//System.out.println("error");
-		}/*
-		
-		
-		
-		//*/
+		catch (Exception e) {}
 	}
 }

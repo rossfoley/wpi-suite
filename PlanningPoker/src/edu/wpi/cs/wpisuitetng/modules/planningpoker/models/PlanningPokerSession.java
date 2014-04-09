@@ -31,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * @author rossfoley
-
 *  @author amandaadkins 
  *
  */
@@ -43,6 +42,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private UUID uuid = UUID.randomUUID();
 	private boolean isOpen;
 	private List<Requirement> requirements;
+	private List<Estimate> estimates;
 	private boolean isUsingDeck;
 
 	private String description;
@@ -80,28 +80,12 @@ public class PlanningPokerSession extends AbstractModel {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.isOpen = false;
 		this.requirements = new ArrayList<Requirement>();
-		populateRequirements();
 	}
 	/**
 	 * @return uuid
 	 */
 	public UUID getID() {
 		return uuid;
-	}
-	/**
-	 * populate PlanningPokerSession list of requirements
-	 */
-	public void populateRequirements() {
-		/*
-		// Get singleton instance of Requirements Controller
-		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
-		// Manually force a population of the list of requirements in the requirement model
-		requirementsController.retrieveRequirements();
-		// Get the singleton instance of the requirement model to steal it's list of requirements.
-		RequirementModel requirementModel = RequirementModel.getInstance();
-		// Steal list of requirements from requirement model muhahaha.
-		this.requirements = requirementModel.getRequirements();
-		*/
 	}
 	
 	/**
@@ -134,13 +118,21 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = description.trim();
 	}
+	
 	/**
 	 * @return the endDate
 	 */
 	public GregorianCalendar getEndDate() {
 		return endDate;
+	}
+	
+	/**
+	 * @return if the session has an endDate
+	 */
+	public boolean hasEndDate() {
+		return (endDate != null);
 	}
 
 	/**
@@ -171,17 +163,6 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public boolean isOpen() {
 		return isOpen;
-	}
-	
-	/**
-	 * @return "Open" if the session is open, otherwise "Closed"
-	 */
-	public String isOpenAsString() {
-		if (isOpen) {
-			return "Open";
-		} else {
-			return "Closed";
-		}
 	}
 
 	/**
@@ -214,7 +195,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	/**
@@ -235,50 +216,37 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	/**
 	 * validates the fields of a planning poker session
-	 * @param year year to set as the end year
-	 * @param month month to set as the end month (integer for gregorian calendar)
-	 * @param day day to set as the end day
-	 * @param hour hour to set as the end hour
-	 * @param minute minute to set as the end minute
-	 * @param newDescription text to set as description
-	 * @param newName text to set as name
+	 * @param haveEndDate if true, the user is specifying an end date, if false, no end date (null)
+	 * @param dateHasBeenSet if true, the user has set an end date, if false, they haven't touched the date picker and it's still the default date
 	 * @return List<CreatePokerSessionErrors> which is a list of that type of enum 
 	 * which correspond to the possible errors with the different fields
 	 */
-	public ArrayList<CreatePokerSessionErrors> validateFields(int year, int month, int day, int hour, int minute, String newDescription, String newName) {
+	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet) {
 		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
 		GregorianCalendar currentDate = new GregorianCalendar();
-		GregorianCalendar newEndDate = null;
-		if ((month!=13)&&(day!=0)&&(year!=1)){
-			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
-		}
-		else if ((month==13)&&(day==0)&&(year==1)){
-			newEndDate = null;	
-		}
-		else if ((month==13)||(day==0)||(year==1)){
-			errors.add(CreatePokerSessionErrors.MissingDateFields);
-		}
-		else {
-			newEndDate = new GregorianCalendar(year, month, day, hour, minute);
-			if (newEndDate.before(currentDate)){
-				errors.add(CreatePokerSessionErrors.EndDateTooEarly);
+		
+		if (haveEndDate) {
+			if (dateHasBeenSet) {
+				if (this.endDate.before(currentDate)) {
+					errors.add(CreatePokerSessionErrors.EndDateTooEarly);
+				}
+			}
+			else {
+				errors.add(CreatePokerSessionErrors.NoDateSelected);
 			}
 		}
-		this.setEndDate(newEndDate);
 		
-		// description validation
-		if (newDescription.trim().equals("")){
+		// Description validation
+		if (this.description.equals("")){
 			errors.add(CreatePokerSessionErrors.NoDescription);
 		}
-		this.description = newDescription;
 		
-		// name validation
-		if (newName.trim().equals("")){
+		// Name validation
+		if (this.name.equals("")){
 			errors.add(CreatePokerSessionErrors.NoName);
 		}
-		this.name = newName.trim();
 
-		// check if other fields are in appropriate range
+		// Check if other fields are in appropriate range
 		return errors;
 	}
 
@@ -359,5 +327,51 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setRequirements(List<Requirement> selected) {
 		this.requirements = selected;
+	}
+	/**
+	 * @return the estimates
+	 */
+	public List<Estimate> getEstimates() {
+		return estimates;
+	}
+	/**
+	 * @param estimates the estimates to set
+	 */
+	public void setEstimates(List<Estimate> estimates) {
+		this.estimates = estimates;
+	}
+	
+	/**
+	 * @param estimate the estimate to add to the session
+	 */
+	public void addEstimate(Estimate estimate) {
+		this.estimates.add(estimate);
+	}
+	
+	
+	/**
+	 * @return true if the session is allowed to be edited
+	 */
+	public boolean isEditable() {
+		return (!this.isOpen || this.estimates.size() == 0);
+	}
+	
+	/**
+	 * Copies all of the values from the given planning poker session to this planning poker session.
+	 * 
+	 * @param toCopyFrom
+	 *            the planning poker session to copy from.
+	 */
+	public void copyFrom(PlanningPokerSession toCopyFrom) {
+		this.description = toCopyFrom.description;
+		this.name = toCopyFrom.name;
+		this.endDate = toCopyFrom.endDate;
+		this.requirementIDs = toCopyFrom.requirementIDs;
+		this.isOpen = toCopyFrom.isOpen;
+		this.requirements = toCopyFrom.requirements;
+		this.estimates = toCopyFrom.estimates;
+		this.isUsingDeck = toCopyFrom.isUsingDeck;
+		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
+		this.sessionDeck = toCopyFrom.sessionDeck;
 	}
 }

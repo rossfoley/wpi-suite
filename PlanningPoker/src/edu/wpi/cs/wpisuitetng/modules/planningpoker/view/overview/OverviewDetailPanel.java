@@ -1,32 +1,22 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-
 import java.awt.Component;
-
-import javax.swing.JButton;
-
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
-import java.util.Collection;
 import java.util.List;
 
-import javax.swing.JTextArea;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.SpringLayout;
 
 public class OverviewDetailPanel extends JPanel {
 	JPanel infoPanel;
@@ -34,6 +24,7 @@ public class OverviewDetailPanel extends JPanel {
 	JLabel lblEndDate;
 	DefaultListModel<Requirement> listModel;
 	JList<Requirement> requirementsList;
+	JButton editButton;
 	
 	
 	public OverviewDetailPanel(PlanningPokerSession session) {
@@ -90,6 +81,17 @@ public class OverviewDetailPanel extends JPanel {
 		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		add(btnVote);
 		
+		editButton = new JButton("Edit Session");
+		editButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Have the event controller open a new edit session tab
+				ViewEventController.getInstance().editSelectedSession();
+			}
+		});
+		editButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		editButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		add(editButton);
+		
 		
 	}
 	
@@ -128,6 +130,12 @@ public class OverviewDetailPanel extends JPanel {
 		
 		//System.out.println(endDate);
 		this.lblEndDate.setText(endDate);
+		
+		// Check if the edit session button should appear
+		remove(editButton);
+		if (session.isEditable()) {
+			add(editButton);
+		}
 
 		// redraw panel
 		infoPanel.revalidate();

@@ -16,6 +16,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
  *
  */
 public enum CreatePokerSessionErrors {
-	NoName, MissingDateFields, EndDateTooEarly, NoDescription
+	NoName, MissingDateFields, EndDateTooEarly, NoDescription, NoDateSelected
 
 }

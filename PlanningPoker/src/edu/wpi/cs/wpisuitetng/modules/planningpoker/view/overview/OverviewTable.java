@@ -84,6 +84,7 @@ public class OverviewTable extends JTable
 					// Open detail overview panel
 					displaySession();
 				}
+				
 			}
 		});
 		

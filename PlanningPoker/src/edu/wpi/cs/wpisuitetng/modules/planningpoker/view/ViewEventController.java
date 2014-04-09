@@ -26,10 +26,10 @@ public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
 	private ToolbarView toolbar = null;
-	private OverviewTable OpenOverviewTable = null;
-	private OverviewTable ClosedOverviewTable = null;
-	private OverviewDetailPanel OpenOverviewDetailPanel = null;
-	private OverviewDetailPanel ClosedOverviewDetailPanel = null;
+	private OverviewTable openOverviewTable = null;
+	private OverviewTable closedOverviewTable = null;
+	private OverviewDetailPanel openOverviewDetailPanel = null;
+	private OverviewDetailPanel closedOverviewDetailPanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	
 	/**
@@ -37,7 +37,7 @@ public class ViewEventController {
 	 * @param sessionTable a given OpenOverviewTable
 	 */
 	public void setOpenOverviewTable(OverviewTable sessionTable) {
-		this.OpenOverviewTable = sessionTable;
+		this.openOverviewTable = sessionTable;
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class ViewEventController {
 	 * @param sessionTable a given ClosedOverviewTable
 	 */
 	public void setClosedOverviewTable(OverviewTable sessionTable) {
-		this.ClosedOverviewTable = sessionTable;
+		this.closedOverviewTable = sessionTable;
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class ViewEventController {
 	 * @param sessionTable a given OverviewDetailPanel
 	 */
 	public void setOpenOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
-		this.OpenOverviewDetailPanel = sessionPanel;
+		this.openOverviewDetailPanel = sessionPanel;
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class ViewEventController {
 	 * @param sessionTable a given OverviewDetailPanel
 	 */
 	public void setClosedOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
-		this.ClosedOverviewDetailPanel= sessionPanel;
+		this.closedOverviewDetailPanel= sessionPanel;
 	}
 
 	/**
@@ -121,13 +121,13 @@ public class ViewEventController {
 	/** 
 	 * @return openOverviewTable */
 	public OverviewTable getOpenOverviewTable(){
-		return OpenOverviewTable;
+		return openOverviewTable;
 	}
 	
 	/** 
 	 * @return ClosedOverviewTable */
 	public OverviewTable getClosedOverviewTable(){
-		return ClosedOverviewTable;
+		return closedOverviewTable;
 	}
 
 	/**
@@ -143,8 +143,8 @@ public class ViewEventController {
 	 * 
 	 */
 	public void refreshTable() {
-		OpenOverviewTable.refresh();
-		ClosedOverviewTable.refresh();
+		openOverviewTable.refresh();
+		closedOverviewTable.refresh();
 	}
 
 	/**
@@ -232,13 +232,13 @@ public class ViewEventController {
 	/**
 	 * Edits the currently selected planning poker session.  If more than 1 session is selected, does nothing.
 	 */
-	public void editSelectedSession(OverviewTable table)
+	public void editSelectedSession()
 	{
-		int[] selection = table.getSelectedRows();
+		int[] selection = closedOverviewTable.getSelectedRows();
 
 		if(selection.length != 1) return;
 		
-		UUID sessionID = (UUID) table.getValueAt(selection[0],0);
+		UUID sessionID = (UUID) closedOverviewTable.getValueAt(selection[0],0);
 		PlanningPokerSession toEdit = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionID);
 		
 		// If the session doesn't exist
