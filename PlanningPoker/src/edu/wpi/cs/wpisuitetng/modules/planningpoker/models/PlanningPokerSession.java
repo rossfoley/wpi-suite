@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import com.google.gson.Gson;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -354,7 +355,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return true if the session is allowed to be edited
 	 */
 	public boolean isEditable() {
-		return (!this.isOpen || (this.estimates.size() == 0));
+		return (!this.isOpen || (this.estimates.size() == 0)) && this.sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
 	}
 	
 	/**
