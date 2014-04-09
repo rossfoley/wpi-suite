@@ -118,7 +118,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = description.trim();
 	}
 	
 	/**
@@ -195,7 +195,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	/**
@@ -218,50 +218,35 @@ public class PlanningPokerSession extends AbstractModel {
 	 * validates the fields of a planning poker session
 	 * @param haveEndDate if true, the user is specifying an end date, if false, no end date (null)
 	 * @param dateHasBeenSet if true, the user has set an end date, if false, they haven't touched the date picker and it's still the default date
-	 * @param year year to set as the end year
-	 * @param month month to set as the end month (integer for gregorian calendar)
-	 * @param day day to set as the end day
-	 * @param hour hour to set as the end hour
-	 * @param minute minute to set as the end minute
-	 * @param newDescription text to set as description
-	 * @param newName text to set as name
 	 * @return List<CreatePokerSessionErrors> which is a list of that type of enum 
 	 * which correspond to the possible errors with the different fields
 	 */
-	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet, int year, int month, int day, int hour, int minute, String newDescription, String newName) {
+	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet) {
 		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
 		GregorianCalendar currentDate = new GregorianCalendar();
-		GregorianCalendar newEndDate = null;
-		if (haveEndDate){
-			if (dateHasBeenSet){
-				newEndDate = new GregorianCalendar(year, month, day, hour, minute);
-				if (newEndDate.before(currentDate)){
+		
+		if (haveEndDate) {
+			if (dateHasBeenSet) {
+				if (this.endDate.before(currentDate)) {
 					errors.add(CreatePokerSessionErrors.EndDateTooEarly);
 				}
-			newEndDate = null;
 			}
 			else {
 				errors.add(CreatePokerSessionErrors.NoDateSelected);
 			}
 		}
-		else {
-			newEndDate = null;
-		}
-		this.setEndDate(newEndDate);
 		
-		// description validation
-		if (newDescription.trim().equals("")){
+		// Description validation
+		if (this.description.equals("")){
 			errors.add(CreatePokerSessionErrors.NoDescription);
 		}
-		this.description = newDescription;
 		
-		// name validation
-		if (newName.trim().equals("")){
+		// Name validation
+		if (this.name.equals("")){
 			errors.add(CreatePokerSessionErrors.NoName);
 		}
-		this.name = newName.trim();
 
-		// check if other fields are in appropriate range
+		// Check if other fields are in appropriate range
 		return errors;
 	}
 

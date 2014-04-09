@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -276,22 +277,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-
-				String name = textFieldSessionField.getText();
-				String description = textFieldDescription.getText();
-				pokerSession.setSessionDeck(sessionDeck);
-				pokerSession.setUsingDeck(isUsingDeck);
-				String creatorName = ConfigManager.getConfig().getUserName();
-				pokerSession.setSessionCreatorName(creatorName);
-				ArrayList<CreatePokerSessionErrors> errors;
-				int year = datePicker.getModel().getYear();
-				int month = datePicker.getModel().getMonth();
-				int day = datePicker.getModel().getDay();
-				errors = pokerSession.validateFields(haveEndDate, dateHasBeenSet, year, month, day, 
-						endHour, endMinutes, description, name);
-				// if there are no errors
-				if (errors.size()==0) {
+				// Save the fields and validate them
+				if (validateFields()) {
 					displayPanel(secondPanel);
 				}
 			}
@@ -351,28 +338,26 @@ public class PlanningPokerSessionTab extends JPanel {
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<Requirement> requirements =  requirementPanel.getSelected();
-				if(requirements.isEmpty()){
+				if (requirements.isEmpty()) {
 					norequirements.setText("Requirements must be selected before creating the session.");
 					norequirements.setForeground(Color.RED);
 					secondPanel.revalidate();
 					secondPanel.repaint();
+				} else { 
+					saveFields();
+					submitSessionToDatabase();
+					norequirements.setText("");
+	
+					MockNotification mock = new MockNotification();
+					mock.sessionStartedNotification();
 				}
-				else{
-				pokerSession.setRequirements(requirements);
-				submitSessionToDatabase();
-				norequirements.setText("");
-
-				MockNotification mock = new MockNotification();
-				mock.sessionStartedNotification();
-				
-			}
 			}
 		});
 		
 		// Back button event handler
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pokerSession.setRequirements(requirementPanel.getSelected());
+				saveFields();
 				displayPanel(firstPanel);
 			}
 		});
@@ -506,49 +491,67 @@ public class PlanningPokerSessionTab extends JPanel {
 	}
 	
 	private boolean validateFields() {
-		String name = textFieldSessionField.getText();
-		String description = textFieldDescription.getText();
-		pokerSession.setSessionDeck(sessionDeck);
-		pokerSession.setUsingDeck(isUsingDeck);
-		ArrayList<CreatePokerSessionErrors> errors;
-		DateModel selectedDate = datePicker.getModel();
+		// Save the fields
+		saveFields();
 		
-		errors = pokerSession.validateFields(haveEndDate, dateHasBeenSet, selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay(), endHour, endMinutes, description, name);
-		// if there are no errors
+		// Validate the fields to find all the errors
+		ArrayList<CreatePokerSessionErrors> errors;
+		errors = pokerSession.validateFields(haveEndDate, dateHasBeenSet);
+		
+		// If there are no errors
 		if (errors.size() == 0) {
 			descriptionErrorMessage.setText("");
 			nameErrorMessage.setText("");
 			dateErrorMessage.setText("");
 			return true;
-		} else { // display all error messages
-			// handle description error
+		} else { 
+			// Display all error messages
+			// Handle description error
 			if (errors.contains(CreatePokerSessionErrors.NoDescription)){
 				descriptionErrorMessage.setText("Please enter a description");
-			}
-			else {
+			} else {
 				descriptionErrorMessage.setText("");
 			}
 			
-			// handle name error
+			// Handle name error
 			if (errors.contains(CreatePokerSessionErrors.NoName)){
 				nameErrorMessage.setText("Please enter a name");
-			}
-			else {
+			} else {
 				nameErrorMessage.setText("");
 			}
 			
-			// handle date errors
+			// Handle date errors
 			if (errors.contains(CreatePokerSessionErrors.EndDateTooEarly)){
 				dateErrorMessage.setText("Please enter a date after the current date");
-			}
-			else if (errors.contains(CreatePokerSessionErrors.NoDateSelected)){
+			} else if (errors.contains(CreatePokerSessionErrors.NoDateSelected)){
 				dateErrorMessage.setText("Please select a date or disable end date");
-			}
-			else {
+			} else {
 				dateErrorMessage.setText("");
 			}
 			
 			return false;
+		}
+	}
+	
+	/**
+	 * Saves the current values in the panel to the PlanningPokerSession object
+	 */
+	public void saveFields() {
+		int year = datePicker.getModel().getYear();
+		int month = datePicker.getModel().getMonth();
+		int day = datePicker.getModel().getDay();
+		
+		pokerSession.setName(textFieldSessionField.getText());
+		pokerSession.setDescription(textFieldDescription.getText());
+		pokerSession.setSessionDeck(sessionDeck);
+		pokerSession.setUsingDeck(isUsingDeck);
+		pokerSession.setSessionCreatorName(ConfigManager.getConfig().getUserName());
+		pokerSession.setRequirements(requirementPanel.getSelected());
+		
+		if (haveEndDate) {
+			pokerSession.setEndDate(new GregorianCalendar(year, month, day, endHour, endMinutes));
+		} else {
+			pokerSession.setEndDate(null);
 		}
 	}
 	/**
@@ -557,7 +560,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * if it is checked, it enables the time dropdowns and shows the pertinent date error message again
 	 * @return boolean indicating if the user wants to specify an end date
 	 */
-	public boolean handleCheckBox(){
+	public boolean handleCheckBox() {
 		boolean boxChecked = endDateCheckBox.isSelected();
 		if (boxChecked){
 			comboAMPM.setEnabled(true);
