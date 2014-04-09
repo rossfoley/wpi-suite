@@ -31,7 +31,6 @@ public class OpenOverviewTable extends OverviewTable {
 	public OpenOverviewTable(Object[][] data, String[] columnNames, OverviewDetailPanel detailPanel) {
 		super(data, columnNames);
 		this.detailPanel = detailPanel;
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * Retrieves all open sessions

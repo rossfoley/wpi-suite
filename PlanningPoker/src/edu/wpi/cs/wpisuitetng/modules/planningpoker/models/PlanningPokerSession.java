@@ -80,6 +80,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.isOpen = false;
 		this.requirements = new ArrayList<Requirement>();
+		this.estimates = new ArrayList<Estimate>();
 	}
 	/**
 	 * @return uuid
@@ -353,7 +354,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return true if the session is allowed to be edited
 	 */
 	public boolean isEditable() {
-		return (!this.isOpen || this.estimates.size() == 0);
+		return (!this.isOpen || (this.estimates.size() == 0));
 	}
 	
 	/**

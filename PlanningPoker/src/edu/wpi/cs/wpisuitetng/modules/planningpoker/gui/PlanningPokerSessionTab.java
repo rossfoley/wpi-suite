@@ -345,6 +345,7 @@ public class PlanningPokerSessionTab extends JPanel {
 					secondPanel.repaint();
 				} else { 
 					saveFields();
+				pokerSession.setOpen(true);
 					submitSessionToDatabase();
 					norequirements.setText("");
 	
