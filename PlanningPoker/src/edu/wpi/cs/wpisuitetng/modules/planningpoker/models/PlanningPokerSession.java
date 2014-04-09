@@ -30,6 +30,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
 /**
  * @author rossfoley
@@ -49,6 +54,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private String description;
 	private String sessionCreatorName;
 	private Deck sessionDeck;
+	private boolean defaultSessionName;
 	
 	/**
 	 * @return the sessionCreatorID
@@ -82,6 +88,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isOpen = false;
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
+		this.defaultSessionName = true;
 	}
 	/**
 	 * @return uuid
@@ -143,6 +150,13 @@ public class PlanningPokerSession extends AbstractModel {
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * @return if the session name is the default name
+	 */
+	public boolean isNameDefault() {
+		return defaultSessionName;
+	}
 
 	/**
 	 * @return the requirementIDs
@@ -198,6 +212,10 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setName(String name) {
 		this.name = name.trim();
+		// Check if the name was actually changed
+		if (!this.name.equals(name)) {
+			this.defaultSessionName = false;
+		}
 	}
 
 	/**
@@ -369,4 +387,5 @@ public class PlanningPokerSession extends AbstractModel {
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
 	}
+	
 }
