@@ -596,7 +596,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		if (deckName.equals("None")){
 			isUsingDeck = false;
 			sessionDeck = null;
-			deckNumbers = "Users input non-negative intergers";
+			deckNumbers = "Users input non-negative integers";
 		}
 		else {
 			for (Deck d:projectDecks){
