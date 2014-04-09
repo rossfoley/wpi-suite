@@ -89,11 +89,12 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		return existingSession;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
+	 */
 	@Override
-	public void save(Session s, PlanningPokerSession model)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		
+	public void save(Session s, PlanningPokerSession model) throws WPISuiteException {
+		db.save(model);
 	}
 
 	@Override
