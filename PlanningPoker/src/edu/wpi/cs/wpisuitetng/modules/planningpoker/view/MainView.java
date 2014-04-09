@@ -38,7 +38,8 @@ public class MainView extends JTabbedPane {
 	private Image tabImage = null;
 	private Point currentMouseLocation = null;
 	private int draggedTabIndex = 0;
-	private OverviewPanel currentSessions = new OverviewPanel();
+	private OverviewPanel openSessions = new OverviewPanel(true);
+	private OverviewPanel closedSessions = new OverviewPanel(false);
 	private Component lastTab = null;
 	private final JPopupMenu popup = new JPopupMenu();
 	private JMenuItem closeAll = new JMenuItem("Close All Tabs");
@@ -51,7 +52,8 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		this.addTab("Planning Poker Game Sessions", currentSessions);
+		this.addTab("Open Sessions", openSessions);
+		this.addTab("Closed Sessions", closedSessions);
 
 		
 		closeAll.addActionListener(new ActionListener()
@@ -147,13 +149,21 @@ public class MainView extends JTabbedPane {
 		final MainView panel = this;
 		this.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				JComponent selected = (JComponent)MainView.this.getSelectedComponent();
 				
-				if(selected == currentSessions)
-				{
-					ViewEventController.getInstance().getOverviewTable().refresh();
-					currentSessions.revalidate();
-					currentSessions.repaint();
+				JComponent selected = (JComponent) MainView.this.getSelectedComponent();
+
+				if (selected == openSessions) {
+					ViewEventController.getInstance().getOpenOverviewTable()
+							.refresh();
+					openSessions.revalidate();
+					openSessions.repaint();
+					
+				} 
+				else if (selected == closedSessions) {
+					ViewEventController.getInstance().getClosedOverviewTable()
+							.refresh();
+					closedSessions.revalidate();
+					closedSessions.repaint();
 				}
 			}
 		});
@@ -194,11 +204,17 @@ public class MainView extends JTabbedPane {
 	}
 	
 	/**
-	 * Method getOverview.
+	 * Method getOpenOverview.
+	 * @return OpenOverviewPanel */
+	public OverviewPanel getOpenOverview() {
+		return openSessions;
+	}
 	
-	 * @return OverviewPanel */
-	public OverviewPanel getOverview() {
-		return currentSessions;
+	/**
+	 * Method getClosedOverview.
+	 * @return ClosedOverviewPanel */
+	public OverviewPanel getClosedOverview() {
+		return closedSessions;
 	}
 	
 	/**
