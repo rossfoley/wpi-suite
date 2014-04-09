@@ -11,9 +11,11 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ClosedOverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 
 
 /**
@@ -136,6 +138,9 @@ public class ViewEventController {
 	 */
 	public void removeTab(JComponent comp)
 	{
+		if (comp instanceof PlanningPokerSessionTab) {
+			this.listOfEditingPanels.remove(comp);
+		}
 		main.remove(comp);
 	}
 
@@ -228,48 +233,28 @@ public class ViewEventController {
 		detailPanel.updatePanel(displaySession);
 		
 	}
-	
-	/**
-	 * Edits the currently selected planning poker session.  If more than 1 session is selected, does nothing.
-	 */
-	public void editSelectedSession()
-	{
-		int[] selection = closedOverviewTable.getSelectedRows();
 
-		if(selection.length != 1) return;
-		
-		UUID sessionID = (UUID) closedOverviewTable.getValueAt(selection[0],0);
-		PlanningPokerSession toEdit = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionID);
-		
-		// If the session doesn't exist
-		if (toEdit == null) {
-			System.out.println("Session not found");
-			createPlanningPokerSession();
-		}
-		else
-			editSession(toEdit);
-	}
 	
 	/**
 	 * Opens a new tab for the editing of a session
 	 * @param toEdit the req to edit
 	 */
 	public void editSession(PlanningPokerSession toEdit)
-	{	
+	{
 		PlanningPokerSessionTab exists = null;
 		
 		// Check if the session is already open in a tab
 		for(PlanningPokerSessionTab panel : listOfEditingPanels)
 		{
-			if(panel.getDisplaySession() == toEdit)	// This needs to be implemented
+			if(panel.getDisplaySession() == toEdit)
 			{
 				exists = panel;
 				break;
 			}
 		}
 		
-//		if(exists == null)
-//		{
+		if (exists == null)
+		{
 			// eventually want to add session to edit as an argument
 			PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
 			
@@ -283,11 +268,11 @@ public class ViewEventController {
 			main.invalidate();
 			main.repaint();
 			main.setSelectedComponent(editPanel);
-//		}
-//		else
-//		{
-//			main.setSelectedComponent(exists);
-//		}
+		}
+		else
+		{
+			main.setSelectedComponent(exists);
+		}
 			
 	}
 	

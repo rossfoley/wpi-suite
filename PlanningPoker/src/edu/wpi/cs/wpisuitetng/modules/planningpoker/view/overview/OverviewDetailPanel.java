@@ -28,15 +28,16 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class OverviewDetailPanel extends JPanel {
-	JPanel infoPanel;
-	JLabel lblSessionName;
-	JLabel lblEndDate;
-	DefaultListModel<Requirement> listModel;
-	JList<Requirement> requirementsList;
-	boolean isOpen;
-	JButton btnOpen;
-	JButton btnVote;
-	JButton editButton;
+	private JPanel infoPanel;
+	private JLabel lblSessionName;
+	private JLabel lblEndDate;
+	private DefaultListModel<Requirement> listModel;
+	private JList<Requirement> requirementsList;
+	private boolean isOpen;
+	private JButton btnOpen;
+	private JButton btnVote;
+	private JButton editButton;
+	private PlanningPokerSession currentSession;
 	
 	public OverviewDetailPanel(boolean isOpen) {
 	
@@ -84,17 +85,14 @@ public class OverviewDetailPanel extends JPanel {
 		btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		add(btnVote);
-		
-		editButton = new JButton("Edit Session");
-		editButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Have the event controller open a new edit session tab
 		}
 		else {
 			btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 			btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
 			add(btnOpen);
-		}	
+		}
+		
+		editButton = new JButton("Edit Session");
 	}
 	
 	/**
@@ -104,7 +102,7 @@ public class OverviewDetailPanel extends JPanel {
 	 */
 	public void updatePanel(final PlanningPokerSession session)
 	{
-		
+		this.currentSession = session;
 		String endDate = "No end date";
 		List<Requirement> requirements = session.getRequirements();
 		
@@ -133,57 +131,21 @@ public class OverviewDetailPanel extends JPanel {
 		
 		//System.out.println(endDate);
 		this.lblEndDate.setText(endDate);
-		
+
 		btnVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				session.setOpen(true);
 			}
 		});
-				ViewEventController.getInstance().editSelectedSession();
+		
+		editButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Have the event controller open a new edit session tab
+				ViewEventController.getInstance().editSession(getCurrentSession());
 			}
 		});
 		editButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		editButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(editButton);
-		
-		
-	}
-	
-	/**
-	 * Displays the given session in the detail panel
-	 * @param session The given session to display
-	 * @author randyacheson
-	 */
-	public void updatePanel(PlanningPokerSession session)
-	{
-		String endDate = "No end date";
-		List<Requirement> requirements = session.getRequirements();
-		
-		// Change name
-		this.lblSessionName.setText(session.getName());
-		
-		// Change requirements list
-		this.listModel.clear();
-		if (session.requirementsGetSize() > 0) 
-		{
-			for (Requirement requirement : requirements) {
-				if (requirement != null) {
-					this.listModel.addElement(requirement);
-				}
-			}
-		}
-		
-		requirementsList = new JList<Requirement>(listModel);
-
-		// Change end date
-		try {
-			endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(session.getEndDate().getTime());
-		} catch (NullPointerException ex) {
-			endDate = new String("No end date");
-		}
-		
-		//System.out.println(endDate);
-		this.lblEndDate.setText(endDate);
 		
 		// Check if the edit session button should appear
 		remove(editButton);
@@ -195,5 +157,11 @@ public class OverviewDetailPanel extends JPanel {
 		infoPanel.revalidate();
 		infoPanel.repaint();
 		
+	}
+	
+	
+	public PlanningPokerSession getCurrentSession() {
+		
+		return this.currentSession;
 	}
 }
