@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -52,6 +53,7 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDate = new JLabel("");
 		btnOpen = new JButton("Open");
 		btnVote = new JButton("Vote");
+		editButton = new JButton("Edit Session");
 		JLabel lblSessionNameLabel = new JLabel("Session Name:");
 		JLabel lblEndDateLabel = new JLabel("End Date:");
 		JLabel lblRequirementsLabel = new JLabel("Requirements:");
@@ -82,9 +84,9 @@ public class OverviewDetailPanel extends JPanel {
 		infoPanel.add(lblEndDateLabel);		
 
 		if (this.isOpen) {
-		btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		add(btnVote);
+			btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+			btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
+			add(btnVote);
 		}
 		else {
 			btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
@@ -92,7 +94,6 @@ public class OverviewDetailPanel extends JPanel {
 			add(btnOpen);
 		}
 		
-		editButton = new JButton("Edit Session");
 	}
 	
 	/**
@@ -134,7 +135,15 @@ public class OverviewDetailPanel extends JPanel {
 
 		btnVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			// TODO bro
+			}
+		});
+
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				session.setOpen(true);
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
+				ViewEventController.getInstance().refreshTable();
 			}
 		});
 		
