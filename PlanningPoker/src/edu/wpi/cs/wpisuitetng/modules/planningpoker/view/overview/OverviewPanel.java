@@ -33,15 +33,17 @@ public class OverviewPanel extends JSplitPane {
 		Object[][] data = {};
 
 		// Create the detail panel
-		OverviewDetailPanel detailPanel = new OverviewDetailPanel(new PlanningPokerSession());
+		OverviewDetailPanel detailPanel;
 
 		// Create the overview table and put it in a scroll pane
 		if (isOpen) { 
+			detailPanel = new OverviewDetailPanel(true);
 			table = new OpenOverviewTable(data, columnNames, detailPanel);
 			ViewEventController.getInstance().setOpenOverviewTable(table);
 			ViewEventController.getInstance().setOpenOverviewDetailPanel(detailPanel);
 		}
 		else {
+			detailPanel = new OverviewDetailPanel(false);
 			table = new ClosedOverviewTable(data, columnNames, detailPanel);
 			ViewEventController.getInstance().setClosedOverviewTable(table);
 			ViewEventController.getInstance().setClosedOverviewDetailPanel(detailPanel);

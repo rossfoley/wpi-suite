@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
@@ -24,25 +33,36 @@ public class OverviewDetailPanel extends JPanel {
 	JLabel lblEndDate;
 	DefaultListModel<Requirement> listModel;
 	JList<Requirement> requirementsList;
+	boolean isOpen;
+	JButton btnOpen;
+	JButton btnVote;
 	JButton editButton;
 	
+	public OverviewDetailPanel(boolean isOpen) {
 	
-	public OverviewDetailPanel(PlanningPokerSession session) {
-		
+		this.isOpen = isOpen;
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // oops?
-		
 		infoPanel = new JPanel();
-		add(infoPanel);
 		infoPanel.setLayout(null);
-		
+		listModel = new DefaultListModel<Requirement>();
+		requirementsList = new JList<Requirement>(listModel);
+		lblSessionName = new JLabel("");
+		lblEndDate = new JLabel("");
+		btnOpen = new JButton("Open");
+		btnVote = new JButton("Vote");
 		JLabel lblSessionNameLabel = new JLabel("Session Name:");
-		lblSessionNameLabel.setBounds(10, 10, 258, 14);
-		infoPanel.add(lblSessionNameLabel);
-		
 		JLabel lblEndDateLabel = new JLabel("End Date:");
+		JLabel lblRequirementsLabel = new JLabel("Requirements:");
+		JScrollPane listContainer = new JScrollPane(requirementsList);
+		
+		lblSessionNameLabel.setBounds(10, 10, 258, 14);
 		lblEndDateLabel.setBounds(10, 60, 258, 14);
-		infoPanel.add(lblEndDateLabel);
+		lblRequirementsLabel.setBounds(10, 110, 258, 14);
+		listContainer.setBounds(10, 135, 258, 107);
+		this.lblSessionName.setBounds(10, 35, 258, 14);
+		lblEndDate.setBounds(10, 85, 258, 14);
+		
 		
 		/* JLabel lblDeckName = new JLabel("Deck Name:");
 		lblDeckName.setBounds(10, 110, 258, 14);
@@ -52,31 +72,15 @@ public class OverviewDetailPanel extends JPanel {
 		lblCreatorName.setBounds(10, 160, 258, 14);
 		infoPanel.add(lblCreatorName); */
 		
-		JLabel lblRequirementsLabel = new JLabel("Requirements:");
-		//lblRequirementsLabel.setBounds(10, 210, 258, 14);
-		lblRequirementsLabel.setBounds(10, 110, 258, 14);
+		add(infoPanel);
 		infoPanel.add(lblRequirementsLabel); 
-		
-		listModel = new DefaultListModel<Requirement>();
-		requirementsList = new JList<Requirement>(listModel);
-		JScrollPane listContainer = new JScrollPane(requirementsList);
-		//listContainer.setBounds(10, 235, 258, 107);
-		listContainer.setBounds(10, 135, 258, 107);
 		infoPanel.add(listContainer);
-
-		this.lblSessionName = new JLabel("");
-		this.lblSessionName.setBounds(10, 35, 258, 14);
-		infoPanel.add(this.lblSessionName);
-		
-		lblEndDate = new JLabel("");
-		lblEndDate.setBounds(10, 85, 258, 14);
+		infoPanel.add(lblSessionName);
 		infoPanel.add(lblEndDate);
-		
-		JButton btnVote = new JButton("Vote");
-		btnVote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		infoPanel.add(lblSessionNameLabel);
+		infoPanel.add(lblEndDateLabel);		
+
+		if (this.isOpen) {
 		btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		add(btnVote);
@@ -85,6 +89,56 @@ public class OverviewDetailPanel extends JPanel {
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Have the event controller open a new edit session tab
+		}
+		else {
+			btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+			btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
+			add(btnOpen);
+		}	
+	}
+	
+	/**
+	 * Displays the given session in the detail panel
+	 * @param session The given session to display
+	 * @author randyacheson
+	 */
+	public void updatePanel(final PlanningPokerSession session)
+	{
+		
+		String endDate = "No end date";
+		List<Requirement> requirements = session.getRequirements();
+		
+		// Change name
+		this.lblSessionName.setText(session.getName());
+		
+		// Change requirements list
+		this.listModel.clear();
+		if (session.requirementsGetSize() > 0) 
+		{
+			for (Requirement requirement : requirements) {
+				if (requirement != null) {
+					this.listModel.addElement(requirement);
+				}
+			}
+		}
+		
+		requirementsList = new JList<Requirement>(listModel);
+
+		// Change end date
+		try {
+			endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(session.getEndDate().getTime());
+		} catch (NullPointerException ex) {
+			endDate = new String("No end date");
+		}
+		
+		//System.out.println(endDate);
+		this.lblEndDate.setText(endDate);
+		
+		btnVote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				session.setOpen(true);
+			}
+		});
 				ViewEventController.getInstance().editSelectedSession();
 			}
 		});
@@ -142,5 +196,4 @@ public class OverviewDetailPanel extends JPanel {
 		infoPanel.repaint();
 		
 	}
-
 }
