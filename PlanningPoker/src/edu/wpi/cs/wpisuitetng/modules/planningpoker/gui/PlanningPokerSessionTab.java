@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -77,6 +78,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	Deck sessionDeck;
 	private JLabel lblSessionEndTime;
 	private JLabel lblEndDate;
+	private String[] availableTimes = new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
+			"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
+			"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" };
 	
 
 	/**
@@ -210,7 +214,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	
 
 		// Handle the time dropdowns
-		setTimeDropdown();
+		populateTimeDropdown();
 		parseTimeDropdowns();
 		setDeckDropdown();
 		haveEndDate = handleCheckBox();
@@ -256,6 +260,10 @@ public class PlanningPokerSessionTab extends JPanel {
 				}
 			}
 		});
+		
+		if (viewMode == ViewMode.EDITING) {
+			setTimeDropdown();
+		}
 		
 		// Add all of the elements to the first panel
 		firstPanel.add(btnNext);
@@ -355,11 +363,23 @@ public class PlanningPokerSessionTab extends JPanel {
 	/**
 	 * populates the drop down menu for the time
 	 */
-	public void setTimeDropdown(){
-		comboTime.setModel(new DefaultComboBoxModel<String>
-		(new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
-				"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
-				"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" } ));
+	public void populateTimeDropdown(){
+		comboTime.setModel(new DefaultComboBoxModel<String>(availableTimes));
+	}
+	
+	public void setTimeDropdown() {
+		int hour = pokerSession.getEndDate().get(Calendar.HOUR_OF_DAY);
+		int minute = pokerSession.getEndDate().get(Calendar.MINUTE);
+		String ampm = "AM";
+		if (hour > 12) {
+			hour -= 12;
+			ampm = "PM";
+		} else if (hour == 0) {
+			hour = 12;
+		}
+		String selectedHour = String.format("%d:%d", hour, minute);
+		comboTime.setSelectedItem(selectedHour);
+		comboAMPM.setSelectedItem(ampm);
 	}
 	
 	public void setDeckDropdown(){
