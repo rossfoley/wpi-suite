@@ -631,10 +631,12 @@ public class PlanningPokerSessionTab extends JPanel {
 		boolean fieldsChanged = false;
 		if(viewMode == ViewMode.CREATING)
 		{
+			System.out.println("Creating ready to remove");
 			fieldsChanged = anythingChangedCreating();
 		}
 		else
 		{
+			System.out.println("Editing ready to remove");
 			fieldsChanged = anythingChangedEditing();
 		}
 		// If no fields were changed, it can be removed
@@ -662,8 +664,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		// Check if the user has changed the session name
 		if (!pokerSession.isNameDefault()) {
-			if (!textFieldSessionField.getText().equals(""))
-					return true;
+			System.out.println("Name is not the default: " + pokerSession.getName());
+			if (!textFieldSessionField.getText().equals("")) {
+				System.out.println("Name is not empty" + textFieldDescription.getText());
+				return true;
+			}
 		}
 		// Check if the user has changed the description
 		if (!(textFieldDescription.getText().equals("")))
