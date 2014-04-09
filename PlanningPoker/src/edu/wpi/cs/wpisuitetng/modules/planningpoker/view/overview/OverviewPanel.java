@@ -28,6 +28,7 @@ public class OverviewPanel extends JSplitPane {
 	public OverviewPanel(boolean isOpen)
 	{
 		// Set the data for the overview table
+		OverviewTable table;
 		String[] columnNames = {"", "Name", "End Date", "Requirements", "Deck", "Creator Username"};
 		Object[][] data = {};
 
