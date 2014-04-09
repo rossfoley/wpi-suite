@@ -28,7 +28,8 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTable OpenOverviewTable = null;
 	private OverviewTable ClosedOverviewTable = null;
-	private OverviewDetailPanel overviewDetailPanel = null;
+	private OverviewDetailPanel OpenOverviewDetailPanel = null;
+	private OverviewDetailPanel ClosedOverviewDetailPanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	
 	/**
@@ -48,11 +49,19 @@ public class ViewEventController {
 	}
 	
 	/**
-	 * Sets the OverviewDetailPanel for the controller
+	 * Sets the OpenOverviewDetailPanel for the controller
 	 * @param sessionTable a given OverviewDetailPanel
 	 */
-	public void setOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
-		this.overviewDetailPanel= sessionPanel;
+	public void setOpenOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
+		this.OpenOverviewDetailPanel = sessionPanel;
+	}
+	
+	/**
+	 * Sets the ClosedOverviewDetailPanel for the controller
+	 * @param sessionTable a given OverviewDetailPanel
+	 */
+	public void setClosedOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
+		this.ClosedOverviewDetailPanel= sessionPanel;
 	}
 
 	/**
@@ -140,16 +149,17 @@ public class ViewEventController {
 
 	/**
 	 * Returns an array of the currently selected rows in the table.
-	
 	 * @return the currently selected rows in the table */
+	
+	/*
 	public int[] getTableSelection()
 	{
 		return OverviewTable.getSelectedRows();
 	}
+	*/
 	
 	/**
 	 * Returns the main view
-	
 	 * @return the main view */
 	public MainView getMainView() {
 		return main;
@@ -204,31 +214,31 @@ public class ViewEventController {
 	/**
 	 * Displays the details of the session that is clicked on 
 	 */
-	public void displayDetailedSession() 
+	public void displayDetailedSession(OverviewTable table)
 	{
-		int[] selection = OverviewTable.getSelectedRows();
+		//JComponent selected = (JComponent) MainView.getSelectedComponent();
+		int[] selection = table.getSelectedRows();
 		
 		if (selection.length != 1) return;
 		
-		UUID sessionID = (UUID) OverviewTable.getValueAt(selection[0],0);
-		System.out.println("Edit: UUID " + sessionID);
+		UUID sessionID = (UUID) table.getValueAt(selection[0],0);
 		PlanningPokerSession displaySession = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionID);
 		
-		overviewDetailPanel.updatePanel(displaySession);
+		OverviewDetailPanel detailPanel = table.getDetailPanel();
+		detailPanel.updatePanel(displaySession);
 		
 	}
 	
 	/**
 	 * Edits the currently selected planning poker session.  If more than 1 session is selected, does nothing.
 	 */
-	public void editSelectedSession()
+	public void editSelectedSession(OverviewTable table)
 	{
-		int[] selection = OverviewTable.getSelectedRows();
+		int[] selection = table.getSelectedRows();
 
 		if(selection.length != 1) return;
 		
-		UUID sessionID = (UUID) OverviewTable.getValueAt(selection[0],0);
-		System.out.println("Edit: UUID " + sessionID);
+		UUID sessionID = (UUID) table.getValueAt(selection[0],0);
 		PlanningPokerSession toEdit = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionID);
 		
 		// If the session doesn't exist

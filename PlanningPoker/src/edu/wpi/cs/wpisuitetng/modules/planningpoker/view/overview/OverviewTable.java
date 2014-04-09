@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
@@ -26,7 +35,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * @author rossfoley
- *
  */
 public class OverviewTable extends JTable
 {
@@ -34,10 +42,10 @@ public class OverviewTable extends JTable
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
+	private OverviewDetailPanel detailPanel;
 	
 	/**
 	 * Sets initial table view
-	 * 
 	 * @param data	Initial data to fill OverviewTable
 	 * @param columnNames	Column headers of OverviewTable
 	 */
@@ -71,18 +79,10 @@ public class OverviewTable extends JTable
 					{
 						getSelectionModel().clearSelection();
 						repaint();
-					}					
+					}
 
 					// Open detail overview panel
-					ViewEventController.getInstance().displayDetailedSession();
-				}
-				
-				
-				
-				// Open edit session tab after 2 mouse clicks
-				if (e.getClickCount() == 2)
-				{
-					ViewEventController.getInstance().editSelectedSession();
+					displaySession();
 				}
 			}
 		});
@@ -90,8 +90,12 @@ public class OverviewTable extends JTable
 		 System.out.println("finished constructing the table");
 	}
 	
+	protected void displaySession() {
+		ViewEventController.getInstance().displayDetailedSession(this);
+	}
+
 	/**
-	 * whatever
+	 * Retrieves the list of sessions
 	 */
 	
 	public List<PlanningPokerSession> getSessions() {
@@ -100,7 +104,7 @@ public class OverviewTable extends JTable
 	
 	
 	/**
-	 * updates OverviewTable with the contents of the requirement model	 * 
+	 * updates OverviewTable with the contents of the requirement model
 	 */
 	public void refresh() {
 				
@@ -212,5 +216,8 @@ public class OverviewTable extends JTable
 		return false;
 	}
 	
+	public OverviewDetailPanel getDetailPanel() {
+		return this.detailPanel;
+	}
 }
 

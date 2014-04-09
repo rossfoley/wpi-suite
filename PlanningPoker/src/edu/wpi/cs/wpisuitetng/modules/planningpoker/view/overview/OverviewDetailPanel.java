@@ -93,6 +93,11 @@ public class OverviewDetailPanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Displays the given session in the detail panel
+	 * @param session The given session to display
+	 * @author randyacheson
+	 */
 	public void updatePanel(PlanningPokerSession session)
 	{
 		String endDate = "No end date";

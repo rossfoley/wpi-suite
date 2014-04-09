@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,20 +31,22 @@ public class OverviewPanel extends JSplitPane {
 		String[] columnNames = {"", "Name", "End Date", "Requirements", "Deck", "Creator Username"};
 		Object[][] data = {};
 
-		// Create the overview table and put it in a scroll pane
+		// Create the detail panel
+		OverviewDetailPanel detailPanel = new OverviewDetailPanel(new PlanningPokerSession());
 
-		if (isOpen) {
-			table = new OpenOverviewTable(data, columnNames);
+		// Create the overview table and put it in a scroll pane
+		if (isOpen) { 
+			table = new OpenOverviewTable(data, columnNames, detailPanel);
 			ViewEventController.getInstance().setOpenOverviewTable(table);
-		} 
+			ViewEventController.getInstance().setOpenOverviewDetailPanel(detailPanel);
+		}
 		else {
-			table = new ClosedOverviewTable(data, columnNames);
+			table = new ClosedOverviewTable(data, columnNames, detailPanel);
 			ViewEventController.getInstance().setClosedOverviewTable(table);
+			ViewEventController.getInstance().setClosedOverviewDetailPanel(detailPanel);
 		}
 		JScrollPane tablePanel = new JScrollPane(table);
 
-		// Create the detail panel
-		OverviewDetailPanel detailPanel = new OverviewDetailPanel(new PlanningPokerSession());
 
 		// Set the widths of the columns
 		table.getColumnModel().getColumn(0).setMaxWidth(0); // ID
@@ -59,8 +61,6 @@ public class OverviewPanel extends JSplitPane {
 		this.setRightComponent(detailPanel);
 		this.setResizeWeight(0);  // set the right screen to not show by default
 
-		// Tell the ViewEventController what the overview table and the detail panel are
-		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
 
 	}
 

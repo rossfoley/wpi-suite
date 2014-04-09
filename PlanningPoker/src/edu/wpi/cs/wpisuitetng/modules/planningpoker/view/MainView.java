@@ -149,15 +149,21 @@ public class MainView extends JTabbedPane {
 		final MainView panel = this;
 		this.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				JComponent selected = (JComponent)MainView.this.getSelectedComponent();
 				
-				if(selected == openSessions || selected == closedSessions)
-				{
-					ViewEventController.getInstance().getOverviewTable().refresh();
-					closedSessions.revalidate();
+				JComponent selected = (JComponent) MainView.this.getSelectedComponent();
+
+				if (selected == openSessions) {
+					ViewEventController.getInstance().getOpenOverviewTable()
+							.refresh();
 					openSessions.revalidate();
-					closedSessions.repaint();
 					openSessions.repaint();
+					
+				} 
+				else if (selected == closedSessions) {
+					ViewEventController.getInstance().getClosedOverviewTable()
+							.refresh();
+					closedSessions.revalidate();
+					closedSessions.repaint();
 				}
 			}
 		});

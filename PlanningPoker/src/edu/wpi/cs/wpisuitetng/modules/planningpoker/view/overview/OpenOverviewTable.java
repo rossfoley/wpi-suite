@@ -14,6 +14,7 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * @author Randy
@@ -21,17 +22,19 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionM
  */
 public class OpenOverviewTable extends OverviewTable {
 
+	OverviewDetailPanel detailPanel;
 	/**
 	 * @param data
 	 * @param columnNames
 	 * @param openSessions
 	 */
-	public OpenOverviewTable(Object[][] data, String[] columnNames) {
+	public OpenOverviewTable(Object[][] data, String[] columnNames, OverviewDetailPanel detailPanel) {
 		super(data, columnNames);
+		this.detailPanel = detailPanel;
 		// TODO Auto-generated constructor stub
 	}
 	/**
-	 * description
+	 * Retrieves all open sessions
 	 * @author randyacheson
 	 */
 
@@ -45,5 +48,18 @@ public class OpenOverviewTable extends OverviewTable {
 		}
 		return openSessions;
 	}
+	
+	/**
+	 * @return This panel's OverviewDetailPanel
+	 */
+	public OverviewDetailPanel getDetailPanel() {
+		return this.detailPanel;
+	}
+	
+	/*
+	public void displaySession() {
+
+		ViewEventController.getInstance().displayDetailedSession(detailPanel);		
+	} */
 }
 
