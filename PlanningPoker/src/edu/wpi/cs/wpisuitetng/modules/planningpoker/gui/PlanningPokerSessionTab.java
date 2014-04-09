@@ -56,26 +56,26 @@ public class PlanningPokerSessionTab extends JPanel {
 	private JPanel secondPanel = new JPanel();
 	
 	private ViewMode viewMode;
-	JComboBox<String> comboTime = new JComboBox<String>();
-	JComboBox<String> comboAMPM = new JComboBox<String>();
-	JComboBox<String> comboDeck = new JComboBox<String>();
-	JTextField textFieldSessionField = new JTextField();
-	JTextArea textFieldDescription = new JTextArea();
-	JLabel dateErrorMessage = new JLabel("");
-	JLabel nameErrorMessage = new JLabel("");
-	JLabel descriptionErrorMessage = new JLabel("");
-	JLabel numbers = new JLabel("Users input non-negative intergers");
-	final SelectFromListPanel requirementPanel = new SelectFromListPanel();
-	JDatePicker datePicker;
-	JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
+	private JComboBox<String> comboTime = new JComboBox<String>();
+	private JComboBox<String> comboAMPM = new JComboBox<String>();
+	private JComboBox<String> comboDeck = new JComboBox<String>();
+	private JTextField textFieldSessionField = new JTextField();
+	private JTextArea textFieldDescription = new JTextArea();
+	private JLabel dateErrorMessage = new JLabel("");
+	private JLabel nameErrorMessage = new JLabel("");
+	private JLabel descriptionErrorMessage = new JLabel("");
+	private JLabel numbers = new JLabel("Users input non-negative intergers");
+	private final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+	private JDatePicker datePicker;
+	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	
-	boolean dateHasBeenSet;
-	boolean haveEndDate;
-	int endHour;
-	int endMinutes;
-	int displayingDays;
-	boolean isUsingDeck;
-	Deck sessionDeck;
+	private boolean dateHasBeenSet;
+	private boolean haveEndDate;
+	private int endHour;
+	private int endMinutes;
+	private int displayingDays;
+	private boolean isUsingDeck;
+	private Deck sessionDeck;
 	private JLabel lblSessionEndTime;
 	private JLabel lblEndDate;
 	private String[] availableTimes = new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
@@ -99,10 +99,13 @@ public class PlanningPokerSessionTab extends JPanel {
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		this.pokerSession = existingSession;
-		viewMode = (ViewMode.EDITING);
+		this.viewMode = (ViewMode.EDITING);
 		// Set the end date checkbox and update fields.
-		dateHasBeenSet = (existingSession.getEndDate() != null);
-		endDateCheckBox.setSelected(dateHasBeenSet);
+		this.dateHasBeenSet = (existingSession.getEndDate() != null);
+		this.endDateCheckBox.setSelected(dateHasBeenSet);
+		// Update the fields current deck being used
+		this.isUsingDeck = existingSession.isUsingDeck();
+		this.sessionDeck = existingSession.getSessionDeck();
 
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
@@ -217,6 +220,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		populateTimeDropdown();
 		parseTimeDropdowns();
 		setDeckDropdown();
+		// Set the default deck name for the session
+		try {
+			comboDeck.setSelectedItem(this.sessionDeck.getDeckName());
+			parseDeckDropdowns();
+		}
+		// if the session is being created or the default deck is used
+		catch (NullPointerException ex) {};
 		haveEndDate = handleCheckBox();
 
 		// Time dropdown event handler
