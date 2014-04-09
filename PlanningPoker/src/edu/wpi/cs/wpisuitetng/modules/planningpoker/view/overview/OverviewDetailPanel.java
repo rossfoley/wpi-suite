@@ -53,13 +53,23 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDateLabel.setBounds(10, 60, 258, 14);
 		infoPanel.add(lblEndDateLabel);
 		
+		/* JLabel lblDeckName = new JLabel("Deck Name:");
+		lblDeckName.setBounds(10, 110, 258, 14);
+		infoPanel.add(lblDeckName);
+		
+		JLabel lblCreatorName = new JLabel("Session Creator Name:");
+		lblCreatorName.setBounds(10, 160, 258, 14);
+		infoPanel.add(lblCreatorName); */
+		
 		JLabel lblRequirementsLabel = new JLabel("Requirements:");
+		//lblRequirementsLabel.setBounds(10, 210, 258, 14);
 		lblRequirementsLabel.setBounds(10, 110, 258, 14);
-		infoPanel.add(lblRequirementsLabel);
+		infoPanel.add(lblRequirementsLabel); 
 		
 		listModel = new DefaultListModel<Requirement>();
 		requirementsList = new JList<Requirement>(listModel);
 		JScrollPane listContainer = new JScrollPane(requirementsList);
+		//listContainer.setBounds(10, 235, 258, 107);
 		listContainer.setBounds(10, 135, 258, 107);
 		infoPanel.add(listContainer);
 

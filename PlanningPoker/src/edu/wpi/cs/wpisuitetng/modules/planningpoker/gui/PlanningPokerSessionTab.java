@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
@@ -141,11 +142,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		descriptionErrorMessage.setForeground(Color.RED);
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
-		
-
-		
-		
-
 		
 		// Apply all of the constraints
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
@@ -277,8 +273,9 @@ public class PlanningPokerSessionTab extends JPanel {
 				String description = textFieldDescription.getText();
 				pokerSession.setSessionDeck(sessionDeck);
 				pokerSession.setUsingDeck(isUsingDeck);
+				String creatorName = ConfigManager.getConfig().getUserName();
+				pokerSession.setSessionCreatorName(creatorName);
 				ArrayList<CreatePokerSessionErrors> errors;
-				
 				errors = pokerSession.validateFields(year, month, day, endHour, endMinutes, description, name);
 				// if there are no errors
 				if (errors.size()==0) {

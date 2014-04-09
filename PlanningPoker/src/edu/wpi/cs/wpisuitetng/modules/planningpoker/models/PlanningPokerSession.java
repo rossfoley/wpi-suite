@@ -46,20 +46,20 @@ public class PlanningPokerSession extends AbstractModel {
 	private boolean isUsingDeck;
 
 	private String description;
-	private int sessionCreatorID;
+	private String sessionCreatorName;
 	private Deck sessionDeck;
 	
 	/**
 	 * @return the sessionCreatorID
 	 */
-	public int getSessionCreatorID() {
-		return sessionCreatorID;
+	public String getSessionCreatorName() {
+		return sessionCreatorName;
 	}
 	/**
 	 * @param sessionCreatorID the sessionCreatorID to set
 	 */
-	public void setSessionCreatorID(int sessionCreatorID) {
-		this.sessionCreatorID = sessionCreatorID;
+	public void setSessionCreatorName(String sessionCreatorName) {
+		this.sessionCreatorName = sessionCreatorName;
 	}
 	/**
 	 * @return the isUsingDeck

@@ -100,7 +100,7 @@ public class OverviewTable extends JTable
 		tableModel.setRowCount(0);		
 
 		for (PlanningPokerSession pokerSession : pokerSessions) {	
-			String endDate;
+			String endDate, createrName, deckName;
 			// Handle if there was no end date set
 			try {
 				endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(pokerSession.getEndDate().getTime());
@@ -108,12 +108,27 @@ public class OverviewTable extends JTable
 				endDate = new String("No end date");
 			}
 			
+			// Handle if there was no owner
+			try {
+				createrName = pokerSession.getSessionCreatorName();
+			} catch (NullPointerException ex) {
+				createrName = new String("Creater not set");
+			}
+			
+			// Handle if there was no deck set
+			try {
+				deckName = pokerSession.getSessionDeck().getDeckName();
+			} catch (NullPointerException ex) {
+				deckName = new String("None");
+			}
+
 			tableModel.addRow(new Object[]{
 					pokerSession.getID(),
 					pokerSession.getName(),
 					endDate,
-					Integer.toString(pokerSession.requirementsGetSize())
-			});	
+					Integer.toString(pokerSession.requirementsGetSize()), 
+					deckName,
+					createrName});	
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
