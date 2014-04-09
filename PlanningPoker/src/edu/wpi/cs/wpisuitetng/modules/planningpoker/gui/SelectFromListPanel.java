@@ -340,7 +340,7 @@ public class SelectFromListPanel extends JPanel{
 		return selection;
 		
 	}
-	
+			
 	/**
 	 * @param selected the list of requirements that are selected
 	 */

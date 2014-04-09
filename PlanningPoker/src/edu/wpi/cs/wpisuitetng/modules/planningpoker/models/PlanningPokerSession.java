@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
@@ -25,10 +26,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * @author rossfoley
+*  @author amandaadkins 
  *
  */
 public class PlanningPokerSession extends AbstractModel {
@@ -43,20 +46,20 @@ public class PlanningPokerSession extends AbstractModel {
 	private boolean isUsingDeck;
 
 	private String description;
-	private int sessionCreatorID;
+	private String sessionCreatorName;
 	private Deck sessionDeck;
 	
 	/**
 	 * @return the sessionCreatorID
 	 */
-	public int getSessionCreatorID() {
-		return sessionCreatorID;
+	public String getSessionCreatorName() {
+		return sessionCreatorName;
 	}
 	/**
 	 * @param sessionCreatorID the sessionCreatorID to set
 	 */
-	public void setSessionCreatorID(int sessionCreatorID) {
-		this.sessionCreatorID = sessionCreatorID;
+	public void setSessionCreatorName(String sessionCreatorName) {
+		this.sessionCreatorName = sessionCreatorName;
 	}
 	/**
 	 * @return the isUsingDeck
@@ -78,6 +81,9 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isOpen = false;
 		this.requirements = new ArrayList<Requirement>();
 	}
+	/**
+	 * @return uuid
+	 */
 	public UUID getID() {
 		return uuid;
 	}
@@ -121,6 +127,13 @@ public class PlanningPokerSession extends AbstractModel {
 	public GregorianCalendar getEndDate() {
 		return endDate;
 	}
+	
+	/**
+	 * @return if the session has an endDate
+	 */
+	public boolean hasEndDate() {
+		return (endDate != null);
+	}
 
 	/**
 	 * @return the name
@@ -153,6 +166,8 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 
 	/**
+	 * Creates the default name for the session.
+	 * 
 	 * @return the initial ID
 	 */
 	public String makeDefaultName() {
@@ -186,6 +201,7 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * If isOpen is true, the session is open;
 	 * if it is false, it is closed.
+	 * 
 	 * @param isOpen open or closed boolean to set
 	 */
 	public void setOpen(boolean isOpen) {
@@ -222,6 +238,7 @@ public class PlanningPokerSession extends AbstractModel {
 				if (newEndDate.before(currentDate)){
 					errors.add(CreatePokerSessionErrors.EndDateTooEarly);
 				}
+			newEndDate = null;
 			}
 			else {
 				errors.add(CreatePokerSessionErrors.NoDateSelected);
@@ -265,8 +282,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * Returns the Requirement with the given ID
 	 * 
 	 * @param id The ID number of the requirement to be returned
-	
-	 * @return the requirement for the id or null if the requirement is not found */
+	 * @return the requirement for the id or null if the requirement is not found 
+	 */
 	public Requirement getRequirement(int id)
 	{
 		Requirement temp = null;
@@ -309,8 +326,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * 
 	 * @param json
 	 *            string containing a JSON-encoded array of PlanningPokerSession
-	
-	 * @return an array of PlanningPokerSession deserialized from the given JSON string */
+	 * @return an array of PlanningPokerSession deserialized from the given JSON string 
+	 */
 	public static PlanningPokerSession[] fromJsonArray(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, PlanningPokerSession[].class);
@@ -369,7 +386,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirements = toCopyFrom.requirements;
 		this.estimates = toCopyFrom.estimates;
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
-		this.sessionCreatorID = toCopyFrom.sessionCreatorID;
+		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
 	}
 }

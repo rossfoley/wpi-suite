@@ -37,12 +37,18 @@ import net.sourceforge.jdatepicker.DateModel;
 import net.sourceforge.jdatepicker.JDateComponentFactory;
 import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.*;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.swing.JCheckBox;
 
@@ -68,6 +74,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final SelectFromListPanel requirementPanel = new SelectFromListPanel();
 	private JDatePicker datePicker;
 	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
+	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
 	
 	private boolean dateHasBeenSet;
 	private boolean haveEndDate;
@@ -228,6 +235,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		// if the session is being created or the default deck is used
 		catch (NullPointerException ex) {};
 		haveEndDate = handleCheckBox();
+		
+		if ((viewMode == ViewMode.EDITING) && (pokerSession.hasEndDate())) {
+			setTimeDropdown();
+		}
 
 		// Time dropdown event handler
 		comboTime.addActionListener(new ActionListener(){
@@ -265,15 +276,26 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Next button event handler
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (validateFields()) {
+				
+
+				String name = textFieldSessionField.getText();
+				String description = textFieldDescription.getText();
+				pokerSession.setSessionDeck(sessionDeck);
+				pokerSession.setUsingDeck(isUsingDeck);
+				String creatorName = ConfigManager.getConfig().getUserName();
+				pokerSession.setSessionCreatorName(creatorName);
+				ArrayList<CreatePokerSessionErrors> errors;
+				int year = datePicker.getModel().getYear();
+				int month = datePicker.getModel().getMonth();
+				int day = datePicker.getModel().getDay();
+				errors = pokerSession.validateFields(haveEndDate, dateHasBeenSet, year, month, day, 
+						endHour, endMinutes, description, name);
+				// if there are no errors
+				if (errors.size()==0) {
 					displayPanel(secondPanel);
 				}
 			}
 		});
-		
-		if (viewMode == ViewMode.EDITING) {
-			setTimeDropdown();
-		}
 		
 		// Add all of the elements to the first panel
 		firstPanel.add(btnNext);
@@ -306,6 +328,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		JButton btnSubmit = new JButton("Submit");
 		JButton btnBack = new JButton("Back");
 		
+		//Position the error message for requirements
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -15, SpringLayout.SOUTH, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -110, SpringLayout.EAST, secondPanel);
+		
 		// Position the requirements panel
 		secondPanelLayout.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, requirementPanel, 10, SpringLayout.WEST, secondPanel);
@@ -320,15 +346,26 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
 		
+		
 		// Submit button event handler
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pokerSession.setRequirements(requirementPanel.getSelected());
+				List<Requirement> requirements =  requirementPanel.getSelected();
+				if(requirements.isEmpty()){
+					norequirements.setText("Requirements must be selected before creating the session.");
+					norequirements.setForeground(Color.RED);
+					secondPanel.revalidate();
+					secondPanel.repaint();
+				}
+				else{
+				pokerSession.setRequirements(requirements);
 				submitSessionToDatabase();
-				
+				norequirements.setText("");
+
 				MockNotification mock = new MockNotification();
 				mock.sessionStartedNotification();
 				
+			}
 			}
 		});
 		
@@ -344,6 +381,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanel.add(btnSubmit);
 		secondPanel.add(btnBack);
 		secondPanel.add(requirementPanel);
+		secondPanel.add(norequirements);
 	}
 	
 	/**
