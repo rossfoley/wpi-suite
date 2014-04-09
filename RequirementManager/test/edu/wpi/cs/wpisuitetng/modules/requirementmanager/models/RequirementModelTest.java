@@ -31,6 +31,7 @@ public class RequirementModelTest {
 	 * Method setUp.
 	
 	 * @throws Exception */
+	/*
 	@Before
 	public void setUp() throws Exception {
 		ViewEventController viewCon = ViewEventController.getInstance();
@@ -70,7 +71,7 @@ public class RequirementModelTest {
 		model.removeRequirement(2);
 		assertEquals(0, model.getSize());
 		model.removeRequirement(10);	// testing on something that is not there
-	}
+	} */
 	/*
 	@Test
 	public void addRequirementListTest() {

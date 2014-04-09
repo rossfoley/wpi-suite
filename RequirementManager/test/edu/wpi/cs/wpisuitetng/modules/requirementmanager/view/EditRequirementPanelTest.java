@@ -36,21 +36,21 @@ public class EditRequirementPanelTest {
 	 * Method setUp.
 	
 	 * @throws Exception */
-	@Before
-	public void setUp() throws Exception {
-		// Mock network
-		Network.initNetwork(new MockNetwork());
-		Network.getInstance().setDefaultNetworkConfiguration(
-				new NetworkConfiguration("http://wpisuitetng"));
-		
-		// Mock Iteration
-		Iteration iterationTest = new Iteration(0,"Backlog");
-		IterationModel.getInstance().setBacklog(iterationTest);
-		String[] columnNames = {"ID", "Name", "Release #", "Iteration", "Type", "Status", "Priority", "Estimate"};
-		Object[][] data = {};
-		OverviewTable table = new OverviewTable(data, columnNames);		
-		ViewEventController.getInstance().setOverviewTable(table);
-	}
+//	@Before
+//	public void setUp() throws Exception {
+//		// Mock network
+//		Network.initNetwork(new MockNetwork());
+//		Network.getInstance().setDefaultNetworkConfiguration(
+//				new NetworkConfiguration("http://wpisuitetng"));
+//		
+//		// Mock Iteration
+//		Iteration iterationTest = new Iteration(0,"Backlog");
+//		IterationModel.getInstance().setBacklog(iterationTest);
+//		String[] columnNames = {"ID", "Name", "Release #", "Iteration", "Type", "Status", "Priority", "Estimate"};
+//		Object[][] data = {};
+//		OverviewTable table = new OverviewTable(data, columnNames);		
+//		ViewEventController.getInstance().setOverviewTable(table);
+//	}
 
 	/**
 	 * check whether the field is enabled or not as default
