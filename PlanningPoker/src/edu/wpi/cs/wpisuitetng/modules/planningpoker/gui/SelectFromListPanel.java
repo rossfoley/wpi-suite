@@ -375,6 +375,13 @@ public class SelectFromListPanel extends JPanel{
 		try {
 			// Steal list of requirements from requirement model muhahaha.
 			this.requirements = requirementModel.getRequirements();
+			/*this.requirements.clear();
+			List<Requirement> reqsList = requirementModel.getRequirements();
+			for (Requirement r:reqsList){
+				if (r.getIteration().equals("Backlog")){
+					this.requirements.add(r);
+				}
+			} */
 		
 		}
 		catch (Exception e) {}
