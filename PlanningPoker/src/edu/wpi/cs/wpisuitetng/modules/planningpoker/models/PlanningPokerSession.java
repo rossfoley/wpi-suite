@@ -357,6 +357,18 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	
 	/**
+	 * @return the uuid
+	 */
+	public UUID getUuid() {
+		return uuid;
+	}
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+	/**
 	 * Copies all of the values from the given planning poker session to this planning poker session.
 	 * 
 	 * @param toCopyFrom
