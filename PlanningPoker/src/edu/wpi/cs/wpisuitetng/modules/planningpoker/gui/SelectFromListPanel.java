@@ -46,7 +46,7 @@ public class SelectFromListPanel extends JPanel{
 		
 		//initialize the main requirement lists
 		populateRequirements();
-		//System.out.println(this.requirements.size());
+		System.out.println(this.requirements.size());
 		this.unSelected = new LinkedList<Requirement>();
 		this.selected = new LinkedList<Requirement>();
 		//convert the inital data from an array to a list
