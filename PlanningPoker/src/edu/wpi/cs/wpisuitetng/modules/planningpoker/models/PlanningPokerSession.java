@@ -353,4 +353,23 @@ public class PlanningPokerSession extends AbstractModel {
 	public boolean isEditable() {
 		return (!this.isOpen || this.estimates.size() == 0);
 	}
+	
+	/**
+	 * Copies all of the values from the given planning poker session to this planning poker session.
+	 * 
+	 * @param toCopyFrom
+	 *            the planning poker session to copy from.
+	 */
+	public void copyFrom(PlanningPokerSession toCopyFrom) {
+		this.description = toCopyFrom.description;
+		this.name = toCopyFrom.name;
+		this.endDate = toCopyFrom.endDate;
+		this.requirementIDs = toCopyFrom.requirementIDs;
+		this.isOpen = toCopyFrom.isOpen;
+		this.requirements = toCopyFrom.requirements;
+		this.estimates = toCopyFrom.estimates;
+		this.isUsingDeck = toCopyFrom.isUsingDeck;
+		this.sessionCreatorID = toCopyFrom.sessionCreatorID;
+		this.sessionDeck = toCopyFrom.sessionDeck;
+	}
 }

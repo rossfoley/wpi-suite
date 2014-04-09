@@ -387,7 +387,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		} else if (hour == 0) {
 			hour = 12;
 		}
-		String selectedHour = String.format("%d:%d", hour, minute);
+		String selectedHour = String.format("%d:%02d", hour, minute);
 		comboTime.setSelectedItem(selectedHour);
 		comboAMPM.setSelectedItem(ampm);
 	}
@@ -451,7 +451,11 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * and removes this tab.
 	 */
 	private void submitSessionToDatabase() {
-		PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
+		if (viewMode == ViewMode.CREATING) {
+			PlanningPokerSessionModel.getInstance().addPlanningPokerSession(pokerSession);
+		} else if (viewMode == ViewMode.EDITING) {
+			PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(pokerSession);
+		}
 		this.removeAll(); // This should prevent the date picker from remaining on the screen
 		ViewEventController.getInstance().removeTab(this);// this thing closes the tabs
 	}
