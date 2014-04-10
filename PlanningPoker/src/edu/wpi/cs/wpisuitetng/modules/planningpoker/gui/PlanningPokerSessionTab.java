@@ -135,8 +135,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.setForeground(Color.BLACK);
 		
 		// Initialize all of the fields on the panel
-		final JLabel lblSessionName = new JLabel("Session Name:");
-		final JLabel lblSessionDescription = new JLabel("Session Description:");
+		final JLabel lblSessionName = new JLabel("Session Name: *");
+		final JLabel lblSessionDescription = new JLabel("Session Description: *");
 		lblEndDate = new JLabel("Session End Date:");
 		lblSessionEndTime = new JLabel("Session End Time:");
 		final JLabel lblDeck = new JLabel("Deck:");
