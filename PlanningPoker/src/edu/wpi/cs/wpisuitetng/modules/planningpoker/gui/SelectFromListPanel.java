@@ -21,7 +21,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
+/**
+ * This class is a panel that contains the functionality for 
+ * selection elements. This panel allows the user to move 
+ * requirements between an unselected and a selected list
+ *
+ */
 
 public class SelectFromListPanel extends JPanel{
 	
@@ -45,6 +50,9 @@ public class SelectFromListPanel extends JPanel{
 	private JButton btnRemove;
 	private JButton btnRemoveAll;
 	
+	/**
+	 * The constructor for the requirement selection panel
+	 */
 	SelectFromListPanel(){
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -339,7 +347,7 @@ public class SelectFromListPanel extends JPanel{
 	}
 	
 	// update the data displayed in the unselected list
-	void updateUnselectedList(){
+	private void updateUnselectedList(){
 		this.unSelectedListModel = new AbstractListModel(){
 			String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
@@ -349,7 +357,7 @@ public class SelectFromListPanel extends JPanel{
 	}
 	
 	// update the data displayed by the selected list
-	void updateSelectedList(){
+	private void updateSelectedList(){
 		this.selectedListModel = new AbstractListModel(){
 			String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
@@ -359,7 +367,7 @@ public class SelectFromListPanel extends JPanel{
 	}
 	
 	//convert the data given into a linked list
-	LinkedList<String> getData(List<String> data){
+	private LinkedList<String> getData(List<String> data){
 		LinkedList<String> list = new LinkedList<String>();
 		
 		String[] tempList = data.toArray(new String[0]);
@@ -370,15 +378,23 @@ public class SelectFromListPanel extends JPanel{
 		return list;
 	}
 	
+	/**
+	 * Function used to add a new requirement directly to the selected list
+	 * @param requirement the requirement to add
+	 */
 	//add a requirement to the list after the object has been created 
-	void addRequirement(Requirement requirement){
+	public void addRequirement(Requirement requirement){
 		unSelected.addLast(null);
 		selected.addLast(requirement);
 		update();
 	}
 	
+	/**
+	 * Function to get the requirements that are currently selected
+	 * @return list of requirements that are selected
+	 */
 	// method to get the list of selected requirements
-	List<Requirement> getSelected(){
+	public List<Requirement> getSelected(){
 		List<Requirement> selection = new LinkedList<Requirement>();
 		for(Requirement str : selected){
 			if (str != null){
@@ -437,8 +453,11 @@ public class SelectFromListPanel extends JPanel{
 		catch (Exception e) {}
 	}
 	
+	// checks for whether any of the buttons can be used and disables the ones that can't
 	private void validButtons(){
-		boolean debug = false;
+		boolean debug = false; // quick disable for console messages
+		
+		//checks for full lists and disables trying to move from empty lists
 		boolean allUnselected = fullList(this.unSelected);
 		boolean allSelected = fullList(this.selected);
 		if(allUnselected){
@@ -458,6 +477,7 @@ public class SelectFromListPanel extends JPanel{
 			this.btnAddAll.setEnabled(true);
 		}
 		
+		// checks to see any requirements are selected for moving
 		boolean pickedUnselected = anySelected(this.unSelectedGuiList.getSelectedIndices());
 		boolean pickedSelected = anySelected(this.Selected.getSelectedIndices());
 		if(pickedUnselected){
@@ -476,6 +496,7 @@ public class SelectFromListPanel extends JPanel{
 		
 	}
 	
+	// checks for full lists
 	private boolean fullList(LinkedList<Requirement> list){
 		boolean full = true;
 		
@@ -488,6 +509,7 @@ public class SelectFromListPanel extends JPanel{
 		return full;
 	}
 	
+	// checks for any selections from the given array
 	private boolean anySelected(int selected[]){
 		boolean any = false;
 		
