@@ -20,6 +20,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -145,11 +146,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		disabledDatePicker = new JPanel(new BorderLayout());
 		JButton disabledButton = new JButton("...");
 		JTextField disabledDateText = new JTextField("No End Date Allowed");
-		disabledDateText.setEditable(false);
-		disabledDateText.setBackground(Color.GRAY);
+		disabledDateText.setEnabled(false);
+		disabledDateText.setPreferredSize(new Dimension(130, 26));
+		disabledDateText.setBackground(Color.LIGHT_GRAY);
 		disabledButton.setEnabled(false);
-		disabledDatePicker.add(disabledDateText);
-		disabledDatePicker.add(disabledButton);
+		disabledButton.setPreferredSize(new Dimension(30, 26));
+		disabledDatePicker.add(disabledDateText, BorderLayout.LINE_START);
+		disabledDatePicker.add(disabledButton, BorderLayout.LINE_END);
 
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
