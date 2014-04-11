@@ -1,5 +1,19 @@
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+/*******************************************************************************
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+/**
+ * This Class makes up the panel that handles requirement selection
+ * The user can manipulate the selected requirements by selecting
+ * from one of the lists displayed and using the buttons to move
+ * the requirements.
+ */
 import javax.swing.AbstractListModel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -36,6 +50,9 @@ public class RequirementSelectionPanel extends JPanel{
 	JButton btnRemove;
 	JButton btnRemoveAll;
 	
+	/**
+	 * Constructor to create the requirement selection panel
+	 */
 	RequirementSelectionPanel(){
 		
 		populateRequirements();
@@ -153,6 +170,11 @@ public class RequirementSelectionPanel extends JPanel{
 		update();
 	}
 	
+	/**
+	 * This function creates a list of booleans that is the same size
+	 * as the list of requirements and used to indicate the selection
+	 * status of the associated requirement 
+	 */
 	private void populateBooleans() {
 		this.selection = new LinkedList<Boolean>();
 		for (Requirement rqt : this.requirements){
@@ -160,7 +182,11 @@ public class RequirementSelectionPanel extends JPanel{
 		}
 		
 	}
-
+	
+	/**
+	 * This function is used to grab the list requirements in the 
+	 * backlog
+	 */
 	private void populateRequirements() {
 		//System.out.println("In Populate Requirements");
 		
@@ -184,7 +210,11 @@ public class RequirementSelectionPanel extends JPanel{
 				}
 				catch (Exception e) {}
 	}
-
+	
+	/**
+	 * This function is used to update the lists and the state of 
+	 * the buttons
+	 */
 	private void update(){
 		LinkedList<String> unselectedRequirements = new LinkedList<String>();
 		LinkedList<String> selectedRequirements = new LinkedList<String>();
@@ -207,6 +237,9 @@ public class RequirementSelectionPanel extends JPanel{
 		validButtons();
 	}
 	
+	/**
+	 * Update the list model for the unselected list
+	 */
 	// update the data displayed in the unselected list
 	private void updateUnselectedList(){
 		this.unSelectedListModel = new AbstractListModel(){
@@ -217,6 +250,9 @@ public class RequirementSelectionPanel extends JPanel{
 		this.unselectedListGui.setModel(unSelectedListModel);
 	}
 	
+	/**
+	 * Update the list model for the selected list
+	 */
 	// update the data displayed by the selected list
 	private void updateSelectedList(){
 		this.selectedListModel = new AbstractListModel(){
@@ -227,6 +263,11 @@ public class RequirementSelectionPanel extends JPanel{
 		this.selectedListGui.setModel(selectedListModel);
 	}
 	
+	/**
+	 * This function gets the position of each unselected requirement
+	 * 
+	 * @return list of positions
+	 */
 	private LinkedList<Integer> getUnselectedPos(){
 		LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : this.requirements){
@@ -239,6 +280,10 @@ public class RequirementSelectionPanel extends JPanel{
 		return positions;
 	}
 	
+	/**
+	 * This function get the position of each selected requirement
+	 * @return
+	 */
 	private LinkedList<Integer> getSelectedPos(){
 		LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : this.requirements){
@@ -250,7 +295,10 @@ public class RequirementSelectionPanel extends JPanel{
 		
 		return positions;
 	}
-	
+	/**
+	 * This function takes the requirements that are indicated to 
+	 * become selected
+	 */
 	private void add(){
 		LinkedList<Integer> pos = getUnselectedPos();
 		int selected[] = unselectedListGui.getSelectedIndices();
@@ -263,6 +311,10 @@ public class RequirementSelectionPanel extends JPanel{
 		update();
 	}
 	
+	/**
+	 * This function takes the selected requirements that are
+	 * indicated to become unselected
+	 */
 	private void remove(){
 		LinkedList<Integer> pos = getSelectedPos();
 		int selected[] = selectedListGui.getSelectedIndices();
@@ -274,6 +326,9 @@ public class RequirementSelectionPanel extends JPanel{
 		update();
 	}
 	
+	/**
+	 * This function makes all of the requirements selected
+	 */
 	private void selectAll(){
 		LinkedList<Integer> pos = getUnselectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
@@ -284,6 +339,9 @@ public class RequirementSelectionPanel extends JPanel{
 		update();
 	}
 	
+	/**
+	 * This function makes all of the requirements unselected
+	 */
 	private void unselectAll(){
 		LinkedList<Integer> pos = getSelectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
@@ -294,98 +352,117 @@ public class RequirementSelectionPanel extends JPanel{
 		update();
 	}
 	
+	/**
+	 * This function checks to see which buttons can be used and 
+	 * deactivates the ones that can't
+	 */
 	// checks for whether any of the buttons can be used and disables the ones that can't
-		private void validButtons(){
-			boolean debug = false; // quick disable for console messages
-			
-			//checks for full lists and disables trying to move from empty lists
-			boolean allUnselected = fullList(false);
-			boolean allSelected = fullList(true);
-			if(allUnselected){
-				if(debug){System.out.println("Disableing removeAll");}
-				this.btnRemoveAll.setEnabled(false);
-			}
-			else{
-				if(debug){System.out.println("Enableing removeAll");}
-				this.btnRemoveAll.setEnabled(true);
-			}
-			if(allSelected){
-				if(debug){System.out.println("Disableing addAll");}
-				this.btnAddAll.setEnabled(false);
-			}
-			else{
-				if(debug){System.out.println("Enableing addAll");}
-				this.btnAddAll.setEnabled(true);
-			}
-			
-			// checks to see any requirements are selected for moving
-			boolean pickedUnselected = anySelected(this.unselectedListGui.getSelectedIndices());
-			boolean pickedSelected = anySelected(this.selectedListGui.getSelectedIndices());
-			if(pickedUnselected){
-				this.btnAdd.setEnabled(true);
-			}
-			else{
-				this.btnAdd.setEnabled(false);
-			}
-			if(pickedSelected){
-				this.btnRemove.setEnabled(true);
-			}
-			else{
-				this.btnRemove.setEnabled(false);
-			}
-			
-			
+	private void validButtons(){
+		boolean debug = false; // quick disable for console messages
+		
+		//checks for full lists and disables trying to move from empty lists
+		boolean allUnselected = fullList(false);
+		boolean allSelected = fullList(true);
+		if(allUnselected){
+			if(debug){System.out.println("Disableing removeAll");}
+			this.btnRemoveAll.setEnabled(false);
+		}
+		else{
+			if(debug){System.out.println("Enableing removeAll");}
+			this.btnRemoveAll.setEnabled(true);
+		}
+		if(allSelected){
+			if(debug){System.out.println("Disableing addAll");}
+			this.btnAddAll.setEnabled(false);
+		}
+		else{
+			if(debug){System.out.println("Enableing addAll");}
+			this.btnAddAll.setEnabled(true);
 		}
 		
-		// checks for full lists
-		private boolean fullList(boolean aBool){
-			boolean full = true;
-			
-			for(boolean bool : this.selection){
-				if(bool != aBool){
-					full = false;
-				}
-			}
-			
-			return full;
+		// checks to see any requirements are selected for moving
+		boolean pickedUnselected = anySelected(this.unselectedListGui.getSelectedIndices());
+		boolean pickedSelected = anySelected(this.selectedListGui.getSelectedIndices());
+		if(pickedUnselected){
+			this.btnAdd.setEnabled(true);
+		}
+		else{
+			this.btnAdd.setEnabled(false);
+		}
+		if(pickedSelected){
+			this.btnRemove.setEnabled(true);
+		}
+		else{
+			this.btnRemove.setEnabled(false);
 		}
 		
-		// checks for any selections from the given array
-		private boolean anySelected(int selected[]){
-			boolean any = false;
-			
-			for(int n : selected){
-				any = true;
+		
+	}
+	
+	// checks for full lists
+	private boolean fullList(boolean aBool){
+		boolean full = true;
+		
+		for(boolean bool : this.selection){
+			if(bool != aBool){
+				full = false;
 			}
-			
-			return any;
 		}
 		
-		public void addRequirement(Requirement requirement){
-			this.selection.addLast(true);
-			this.requirements.addLast(requirement);
-			update();
+		return full;
+	}
+	
+	// checks for any selections from the given array
+	private boolean anySelected(int selected[]){
+		boolean any = false;
+		
+		for(int n : selected){
+			any = true;
 		}
 		
-		public List<Requirement> getSelected(){
-			List<Requirement> selection = new LinkedList<Requirement>();
-			for(Requirement rqt : this.requirements){
-				if (this.selection.get(this.requirements.indexOf(rqt))){
-					selection.add(rqt);
-				}
+		return any;
+	}
+	
+	/**
+	 * This function add a new requirement directly to the selected 
+	 * list
+	 * @param requirement the requirement to be added
+	 */
+	public void addRequirement(Requirement requirement){
+		this.selection.addLast(true);
+		this.requirements.addLast(requirement);
+		update();
+	}
+	
+	/**
+	 * This function returns the requirements that are currently 
+	 * selected
+	 * @return
+	 */
+	public List<Requirement> getSelected(){
+		List<Requirement> selection = new LinkedList<Requirement>();
+		for(Requirement rqt : this.requirements){
+			if (this.selection.get(this.requirements.indexOf(rqt))){
+				selection.add(rqt);
 			}
-			
-			return selection;
-			
 		}
 		
-		public void setSelectedRequirements(Set<Integer> selectedRequirements) {
-			for (Integer id : selectedRequirements) {
-				Requirement current = RequirementModel.getInstance().getRequirement(id);
-				int pos = this.requirements.indexOf(current);
-				this.selection.remove(pos);
-				this.selection.add(pos, true);
-			}
-			update();
+		return selection;
+		
+	}
+	
+	/**
+	 * This function is used to set the requirements that are 
+	 * already selected when editing a session
+	 * @param selectedRequirements a set of requirement Id's 
+	 */
+	public void setSelectedRequirements(Set<Integer> selectedRequirements) {
+		for (Integer id : selectedRequirements) {
+			Requirement current = RequirementModel.getInstance().getRequirement(id);
+			int pos = this.requirements.indexOf(current);
+			this.selection.remove(pos);
+			this.selection.add(pos, true);
 		}
+		update();
+	}
 }
