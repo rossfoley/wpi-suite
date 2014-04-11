@@ -66,8 +66,12 @@
 			inheritAll="false"/>
 	</target>
 	
+	<target name="depend.RequirementManagerNoTest" depends="depend.Janeway">
+		<ant dir="${dependencies.basedir}/RequirementManager" target="src" inheritAll="false"/>
+	</target>
+	
 	<target name="depend.PlanningPoker"
-	    depends="depend.Janeway, depend.RequirementManager">
+	    depends="depend.Janeway, depend.RequirementManagerNoTest">
 	    <ant dir="${dependencies.basedir}/PlanningPoker"
 	        target="${dependency.target}"
 	        inheritAll="false"/>
