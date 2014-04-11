@@ -12,8 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
  * This class makes up the panel that is used to create a game
  * It takes in fields from the user, displays appropriate messages, and stores information 
  * to a session and then passes it to the PlanningPokerSessionModel to be saved in the database
- * 
- * @author amandaadkins
  *
  */
 
@@ -32,6 +30,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -48,6 +47,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionM
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
 import javax.swing.JCheckBox;
 
@@ -78,6 +82,7 @@ public class PlanningPokerSessionTab extends JPanel {
 
 	private boolean dateHasBeenSet;
 	private boolean haveEndDate;
+	private boolean submitSession = false;
 	private int endHour;
 	private int endMinutes;
 	private boolean isUsingDeck;
@@ -345,6 +350,7 @@ public class PlanningPokerSessionTab extends JPanel {
 					secondPanel.revalidate();
 					secondPanel.repaint();
 				} else { 
+					submitSession = true;
 					saveFields();
 					pokerSession.setOpen(true);
 					submitSessionToDatabase();
@@ -615,4 +621,73 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, (JPanel) datePicker);
 		firstPanel.add((JPanel) datePicker);
 	}
+	
+
+	/**
+	 * @return Returns if no fields in the panel have been changed
+	 */
+	public boolean readyToRemove()
+	{
+		boolean fieldsChanged = false;
+		// Check if the submit button was clicked
+		if (this.submitSession) {
+			return true;
+		}
+		// Otherwise check if data was modified
+		if (this.viewMode == ViewMode.CREATING) {
+			fieldsChanged = anythingChangedCreating();
+		}
+		else {
+			fieldsChanged = anythingChangedEditing();
+		}
+		// If no fields were changed, it can be removed
+		if (!fieldsChanged) {
+			return true;
+		}
+		// If fields were changed, confirm with user that they want the tab removed.
+		else {
+			int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			
+			return (result == 0);
+		}
+		
+	}
+
+	
+	/**
+	 * 
+	 * @return Returns whether any fields in the panel have been changed when creating a session
+	 */
+	private boolean anythingChangedCreating() {		
+		// Check if the user has changed the session name
+		if (!textFieldSessionField.getText().equals(pokerSession.getDefaultName())) {
+			System.out.println("Name is not the default: " + pokerSession.getName());
+			if (!textFieldSessionField.getText().equals("")) {
+				System.out.println("Name is not empty" + textFieldDescription.getText());
+				return true;
+			}
+		}
+		// Check if the user has changed the description
+		if (!(textFieldDescription.getText().equals("")))
+			return true;
+
+		return false;
+	}
+
+	
+	/**
+	 * 
+	 * @return whether any fields have been changed.
+	 */
+	private boolean anythingChangedEditing() {
+		// Check if the user has changed the session name
+		if (!(textFieldSessionField.getText().equals(pokerSession.getName())))
+			return true;
+		// Check if the user has changed the description
+		if (!(textFieldDescription.getText().equals(pokerSession.getDescription())))
+			return true;
+
+		return false;
+	}
+	
 }

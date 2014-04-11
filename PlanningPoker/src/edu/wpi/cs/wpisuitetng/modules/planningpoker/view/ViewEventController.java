@@ -138,7 +138,11 @@ public class ViewEventController {
 	 */
 	public void removeTab(JComponent comp)
 	{
+		// Check if the tab is a planningPokerSession tab
 		if (comp instanceof PlanningPokerSessionTab) {
+			// Only remove if it is ready to remove
+			if(!((PlanningPokerSessionTab)comp).readyToRemove())
+				return;
 			this.listOfEditingPanels.remove(comp);
 		}
 		main.remove(comp);
