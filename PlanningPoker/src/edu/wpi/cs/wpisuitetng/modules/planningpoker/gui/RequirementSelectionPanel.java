@@ -183,8 +183,35 @@ public class RequirementSelectionPanel extends JPanel{
 		this.selectedListGui.setModel(selectedListModel);
 	}
 	
+	private int getUnselectedPos(){
+		int position[];
+		
+		for (boolean bool : this.selection){
+			
+		}
+		
+		return positions;
+	}
+	
 	private void add(){
 		int pos[] = getUnselectedPos();
+		int selected[] = unselectedListGui.getSelectedIndices();
+		for(int n : selected){
+			int position = pos[n];
+			this.selection.remove(position);
+			this.selection.add(position, true);
+		}
+		
+	}
+	
+	private void remove(){
+		int pos[] = getSelectedPos();
+		int selected[] = selectedListGui.getSelectedIndices();
+		for(int n : selected){
+			int position = pos[n];
+			this.selection.remove(position);
+			this.selection.add(position, false);
+		}
 		
 	}
 }
