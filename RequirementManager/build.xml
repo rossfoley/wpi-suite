@@ -78,11 +78,11 @@
 		<junit printsummary="yes" haltonfailure="no">
 			<classpath refid="test-classpath"/>
 			<formatter type="xml"/>
-			<batchtest fork="yes" todir="${test-results}">
+			<!-- <batchtest fork="yes" todir="${test-results}">
 				<fileset dir="test">
 					<include name="**/*Test*.java"/>
 				</fileset>
-			</batchtest>
+			</batchtest> -->
 		</junit>
 	</target>
 	
