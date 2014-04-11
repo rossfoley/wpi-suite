@@ -629,14 +629,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	public boolean readyToRemove()
 	{
 		boolean fieldsChanged = false;
-		if(viewMode == ViewMode.CREATING)
-		{
-			System.out.println("Creating ready to remove");
+		if(viewMode == ViewMode.CREATING) {
 			fieldsChanged = anythingChangedCreating();
 		}
-		else
-		{
-			System.out.println("Editing ready to remove");
+		else {
 			fieldsChanged = anythingChangedEditing();
 		}
 		// If no fields were changed, it can be removed
@@ -644,8 +640,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			return true;
 		}
 		// If fields were changed, confirm with user that they want the tab removed.
-		else
-		{
+		else {
 			int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			
 			return (result == 0);
