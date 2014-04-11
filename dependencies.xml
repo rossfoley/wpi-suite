@@ -67,7 +67,7 @@
 	</target>
 	
 	<target name="depend.PlanningPoker"
-	    depends="depend.Janeway">
+	    depends="depend.Janeway, depend.RequirementManager">
 	    <ant dir="${dependencies.basedir}/PlanningPoker"
 	        target="${dependency.target}"
 	        inheritAll="false"/>
