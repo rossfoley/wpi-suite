@@ -54,7 +54,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private String description;
 	private String sessionCreatorName;
 	private Deck sessionDeck;
-	private boolean defaultSessionName;
+	private String defaultSessionName;
 	
 	/**
 	 * @return the sessionCreatorID
@@ -88,7 +88,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isOpen = false;
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
-		this.defaultSessionName = true;
+		this.defaultSessionName = new String(this.name.toString());
 	}
 	/**
 	 * @return uuid
@@ -154,7 +154,7 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @return if the session name is the default name
 	 */
-	public boolean isNameDefault() {
+	public String getDefaultName() {
 		return defaultSessionName;
 	}
 
@@ -212,10 +212,6 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setName(String name) {
 		this.name = name.trim();
-		// Check if the name was actually changed
-		if (!this.name.equals(name)) {
-			this.defaultSessionName = false;
-		}
 	}
 
 	/**

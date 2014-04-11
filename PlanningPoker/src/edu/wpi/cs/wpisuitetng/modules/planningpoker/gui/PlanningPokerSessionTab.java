@@ -658,12 +658,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * 
 	 * @return Returns whether any fields in the panel have been changed when creating a session
 	 */
-	private boolean anythingChangedCreating() {
-		// Set the name field first to check if it is still the default
-		pokerSession.setName(textFieldSessionField.getText());
-		
+	private boolean anythingChangedCreating() {		
 		// Check if the user has changed the session name
-		if (!pokerSession.isNameDefault()) {
+		if (!textFieldSessionField.getText().equals(pokerSession.getDefaultName())) {
 			System.out.println("Name is not the default: " + pokerSession.getName());
 			if (!textFieldSessionField.getText().equals("")) {
 				System.out.println("Name is not empty" + textFieldDescription.getText());
