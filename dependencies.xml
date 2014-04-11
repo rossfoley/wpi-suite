@@ -67,7 +67,7 @@
 	</target>
 	
 	<target name="depend.RequirementManagerNoTest" depends="depend.Janeway">
-		<ant dir="${dependencies.basedir}/RequirementManager" target="src" inheritAll="false"/>
+		<ant dir="${dependencies.basedir}/RequirementManager" target="compile-base" inheritAll="false"/>
 	</target>
 	
 	<target name="depend.PlanningPoker"
