@@ -71,6 +71,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("Pending Sessions");
 		DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
 		DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
+		System.out.println(sessions.size());
 
 		for(int i = 0; i < sessions.size(); i++) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(sessions.get(i)); //make a new session node to add
@@ -137,6 +138,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	protected void displaySession(PlanningPokerSession session) {
 		ViewEventController.getInstance().displayDetailedSession(session);
 	}
+	
 	
 	/**
 	 * Method mousePressed.

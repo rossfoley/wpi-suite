@@ -34,8 +34,10 @@ public class OverviewPanel extends JSplitPane {
 		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(treePanel);
 		this.setRightComponent(detailPanel);
-		this.setResizeWeight(0);  // set the right screen to not show by default
+		this.setResizeWeight(0.2);  // set the right screen to not show by default
 
+		ViewEventController.getInstance().setOverviewTree(treePanel);
+		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
 
 	}
 

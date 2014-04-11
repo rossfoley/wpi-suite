@@ -54,7 +54,11 @@ public class ViewEventController {
 	public void setOverviewTree(OverviewTreePanel overviewTreePanel) {
 		this.overviewTreePanel = overviewTreePanel;
 	}
-
+	
+	public void setOverviewDetailPanel(OverviewDetailPanel overviewDetailPanel) {
+		this.overviewDetailPanel = overviewDetailPanel;
+	}
+	
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
@@ -179,7 +183,6 @@ public class ViewEventController {
 		main.repaint();
 
 	}
-
 	
 	/**
 	 * Displays the details of the session that is clicked on 
@@ -189,10 +192,9 @@ public class ViewEventController {
 		overviewDetailPanel.updatePanel(displaySession);
 	}
 
-	
 	/**
 	 * Opens a new tab for the editing of a session
-	 * @param toEdit the req to edit
+	 * @param toEdit the session to edit
 	 */
 	public void editSession(PlanningPokerSession toEdit)
 	{

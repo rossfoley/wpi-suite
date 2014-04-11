@@ -142,6 +142,11 @@ public class PlanningPokerSession extends AbstractModel {
 	public String getName() {
 		return name;
 	}
+	
+	 @Override
+     public String toString(){
+          return name;
+     }
 
 	/**
 	 * @return the requirementIDs
