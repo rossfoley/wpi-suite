@@ -385,7 +385,6 @@ public class SelectFromListPanel extends JPanel{
 			List<Requirement> reqsList = requirementModel.getRequirements();
 			List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
 			for (Requirement r:reqsList){
-				System.out.println(r.getIteration());
 				if (r.getIteration().equals("Backlog")){
 					reqsInBacklog.add(r);
 				}
