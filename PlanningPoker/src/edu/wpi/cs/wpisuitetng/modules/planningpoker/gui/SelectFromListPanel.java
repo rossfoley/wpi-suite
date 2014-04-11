@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.border.LineBorder;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -409,12 +411,13 @@ public class SelectFromListPanel extends JPanel{
 	/**
 	 * @param selected the list of requirements that are selected
 	 */
-	public void setSelectedRequirements(List<Requirement> selectedRequirements) {
-		for(Requirement requirement : selectedRequirements){
-			int pos = this.unSelectedNames.indexOf(requirement.getName());
-			if (this.unSelected.get(pos) != null){
+	public void setSelectedRequirements(Set<Integer> selectedRequirements) {
+		for (Integer id : selectedRequirements) {
+			Requirement current = RequirementModel.getInstance().getRequirement(id);
+			int pos = this.unSelectedNames.indexOf(current.getName());
+			if (this.unSelected.get(pos) != null) {
 				Requirement element = this.unSelected.get(pos);
-				if (!this.selected.contains(element)){
+				if (!this.selected.contains(element)) {
 					this.selected.remove(pos);
 					this.selected.add(pos, element);
 					this.unSelected.remove(pos);
