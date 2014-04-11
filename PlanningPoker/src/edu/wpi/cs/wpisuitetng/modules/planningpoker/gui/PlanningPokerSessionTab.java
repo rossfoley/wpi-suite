@@ -12,8 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
  * This class makes up the panel that is used to create a game
  * It takes in fields from the user, displays appropriate messages, and stores information 
  * to a session and then passes it to the PlanningPokerSessionModel to be saved in the database
- * 
- * @author amandaadkins
  *
  */
 
@@ -84,6 +82,7 @@ public class PlanningPokerSessionTab extends JPanel {
 
 	private boolean dateHasBeenSet;
 	private boolean haveEndDate;
+	private boolean submitSession = false;
 	private int endHour;
 	private int endMinutes;
 	private boolean isUsingDeck;
@@ -351,6 +350,7 @@ public class PlanningPokerSessionTab extends JPanel {
 					secondPanel.revalidate();
 					secondPanel.repaint();
 				} else { 
+					submitSession = true;
 					saveFields();
 					pokerSession.setOpen(true);
 					submitSessionToDatabase();
@@ -629,7 +629,12 @@ public class PlanningPokerSessionTab extends JPanel {
 	public boolean readyToRemove()
 	{
 		boolean fieldsChanged = false;
-		if(viewMode == ViewMode.CREATING) {
+		// Check if the submit button was clicked
+		if (this.submitSession) {
+			return true;
+		}
+		// Otherwise check if data was modified
+		if (this.viewMode == ViewMode.CREATING) {
 			fieldsChanged = anythingChangedCreating();
 		}
 		else {
