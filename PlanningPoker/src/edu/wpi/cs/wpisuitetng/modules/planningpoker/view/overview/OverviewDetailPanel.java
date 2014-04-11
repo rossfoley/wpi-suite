@@ -39,11 +39,9 @@ public class OverviewDetailPanel extends JPanel {
 	private JButton editButton;
 	private PlanningPokerSession currentSession;
 	
-	public OverviewDetailPanel(boolean isOpen) {
-	
-		this.isOpen = isOpen;
+	public OverviewDetailPanel() {
 		
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // oops?
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		infoPanel = new JPanel();
 		infoPanel.setLayout(null);
 		listModel = new DefaultListModel<Requirement>();

@@ -38,8 +38,7 @@ public class MainView extends JTabbedPane {
 	private Image tabImage = null;
 	private Point currentMouseLocation = null;
 	private int draggedTabIndex = 0;
-	private OverviewPanel openSessions = new OverviewPanel(true);
-	private OverviewPanel closedSessions = new OverviewPanel(false);
+	private OverviewPanel overviewPanel = new OverviewPanel();
 	private Component lastTab = null;
 	private final JPopupMenu popup = new JPopupMenu();
 	private JMenuItem closeAll = new JMenuItem("Close All Tabs");
@@ -52,8 +51,7 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		this.addTab("Open Sessions", openSessions);
-		this.addTab("Closed Sessions", closedSessions);
+		this.addTab("Current Sessions", overviewPanel);
 
 		
 		closeAll.addActionListener(new ActionListener()
@@ -152,19 +150,9 @@ public class MainView extends JTabbedPane {
 				
 				JComponent selected = (JComponent) MainView.this.getSelectedComponent();
 
-				if (selected == openSessions) {
-					ViewEventController.getInstance().getOpenOverviewTable()
-							.refresh();
-					openSessions.revalidate();
-					openSessions.repaint();
-					
-				} 
-				else if (selected == closedSessions) {
-					ViewEventController.getInstance().getClosedOverviewTable()
-							.refresh();
-					closedSessions.revalidate();
-					closedSessions.repaint();
-				}
+				ViewEventController.getInstance().getOverviewTreePanel().refresh();
+				overviewPanel.revalidate();
+				overviewPanel.repaint();
 			}
 		});
 	}
@@ -204,17 +192,10 @@ public class MainView extends JTabbedPane {
 	}
 	
 	/**
-	 * Method getOpenOverview.
-	 * @return OpenOverviewPanel */
-	public OverviewPanel getOpenOverview() {
-		return openSessions;
-	}
-	
-	/**
-	 * Method getClosedOverview.
-	 * @return ClosedOverviewPanel */
-	public OverviewPanel getClosedOverview() {
-		return closedSessions;
+	 * Method getOverviewPanel
+	 * @return OverviewPanel */
+	public OverviewPanel getOverviewPanel() {
+		return overviewPanel;
 	}
 	
 	/**
