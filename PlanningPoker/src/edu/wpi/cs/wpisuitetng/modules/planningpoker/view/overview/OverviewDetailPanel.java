@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -27,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 public class OverviewDetailPanel extends JPanel {
 	private JPanel infoPanel;
@@ -105,7 +107,7 @@ public class OverviewDetailPanel extends JPanel {
 	{
 		this.currentSession = session;
 		String endDate = "No end date";
-		List<Requirement> requirements = session.getRequirements();
+		Set<Integer> requirements = session.getRequirementIDs();
 		
 		// Change name
 		this.lblSessionName.setText(session.getName());
@@ -114,7 +116,8 @@ public class OverviewDetailPanel extends JPanel {
 		this.listModel.clear();
 		if (session.requirementsGetSize() > 0) 
 		{
-			for (Requirement requirement : requirements) {
+			for (Integer id : requirements) {
+				Requirement requirement = RequirementModel.getInstance().getRequirement(id);
 				if (requirement != null) {
 					this.listModel.addElement(requirement);
 				}

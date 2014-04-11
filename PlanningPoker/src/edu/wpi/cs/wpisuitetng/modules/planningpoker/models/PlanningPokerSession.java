@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -42,7 +43,6 @@ public class PlanningPokerSession extends AbstractModel {
 	private Set<Integer> requirementIDs;
 	private UUID uuid = UUID.randomUUID();
 	private boolean isOpen;
-	private List<Requirement> requirements;
 	private List<Estimate> estimates;
 	private boolean isUsingDeck;
 
@@ -80,7 +80,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public PlanningPokerSession () {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.isOpen = false;
-		this.requirements = new ArrayList<Requirement>();
+		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 	}
 	/**
@@ -266,25 +266,6 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	
 	/**
-	 * Returns the Requirement with the given ID
-	 * 
-	 * @param id The ID number of the requirement to be returned
-	 * @return the requirement for the id or null if the requirement is not found 
-	 */
-	public Requirement getRequirement(int id)
-	{
-		Requirement temp = null;
-		// iterate through list of requirements until id is found
-		for (int i=0; i < this.requirements.size(); i++){
-			temp = requirements.get(i);
-			if (temp.getId() == id){
-				break;
-			}
-		}
-		return temp;
-	}
-	
-	/**
 	 * Provides the number of elements in the list of requirements for the project. This
 	 * function is called internally by the JList in NewRequirementPanel. Returns elements
 	 * in reverse order, so the newest requirement is returned first.
@@ -292,7 +273,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return the number of requirements in the project * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize()
 	 */
 	public int requirementsGetSize() {
-		return requirements.size();
+		return requirementIDs.size();
 	}
 	
 	/**
@@ -319,16 +300,16 @@ public class PlanningPokerSession extends AbstractModel {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, PlanningPokerSession[].class);
 	}
-	
-	public List<Requirement> getRequirements() {
-		return this.requirements;
-	}
+
 	
 	/**
 	 * @param selected the list of requirements to add to the session
 	 */
 	public void setRequirements(List<Requirement> selected) {
-		this.requirements = selected;
+		this.requirementIDs = new HashSet<Integer>();
+		for (Requirement requirement : selected) {
+			this.requirementIDs.add(requirement.getId());
+		}
 	}
 	/**
 	 * @return the estimates
@@ -382,7 +363,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.endDate = toCopyFrom.endDate;
 		this.requirementIDs = toCopyFrom.requirementIDs;
 		this.isOpen = toCopyFrom.isOpen;
-		this.requirements = toCopyFrom.requirements;
+		this.requirementIDs = toCopyFrom.requirementIDs;
 		this.estimates = toCopyFrom.estimates;
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
