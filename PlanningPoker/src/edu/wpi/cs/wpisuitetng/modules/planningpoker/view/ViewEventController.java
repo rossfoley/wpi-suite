@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
@@ -15,6 +17,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ClosedOverview
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 
 
@@ -28,44 +32,10 @@ public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
 	private ToolbarView toolbar = null;
-	private OverviewTable openOverviewTable = null;
-	private OverviewTable closedOverviewTable = null;
-	private OverviewDetailPanel openOverviewDetailPanel = null;
-	private OverviewDetailPanel closedOverviewDetailPanel = null;
+	private OverviewTreePanel overviewTreePanel = null;
+	private OverviewDetailPanel overviewDetailPanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	
-	/**
-	 * Sets the OpenOverviewTable for the controller
-	 * @param sessionTable a given OpenOverviewTable
-	 */
-	public void setOpenOverviewTable(OverviewTable sessionTable) {
-		this.openOverviewTable = sessionTable;
-	}
-
-	/**
-	 * Sets the ClosedOverviewTable for the controller
-	 * @param sessionTable a given ClosedOverviewTable
-	 */
-	public void setClosedOverviewTable(OverviewTable sessionTable) {
-		this.closedOverviewTable = sessionTable;
-	}
-	
-	/**
-	 * Sets the OpenOverviewDetailPanel for the controller
-	 * @param sessionTable a given OverviewDetailPanel
-	 */
-	public void setOpenOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
-		this.openOverviewDetailPanel = sessionPanel;
-	}
-	
-	/**
-	 * Sets the ClosedOverviewDetailPanel for the controller
-	 * @param sessionTable a given OverviewDetailPanel
-	 */
-	public void setClosedOverviewDetailPanel(OverviewDetailPanel sessionPanel) {
-		this.closedOverviewDetailPanel= sessionPanel;
-	}
-
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
 	 */
@@ -73,7 +43,6 @@ public class ViewEventController {
 
 	/**
 	 * Returns the singleton instance of the vieweventcontroller.
-	
 	 * @return The instance of this controller. */
 	public static ViewEventController getInstance() {
 		if (instance == null) {
@@ -81,10 +50,17 @@ public class ViewEventController {
 		}
 		return instance;
 	}
-
+	
+	public void setOverviewTree(OverviewTreePanel overviewTreePanel) {
+		this.overviewTreePanel = overviewTreePanel;
+	}
+	
+	public void setOverviewDetailPanel(OverviewDetailPanel overviewDetailPanel) {
+		this.overviewDetailPanel = overviewDetailPanel;
+	}
+	
 	/**
 	 * Sets the main view to the given view.
-	
 	 * @param mainview MainView
 	 */
 	public void setMainView(MainView mainview) {
@@ -114,22 +90,16 @@ public class ViewEventController {
 	}
 
 	/**
-	
 	 * @return toolbar */
 	public ToolbarView getToolbar() {
 		return toolbar;
 	}
-	
-	/** 
-	 * @return openOverviewTable */
-	public OverviewTable getOpenOverviewTable(){
-		return openOverviewTable;
-	}
-	
-	/** 
-	 * @return ClosedOverviewTable */
-	public OverviewTable getClosedOverviewTable(){
-		return closedOverviewTable;
+
+	/**
+	 * @return OverviewTreePanel
+	 */
+	public OverviewTreePanel getOverviewTreePanel() {
+		return this.overviewTreePanel;
 	}
 
 	/**
@@ -152,8 +122,7 @@ public class ViewEventController {
 	 * 
 	 */
 	public void refreshTable() {
-		openOverviewTable.refresh();
-		closedOverviewTable.refresh();
+		this.overviewTreePanel.refresh();
 	}
 
 	/**
@@ -218,30 +187,18 @@ public class ViewEventController {
 		main.repaint();
 
 	}
-
 	
 	/**
 	 * Displays the details of the session that is clicked on 
 	 */
-	public void displayDetailedSession(OverviewTable table)
+	public void displayDetailedSession(PlanningPokerSession displaySession)
 	{
-		//JComponent selected = (JComponent) MainView.getSelectedComponent();
-		int[] selection = table.getSelectedRows();
-		
-		if (selection.length != 1) return;
-		
-		UUID sessionID = (UUID) table.getValueAt(selection[0],0);
-		PlanningPokerSession displaySession = PlanningPokerSessionModel.getInstance().getPlanningPokerSession(sessionID);
-		
-		OverviewDetailPanel detailPanel = table.getDetailPanel();
-		detailPanel.updatePanel(displaySession);
-		
+		overviewDetailPanel.updatePanel(displaySession);
 	}
 
-	
 	/**
 	 * Opens a new tab for the editing of a session
-	 * @param toEdit the req to edit
+	 * @param toEdit the session to edit
 	 */
 	public void editSession(PlanningPokerSession toEdit)
 	{
@@ -276,13 +233,6 @@ public class ViewEventController {
 		else
 		{
 			main.setSelectedComponent(exists);
-		}
-			
+		}		
 	}
-	
-	public void viewSession(PlanningPokerSession session) 
-	{
-		
-	}
-
 }
