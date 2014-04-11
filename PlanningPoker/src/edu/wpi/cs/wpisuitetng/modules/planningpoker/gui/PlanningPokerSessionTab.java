@@ -73,7 +73,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private JLabel dateErrorMessage = new JLabel("");
 	private JLabel nameErrorMessage = new JLabel("");
 	private JLabel descriptionErrorMessage = new JLabel("");
-	private JLabel numbers = new JLabel("Users input non-negative intergers");
+	private JLabel numbers = new JLabel("Users input non-negative integers");
 	private final SelectFromListPanel requirementPanel = new SelectFromListPanel();
 	private JDatePicker datePicker;
 	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
