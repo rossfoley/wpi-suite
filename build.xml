@@ -36,7 +36,7 @@
 
 	<target name="test" description="Runs tests">
 		<mkdir dir="${test-results}"/>
-		<antcall target="depend.all">
+		<antcall target="depend.PlanningPoker">
 			<param name="dependency.target" value="test"/>
 		</antcall>
 	</target>
