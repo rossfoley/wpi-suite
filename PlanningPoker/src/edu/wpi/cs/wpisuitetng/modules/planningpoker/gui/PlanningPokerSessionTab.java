@@ -77,8 +77,8 @@ public class PlanningPokerSessionTab extends JPanel {
 	private JLabel dateErrorMessage = new JLabel("");
 	private JLabel nameErrorMessage = new JLabel("");
 	private JLabel descriptionErrorMessage = new JLabel("");
-	private JLabel numbers = new JLabel("Users input non-negative integers");
-	private final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+	private JLabel numbers = new JLabel("Users input non-negative intergers");
+	private final RequirementSelectionPanel requirementPanel = new RequirementSelectionPanel();
 	private JDatePicker datePicker;
 	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	JLabel norequirements = new JLabel("Please select requirements before creating the session.");

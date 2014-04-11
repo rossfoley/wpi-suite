@@ -15,6 +15,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import java.awt.Component;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RequirementSelectionPanel extends JPanel{
 	
@@ -26,6 +31,10 @@ public class RequirementSelectionPanel extends JPanel{
 	private AbstractListModel selectedListModel;
 	protected String[] unSelectedListData;
 	protected String[] selectedListData;
+	JButton btnAddAll;
+	JButton btnAdd;
+	JButton btnRemove;
+	JButton btnRemoveAll;
 	
 	RequirementSelectionPanel(){
 		
@@ -56,6 +65,12 @@ public class RequirementSelectionPanel extends JPanel{
 		unselectedPanel.add(unselectedScrollPane);
 		
 		unselectedListGui = new JList();
+		unselectedListGui.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				validButtons();
+			}
+		});
 		unselectedScrollPane.setViewportView(unselectedListGui);
 		
 		JPanel btnPanel = new JPanel();
@@ -63,25 +78,45 @@ public class RequirementSelectionPanel extends JPanel{
 		SpringLayout sl_btnPanel = new SpringLayout();
 		btnPanel.setLayout(sl_btnPanel);
 		
-		JButton btnAddAll = new JButton(">>");
+		btnAddAll = new JButton(">>");
+		btnAddAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectAll();
+			}
+		});
 		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnAddAll, 84, SpringLayout.NORTH, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.WEST, btnAddAll, 10, SpringLayout.WEST, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.EAST, btnAddAll, -10, SpringLayout.EAST, btnPanel);
 		btnPanel.add(btnAddAll);
 		
-		JButton btnAdd = new JButton(">");
+		btnAdd = new JButton(">");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				add();
+			}
+		});
 		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnAdd, 6, SpringLayout.SOUTH, btnAddAll);
 		sl_btnPanel.putConstraint(SpringLayout.WEST, btnAdd, 10, SpringLayout.WEST, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.EAST, btnAdd, -10, SpringLayout.EAST, btnPanel);
 		btnPanel.add(btnAdd);
 		
-		JButton btnRemove = new JButton("<");
+		btnRemove = new JButton("<");
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				remove();
+			}
+		});
 		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemove, 12, SpringLayout.SOUTH, btnAdd);
 		sl_btnPanel.putConstraint(SpringLayout.WEST, btnRemove, 10, SpringLayout.WEST, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.EAST, btnRemove, -10, SpringLayout.EAST, btnPanel);
 		btnPanel.add(btnRemove);
 		
-		JButton btnRemoveAll = new JButton("<<");
+		btnRemoveAll = new JButton("<<");
+		btnRemoveAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				unselectAll();
+			}
+		});
 		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemoveAll, 6, SpringLayout.SOUTH, btnRemove);
 		sl_btnPanel.putConstraint(SpringLayout.WEST, btnRemoveAll, 10, SpringLayout.WEST, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.EAST, btnRemoveAll, -10, SpringLayout.EAST, btnPanel);
@@ -106,6 +141,12 @@ public class RequirementSelectionPanel extends JPanel{
 		selectedPanel.add(selectedScrollPane);
 		
 		selectedListGui = new JList();
+		selectedListGui.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				validButtons();
+			}
+		});
 		selectedScrollPane.setViewportView(selectedListGui);
 		
 		
@@ -113,6 +154,7 @@ public class RequirementSelectionPanel extends JPanel{
 	}
 	
 	private void populateBooleans() {
+		this.selection = new LinkedList<Boolean>();
 		for (Requirement rqt : this.requirements){
 			this.selection.addLast(false);
 		}
@@ -148,7 +190,7 @@ public class RequirementSelectionPanel extends JPanel{
 		LinkedList<String> selectedRequirements = new LinkedList<String>();
 		for (Requirement rqt : this.requirements){
 			int pos = this.requirements.indexOf(rqt);
-			if (this.selection.get(pos)){
+			if (this.selection.get(pos) == true){
 				selectedRequirements.add(rqt.getName());
 			}
 			else{
@@ -160,7 +202,9 @@ public class RequirementSelectionPanel extends JPanel{
 		selectedListData = selectedRequirements.toArray(new String[0]);
 		
 		updateUnselectedList();
-		updateUnselectedList();
+		updateSelectedList();
+		
+		validButtons();
 	}
 	
 	// update the data displayed in the unselected list
@@ -170,7 +214,7 @@ public class RequirementSelectionPanel extends JPanel{
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		this.unselectedListGui.setModel(unSelectedListModel);	
+		this.unselectedListGui.setModel(unSelectedListModel);
 	}
 	
 	// update the data displayed by the selected list
@@ -183,35 +227,165 @@ public class RequirementSelectionPanel extends JPanel{
 		this.selectedListGui.setModel(selectedListModel);
 	}
 	
-	private int getUnselectedPos(){
-		int position[];
+	private LinkedList<Integer> getUnselectedPos(){
+		LinkedList<Integer> positions = new LinkedList<Integer>();
+		for (Requirement rqt : this.requirements){
+			int pos = this.requirements.indexOf(rqt);
+			if (!this.selection.get(pos)){
+				positions.add(pos);
+			}
+		}
 		
-		for (boolean bool : this.selection){
-			
+		return positions;
+	}
+	
+	private LinkedList<Integer> getSelectedPos(){
+		LinkedList<Integer> positions = new LinkedList<Integer>();
+		for (Requirement rqt : this.requirements){
+			int pos = this.requirements.indexOf(rqt);
+			if (this.selection.get(pos)){
+				positions.add(pos);
+			}
 		}
 		
 		return positions;
 	}
 	
 	private void add(){
-		int pos[] = getUnselectedPos();
+		LinkedList<Integer> pos = getUnselectedPos();
 		int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : selected){
-			int position = pos[n];
+			int position = pos.get(n);
 			this.selection.remove(position);
 			this.selection.add(position, true);
 		}
 		
+		update();
 	}
 	
 	private void remove(){
-		int pos[] = getSelectedPos();
+		LinkedList<Integer> pos = getSelectedPos();
 		int selected[] = selectedListGui.getSelectedIndices();
 		for(int n : selected){
-			int position = pos[n];
+			int position = pos.get(n);
 			this.selection.remove(position);
 			this.selection.add(position, false);
 		}
-		
+		update();
 	}
+	
+	private void selectAll(){
+		LinkedList<Integer> pos = getUnselectedPos();
+		//int selected[] = unselectedListGui.getSelectedIndices();
+		for(int n : pos){
+			this.selection.remove(n);
+			this.selection.add(n, true);
+		}
+		update();
+	}
+	
+	private void unselectAll(){
+		LinkedList<Integer> pos = getSelectedPos();
+		//int selected[] = unselectedListGui.getSelectedIndices();
+		for(int n : pos){
+			this.selection.remove(n);
+			this.selection.add(n, false);
+		}
+		update();
+	}
+	
+	// checks for whether any of the buttons can be used and disables the ones that can't
+		private void validButtons(){
+			boolean debug = false; // quick disable for console messages
+			
+			//checks for full lists and disables trying to move from empty lists
+			boolean allUnselected = fullList(false);
+			boolean allSelected = fullList(true);
+			if(allUnselected){
+				if(debug){System.out.println("Disableing removeAll");}
+				this.btnRemoveAll.setEnabled(false);
+			}
+			else{
+				if(debug){System.out.println("Enableing removeAll");}
+				this.btnRemoveAll.setEnabled(true);
+			}
+			if(allSelected){
+				if(debug){System.out.println("Disableing addAll");}
+				this.btnAddAll.setEnabled(false);
+			}
+			else{
+				if(debug){System.out.println("Enableing addAll");}
+				this.btnAddAll.setEnabled(true);
+			}
+			
+			// checks to see any requirements are selected for moving
+			boolean pickedUnselected = anySelected(this.unselectedListGui.getSelectedIndices());
+			boolean pickedSelected = anySelected(this.selectedListGui.getSelectedIndices());
+			if(pickedUnselected){
+				this.btnAdd.setEnabled(true);
+			}
+			else{
+				this.btnAdd.setEnabled(false);
+			}
+			if(pickedSelected){
+				this.btnRemove.setEnabled(true);
+			}
+			else{
+				this.btnRemove.setEnabled(false);
+			}
+			
+			
+		}
+		
+		// checks for full lists
+		private boolean fullList(boolean aBool){
+			boolean full = true;
+			
+			for(boolean bool : this.selection){
+				if(bool != aBool){
+					full = false;
+				}
+			}
+			
+			return full;
+		}
+		
+		// checks for any selections from the given array
+		private boolean anySelected(int selected[]){
+			boolean any = false;
+			
+			for(int n : selected){
+				any = true;
+			}
+			
+			return any;
+		}
+		
+		public void addRequirement(Requirement requirement){
+			this.selection.addLast(true);
+			this.requirements.addLast(requirement);
+			update();
+		}
+		
+		public List<Requirement> getSelected(){
+			List<Requirement> selection = new LinkedList<Requirement>();
+			for(Requirement rqt : this.requirements){
+				if (this.selection.get(this.requirements.indexOf(rqt))){
+					selection.add(rqt);
+				}
+			}
+			
+			return selection;
+			
+		}
+		
+		public void setSelectedRequirements(Set<Integer> selectedRequirements) {
+			for (Integer id : selectedRequirements) {
+				Requirement current = RequirementModel.getInstance().getRequirement(id);
+				int pos = this.requirements.indexOf(current);
+				this.selection.remove(pos);
+				this.selection.add(pos, true);
+			}
+			update();
+		}
 }
