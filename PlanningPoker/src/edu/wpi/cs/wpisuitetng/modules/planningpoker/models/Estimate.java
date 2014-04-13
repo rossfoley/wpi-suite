@@ -18,8 +18,9 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
- * @author rossfoley
- *
+ * A vote that contains the vote, requirementID, ownerID, ownername and it's own ID.
+ * @author Kevin
+ * 
  */
 public class Estimate extends AbstractModel{
 	private int requirementID;
