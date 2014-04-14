@@ -14,11 +14,15 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -34,7 +38,7 @@ public class VotingPage extends JSplitPane {
 
 	private SpringLayout layout = new SpringLayout();
 	private JPanel reqDetailPanel;
-	private JPanel votingPanel;
+	private DeckVotingPanel votingPanel;
 
 	private PlanningPokerSession activeSession;
 	private List<Requirement> reqsToVoteOn;
@@ -197,8 +201,14 @@ public class VotingPage extends JSplitPane {
 	 */
 	public void buildReqPanel(Requirement reqToVoteOn){
 		reqDetailPanel = makeReqDetailPanel(reqToVoteOn);
-		// fill in with Jon's stuff
+
 		votingPanel = new DeckVotingPanel(activeSession.getSessionDeck());
+		votingPanel.addEstimateListener(new EstimateListener() {
+			@Override	
+			public void estimateSubmitted(EstimateEvent e) {
+				System.out.println("Estimate submitted: " + e.getEstimate());
+			}
+		});
 
 		voteOnReqPanel.setLayout(layout);
 
