@@ -29,7 +29,7 @@ import java.awt.event.MouseEvent;
 public class VotingPage extends JSplitPane {
 	private JTable reqsTable;
 
-	private JPanel voteOnReqPanel;
+	private JPanel voteOnReqPanel = new JPanel();
 
 	private SpringLayout layout = new SpringLayout();
 	private JPanel reqDetailPanel;
