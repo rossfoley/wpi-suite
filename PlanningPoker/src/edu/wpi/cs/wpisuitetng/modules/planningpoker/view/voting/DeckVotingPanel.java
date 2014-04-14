@@ -42,7 +42,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 
 import java.awt.Font;
 import java.awt.BorderLayout;
@@ -67,6 +66,7 @@ public class DeckVotingPanel extends JPanel
 	private int cardOffset = 40; //This is the offset for computing the origin for the next label.
 	private List<JButton> listOfCardButtons;
 	private Integer lastCard = -1;
+	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
 
 	/**
@@ -97,8 +97,6 @@ public class DeckVotingPanel extends JPanel
 	 * Builds a voting panel where the user inputs a number for their vote 
 	 */
 	private void buildDefaultVotingPanel() {
-		this.setPreferredSize(new Dimension(100, 100));
-		this.setMaximumSize(new Dimension(100, 100));
 		// Create the text field for the estimation number
 		NumberFormat estimateFormat = NumberFormat.getNumberInstance();
 		estimateField = new JFormattedTextField(estimateFormat);
@@ -114,15 +112,21 @@ public class DeckVotingPanel extends JPanel
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fireEstimateEvent();
+				if (validateEstimate()) {
+					fireEstimateEvent();
+				}
 			}
 		});
+		// Setup error message display
+		estimateFieldErrorMessage.setForeground(Color.RED);
 		this.setLayout(new BorderLayout(0, 0));
 		// Add Label for estimation number
 		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
 		estimateLabel.setLabelFor(estimateField);
+		estimateFieldErrorMessage.setLabelFor(estimateField);
 		this.add(estimateLabel, BorderLayout.WEST);
 		this.add(estimateField, BorderLayout.CENTER);
+		this.add(estimateFieldErrorMessage, BorderLayout.EAST);
 		this.add(submitButton, BorderLayout.SOUTH);
 	}
 
@@ -307,13 +311,36 @@ public class DeckVotingPanel extends JPanel
 	}
 
 	/**
+	 * @return returns true if the estimate is valid (i.e. non-negative) 
+	 */
+	public boolean validateEstimate() {
+		if (userEstimate < 0) {
+			userEstimate = 0;
+			estimateFieldErrorMessage.setText("Please enter a positive number");
+			estimateField.setValue(new Double(0));
+			estimateFieldErrorMessage.revalidate();
+			estimateFieldErrorMessage.repaint();
+			revalidate();
+			repaint();
+			return false;
+		}
+		estimateFieldErrorMessage.setText("");
+		estimateFieldErrorMessage.revalidate();
+		estimateFieldErrorMessage.repaint();
+		revalidate();
+		repaint();
+		return true;
+	}
+
+	/**
 	 * Listens for changes in the button properties and handles these events
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		Object source = evt.getSource();
 		if (source == estimateField) {
-			this.userEstimate = ((Number) estimateField.getValue()).doubleValue();
+			 userEstimate = ((Number) estimateField.getValue()).doubleValue();
+			 validateEstimate();
 		}
 	}
 
