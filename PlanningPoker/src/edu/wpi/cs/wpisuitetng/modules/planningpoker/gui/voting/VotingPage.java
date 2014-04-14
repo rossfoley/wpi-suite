@@ -48,9 +48,9 @@ public class VotingPage extends JSplitPane {
 		buildReqPanel(null);
 
 		buildReqTable();
-		reqsTable.getColumnModel().getColumn(0).setMaxWidth(40); // voted on check
+/*		reqsTable.getColumnModel().getColumn(0).setMaxWidth(40); // voted on check
 		reqsTable.getColumnModel().getColumn(1).setMinWidth(250); // Name of req
-
+*/
 		JScrollPane tablePanel = new JScrollPane(reqsTable);
 
 		this.setLeftComponent(tablePanel);
@@ -62,7 +62,7 @@ public class VotingPage extends JSplitPane {
 		Object[][] data = {};
 		String[] columnNames = {"Voted On?", "Requirement Name"};
 		tableModel = new DefaultTableModel(data, columnNames);
-		reqsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
+		/*reqsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		reqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		reqsTable.getTableHeader().setReorderingAllowed(false);
@@ -92,7 +92,7 @@ public class VotingPage extends JSplitPane {
 			}
 		});
 		
-
+ */
 	}
 	/**
 	 * get the session that is being voted on 
