@@ -138,7 +138,7 @@ public class DeckVotingPanel extends JPanel
 		//Add several overlapping, colored labels to the layered pane
 		//using absolute positioning/sizing.
 		for (int i = 0; i < numbersInDeck.size(); i++) {
-			JButton cardButton = createCardLabel(numbersInDeck.get(i), origin);
+			JButton cardButton = createCardButtons(numbersInDeck.get(i), origin);
 			layeredDeckPane.add(cardButton, new Integer(i));
 			origin.x += cardOffset;
 			//origin.y += offset;
@@ -157,8 +157,8 @@ public class DeckVotingPanel extends JPanel
 		this.add(submitButton);
 	}
 
-	//Create and set up a colored label.
-	private JButton createCardLabel(int cardValue, Point origin) {
+	// Create and set up card button
+	private JButton createCardButtons(int cardValue, Point origin) {
 		final JButton card = new JButton("  " + String.valueOf(cardValue));
 		card.setName(String.valueOf(cardValue));
 		card.setVerticalAlignment(JLabel.CENTER);
@@ -231,7 +231,7 @@ public class DeckVotingPanel extends JPanel
 	public void propertyChange(PropertyChangeEvent evt) {
 		Object source = evt.getSource();
 		if (source == estimateField) {
-			this.userEstimate = (double) estimateField.getValue();
+			this.userEstimate = ((Number) estimateField.getValue()).doubleValue();
 		}
 	}
 
