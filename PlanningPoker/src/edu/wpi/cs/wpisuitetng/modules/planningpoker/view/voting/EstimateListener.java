@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EventListener;
 
 /** A contract between a EstimateEvent source and
@@ -16,6 +18,7 @@ public class EstimateListener implements EventListener {
 		this.estimate = e.getEstimate();
 	}
 	
+
 	public double getEstimate() {
 		return this.estimate;
 	}

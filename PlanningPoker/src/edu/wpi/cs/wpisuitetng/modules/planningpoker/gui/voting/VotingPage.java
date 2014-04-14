@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -17,7 +18,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.test.VotingManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.SelectionEvent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.SelectionListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -48,12 +51,24 @@ public class VotingPage extends JSplitPane {
 	private List<Requirement> reqsToVoteOn;
 
 	private DefaultTableModel tableModel;
+	
+	private transient Vector<SelectionListener> selectionListeners;
 
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;		
 		reqsToVoteOn = getSessionReqs();
-
+		
+		addSelectionListener(new SelectionListener() {
+			@Override
+			public void selectionMade(SelectionEvent e){
+				System.out.println("Got Selection Event:" + e.getRequirement().getName());
+				reqDetailPanel = makeReqDetailPanel(e.getRequirement());
+				
+				//buildReqPanel(e.getRequirement());
+			}
+			
+		});
 		buildReqPanel(null);
 
 		/*buildReqTable();
@@ -263,5 +278,22 @@ public class VotingPage extends JSplitPane {
 
 		System.out.println("finished refreshing the table");		
 	} */
+	
+	synchronized public void addSelectionListener(SelectionListener l) {
+		if (this.selectionListeners == null) {
+			this.selectionListeners = new Vector<SelectionListener>();
+		}
+		this.selectionListeners.addElement(l);
+	}  
+
+	/** Remove a listener for EstimateEvents */
+	synchronized public void removeSelectionListener(SelectionListener l) {
+		if (this.selectionListeners == null) {
+			this.selectionListeners = new Vector<SelectionListener>();
+		}
+		else {
+			this.selectionListeners.removeElement(l);
+		}
+	}
 	
 }
