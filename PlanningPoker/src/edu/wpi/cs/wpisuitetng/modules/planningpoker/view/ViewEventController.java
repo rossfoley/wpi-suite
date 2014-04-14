@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting.VotingPage;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ClosedOverviewTable;
@@ -33,6 +34,7 @@ public class ViewEventController {
 	private OverviewDetailPanel openOverviewDetailPanel = null;
 	private OverviewDetailPanel closedOverviewDetailPanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
+	private ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
 	
 	/**
 	 * Sets the OpenOverviewTable for the controller
@@ -279,10 +281,43 @@ public class ViewEventController {
 		}
 			
 	}
-	
-	public void viewSession(PlanningPokerSession session) 
-	{
+
+	/**
+	 * this opens the voting page for the given session
+	 * @param toVoteOn session that has been selected to vote in
+	 */
+	public void voteOnSession(PlanningPokerSession toVoteOn){
+		VotingPage exists = null;
 		
+		// Check if the session is already open in a tab
+		for(VotingPage panel : listOfVotingPanels)
+		{
+			if(panel.getDisplaySession() == toVoteOn)
+			{
+				exists = panel;
+				break;
+			}
+		}
+		
+		if (exists == null)
+		{
+			VotingPage votingPanel = new VotingPage(toVoteOn);
+			
+			StringBuilder tabName = new StringBuilder();
+			int subStringLength = toVoteOn.getName().length() > 6 ? 7 : toVoteOn.getName().length();
+			tabName.append(toVoteOn.getName().substring(0,subStringLength));
+			if(toVoteOn.getName().length() > 6) tabName.append("..");
+			
+			main.addTab(tabName.toString(), null, votingPanel, toVoteOn.getName());
+			this.listOfVotingPanels.add(votingPanel);
+			main.invalidate();
+			main.repaint();
+			main.setSelectedComponent(votingPanel);
+		}
+		else
+		{
+			main.setSelectedComponent(exists);
+		}
 	}
 
 }
