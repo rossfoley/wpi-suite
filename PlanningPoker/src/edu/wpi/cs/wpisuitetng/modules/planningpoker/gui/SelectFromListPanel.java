@@ -19,6 +19,8 @@ import javax.swing.border.LineBorder;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -43,8 +45,8 @@ public class SelectFromListPanel extends JPanel{
 	private JList<String> unSelectedGuiList;
 	private AbstractListModel selectedListModel;
 	private javax.swing.JList<String> Selected;
-	private LinkedList<String> selectedNames;
-	private LinkedList<String> unSelectedNames;
+	public LinkedList<String> selectedNames;
+	public LinkedList<String> unSelectedNames;
 	private JScrollPane unSelectedScrollPane;
 	private JScrollPane selectedScrollPane;
 	private JButton btnAdd;
@@ -52,6 +54,8 @@ public class SelectFromListPanel extends JPanel{
 	private JButton btnRemove;
 	private JButton btnRemoveAll;
 	
+	private GetRequirementsRequestObserver observer;
+	private static GetRequirementsController instance;
 	/**
 	 * The constructor for the requirement selection panel
 	 */
@@ -77,9 +81,9 @@ public class SelectFromListPanel extends JPanel{
 				validButtons();
 			}
 		});
-		
-		//initialize the main requirement lists
 		populateRequirements();
+		this.updateUI();
+		//initialize the main requirement lists
 		//System.out.println(this.requirements.size());
 		this.unSelected = new LinkedList<Requirement>();
 		this.selected = new LinkedList<Requirement>();
@@ -87,7 +91,6 @@ public class SelectFromListPanel extends JPanel{
 		for(Requirement rqt : requirements){
 			this.unSelected.add(rqt);
 		}
-		
 		//get the data to populate the initial unselected requirements
 		unSelectedListData = getNames(this.unSelected).toArray(new String[0]);
 		
@@ -432,27 +435,40 @@ public class SelectFromListPanel extends JPanel{
 	 * populate PlanningPokerSession list of requirements
 	 */
 	public void populateRequirements() {
-		//System.out.println("In Populate Requirements");
+		System.out.println("In Populate Requirements");
 		
 		// Get singleton instance of Requirements Controller
 		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
 		// Manually force a population of the list of requirements in the requirement model
 		requirementsController.retrieveRequirements();
+		
 		// Get the singleton instance of the requirement model to steal it's list of requirements.
 		RequirementModel requirementModel = RequirementModel.getInstance();
 		try {
 			// Steal list of requirements from requirement model muhahaha.
 			List<Requirement> reqsList = requirementModel.getRequirements();
 			List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
+			while(reqsList.isEmpty()){
+				requirementsController.retrieveRequirements();
+				reqsList = requirementModel.getRequirements();
+				if(!reqsList.isEmpty()){
+					break;
+				}
+			}
 			for (Requirement r:reqsList){
 				if (r.getIteration().equals("Backlog")){
 					reqsInBacklog.add(r);
+					System.out.println(r.getName());
 				}
+				System.out.println(r.getName());
 			} 
+			System.out.println("End of the 4 loop");
 			this.requirements = reqsInBacklog;
 		
 		}
-		catch (Exception e) {}
+		catch (Exception e) {
+			System.out.println("Populaton requirement exception");
+		}
 	}
 	
 	// checks for whether any of the buttons can be used and disables the ones that can't
