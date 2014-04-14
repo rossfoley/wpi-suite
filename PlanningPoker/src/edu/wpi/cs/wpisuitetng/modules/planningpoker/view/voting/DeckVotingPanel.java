@@ -101,7 +101,8 @@ public class DeckVotingPanel extends JPanel
 	/**
 	 * Builds a voting panel where the user inputs a number for their vote 
 	 */
-	private void buildDefaultVotingPanel() {
+private void buildDefaultVotingPanel() {
+		estimateFieldErrorMessage.setForeground(Color.RED);
 		SpringLayout defaultPanelLayout = new SpringLayout(); 
 
 		// Create the text field for the estimation number
@@ -111,19 +112,22 @@ public class DeckVotingPanel extends JPanel
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
 		estimateField.setToolTipText("Enter Estimation Here");
 		estimateField.setValue(new Double(0));
-		estimateField.setPreferredSize(new Dimension(26, 26));
+		//estimateField.setPreferredSize(new Dimension(26, 26));
 		estimateField.addPropertyChangeListener("value", this);
-		// Create submission button
+		estimateField.setPreferredSize(new Dimension(200, 100));
+
 		submitButton = new JButton("Submit Estimation");
 		submitButton.setPreferredSize(new Dimension(26, 26));
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (validateEstimate()) {
 					fireEstimateEvent();
 				}
-			}
 		});
+
+		submitButton = new JButton("Submit Estimation");
+		submitButton.setPreferredSize(new Dimension(50, 26));
+
 		// Setup error message display
 		estimateFieldErrorMessage.setForeground(Color.RED);
 		submitButton = new JButton("Submit Estimation");
@@ -136,7 +140,7 @@ public class DeckVotingPanel extends JPanel
 		setLayout(new BorderLayout(10, 10));
 
 		JPanel subPanel = new JPanel();
-		subPanel.setPreferredSize(new Dimension(400, 150));
+		subPanel.setPreferredSize(new Dimension(400, 100));
 		
 		SpringLayout subPanelLayout = new SpringLayout();
 		subPanel.setLayout(subPanelLayout);
@@ -150,11 +154,15 @@ public class DeckVotingPanel extends JPanel
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
 		
-
+		//estimateFieldErrorMessage.setLabelFor(estimateField);
+		//add(estimateLabel, BorderLayout.WEST);
+		//add(estimateField, BorderLayout.CENTER);
+		add(estimateFieldErrorMessage, BorderLayout.EAST);
 		add(subPanel, BorderLayout.CENTER);		
 		add(submitButton, BorderLayout.SOUTH);
 		
 	}
+
 
 	/**
 	 * Builds a deck based voting panel 
@@ -378,9 +386,11 @@ public class DeckVotingPanel extends JPanel
 		}
 	}
 
+
 	/**
 	 * Register a listener for EstimateEvents
 	 */
+
 	synchronized public void addEstimateListener(EstimateListener l) {
 		if (listeners == null) {
 			listeners = new Vector<EstimateListener>();
