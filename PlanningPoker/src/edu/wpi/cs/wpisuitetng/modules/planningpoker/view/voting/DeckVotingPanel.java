@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -25,7 +28,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -37,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import java.awt.Font;
 import java.awt.BorderLayout;
@@ -163,37 +169,42 @@ public class DeckVotingPanel extends JPanel
 
 	// Create and set up card button
 	private JButton createCardButtons(int cardValue, Point origin) {
-		final JButton card = new JButton("  " + String.valueOf(cardValue));
+		final JButton card = new JButton();
+		// Try to load the corresponding playing card
+		try {
+			String fileName = new String("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/voting/cards/" + 
+					Integer.toString(cardValue) + "-of-Diamonds.png");
+
+			Image img = ImageIO.read(new File(fileName));
+			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+			card.setIcon(new ImageIcon(img.getScaledInstance(112, 140, 0)));
+		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
+			card.setText("\t  " + Integer.toString(cardValue));
+		};
 		card.setName(String.valueOf(cardValue));
 		card.setVerticalAlignment(JLabel.CENTER);
 		card.setHorizontalAlignment(JLabel.LEFT);
 		card.setOpaque(true);
-		card.setBorder(BorderFactory.createLineBorder(Color.black));
-		card.setBounds(origin.x, origin.y, 140, 140);
+		card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		card.setBackground(Color.WHITE);
+		card.setBounds(origin.x, origin.y, 112, 140);
 		card.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Change color based on previous state
 				if (card.getBackground() == Color.WHITE) {
 					card.setBackground(Color.GREEN);	// card is part of estimate
+					card.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));	
 				}
 				else {
 					card.setBackground(Color.WHITE); // card is not part of estimate
+					card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				}
 				updateEstimate(card.getName(), card.getBackground());
 			}
 		});
 		card.addMouseMotionListener(this);	// To track mouse movements and dragging
-		// TODO use actual cards instead of a white background
-		/*
-		try {
-		    Image img = ImageIO.read(
-		    		new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/voting/card.png"));
-		    		//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-		    card.setIcon(new ImageIcon(img));
-		} catch (IOException | NullPointerException | IllegalArgumentException ex) {};
-		 */
+		
 		return card;
 	}
 
@@ -217,7 +228,7 @@ public class DeckVotingPanel extends JPanel
 		// If the source was not a card, no card should be highlighted 
 		if (!this.listOfCardButtons.contains(e.getSource())) {
 			// Check if near the top edge of a highlighted card
-			if ((e.getX() < (this.cardOffset*this.listOfCardButtons.size() + 60)) 
+			if ((e.getX() < (this.cardOffset*this.listOfCardButtons.size() + 50)) 
 					&& (e.getX() >= 10) && (e.getY() >= 20) && (e.getY() <= 60)) {
 				return;
 			}
@@ -253,7 +264,7 @@ public class DeckVotingPanel extends JPanel
 		layeredDeckPane.removeAll();
 		//This is the origin of the first label added.
 		Point origin = new Point(10, 20);
-		
+
 		// Update card buttons in panel to highlight the moused-over card
 		for (int i = 0; i < this.listOfCardButtons.size(); i++) {
 			if (i == this.lastCard) {
@@ -261,6 +272,11 @@ public class DeckVotingPanel extends JPanel
 			}
 			int cardValue = Integer.parseInt(this.listOfCardButtons.get(i).getName());
 			JButton cardButton = createCardButtons(cardValue, origin);
+			// Keep track of if the user pressed the button already
+			if (this.listOfCardButtons.get(i).getBackground() != Color.WHITE) {
+				cardButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+				cardButton.setBackground(Color.GREEN);	
+			}
 			this.listOfCardButtons.set(i, cardButton);
 			// Set this card as the top cad if moused-over
 			if (i == this.lastCard) {
