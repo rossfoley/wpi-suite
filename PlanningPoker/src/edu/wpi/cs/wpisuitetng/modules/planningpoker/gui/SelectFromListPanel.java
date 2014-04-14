@@ -127,7 +127,7 @@ public class SelectFromListPanel extends JPanel{
 		this.unSelectedGuiList = new JList<String>();
 		unSelectedGuiList.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				validButtons();
 			}
 		});
@@ -142,7 +142,7 @@ public class SelectFromListPanel extends JPanel{
 		this.Selected = new JList<String>();
 		Selected.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				validButtons();
 			}
 		});
