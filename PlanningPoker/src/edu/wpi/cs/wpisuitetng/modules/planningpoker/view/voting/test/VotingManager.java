@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.voting.test;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +12,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
@@ -36,6 +37,7 @@ public class VotingManager extends JPanel{
 		this.user = user;
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		
 		
 		
 		tree.setEditable(true);
@@ -110,28 +112,21 @@ public class VotingManager extends JPanel{
 	
 	private Requirement getSelected(){
 		Requirement rqt = new Requirement();
-		int selected[] = tree.getSelectionRows();
-		for (int n : selected){
-			String selection = tree.
-			n = n-2;
-			if (n > this.notVotedList.size()){
-				for (Requirement reqt : this.notVotedList){
-					if ()
-				}
-			}
-			else{
-				n = n-this.notVotedList.size();
-				n--;
-				if (n > this.votedList.size()){
-					
-				}
-				else {
-					return null;
-				}
+		TreePath paths[] = tree.getSelectionPaths();
+		LinkedList<TreePath> path = new LinkedList<TreePath>();
+		for (TreePath tPath : paths){
+			path.addLast(tPath);
+		}
+		
+		TreeNode node = (TreeNode)path.getLast().getLastPathComponent();
+		String selected = node.toString();
+		for (Requirement requirement : this.requirements){
+			if (requirement.getName() == selected){
+				return requirement;
 			}
 		}
 		
-		return rqt;
+		return null;
 	}
 
 	private TreeNode createNodes() {

@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.voting.test;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.test;
 
 import java.util.LinkedList;
 import java.util.List;
