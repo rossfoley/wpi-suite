@@ -28,10 +28,10 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
@@ -46,13 +46,14 @@ import java.awt.BorderLayout;
  * @version $Revision: 1.0 $
  */
 public class DeckVotingPanel extends JPanel
-							 implements PropertyChangeListener,
-							 			MouseMotionListener {
+implements PropertyChangeListener,
+MouseMotionListener {
 	private Deck votingDeck;
 	private JFormattedTextField estimateField;
 	double userEstimate;
 	private JLayeredPane layeredDeckPane;
 	private JButton estimateButton;
+	private int cardOffset = 40; //This is the offset for computing the origin for the next label.
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -84,18 +85,19 @@ public class DeckVotingPanel extends JPanel
 	 * Builds a voting panel where the user inputs a number for their vote 
 	 */
 	private void buildDefaultVotingPanel() {
+		this.setPreferredSize(new Dimension(100, 100));
+		this.setMaximumSize(new Dimension(100, 100));
 		// Create the text field for the estimation number
 		NumberFormat estimateFormat = NumberFormat.getNumberInstance();
 		estimateField = new JFormattedTextField(estimateFormat);
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		estimateField.setToolTipText("Enter Estimation Here");
 		estimateField.setValue(new Double(0));
-		estimateField.setColumns(1);
-		estimateField.setSize(new Dimension(26, 26));
+		estimateField.setPreferredSize(new Dimension(26, 26));
 		estimateField.addPropertyChangeListener("value", this);
 		// Create submission button
 		estimateButton = new JButton("Submit Estimation");
-		estimateButton.setPreferredSize(new Dimension(50, 26));
+		estimateButton.setPreferredSize(new Dimension(26, 26));
 		estimateButton.setVerticalAlignment(SwingConstants.BOTTOM);
 		this.setLayout(new BorderLayout(0, 0));
 		// Add Label for estimation number
@@ -121,22 +123,19 @@ public class DeckVotingPanel extends JPanel
 		layeredDeckPane.addMouseMotionListener(this);
 
 		//This is the origin of the first label added.
-		Point origin = new Point(10, 20);
-
-		//This is the offset for computing the origin for the next label.
-		int offset = 40;
+		Point origin = new Point(0, 0);
 
 		//Add several overlapping, colored labels to the layered pane
 		//using absolute positioning/sizing.
 		for (int i = 0; i < numbersInDeck.size(); i++) {
-			JButton label = createCardLabel(numbersInDeck.get(i), origin);
-			layeredDeckPane.add(label, new Integer(i));
-			origin.x += offset;
+			JButton cardButton = createCardLabel(numbersInDeck.get(i), origin);
+			layeredDeckPane.add(cardButton, new Integer(i));
+			origin.x += cardOffset;
 			//origin.y += offset;
 		}
 		// Create submission button
 		estimateButton = new JButton("Submit Estimation");
-		
+
 		//Add control pane and layered pane to this JPanel.
 		this.add(layeredDeckPane);
 		this.add(estimateButton);
@@ -144,13 +143,27 @@ public class DeckVotingPanel extends JPanel
 
 	//Create and set up a colored label.
 	private JButton createCardLabel(int cardValue, Point origin) {
-		JButton card = new JButton("\t" + String.valueOf(cardValue));
+		final JButton card = new JButton("  " + String.valueOf(cardValue));
+		card.setName(String.valueOf(cardValue));
 		card.setVerticalAlignment(JLabel.CENTER);
 		card.setHorizontalAlignment(JLabel.LEFT);
 		card.setOpaque(true);
 		card.setBorder(BorderFactory.createLineBorder(Color.black));
 		card.setBounds(origin.x, origin.y, 140, 140);
 		card.setBackground(Color.WHITE);
+		card.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Change color based on previous state
+				if (card.getBackground() == Color.WHITE) {
+					card.setBackground(Color.GREEN);	// card is part of estimate
+				}
+				else {
+					card.setBackground(Color.WHITE); // card is not part of estimate
+				}
+				updateEstimate(card.getName(), card.getBackground());
+			}
+		});
 		// TODO use actual cards instead of a white background
 		/*
 		try {
@@ -159,13 +172,31 @@ public class DeckVotingPanel extends JPanel
 		    		//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 		    card.setIcon(new ImageIcon(img));
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {};
-		*/
+		 */
 		return card;
 	}
 
-	//Make Duke follow the cursor.
+	/**
+	 * Updates the users estimate on a card button click
+	 * @param name	the name of the card button clicked
+	 * @param background	the current color the card is set to
+	 */
+	private void updateEstimate(String name, Color background) {
+		// If card was removed from estimate
+		if (background == Color.WHITE) {
+			userEstimate -= Integer.parseInt(name);
+		}
+		// If card was selected from estimate
+		else {
+			userEstimate += Integer.parseInt(name);
+		}
+		System.out.println("Estimate: " + getEstimate());
+		
+	}
+	
 	public void mouseMoved(MouseEvent e) {
-		System.out.println("Mouse Position - X: " + e.getX() + " Y: " + e.getY());
+		// TODO use this to highlight the card that the mouse is hovering over 
+		//System.out.println("Mouse Position - X: " + e.getX() + " Y: " + e.getY());
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -190,6 +221,7 @@ public class DeckVotingPanel extends JPanel
 		if (source == estimateField) {
 			userEstimate = (double) estimateField.getValue();
 		}
+		System.out.println("Estimate: " + getEstimate());
 	}
 
 }
