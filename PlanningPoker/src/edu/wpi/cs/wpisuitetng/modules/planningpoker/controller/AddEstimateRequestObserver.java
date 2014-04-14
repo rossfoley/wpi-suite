@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -39,7 +40,7 @@ private AddEstimateController controller;
 		//System.out.println (response);
 		
 		// Parse the session out of the response body
-		final PlanningPokerSession session = PlanningPokerSession.fromJson(response.getBody());		
+		final Estimate estimate = Estimate.fromJson(response.getBody());		
 	}
 
 	/**
