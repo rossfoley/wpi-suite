@@ -2,6 +2,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting;
 
+import java.text.DateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,8 +30,7 @@ import java.awt.event.MouseEvent;
  */
 
 public class VotingPage extends JSplitPane {
-	private JTable reqsTable;
-
+	private JTable reqsTable = new JTable();
 	private JPanel voteOnReqPanel = new JPanel();
 
 	private SpringLayout layout = new SpringLayout();
@@ -38,7 +39,7 @@ public class VotingPage extends JSplitPane {
 
 	private PlanningPokerSession activeSession;
 	private List<Requirement> reqsToVoteOn;
-	
+
 	private DefaultTableModel tableModel;
 
 
@@ -48,31 +49,35 @@ public class VotingPage extends JSplitPane {
 
 		buildReqPanel(null);
 
-		buildReqTable();
-/*		reqsTable.getColumnModel().getColumn(0).setMaxWidth(40); // voted on check
-		reqsTable.getColumnModel().getColumn(1).setMinWidth(250); // Name of req
-*/
+		/*buildReqTable();
+		reqsTable.getColumnModel().getColumn(0).setMaxWidth(100); // voted on check
+		reqsTable.getColumnModel().getColumn(1).setMinWidth(100); // Name of req
+		refreshTable(); */
 		JScrollPane tablePanel = new JScrollPane(reqsTable);
+
+		tablePanel.setMinimumSize(new Dimension(200, 300));
+		voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
 		this.setLeftComponent(tablePanel);
 		this.setRightComponent(voteOnReqPanel);
 		this.setDividerLocation(225);		
 	}
 
-	public void buildReqTable(){
+	/*public void buildReqTable(){
 		Object[][] data = {};
 		String[] columnNames = {"Voted On?", "Requirement Name"};
 		tableModel = new DefaultTableModel(data, columnNames);
-		/*reqsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
+		reqsTable.setModel(tableModel);
+		reqsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		reqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		reqsTable.getTableHeader().setReorderingAllowed(false);
 		reqsTable.setAutoCreateRowSorter(true);
 		reqsTable.setFillsViewportHeight(true);
-		
+
 		reqsTable.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				
+
 				if(reqsTable.getRowCount() > 0)
 				{
 					int mouseY = e.getY();
@@ -86,15 +91,15 @@ public class VotingPage extends JSplitPane {
 					}
 
 
-					
+
 					// rebuild req panel with selected req
 				}
-				
+
 			}
 		});
-		
- */
-	}
+
+
+	} */
 	/**
 	 * get the session that is being voted on 
 	 * @return the session being voted on in this panel
@@ -169,8 +174,9 @@ public class VotingPage extends JSplitPane {
 		// match current user and given requirement
 
 		for (Estimate e:sessionEstimates){
-			// if estimate matches current user and req
-			return true;
+			if ((checkReq.getId()==e.getRequirementID())&&(e.getOwnerName().equals(currentUser))){
+				return true;
+			}
 		}
 
 		return false;
@@ -217,6 +223,29 @@ public class VotingPage extends JSplitPane {
 		voteOnReqPanel.add(reqDetailPanel);
 		voteOnReqPanel.add(votingPanel);
 	}
+  /*
+	public void refreshTable() {
+
+		// clear the table
+		tableModel.setRowCount(0);		
+
+		for (Requirement reqToEst:getSessionReqs()) {
+			String isReqEstimated;
+			// Handle if there was no end date set
+
+			if (isEstimated(reqToEst)){
+				isReqEstimated = "X";
+			}
+			else {
+				isReqEstimated = "  ";
+			}
+			tableModel.addRow(new Object[]{isReqEstimated, reqToEst.getName()});
+		}
+		// indicate that refresh is no longer affecting the table
+		//setChangedByRefresh(false);
+
+		System.out.println("finished refreshing the table");		
+	} */
 
 
 }
