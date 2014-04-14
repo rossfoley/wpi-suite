@@ -39,7 +39,7 @@ public class OverviewDetailPanel extends JPanel {
 	private boolean isOpen;
 	private JButton btnOpen;
 	private JButton btnVote;
-	private JButton editButton;
+	private JButton btnEdit;
 	private PlanningPokerSession currentSession;
 	
 	public OverviewDetailPanel() {
@@ -53,7 +53,7 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDate = new JLabel("");
 		btnOpen = new JButton("Open");
 		btnVote = new JButton("Vote");
-		editButton = new JButton("Edit Session");
+		btnEdit = new JButton("Edit Session");
 		JLabel lblSessionNameLabel = new JLabel("Session Name:");
 		JLabel lblEndDateLabel = new JLabel("End Date:");
 		JLabel lblRequirementsLabel = new JLabel("Requirements:");
@@ -63,8 +63,19 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDateLabel.setBounds(10, 60, 258, 14);
 		lblRequirementsLabel.setBounds(10, 110, 258, 14);
 		listContainer.setBounds(10, 135, 258, 107);
-		this.lblSessionName.setBounds(10, 35, 258, 14);
+		lblSessionName.setBounds(10, 35, 258, 14);
 		lblEndDate.setBounds(10, 85, 258, 14);
+		btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		btnEdit.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		btnEdit.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		// Buttons are visible by default
+		btnVote.setVisible(false);
+		btnOpen.setVisible(false);
+		btnEdit.setVisible(false);
 		
 		
 		/* JLabel lblDeckName = new JLabel("Deck Name:");
@@ -81,19 +92,11 @@ public class OverviewDetailPanel extends JPanel {
 		infoPanel.add(lblSessionName);
 		infoPanel.add(lblEndDate);
 		infoPanel.add(lblSessionNameLabel);
-		infoPanel.add(lblEndDateLabel);		
-
-		if (this.isOpen) {
-			btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-			btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
-			add(btnVote);
-		}
-		else {
-			btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-			btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
-			add(btnOpen);
-		}
-		
+		infoPanel.add(lblEndDateLabel);
+		add(btnVote);
+		add(btnOpen);
+		add(btnEdit);
+			
 	}
 	
 	/**
@@ -134,6 +137,11 @@ public class OverviewDetailPanel extends JPanel {
 		//System.out.println(endDate);
 		this.lblEndDate.setText(endDate);
 
+		
+		btnVote.setVisible(false);
+		btnOpen.setVisible(false);
+		
+		
 		btnVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			// TODO bro
@@ -148,19 +156,17 @@ public class OverviewDetailPanel extends JPanel {
 			}
 		});
 		
-		editButton.addActionListener(new ActionListener() {
+		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Have the event controller open a new edit session tab
 				ViewEventController.getInstance().editSession(getCurrentSession());
 			}
 		});
-		editButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		editButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		// Check if the edit session button should appear
-		remove(editButton);
+		// Check if the buttons should appear
+		btnEdit.isVisible(false);
 		if (session.isEditable()) {
-			add(editButton);
+			btnEdit.isVisible(true);
 		}
 
 		// redraw panel
