@@ -77,10 +77,10 @@ public class DeckVotingPanel extends JPanel
 		this.votingDeck = votingDeck;
 		// Make sure a deck was input
 		if (votingDeck == null) {
-			this.buildDefaultVotingPanel();	
+			buildDefaultVotingPanel();	
 		}
 		else {
-			this.buildDeckVotingPanel();
+			buildDeckVotingPanel();
 		}
 	}
 
@@ -88,8 +88,8 @@ public class DeckVotingPanel extends JPanel
 	 * Constructor for DeckVotingPanel when not using a deck
 	 */
 	public DeckVotingPanel() {
-		this.votingDeck = null;
-		this.buildDefaultVotingPanel();
+		votingDeck = null;
+		buildDefaultVotingPanel();
 	}
 
 
@@ -119,24 +119,24 @@ public class DeckVotingPanel extends JPanel
 		});
 		// Setup error message display
 		estimateFieldErrorMessage.setForeground(Color.RED);
-		this.setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout(0, 0));
 		// Add Label for estimation number
 		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
 		estimateLabel.setLabelFor(estimateField);
 		estimateFieldErrorMessage.setLabelFor(estimateField);
-		this.add(estimateLabel, BorderLayout.WEST);
-		this.add(estimateField, BorderLayout.CENTER);
-		this.add(estimateFieldErrorMessage, BorderLayout.EAST);
-		this.add(submitButton, BorderLayout.SOUTH);
+		add(estimateLabel, BorderLayout.WEST);
+		add(estimateField, BorderLayout.CENTER);
+		add(estimateFieldErrorMessage, BorderLayout.EAST);
+		add(submitButton, BorderLayout.SOUTH);
 	}
 
 	/**
 	 * Builds a deck based voting panel 
 	 */
 	private void buildDeckVotingPanel() {
-		List<Integer> numbersInDeck = this.votingDeck.getNumbersInDeck();
+		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 
-		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		//Create and set up the layered pane.
 		layeredDeckPane = new JLayeredPane();
 		layeredDeckPane.addMouseMotionListener(this);
@@ -145,16 +145,16 @@ public class DeckVotingPanel extends JPanel
 
 		//This is the origin of the first label added.
 		Point origin = new Point(10, 20);
-		this.cardOffset = 700/numbersInDeck.size();
+		cardOffset = 700/numbersInDeck.size();
 
 		//Add several overlapping, card buttons to the layered pane
 		//using absolute positioning/sizing.
-		this.listOfCardButtons = new ArrayList<JButton>();
+		listOfCardButtons = new ArrayList<JButton>();
 		for (int i = 0; i < numbersInDeck.size(); i++) {
 			JButton cardButton = createCardButtons(numbersInDeck.get(i), origin);
 			layeredDeckPane.add(cardButton, new Integer(i));
-			this.listOfCardButtons.add(cardButton);
-			origin.x += this.cardOffset;
+			listOfCardButtons.add(cardButton);
+			origin.x += cardOffset;
 			//origin.y += offset;
 		}
 		// Create submission button
@@ -167,8 +167,8 @@ public class DeckVotingPanel extends JPanel
 		});
 
 		//Add control pane and layered pane to this JPanel.
-		this.add(layeredDeckPane);
-		this.add(submitButton);
+		add(layeredDeckPane);
+		add(submitButton);
 	}
 
 	// Create and set up card button
@@ -230,34 +230,34 @@ public class DeckVotingPanel extends JPanel
 
 	public void mouseMoved(MouseEvent e) {
 		// If the source was not a card, no card should be highlighted 
-		if (!this.listOfCardButtons.contains(e.getSource())) {
+		if (!listOfCardButtons.contains(e.getSource())) {
 			// Check if near the top edge of a highlighted card
-			if ((e.getX() < (this.cardOffset*this.listOfCardButtons.size() + 50)) 
+			if ((e.getX() < (cardOffset*listOfCardButtons.size() + 50)) 
 					&& (e.getX() >= 10) && (e.getY() >= 20) && (e.getY() <= 60)) {
 				return;
 			}
-			else if (this.lastCard == -1) {
+			else if (lastCard == -1) {
 				return;
 			}
 			else {
-				this.lastCard = -1;	// Make the last card highlighted invalid
+				lastCard = -1;	// Make the last card highlighted invalid
 			}
 		}
 		// If the source of the mouseMoved event was a card, highlight it
 		else {
 			JButton currentCard = (JButton) e.getSource();
 			// Find the index of the card
-			for (int i = 0; i < this.listOfCardButtons.size(); i++) {
-				if (currentCard == this.listOfCardButtons.get(i)) {
+			for (int i = 0; i < listOfCardButtons.size(); i++) {
+				if (currentCard == listOfCardButtons.get(i)) {
 					// Only handle the event if the mouse moved to a new card
-					if (this.lastCard != i) {
+					if (lastCard != i) {
 						// Check the location of the mouse wrt the cards origin
-						if ((e.getX() < this.cardOffset) || (i == this.listOfCardButtons.size() - 1)) {
-							this.lastCard = i;						
+						if ((e.getX() < cardOffset) || (i == listOfCardButtons.size() - 1)) {
+							lastCard = i;						
 						}
 						// If the mouse is on the right side of the card, highlight the next card
 						else {
-							this.lastCard = i + 1;
+							lastCard = i + 1;
 						}
 						break;
 					}
@@ -270,14 +270,14 @@ public class DeckVotingPanel extends JPanel
 		Point origin = new Point(10, 20);
 
 		// Update card buttons in panel to highlight the moused-over card
-		for (int i = 0; i < this.listOfCardButtons.size(); i++) {
-			if (i == this.lastCard) {
+		for (int i = 0; i < listOfCardButtons.size(); i++) {
+			if (i == lastCard) {
 				origin.y += 30;
 			}
-			int cardValue = Integer.parseInt(this.listOfCardButtons.get(i).getName());
+			int cardValue = Integer.parseInt(listOfCardButtons.get(i).getName());
 			JButton cardButton = createCardButtons(cardValue, origin);
 			// Keep track of if the user pressed the button already
-			if (this.listOfCardButtons.get(i).getBackground() != Color.WHITE) {
+			if (listOfCardButtons.get(i).getBackground() != Color.WHITE) {
 				cardButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
 				cardButton.setBackground(Color.GREEN);	
 			}
@@ -295,8 +295,8 @@ public class DeckVotingPanel extends JPanel
 		// Refresh panes
 		layeredDeckPane.revalidate();
 		layeredDeckPane.repaint();
-		this.revalidate();
-		this.repaint();
+		revalidate();
+		repaint();
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -348,21 +348,21 @@ public class DeckVotingPanel extends JPanel
 	 * Register a listener for EstimateEvents
 	 */
 	synchronized public void addEstimateListener(EstimateListener l) {
-		if (this.listeners == null) {
-			this.listeners = new Vector<EstimateListener>();
+		if (listeners == null) {
+			listeners = new Vector<EstimateListener>();
 		}
-		this.listeners.addElement(l);
+		listeners.addElement(l);
 	}  
 
 	/**
 	 * Remove a listener for EstimateEvents
 	 */
 	synchronized public void removeEstimateListener(EstimateListener l) {
-		if (this.listeners == null) {
-			this.listeners = new Vector<EstimateListener>();
+		if (listeners == null) {
+			listeners = new Vector<EstimateListener>();
 		}
 		else {
-			this.listeners.removeElement(l);
+			listeners.removeElement(l);
 		}
 	}
 
@@ -371,7 +371,7 @@ public class DeckVotingPanel extends JPanel
 	 */
 	protected void fireEstimateEvent() {
 		// Do nothing if we have no listeners
-		if (this.listeners != null && !this.listeners.isEmpty()) {
+		if (listeners != null && !listeners.isEmpty()) {
 			// Create the event object to send
 			EstimateEvent event = 
 					new EstimateEvent(this, this.getEstimate());
@@ -379,7 +379,7 @@ public class DeckVotingPanel extends JPanel
 			// Make a copy of the listener list in case anyone adds/removes listeners
 			Vector<EstimateListener> targets;
 			synchronized (this) {
-				targets = (Vector<EstimateListener>) this.listeners.clone();
+				targets = (Vector<EstimateListener>) listeners.clone();
 			}
 
 			// Walk through the listener list and call the estimateSubmitted method in each
