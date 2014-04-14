@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -197,7 +198,7 @@ public class VotingPage extends JSplitPane {
 	public void buildReqPanel(Requirement reqToVoteOn){
 		reqDetailPanel = makeReqDetailPanel(reqToVoteOn);
 		// fill in with Jon's stuff
-		votingPanel = new JPanel();
+		votingPanel = new DeckVotingPanel(activeSession.getSessionDeck());
 
 		voteOnReqPanel.setLayout(layout);
 
@@ -210,6 +211,8 @@ public class VotingPage extends JSplitPane {
 		layout.putConstraint(SpringLayout.EAST, votingPanel, 0, SpringLayout.EAST, reqDetailPanel);
 
 		layout.putConstraint(SpringLayout.SOUTH, reqDetailPanel, -10, SpringLayout.NORTH, votingPanel);
+		
+		layout.putConstraint(SpringLayout.NORTH, votingPanel, -200, SpringLayout.SOUTH, voteOnReqPanel);
 
 		voteOnReqPanel.add(reqDetailPanel);
 		voteOnReqPanel.add(votingPanel);

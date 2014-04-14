@@ -153,6 +153,11 @@ public class ViewEventController {
 				return;
 			this.listOfEditingPanels.remove(comp);
 		}
+		// Check if the tab is a voteOnSession tab
+		if (comp instanceof VotingPage) {
+			this.listOfVotingPanels.remove(comp);
+		}		
+		
 		main.remove(comp);
 	}
 
