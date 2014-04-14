@@ -20,6 +20,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
@@ -58,6 +59,8 @@ public class DeckVotingPanel extends JPanel
 	private JLayeredPane layeredDeckPane;
 	private JButton submitButton;
 	private int cardOffset = 40; //This is the offset for computing the origin for the next label.
+	private List<JButton> listOfCardButtons;
+	private Integer lastCard = -1;
 	private transient Vector<EstimateListener> listeners;
 
 	/**
@@ -77,7 +80,6 @@ public class DeckVotingPanel extends JPanel
 
 	/**
 	 * Constructor for DeckVotingPanel when not using a deck
-	 * 
 	 */
 	public DeckVotingPanel() {
 		this.votingDeck = null;
@@ -127,20 +129,22 @@ public class DeckVotingPanel extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		//Create and set up the layered pane.
 		layeredDeckPane = new JLayeredPane();
-		//layeredDeckPane.setPreferredSize(new Dimension(300, 310));
+		layeredDeckPane.addMouseMotionListener(this);
 		layeredDeckPane.setBorder(BorderFactory.createTitledBorder(
 				"Select Cards For Your Estimate: "));
-		layeredDeckPane.addMouseMotionListener(this);
 
 		//This is the origin of the first label added.
-		Point origin = new Point(0, 0);
+		Point origin = new Point(10, 20);
+		this.cardOffset = 700/numbersInDeck.size();
 
-		//Add several overlapping, colored labels to the layered pane
+		//Add several overlapping, card buttons to the layered pane
 		//using absolute positioning/sizing.
+		this.listOfCardButtons = new ArrayList<JButton>();
 		for (int i = 0; i < numbersInDeck.size(); i++) {
 			JButton cardButton = createCardButtons(numbersInDeck.get(i), origin);
 			layeredDeckPane.add(cardButton, new Integer(i));
-			origin.x += cardOffset;
+			this.listOfCardButtons.add(cardButton);
+			origin.x += this.cardOffset;
 			//origin.y += offset;
 		}
 		// Create submission button
@@ -180,6 +184,7 @@ public class DeckVotingPanel extends JPanel
 				updateEstimate(card.getName(), card.getBackground());
 			}
 		});
+		card.addMouseMotionListener(this);	// To track mouse movements and dragging
 		// TODO use actual cards instead of a white background
 		/*
 		try {
@@ -209,8 +214,69 @@ public class DeckVotingPanel extends JPanel
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		// TODO use this to highlight the card that the mouse is hovering over 
-		//System.out.println("Mouse Position - X: " + e.getX() + " Y: " + e.getY());
+		// If the source was not a card, no card should be highlighted 
+		if (!this.listOfCardButtons.contains(e.getSource())) {
+			// Check if near the top edge of a highlighted card
+			if ((e.getX() < (this.cardOffset*this.listOfCardButtons.size() + 60)) 
+					&& (e.getX() >= 10) && (e.getY() >= 20) && (e.getY() <= 60)) {
+				return;
+			}
+			else if (this.lastCard == -1) {
+				return;
+			}
+			else {
+				this.lastCard = -1;	// Make the last card highlighted invalid
+			}
+		}
+		// If the source of the mouseMoved event was a card, highlight it
+		else {
+			JButton currentCard = (JButton) e.getSource();
+			// Find the index of the card
+			for (int i = 0; i < this.listOfCardButtons.size(); i++) {
+				if (currentCard == this.listOfCardButtons.get(i)) {
+					// Only handle the event if the mouse moved to a new card
+					if (this.lastCard != i) {
+						// Check the location of the mouse wrt the cards origin
+						if ((e.getX() < this.cardOffset) || (i == this.listOfCardButtons.size() - 1)) {
+							this.lastCard = i;						
+						}
+						// If the mouse is on the right side of the card, highlight the next card
+						else {
+							this.lastCard = i + 1;
+						}
+						break;
+					}
+					return;	// if this card is already highlighted
+				}
+			}
+		}
+		layeredDeckPane.removeAll();
+		//This is the origin of the first label added.
+		Point origin = new Point(10, 20);
+		
+		// Update card buttons in panel to highlight the moused-over card
+		for (int i = 0; i < this.listOfCardButtons.size(); i++) {
+			if (i == this.lastCard) {
+				origin.y += 30;
+			}
+			int cardValue = Integer.parseInt(this.listOfCardButtons.get(i).getName());
+			JButton cardButton = createCardButtons(cardValue, origin);
+			this.listOfCardButtons.set(i, cardButton);
+			// Set this card as the top cad if moused-over
+			if (i == this.lastCard) {
+				layeredDeckPane.add(cardButton, new Integer(this.listOfCardButtons.size() + 1));
+				origin.y -= 30;
+			}
+			else {
+				layeredDeckPane.add(cardButton, new Integer(i));
+			}
+			origin.x += cardOffset;
+		}
+		// Refresh panes
+		layeredDeckPane.revalidate();
+		layeredDeckPane.repaint();
+		this.revalidate();
+		this.repaint();
 	}
 
 	public void mouseDragged(MouseEvent e) {
