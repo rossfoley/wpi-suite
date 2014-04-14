@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -29,10 +30,13 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller.GetIterationController;
 
 
 /**
@@ -43,6 +47,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 
 	private JTree tree;
 	private PlanningPokerSession currentSession;
+	private boolean initialized;
 	
 	/**
 	 * Sets up the left hand panel of the overview
@@ -52,6 +57,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         this.setViewportView(tree);
         ViewEventController.getInstance().setOverviewTree(this);
 		this.refresh();  
+		initialized = false;
 	}
 	
 	/**
@@ -181,6 +187,26 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @return the tree */
 	public JTree getTree() {
 		return tree;
+	}
+	
+	@Override
+	public void paintComponent(Graphics g)
+	{
+		if(!initialized)
+		{
+			try 
+			{
+				GetRequirementsController.getInstance().retrieveRequirements();
+				GetSessionController.getInstance().retrieveSessions();
+				initialized = true;
+			}
+			catch (Exception e)
+			{
+
+			}
+		}
+
+		super.paintComponent(g);
 	}
 
 	/**
