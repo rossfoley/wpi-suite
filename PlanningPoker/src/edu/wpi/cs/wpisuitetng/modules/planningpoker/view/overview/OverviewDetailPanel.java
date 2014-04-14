@@ -138,7 +138,7 @@ public class OverviewDetailPanel extends JPanel {
 
 		btnVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			// TODO bro
+				ViewEventController.getInstance().voteSession(getCurrentSession());				
 			}
 		});
 
