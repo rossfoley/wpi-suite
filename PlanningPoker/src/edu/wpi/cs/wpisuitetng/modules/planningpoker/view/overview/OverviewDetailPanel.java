@@ -164,11 +164,12 @@ public class OverviewDetailPanel extends JPanel {
 		});
 		
 		// Check if the buttons should appear
+/*
 		btnEdit.isVisible(false);
 		if (session.isEditable()) {
 			btnEdit.isVisible(true);
 		}
-
+*/
 		// redraw panel
 		infoPanel.revalidate();
 		infoPanel.repaint();

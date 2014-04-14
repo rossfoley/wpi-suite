@@ -28,9 +28,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;;
 
 
 /**
@@ -40,7 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
 
 	private JTree tree;
-	
+	private PlanningPokerSession currentSession;
 	
 	/**
 	 * Sets up the left hand panel of the overview
@@ -123,6 +125,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			if(node != null) {
 				
 				if (node.getUserObject() instanceof PlanningPokerSession) {
+					// Shawn added lines here
+					if(((PlanningPokerSession) node.getUserObject()).getSessionCreatorName().equals(ConfigManager.getConfig().getUserName())){
+					// now here implement the button visibility for creator
+					}
 					PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
 					displaySession(session);
 				}
