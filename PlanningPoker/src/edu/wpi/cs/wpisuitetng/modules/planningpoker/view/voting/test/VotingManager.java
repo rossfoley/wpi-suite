@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -20,9 +22,14 @@ import java.awt.event.MouseEvent;
 
 public class VotingManager extends JPanel{
 	
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 1L;
 	private List<Requirement> requirements;
-	private List<Vote> votes;
-	private String user;
+	private List<Estimate> estimate;
+	private int ownerID;
+	private EstimateModel estimateModel = EstimateModel.getInstance();
 	
 	private JTree tree = new JTree();;
 	private DefaultMutableTreeNode rootNode;
@@ -30,11 +37,11 @@ public class VotingManager extends JPanel{
 	private LinkedList<Requirement> notVotedList;
 	private LinkedList<Requirement> votedList;
 	
-	VotingManager(List<Requirement> requirements, List<Vote> votes, String user){
+	public VotingManager(List<Requirement> requirements, List<Estimate> estimate, int ownerID){
 		setName("Voting Manager");
-		this.votes = votes;
+		this.estimate = estimate;
 		this.requirements = requirements;
-		this.user = user;
+		this.ownerID = ownerID;
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
@@ -85,32 +92,14 @@ public class VotingManager extends JPanel{
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pushSelection();
+				//pushSelection();
 			}
 		});
 	}
-
-	protected void pushSelection() {
-		Container parent = this.getParent();
-		LinkedList<Container> explore = new LinkedList<Container>();
-		explore.add(parent);
-		int timeout = 0;
-		VotingPanel votingPanel = new VotingPanel(new LinkedList<Requirement>(), new LinkedList<Vote>(), "");
-		while ((explore.size() > 0) && (timeout < 5)){
-			Container current = explore.pop();
-			if (current.getName() == "VotingPanel"){
-				votingPanel = (VotingPanel)current;
-			}
-			else{
-				explore.add(current.getParent());
-			}
-			timeout++;
-		}
-		Requirement rqt = getSelected();
-		votingPanel.setSelected(rqt);
-	}
+	
 	
 	private Requirement getSelected(){
+		this.estimate = getEstimates();
 		Requirement rqt = new Requirement();
 		TreePath paths[] = tree.getSelectionPaths();
 		LinkedList<TreePath> path = new LinkedList<TreePath>();
@@ -137,7 +126,7 @@ public class VotingManager extends JPanel{
 		votedList = new LinkedList<Requirement>();
 		
 		for (Requirement rqt : this.requirements)
-			if (hasVote(rqt)){
+			if (hasEstimate(rqt)){
 				votedList.add(rqt);
 			}
 			else{
@@ -159,15 +148,21 @@ public class VotingManager extends JPanel{
 		return root;
 	}
 
-	private boolean hasVote(Requirement rqt) {
+	private boolean hasEstimate(Requirement rqt) {
 		int id = rqt.getId();
 		boolean has = false;
-		for (Vote vt : this.votes){
-			if (vt.getID() == id){
+		for (Estimate es : this.estimate){
+			if (es.getRequirementID() == id && es.getOwnerID() == this.ownerID){
 				has = true;
 			}
 		}
 		
 		return has;
+	}
+	
+	private LinkedList<Estimate> getEstimates(){
+		LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+		estimates = (LinkedList<Estimate>)this.estimateModel.getEstimates();
+		return estimates;
 	}
 }

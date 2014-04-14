@@ -17,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.test.VotingManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -36,6 +37,8 @@ import java.awt.event.MouseEvent;
 public class VotingPage extends JSplitPane {
 	private JTable reqsTable = new JTable();
 	private JPanel voteOnReqPanel = new JPanel();
+	
+	private VotingManager reqsView;
 
 	private SpringLayout layout = new SpringLayout();
 	private JPanel reqDetailPanel;
@@ -57,8 +60,12 @@ public class VotingPage extends JSplitPane {
 		reqsTable.getColumnModel().getColumn(0).setMaxWidth(100); // voted on check
 		reqsTable.getColumnModel().getColumn(1).setMinWidth(100); // Name of req
 		refreshTable(); */
-		JScrollPane tablePanel = new JScrollPane(reqsTable);
-
+		//JScrollPane tablePanel = new JScrollPane(reqsTable);
+		
+		reqsView = new VotingManager(getSessionReqs(), new LinkedList<Estimate>(), 0);
+		JScrollPane tablePanel = new JScrollPane();
+		tablePanel.setViewportView(reqsView);
+		
 		tablePanel.setMinimumSize(new Dimension(200, 300));
 		voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
@@ -256,6 +263,5 @@ public class VotingPage extends JSplitPane {
 
 		System.out.println("finished refreshing the table");		
 	} */
-
-
+	
 }
