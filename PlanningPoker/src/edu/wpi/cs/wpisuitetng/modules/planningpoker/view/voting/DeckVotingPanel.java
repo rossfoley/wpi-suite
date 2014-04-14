@@ -18,8 +18,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.text.NumberFormat;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFormattedTextField;
@@ -28,7 +31,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -47,13 +50,15 @@ import java.awt.BorderLayout;
  */
 public class DeckVotingPanel extends JPanel
 implements PropertyChangeListener,
-MouseMotionListener {
+MouseMotionListener,
+Serializable {
 	private Deck votingDeck;
 	private JFormattedTextField estimateField;
-	double userEstimate;
+	private double userEstimate;
 	private JLayeredPane layeredDeckPane;
-	private JButton estimateButton;
+	private JButton submitButton;
 	private int cardOffset = 40; //This is the offset for computing the origin for the next label.
+	private transient Vector<EstimateListener> listeners;
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -96,16 +101,22 @@ MouseMotionListener {
 		estimateField.setPreferredSize(new Dimension(26, 26));
 		estimateField.addPropertyChangeListener("value", this);
 		// Create submission button
-		estimateButton = new JButton("Submit Estimation");
-		estimateButton.setPreferredSize(new Dimension(26, 26));
-		estimateButton.setVerticalAlignment(SwingConstants.BOTTOM);
+		submitButton = new JButton("Submit Estimation");
+		submitButton.setPreferredSize(new Dimension(26, 26));
+		submitButton.setVerticalAlignment(SwingConstants.BOTTOM);
+		submitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fireEstimateEvent();
+			}
+		});
 		this.setLayout(new BorderLayout(0, 0));
 		// Add Label for estimation number
 		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
 		estimateLabel.setLabelFor(estimateField);
 		this.add(estimateLabel, BorderLayout.WEST);
 		this.add(estimateField, BorderLayout.CENTER);
-		this.add(estimateButton, BorderLayout.SOUTH);
+		this.add(submitButton, BorderLayout.SOUTH);
 	}
 
 	/**
@@ -134,11 +145,17 @@ MouseMotionListener {
 			//origin.y += offset;
 		}
 		// Create submission button
-		estimateButton = new JButton("Submit Estimation");
+		submitButton = new JButton("Submit Estimation");
+		submitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fireEstimateEvent();
+			}
+		});
 
 		//Add control pane and layered pane to this JPanel.
 		this.add(layeredDeckPane);
-		this.add(estimateButton);
+		this.add(submitButton);
 	}
 
 	//Create and set up a colored label.
@@ -190,10 +207,8 @@ MouseMotionListener {
 		else {
 			userEstimate += Integer.parseInt(name);
 		}
-		System.out.println("Estimate: " + getEstimate());
-		
 	}
-	
+
 	public void mouseMoved(MouseEvent e) {
 		// TODO use this to highlight the card that the mouse is hovering over 
 		//System.out.println("Mouse Position - X: " + e.getX() + " Y: " + e.getY());
@@ -221,7 +236,48 @@ MouseMotionListener {
 		if (source == estimateField) {
 			userEstimate = (double) estimateField.getValue();
 		}
-		System.out.println("Estimate: " + getEstimate());
 	}
 
+	/** Register a listener for EstimateEvents */
+	synchronized public void addEstimateListener(EstimateListener l) {
+		if (this.listeners == null) {
+			this.listeners = new Vector<EstimateListener>();
+		}
+		this.listeners.addElement(l);
+	}  
+
+	/** Remove a listener for EstimateEvents */
+	synchronized public void removeEstimateListener(EstimateListener l) {
+		if (this.listeners == null) {
+			this.listeners = new Vector<EstimateListener>();
+		}
+		else {
+			this.listeners.removeElement(l);
+		}
+	}
+
+	/** Fire an EstimateEvent to all registered listeners */
+	protected void fireEstimateEvent() {
+		// if we have no listeners, do nothing...
+		if (this.listeners != null && !this.listeners.isEmpty()) {
+			// create the event object to send
+			EstimateEvent event = 
+					new EstimateEvent(this, this.getEstimate());
+
+			// make a copy of the listener list in case
+			//   anyone adds/removes listeners
+			Vector<EstimateListener> targets;
+			synchronized (this) {
+				targets = (Vector<EstimateListener>) this.listeners.clone();
+			}
+
+			// walk through the listener list and
+			//   call the sunMoved method in each
+			Enumeration e = targets.elements();
+			while (e.hasMoreElements()) {
+				EstimateListener l = (EstimateListener) e.nextElement();
+				l.estimateSubmitted(event);
+			}
+		}
+	}
 }
