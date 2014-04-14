@@ -49,9 +49,9 @@ import java.awt.BorderLayout;
  * @version $Revision: 1.0 $
  */
 public class DeckVotingPanel extends JPanel
-implements PropertyChangeListener,
-MouseMotionListener,
-Serializable {
+							 implements PropertyChangeListener,
+							 			MouseMotionListener,
+							 			Serializable {
 	private Deck votingDeck;
 	private JFormattedTextField estimateField;
 	private double userEstimate;
@@ -81,7 +81,6 @@ Serializable {
 	 */
 	public DeckVotingPanel() {
 		this.votingDeck = null;
-
 		this.buildDefaultVotingPanel();
 	}
 
@@ -216,15 +215,13 @@ Serializable {
 
 	public void mouseDragged(MouseEvent e) {
 		// TODO Could use this to drag and select multiple cards
-	} //do nothing right now
-
+	}
 
 	/**
-	 * 
 	 * @return the user's selected/entered estimate
 	 */
 	public double getEstimate() {
-		return userEstimate;
+		return this.userEstimate;
 	}
 
 	/**
@@ -234,11 +231,13 @@ Serializable {
 	public void propertyChange(PropertyChangeEvent evt) {
 		Object source = evt.getSource();
 		if (source == estimateField) {
-			userEstimate = (double) estimateField.getValue();
+			this.userEstimate = (double) estimateField.getValue();
 		}
 	}
 
-	/** Register a listener for EstimateEvents */
+	/**
+	 * Register a listener for EstimateEvents
+	 */
 	synchronized public void addEstimateListener(EstimateListener l) {
 		if (this.listeners == null) {
 			this.listeners = new Vector<EstimateListener>();
@@ -246,7 +245,9 @@ Serializable {
 		this.listeners.addElement(l);
 	}  
 
-	/** Remove a listener for EstimateEvents */
+	/**
+	 * Remove a listener for EstimateEvents
+	 */
 	synchronized public void removeEstimateListener(EstimateListener l) {
 		if (this.listeners == null) {
 			this.listeners = new Vector<EstimateListener>();
@@ -256,24 +257,24 @@ Serializable {
 		}
 	}
 
-	/** Fire an EstimateEvent to all registered listeners */
+	/**
+	 * Fire an EstimateEvent to all registered listeners
+	 */
 	protected void fireEstimateEvent() {
-		// if we have no listeners, do nothing...
+		// Do nothing if we have no listeners
 		if (this.listeners != null && !this.listeners.isEmpty()) {
-			// create the event object to send
+			// Create the event object to send
 			EstimateEvent event = 
 					new EstimateEvent(this, this.getEstimate());
 
-			// make a copy of the listener list in case
-			//   anyone adds/removes listeners
+			// Make a copy of the listener list in case anyone adds/removes listeners
 			Vector<EstimateListener> targets;
 			synchronized (this) {
 				targets = (Vector<EstimateListener>) this.listeners.clone();
 			}
 
-			// walk through the listener list and
-			//   call the sunMoved method in each
-			Enumeration e = targets.elements();
+			// Walk through the listener list and call the estimateSubmitted method in each
+			Enumeration<EstimateListener> e = targets.elements();
 			while (e.hasMoreElements()) {
 				EstimateListener l = (EstimateListener) e.nextElement();
 				l.estimateSubmitted(event);
