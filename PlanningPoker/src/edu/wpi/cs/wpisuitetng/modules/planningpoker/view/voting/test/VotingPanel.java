@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -13,14 +14,14 @@ import javax.swing.Box;
 public class VotingPanel extends JPanel{
 	
 	private List<Requirement> requirements = new LinkedList<Requirement>();
-	private List<Vote> votes = new LinkedList<Vote>();
-	private String user;
+	private List<Estimate> estimate = new LinkedList<Estimate>();
+	private int ownerID;
 	private Requirement selected;
 	
-	VotingPanel(List<Requirement> requirements, List<Vote> votes, String user){
-		this.votes = votes;
+	VotingPanel(List<Requirement> requirements, List<Estimate> estimates, int ownerID){
+		this.estimate = estimate;
 		this.requirements = requirements;
-		this.user = user;
+		this.ownerID = ownerID;
 		
 		this.setName("Voting Panel");
 		
@@ -34,7 +35,7 @@ public class VotingPanel extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, requirementVoting, -10, SpringLayout.EAST, this);
 		add(requirementVoting);
 		
-		VotingManager votingManager = new VotingManager(this.requirements,this.votes, this.user);
+		VotingManager votingManager = new VotingManager(this.requirements,this.estimate, this.ownerID);
 		springLayout.putConstraint(SpringLayout.NORTH, votingManager, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, votingManager, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, votingManager, -10, SpringLayout.SOUTH, this);

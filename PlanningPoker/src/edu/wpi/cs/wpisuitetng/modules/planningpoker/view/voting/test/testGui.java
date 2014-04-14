@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class testGui {
@@ -54,7 +55,7 @@ public class testGui {
 		votes.add(vote0);
 		
 		
-		VotingPanel votingPanel = new VotingPanel(requirements, votes, "will");
+		VotingPanel votingPanel = new VotingPanel(requirements, (List)new LinkedList<Estimate>(), 0);
 		sl_panel.putConstraint(SpringLayout.NORTH, votingPanel, 0, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, votingPanel, 0, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.SOUTH, votingPanel, 262, SpringLayout.NORTH, panel);
