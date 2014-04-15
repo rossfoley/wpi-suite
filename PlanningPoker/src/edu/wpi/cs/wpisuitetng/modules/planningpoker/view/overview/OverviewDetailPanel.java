@@ -40,6 +40,7 @@ public class OverviewDetailPanel extends JPanel {
 	private PlanningPokerSession.SessionState isOpen;
 	private JButton btnOpen;
 	private JButton btnVote;
+	private JButton btnEndVote; 
 	private JButton btnEdit;
 	private PlanningPokerSession currentSession;
 	
@@ -54,6 +55,7 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDate = new JLabel("");
 		btnOpen = new JButton("Open");
 		btnVote = new JButton("Vote");
+		btnEndVote = new JButton("End Voting"); 
 		btnEdit = new JButton("Edit Session");
 		JLabel lblSessionNameLabel = new JLabel("Session Name:");
 		JLabel lblEndDateLabel = new JLabel("End Date:");
@@ -87,11 +89,19 @@ public class OverviewDetailPanel extends JPanel {
 
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getCurrentSession().setOpen(SessionState.OPEN);
+				getCurrentSession().setSessionState(SessionState.OPEN);
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}
 		});
+		
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getCurrentSession().setSessionState(SessionState.VOTINGENDED); 
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
+				ViewEventController.getInstance().refreshTable();
+			}
+		}); 
 		
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,6 +127,7 @@ public class OverviewDetailPanel extends JPanel {
 		infoPanel.add(lblEndDateLabel);
 		add(btnVote);
 		add(btnOpen);
+		add(btnEndVote); 
 		add(btnEdit);
 			
 	}
@@ -174,7 +185,7 @@ public class OverviewDetailPanel extends JPanel {
 
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				session.setOpen(SessionState.OPEN);
+				session.setSessionState(SessionState.OPEN);
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}

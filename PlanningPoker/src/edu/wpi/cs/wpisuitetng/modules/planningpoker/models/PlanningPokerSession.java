@@ -244,8 +244,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * 
 	 * @param isOpen open or closed boolean to set
 	 */
-	public void setOpen(SessionState isOpen) {
-		this.gameState = isOpen;
+	public void setSessionState(SessionState theState) {
+		this.gameState = theState;
 	}
 
 	/**
