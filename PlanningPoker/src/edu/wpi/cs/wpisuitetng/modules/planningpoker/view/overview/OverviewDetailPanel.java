@@ -97,7 +97,11 @@ public class OverviewDetailPanel extends JPanel {
 			}
 		});
 		
+<<<<<<< HEAD
 		btnEndVote.addActionListener(new ActionListener() {
+=======
+		btnOpen.addActionListener(new ActionListener() {
+>>>>>>> added end voting button
 			public void actionPerformed(ActionEvent e) {
 				getCurrentSession().setSessionState(SessionState.VOTINGENDED); 
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
