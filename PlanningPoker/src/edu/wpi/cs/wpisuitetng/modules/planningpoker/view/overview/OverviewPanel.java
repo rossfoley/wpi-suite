@@ -23,47 +23,22 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class OverviewPanel extends JSplitPane {
 
 	/**
-	 * Sets up directory table of planning poker sessions in system
+	 * Sets up directory tree of all planning poker sessions
 	 */
-	public OverviewPanel(boolean isOpen)
+	public OverviewPanel()
 	{
-		// Set the data for the overview table
-		OverviewTable table;
-		String[] columnNames = {"", "Name", "End Date", "Requirements", "Deck", "Creator"};
-		Object[][] data = {};
 
-		// Create the detail panel
-		OverviewDetailPanel detailPanel;
-
-		// Create the overview table and put it in a scroll pane
-		if (isOpen) { 
-			detailPanel = new OverviewDetailPanel(true);
-			table = new OpenOverviewTable(data, columnNames, detailPanel);
-			ViewEventController.getInstance().setOpenOverviewTable(table);
-			ViewEventController.getInstance().setOpenOverviewDetailPanel(detailPanel);
-		}
-		else {
-			detailPanel = new OverviewDetailPanel(false);
-			table = new ClosedOverviewTable(data, columnNames, detailPanel);
-			ViewEventController.getInstance().setClosedOverviewTable(table);
-			ViewEventController.getInstance().setClosedOverviewDetailPanel(detailPanel);
-		}
-		JScrollPane tablePanel = new JScrollPane(table);
-
-
-		// Set the widths of the columns
-		table.getColumnModel().getColumn(0).setMaxWidth(0); // ID
-		table.getColumnModel().getColumn(1).setMinWidth(150); // Name
-		table.getColumnModel().getColumn(2).setMaxWidth(80); // End Date
-		table.getColumnModel().getColumn(3).setMaxWidth(90); // Number of Requirements
-		table.getColumnModel().getColumn(4).setMaxWidth(70); // Deck
-		table.getColumnModel().getColumn(5).setMaxWidth(120); // Creator
+		// Create the tree panel and detail panel
+		OverviewTreePanel treePanel = new OverviewTreePanel();
+		OverviewDetailPanel detailPanel = new OverviewDetailPanel();
 		
 		// Put the overview table and sidebar into the tab
-		this.setLeftComponent(tablePanel);
+		this.setLeftComponent(treePanel);
 		this.setRightComponent(detailPanel);
-		this.setResizeWeight(0);  // set the right screen to not show by default
+		this.setResizeWeight(0.2);  // set the right screen to not show by default
 
+		ViewEventController.getInstance().setOverviewTree(treePanel);
+		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
 
 	}
 
