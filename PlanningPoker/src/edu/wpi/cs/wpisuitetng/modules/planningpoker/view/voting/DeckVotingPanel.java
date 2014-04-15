@@ -112,13 +112,15 @@ private void buildDefaultVotingPanel() {
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
 		estimateField.setToolTipText("Enter Estimation Here");
 		estimateField.setValue(new Double(0));
-		//estimateField.setPreferredSize(new Dimension(26, 26));
 		estimateField.addPropertyChangeListener("value", this);
 
 		estimateField.setPreferredSize(new Dimension(200, 100));
 
 		submitButton = new JButton("Submit Estimation");
+<<<<<<< HEAD
 		submitButton.setPreferredSize(new Dimension(26, 26));
+=======
+>>>>>>> more unified GUI for estimating a requirement without a deck
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -149,15 +151,17 @@ private void buildDefaultVotingPanel() {
 		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
 		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, subPanel);
 		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
-		subPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, -10, SpringLayout.SOUTH, subPanel);
-
+		subPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, -10, SpringLayout.NORTH, submitButton);
+		subPanelLayout.putConstraint(SpringLayout.WEST, submitButton, -70, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.EAST, submitButton, 70, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, subPanel);
+		
+		subPanel.add(submitButton);
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
 
 		add(estimateFieldErrorMessage, BorderLayout.EAST);
-		add(subPanel, BorderLayout.CENTER);		
-		add(submitButton, BorderLayout.SOUTH);
-		
+		add(subPanel, BorderLayout.CENTER);				
 	}
 
 
