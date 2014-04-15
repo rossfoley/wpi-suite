@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -46,7 +47,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.SelectFromListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementType;
@@ -56,6 +60,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 import javax.swing.JCheckBox;
 
 public class PlanningPokerSessionTab extends JPanel {
+	private List<Requirement> requirements;
 	private final PlanningPokerSession pokerSession;
 
 	private final SpringLayout layout = new SpringLayout();
@@ -104,7 +109,43 @@ public class PlanningPokerSessionTab extends JPanel {
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
 	}
-
+	public List<Requirement> PrePouplateRequirements() {
+		System.out.println("In Populate Requirements");
+		
+		// Get singleton instance of Requirements Controller
+		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
+		// Manually force a population of the list of requirements in the requirement model
+		requirementsController.retrieveRequirements();
+		
+		// Get the singleton instance of the requirement model to steal it's list of requirements.
+		RequirementModel requirementModel = RequirementModel.getInstance();
+		try {
+			// Steal list of requirements from requirement model muhahaha.
+			List<Requirement> reqsList = requirementModel.getRequirements();
+			List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
+			while(reqsList.isEmpty()){
+				requirementsController.retrieveRequirements();
+				reqsList = requirementModel.getRequirements();
+				if(!reqsList.isEmpty()){
+					break;
+				}
+			}
+			for (Requirement r:reqsList){
+				if (r.getIteration().equals("Backlog")){
+					reqsInBacklog.add(r);
+					System.out.println(r.getName());
+				}
+				System.out.println(r.getName());
+			} 
+			System.out.println("End of the 4 loop");
+			this.requirements = reqsInBacklog;
+		
+		}
+		catch (Exception e) {
+			System.out.println("Populaton requirement exception");
+		}
+		return requirements;
+	}
 	/**
 	 * Constructor for editing an existing planning poker session
 	 */

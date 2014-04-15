@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.SelectFromListPanelDatabase;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,6 +37,7 @@ import java.awt.event.MouseEvent;
 public class SelectFromListPanel extends JPanel{
 	
 	// define variables
+	private Timer databaseTimer; 
 	private List<Requirement> requirements;
 	private LinkedList<Requirement> unSelected;
 	private LinkedList<Requirement> selected;
@@ -81,6 +84,7 @@ public class SelectFromListPanel extends JPanel{
 				validButtons();
 			}
 		});
+		this.databaseTimer = new Timer();
 		populateRequirements();
 		this.updateUI();
 		//initialize the main requirement lists
@@ -448,6 +452,11 @@ public class SelectFromListPanel extends JPanel{
 			// Steal list of requirements from requirement model muhahaha.
 			List<Requirement> reqsList = requirementModel.getRequirements();
 			List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
+			if(reqsList.isEmpty()){
+				SelectFromListPanelDatabase item = new SelectFromListPanelDatabase();
+				item.run();
+			}
+			/*
 			while(reqsList.isEmpty()){
 				requirementsController.retrieveRequirements();
 				reqsList = requirementModel.getRequirements();
@@ -455,6 +464,7 @@ public class SelectFromListPanel extends JPanel{
 					break;
 				}
 			}
+			*/
 			for (Requirement r:reqsList){
 				if (r.getIteration().equals("Backlog")){
 					reqsInBacklog.add(r);
