@@ -228,7 +228,7 @@ public class VotingPage extends JSplitPane {
 
 		layout.putConstraint(SpringLayout.SOUTH, reqDetailPanel, -10, SpringLayout.NORTH, votingPanel);
 		
-		layout.putConstraint(SpringLayout.NORTH, votingPanel, -200, SpringLayout.SOUTH, voteOnReqPanel);
+		layout.putConstraint(SpringLayout.NORTH, votingPanel, -275, SpringLayout.SOUTH, voteOnReqPanel);
 
 		voteOnReqPanel.add(reqDetailPanel);
 		voteOnReqPanel.add(votingPanel);

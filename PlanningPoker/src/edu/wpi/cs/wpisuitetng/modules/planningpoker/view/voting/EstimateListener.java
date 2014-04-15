@@ -7,6 +7,7 @@ import java.util.EventListener;
  */
 public class EstimateListener implements EventListener {
 	private double estimate;
+	
 	/**
 	 *  Called whenever an estimate has been submitted by an
 	 *  EstimateEvent source object 
@@ -14,4 +15,9 @@ public class EstimateListener implements EventListener {
 	public void estimateSubmitted(EstimateEvent e) {
 		this.estimate = e.getEstimate();
 	}
+	
+	public double getEstimate() {
+		return this.estimate;
+	}
+	
 }
