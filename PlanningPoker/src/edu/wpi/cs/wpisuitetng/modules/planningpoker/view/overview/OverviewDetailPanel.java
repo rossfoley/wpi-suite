@@ -97,7 +97,7 @@ public class OverviewDetailPanel extends JPanel {
 			}
 		});
 		
-		btnOpen.addActionListener(new ActionListener() {
+		btnEndVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getCurrentSession().setSessionState(SessionState.VOTINGENDED); 
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
