@@ -46,7 +46,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 						public void run() {
 							CheckForUpdatesController.getInstance().checkForUpdates();							
 						}
-					}, 0, 1000);
+					}, 0, 10000);
 				}
 			});
 			t.setDaemon(true);
