@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CheckForUpdatesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -21,6 +22,20 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 
 	private PlanningPokerSessionModel() {
 		planningPokerSessions = new ArrayList<PlanningPokerSession>();
+		System.out.println("Initialize the model for planning poker");
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				while (true) {
+					System.out.println("Checking for updates");
+					CheckForUpdatesController.getInstance().checkForUpdates();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 
 	public static PlanningPokerSessionModel getInstance() {

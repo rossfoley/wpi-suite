@@ -9,6 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 public class PlanningPokerSessionEntityManager implements EntityManager<PlanningPokerSession> {
 	
 	Data db;
+	HashMap<String, Boolean> clientsUpdated = new HashMap<String, Boolean>();
 	
 	public PlanningPokerSessionEntityManager(Data db) {
 		this.db = db;
@@ -37,6 +40,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		if(!db.save(newSession, s.getProject())) {
 			throw new WPISuiteException();
 		}
+		setClientsUpdated(true);
 		return newSession;
 	}
 
@@ -90,6 +94,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 			throw new WPISuiteException();
 		}
 		
+		setClientsUpdated(true);
 		return existingSession;
 	}
 
@@ -98,16 +103,19 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 */
 	@Override
 	public void save(Session s, PlanningPokerSession model) throws WPISuiteException {
+		setClientsUpdated(true);
 		db.save(model);
 	}
 
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
+		setClientsUpdated(true);
 		return db.delete(getEntity(s, id)[0]) != null;
 	}
 	
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
+		setClientsUpdated(true);
 		db.deleteAll(new PlanningPokerSession(), s.getProject());
 	}
 
@@ -117,10 +125,31 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 	
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
+	public String advancedGet(Session s, String[] args) throws WPISuiteException {
+		// Remove the Advanced/PlanningPokerSession part of the args
+		System.out.println("Advanced get was called!");
+		args = Arrays.copyOfRange(args, 2, args.length);
+		switch (args[0]) {
+			case "check-for-update":
+				System.out.println("Client" + s.getSessionId() + " is checking for updates");
+				return checkForUpdate(s.getSessionId());
+			default:
+				System.out.println(args[0]);
+		}
 		return null;
+	}
+
+	private String checkForUpdate(String sessionId) {
+		if (!clientsUpdated.containsKey(sessionId)) {
+			clientsUpdated.put(sessionId, true);
+		}
+		return clientsUpdated.get(sessionId).toString();
+	}
+	
+	private void setClientsUpdated(boolean value) {
+		for (String key : clientsUpdated.keySet()) {
+			clientsUpdated.put(key, value);
+		}
 	}
 
 	@Override
