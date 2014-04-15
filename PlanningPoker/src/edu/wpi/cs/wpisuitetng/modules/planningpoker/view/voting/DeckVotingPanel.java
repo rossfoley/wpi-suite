@@ -98,9 +98,9 @@ public class DeckVotingPanel extends JPanel
 	}
 
 
-	/**
-	 * Builds a voting panel where the user inputs a number for their vote 
-	 */
+/**
+ * Builds a voting panel where the user inputs a number for their vote 
+ */
 private void buildDefaultVotingPanel() {
 		estimateFieldErrorMessage.setForeground(Color.RED);
 		SpringLayout defaultPanelLayout = new SpringLayout(); 
@@ -114,6 +114,7 @@ private void buildDefaultVotingPanel() {
 		estimateField.setValue(new Double(0));
 		//estimateField.setPreferredSize(new Dimension(26, 26));
 		estimateField.addPropertyChangeListener("value", this);
+
 		estimateField.setPreferredSize(new Dimension(200, 100));
 
 		submitButton = new JButton("Submit Estimation");
@@ -141,7 +142,6 @@ private void buildDefaultVotingPanel() {
 
 		JPanel subPanel = new JPanel();
 		subPanel.setPreferredSize(new Dimension(400, 100));
-		
 		SpringLayout subPanelLayout = new SpringLayout();
 		subPanel.setLayout(subPanelLayout);
 		
@@ -153,10 +153,7 @@ private void buildDefaultVotingPanel() {
 
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
-		
-		//estimateFieldErrorMessage.setLabelFor(estimateField);
-		//add(estimateLabel, BorderLayout.WEST);
-		//add(estimateField, BorderLayout.CENTER);
+
 		add(estimateFieldErrorMessage, BorderLayout.EAST);
 		add(subPanel, BorderLayout.CENTER);		
 		add(submitButton, BorderLayout.SOUTH);
