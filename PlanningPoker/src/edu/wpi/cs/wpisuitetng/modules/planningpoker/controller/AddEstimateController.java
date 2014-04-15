@@ -47,7 +47,7 @@ public class AddEstimateController {
 	 * This method adds a Session to the server.
 	 * @param newSession is the PlanningPokerSession to be added to the server.
 	 */
-	public void addPlanningPokerSession(Estimate newSession) 
+	public void addEstimate(Estimate newSession) 
 	{
 		final Request request = Network.getInstance().makeRequest("planningpoker/estimate", HttpMethod.PUT); // PUT == create
 		request.setBody(newSession.toJSON()); // put the new estimate in the body of the request

@@ -17,6 +17,10 @@ import java.util.UUID;
 import javax.swing.AbstractListModel;
 
 
+
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEstimateController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class EstimateModel extends AbstractListModel {
@@ -45,7 +49,7 @@ public class EstimateModel extends AbstractListModel {
 		estimates.add(newEstimate);
 		try 
 		{
-			//AddEstimateController.getInstance().addEstimate(newEstimate);
+			AddEstimateController.getInstance().addEstimate(newEstimate);
 		}
 		catch(Exception e)
 		{
@@ -64,7 +68,7 @@ public class EstimateModel extends AbstractListModel {
 		estimates.add(currentSession);
 		try 
 		{
-			//UpdateEstimateController.getInstance().updateEstimate(currentSession);
+			UpdateEstimateController.getInstance().updateEstimate(currentSession);
 		}
 		catch(Exception e)
 		{
