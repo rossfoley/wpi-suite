@@ -48,6 +48,8 @@ import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.Box;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 
 
 /**
@@ -100,16 +102,12 @@ public class DeckVotingPanel extends JPanel
 	 * Builds a voting panel where the user inputs a number for their vote 
 	 */
 	private void buildDefaultVotingPanel() {
-
 		SpringLayout defaultPanelLayout = new SpringLayout(); 
 
 		// Create the text field for the estimation number
 		NumberFormat estimateFormat = NumberFormat.getNumberInstance();
 		estimateField = new JFormattedTextField(estimateFormat);
-		defaultPanelLayout.putConstraint(SpringLayout.NORTH, estimateField, 104, SpringLayout.NORTH, this);
-		defaultPanelLayout.putConstraint(SpringLayout.WEST, estimateField, -261, SpringLayout.EAST, this);
-		defaultPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, 184, SpringLayout.NORTH, this);
-		defaultPanelLayout.putConstraint(SpringLayout.EAST, estimateField, -193, SpringLayout.EAST, this);
+		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
 		estimateField.setToolTipText("Enter Estimation Here");
 		estimateField.setValue(new Double(0));
@@ -118,7 +116,6 @@ public class DeckVotingPanel extends JPanel
 		// Create submission button
 		submitButton = new JButton("Submit Estimation");
 		submitButton.setPreferredSize(new Dimension(26, 26));
-		//submitButton.setVerticalAlignment(SwingConstants.BOTTOM);
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -129,34 +126,33 @@ public class DeckVotingPanel extends JPanel
 		});
 		// Setup error message display
 		estimateFieldErrorMessage.setForeground(Color.RED);
-		// Add Label for estimation number
-		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
-		estimateLabel.setLabelFor(estimateField);
-
-		add(estimateFieldErrorMessage, BorderLayout.EAST);
 		submitButton = new JButton("Submit Estimation");
 		submitButton.setPreferredSize(new Dimension(50, 26));
-		
-		
-		setLayout(defaultPanelLayout);
-		//this.setLayout(new BorderLayout(0, 0));
 		// Add Label for estimation number
+
 		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
+		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
+		setLayout(new BorderLayout(10, 10));
+
+		JPanel subPanel = new JPanel();
+		subPanel.setPreferredSize(new Dimension(400, 150));
 		
-		defaultPanelLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
-		defaultPanelLayout.putConstraint(SpringLayout.EAST, submitButton, -10, SpringLayout.EAST, this);
-		defaultPanelLayout.putConstraint(SpringLayout.WEST, submitButton, 10, SpringLayout.WEST, this);
+		SpringLayout subPanelLayout = new SpringLayout();
+		subPanel.setLayout(subPanelLayout);
 		
-		defaultPanelLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, this);
-		double width = this.getSize().getWidth();
+		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
+		subPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, -10, SpringLayout.SOUTH, subPanel);
+
+		subPanel.add(estimateLabel);
+		subPanel.add(estimateField);
 		
-		System.out.println(width);
-		
-		add(estimateLabel);
-		add(estimateField);
-		add(submitButton);
-		
+
+		add(subPanel, BorderLayout.CENTER);		
+		add(submitButton, BorderLayout.SOUTH);
 		
 	}
 
