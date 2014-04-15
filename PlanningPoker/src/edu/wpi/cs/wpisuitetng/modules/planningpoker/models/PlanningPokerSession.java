@@ -88,7 +88,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public PlanningPokerSession () {
 		this.name = "Planning Poker " + this.makeDefaultName();
-		this.gameState = PlanningPokerSession.SessionState.CLOSED;
+		this.gameState = PlanningPokerSession.SessionState.PENDING;
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 		this.defaultSessionName = new String(this.name.toString());
