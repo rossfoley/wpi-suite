@@ -194,6 +194,18 @@ public class PlanningPokerSession extends AbstractModel {
 		}
 	}
 	/**
+	 * @return a boolean indicating if the session is pending
+	 */
+	
+	public boolean isPending() {
+		if (gameState == SessionState.PENDING) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	/**
 	 * Creates the default name for the session.
 	 * 
 	 * @return the initial ID

@@ -86,6 +86,9 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			if (sessions.get(i).isOpen()) {
 				openSessions.add(newSessionNode);
 			}
+			else if (sessions.get(i).isPending()) {
+				pendingSessions.add(newSessionNode);
+			}
 			else {
 				closedSessions.add(newSessionNode);
 			}
