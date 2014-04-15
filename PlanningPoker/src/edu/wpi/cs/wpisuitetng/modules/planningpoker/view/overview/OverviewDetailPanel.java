@@ -80,7 +80,7 @@ public class OverviewDetailPanel extends JPanel {
 		// Buttons are visible by default
 		btnVote.setVisible(true);
 		btnOpen.setVisible(true);
-		btnEdit.setVisible(true);
+		btnEdit.setVisible(false);
 		
 		// create button action listeners
 		btnVote.addActionListener(new ActionListener() {
@@ -223,8 +223,13 @@ public class OverviewDetailPanel extends JPanel {
 		*/
 	}
 
-
-	
+	/**
+	 * 
+	 * @return editButton
+	 */
+	public JButton getEditButton() {
+		return this.btnEdit;
+	}
 	
 	public PlanningPokerSession getCurrentSession() {
 		
