@@ -109,7 +109,7 @@ public class OverviewDetailPanel extends JPanel {
 		infoPanel.add(lblCreatorName); */
 		
 		add(infoPanel);
-		infoPanel.add(lblRequirementsLabel); 
+		infoPanel.add(lblRequirementsLabel);
 		infoPanel.add(listContainer);
 		infoPanel.add(lblSessionName);
 		infoPanel.add(lblEndDate);
@@ -137,7 +137,7 @@ public class OverviewDetailPanel extends JPanel {
 		
 		// Change requirements list
 		this.listModel.clear();
-		if (session.requirementsGetSize() > 0) 
+		if (session.requirementsGetSize() > 0)
 		{
 			for (Integer id : requirements) {
 				Requirement requirement = RequirementModel.getInstance().getRequirement(id);
