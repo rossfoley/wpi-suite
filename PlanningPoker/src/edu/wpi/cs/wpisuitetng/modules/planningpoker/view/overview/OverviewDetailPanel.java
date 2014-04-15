@@ -81,6 +81,7 @@ public class OverviewDetailPanel extends JPanel {
 		btnVote.setVisible(true);
 		btnOpen.setVisible(true);
 		btnEdit.setVisible(false);
+		btnEndVote.setVisible(false);
 		
 		// create button action listeners
 		btnVote.addActionListener(new ActionListener() {
@@ -229,6 +230,14 @@ public class OverviewDetailPanel extends JPanel {
 	 */
 	public JButton getEditButton() {
 		return this.btnEdit;
+	}
+	
+	/**
+	 * 
+	 * @return endButton
+	 */
+	public JButton getEndVoteButton() {
+		return this.btnEndVote;
 	}
 	
 	public PlanningPokerSession getCurrentSession() {
