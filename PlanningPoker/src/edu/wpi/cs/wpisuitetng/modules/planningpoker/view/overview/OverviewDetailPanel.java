@@ -48,8 +48,8 @@ public class OverviewDetailPanel extends JSplitPane {
 		this.setBottomComponent(reqTable);
 		this.setResizeWeight(0.2);  // set the right screen to not show by default
 
-		ViewEventController.getInstance().setOverviewTree(treePanel);
-		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+		ViewEventController.getInstance().setOverviewDetailInfoPanel(infoPanel);
+		ViewEventController.getInstance().setOverviewReqTable(reqTable);
 
 				
 	}
