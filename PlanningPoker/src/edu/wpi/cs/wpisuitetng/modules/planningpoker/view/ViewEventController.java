@@ -100,6 +100,13 @@ public class ViewEventController {
 	public OverviewTreePanel getOverviewTreePanel() {
 		return this.overviewTreePanel;
 	}
+	
+	/**
+	 * @return OverviewDetailPanel
+	 */
+	public OverviewDetailPanel getOverviewDetailPanel() {
+		return this.overviewDetailPanel;
+	}
 
 	/**
 	 * Removes the tab for the given JComponent
