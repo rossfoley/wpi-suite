@@ -77,6 +77,27 @@ public class OverviewDetailPanel extends JPanel {
 		btnOpen.setVisible(false);
 		btnEdit.setVisible(false);
 		
+		// create button action listeners
+		btnVote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			// TODO bro
+			}
+		});
+
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getCurrentSession().setOpen(true);
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
+				ViewEventController.getInstance().refreshTable();
+			}
+		});
+		
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Have the event controller open a new edit session tab
+				ViewEventController.getInstance().editSession(getCurrentSession());
+			}
+		});
 		
 		/* JLabel lblDeckName = new JLabel("Deck Name:");
 		lblDeckName.setBounds(10, 110, 258, 14);
@@ -134,47 +155,27 @@ public class OverviewDetailPanel extends JPanel {
 			endDate = new String("No end date");
 		}
 		
-		//System.out.println(endDate);
 		this.lblEndDate.setText(endDate);
 
+		// change the visibility of the top buttons
+		setButtonVisibility(session);
 		
-		btnVote.setVisible(false);
-		btnOpen.setVisible(false);
-		
-		
-		btnVote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			// TODO bro
-			}
-		});
-
-		btnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				session.setOpen(true);
-				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
-				ViewEventController.getInstance().refreshTable();
-			}
-		});
-		
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Have the event controller open a new edit session tab
-				ViewEventController.getInstance().editSession(getCurrentSession());
-			}
-		});
-		
-		// Check if the buttons should appear
-/*
-		btnEdit.isVisible(false);
-		if (session.isEditable()) {
-			btnEdit.isVisible(true);
-		}
-*/
 		// redraw panel
 		infoPanel.revalidate();
 		infoPanel.repaint();
-		
+	}	
+	
+	private void setButtonVisibility(PlanningPokerSession session) {
+		// Check if the buttons should appear
+		/*
+			btnEdit.isVisible(false);
+			if (session.isEditable()) {
+				btnEdit.isVisible(true);
+			}
+		*/
 	}
+
+
 	
 	
 	public PlanningPokerSession getCurrentSession() {
