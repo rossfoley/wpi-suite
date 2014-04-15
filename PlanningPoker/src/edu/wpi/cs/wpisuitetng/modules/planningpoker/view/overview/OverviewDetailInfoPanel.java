@@ -7,6 +7,7 @@ import javax.swing.JSplitPane;
 
 import java.awt.GridLayout;
 import java.text.DateFormat;
+import java.util.GregorianCalendar;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -114,15 +115,20 @@ public class OverviewDetailInfoPanel extends JPanel {
 		String endDate, endTime;
 		// Change end date
 		try {
-			endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(session.getEndDate());
+			endDate = DateFormat.getDateInstance(DateFormat.FULL).format(session.getEndDate().getTime());
 		} catch (NullPointerException ex) {
 			endDate = new String("No end date");
 		}
-		endDateDisplay.setText(endDate);
+		endDateDisplay.setText(endDate);		
 		
 		// Change end time
 		try {
-			endTime = DateFormat.getDateInstance(DateFormat.MEDIUM).format(session.getEndDate());
+			GregorianCalendar sessionDate = session.getEndDate();
+			String hour = Integer.toString(sessionDate.HOUR);
+			String minute = Integer.toString(sessionDate.MINUTE);
+			String am_pm = Integer.toString(sessionDate.AM);
+			endTime = hour + ":" + minute + am_pm;
+			
 		} catch (NullPointerException ex) {
 			endTime = new String("No end date");
 		}

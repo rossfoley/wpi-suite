@@ -97,9 +97,10 @@ public class OverviewReqTable extends JTable {
 
 		for (Integer requirementID : requirementIDs) {
 			Requirement req = reqs.getRequirement(requirementID);
+			String reqName = req.getName();
 
 			tableModel.addRow(new Object[]{
-					req.getName(),
+					reqName,
 					estimate});	
 		}
 		// indicate that refresh is no longer affecting the table
