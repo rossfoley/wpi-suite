@@ -35,6 +35,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -93,42 +94,63 @@ public class DeckVotingPanel extends JPanel
 	}
 
 
-	/**
-	 * Builds a voting panel where the user inputs a number for their vote 
-	 */
-	private void buildDefaultVotingPanel() {
+/**
+ * Builds a voting panel where the user inputs a number for their vote 
+ */
+private void buildDefaultVotingPanel() {
+		estimateFieldErrorMessage.setForeground(Color.RED); 
+
 		// Create the text field for the estimation number
 		NumberFormat estimateFormat = NumberFormat.getNumberInstance();
 		estimateField = new JFormattedTextField(estimateFormat);
-		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
+		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
 		estimateField.setToolTipText("Enter Estimation Here");
 		estimateField.setValue(new Double(0));
-		estimateField.setPreferredSize(new Dimension(26, 26));
 		estimateField.addPropertyChangeListener("value", this);
-		// Create submission button
+
+		estimateField.setPreferredSize(new Dimension(200, 100));
+
 		submitButton = new JButton("Submit Estimation");
-		submitButton.setPreferredSize(new Dimension(26, 26));
-		submitButton.setVerticalAlignment(SwingConstants.BOTTOM);
+		submitButton.setPreferredSize(new Dimension(50, 26));
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (validateEstimate()) {
 					fireEstimateEvent();
 				}
-			}
 		});
+
 		// Setup error message display
 		estimateFieldErrorMessage.setForeground(Color.RED);
-		setLayout(new BorderLayout(0, 0));
+
 		// Add Label for estimation number
 		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
+		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
-		estimateFieldErrorMessage.setLabelFor(estimateField);
-		add(estimateLabel, BorderLayout.WEST);
-		add(estimateField, BorderLayout.CENTER);
+		setLayout(new BorderLayout(10, 10));
+
+		JPanel subPanel = new JPanel();
+		subPanel.setPreferredSize(new Dimension(400, 100));
+		SpringLayout subPanelLayout = new SpringLayout();
+		subPanel.setLayout(subPanelLayout);
+		
+		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
+		subPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, -10, SpringLayout.NORTH, submitButton);
+		subPanelLayout.putConstraint(SpringLayout.WEST, submitButton, -70, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.EAST, submitButton, 70, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		subPanelLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, subPanel);
+		
+		subPanel.add(submitButton);
+		subPanel.add(estimateLabel);
+		subPanel.add(estimateField);
+
 		add(estimateFieldErrorMessage, BorderLayout.EAST);
-		add(submitButton, BorderLayout.SOUTH);
+		add(subPanel, BorderLayout.CENTER);				
 	}
+
 
 	/**
 	 * Builds a deck based voting panel 
@@ -352,9 +374,11 @@ public class DeckVotingPanel extends JPanel
 		}
 	}
 
+
 	/**
 	 * Register a listener for EstimateEvents
 	 */
+
 	synchronized public void addEstimateListener(EstimateListener l) {
 		if (listeners == null) {
 			listeners = new Vector<EstimateListener>();
