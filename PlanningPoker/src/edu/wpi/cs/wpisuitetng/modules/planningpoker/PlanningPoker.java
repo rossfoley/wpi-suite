@@ -68,5 +68,5 @@ public class PlanningPoker implements IJanewayModule {
 	public List<JanewayTabModel> getTabs() {
 		return tabs;
 	}
-
+	
 }
