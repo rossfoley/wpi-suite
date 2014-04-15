@@ -13,9 +13,11 @@ import javax.swing.tree.TreePath;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewEndVotePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
@@ -36,6 +38,8 @@ public class ViewEventController {
 	private OverviewDetailPanel overviewDetailPanel = null;
 	private OverviewEndVotePanel overviewEndVotePanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
+	private OverviewDetailInfoPanel overviewDetailInfoPanel;
+	private OverviewReqTable overviewReqTable;
 	
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -60,6 +64,13 @@ public class ViewEventController {
 		this.overviewDetailPanel = overviewDetailPanel;
 	}
 	
+	public void setDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
+		this.overviewDetailInfoPanel = infoPanel;
+	}
+	
+	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
+		this.overviewReqTable = overviewReqTable;
+	}
 	public void setOverviewEndVotePanel(OverviewEndVotePanel overviewEndVotePanel) {
 		this.overviewEndVotePanel = overviewEndVotePanel;
 	}
