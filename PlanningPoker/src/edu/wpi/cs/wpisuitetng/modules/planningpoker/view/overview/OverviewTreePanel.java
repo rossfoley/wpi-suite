@@ -196,7 +196,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		{
 			try 
 			{
-				GetRequirementsController.getInstance().retrieveRequirements();
 				GetSessionController.getInstance().retrieveSessions();
 				initialized = true;
 			}
