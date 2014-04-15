@@ -34,27 +34,35 @@ import javax.swing.JSplitPane;
 
 public class OverviewDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
+	OverviewDetailInfoPanel infoPanel;
+	OverviewReqTable reqTable;
 
 	public OverviewDetailPanel () {
 
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
+		String[] columnNames = {"Name", "Estimate"};
+		Object[][] data = {};
+		
 		// Create the info panel and table panel
-		OverviewDetailInfoPanel infoPanel = new OverviewDetailInfoPanel();
-		OverviewReqTable reqTable = new OverviewReqTable();
+		infoPanel = new OverviewDetailInfoPanel();
+		reqTable = new OverviewReqTable(data, columnNames);
 		
 		// Put the overview table and sidebar into the tab
 		this.setTopComponent(infoPanel);
 		this.setBottomComponent(reqTable);
 		this.setResizeWeight(0.2);  // set the right screen to not show by default
 
-		ViewEventController.getInstance().setOverviewTree(treePanel);
-		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+		ViewEventController.getInstance().setOverviewDetailInfoPanel(infoPanel);
+		ViewEventController.getInstance().setOverviewReqTable(reqTable);
 
 				
 	}
 	
 	public void updatePanel(final PlanningPokerSession session)	{
+		
+		updateInfoPanel(session);
+		updateReqTable(session);
 		
 		this.currentSession = session;
 		String endDate = "No end date";
@@ -94,6 +102,10 @@ public class OverviewDetailPanel extends JSplitPane {
 		infoPanel.repaint();
 	}	
 	
+	private void updateReqTable(PlanningPokerSession session) {
+		reqTable.refresh(session);
+	}
+
 	private void setButtonVisibility(PlanningPokerSession session) {
 		// Check if the buttons should appear
 		/*
@@ -103,8 +115,6 @@ public class OverviewDetailPanel extends JSplitPane {
 			}
 		*/
 	}
-
-
 	
 	
 	public PlanningPokerSession getCurrentSession() {
