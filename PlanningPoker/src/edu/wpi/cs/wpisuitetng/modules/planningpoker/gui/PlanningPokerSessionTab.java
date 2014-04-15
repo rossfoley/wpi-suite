@@ -57,6 +57,7 @@ import javax.swing.JCheckBox;
 
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
+	private final PlanningPokerSession unmodifiedSession = new PlanningPokerSession();
 
 	private final SpringLayout layout = new SpringLayout();
 	private SpringLayout firstPanelLayout = new SpringLayout();
@@ -117,6 +118,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Update the fields current deck being used
 		this.isUsingDeck = existingSession.isUsingDeck();
 		this.sessionDeck = existingSession.getSessionDeck();
+		
+		// Create 
+		unmodifiedSession.copyFrom(existingSession);
 
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
@@ -631,11 +635,11 @@ public class PlanningPokerSessionTab extends JPanel {
 	{
 		boolean fieldsChanged = false;
 		// Check if the submit button was clicked
-		if (this.submitSession) {
+		if (submitSession) {
 			return true;
 		}
 		// Otherwise check if data was modified
-		if (this.viewMode == ViewMode.CREATING) {
+		if (viewMode == ViewMode.CREATING) {
 			fieldsChanged = anythingChangedCreating();
 		}
 		else {
@@ -669,8 +673,14 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 		}
 		// Check if the user has changed the description
-		if (!(textFieldDescription.getText().equals("")))
+		if (!(textFieldDescription.getText().equals(""))) {
 			return true;
+		}
+		// Check if an endDate has been set (default for creating is no endDate)
+		// Check if a deck was selected (default for creating is noDeck)
+		if (haveEndDate || isUsingDeck) {
+			return true;
+		}
 
 		return false;
 	}
@@ -681,13 +691,36 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * @return whether any fields have been changed.
 	 */
 	private boolean anythingChangedEditing() {
+		saveFields();
+		
 		// Check if the user has changed the session name
-		if (!(textFieldSessionField.getText().equals(pokerSession.getName())))
+		if (!unmodifiedSession.getName().equals(pokerSession.getName())) {
 			return true;
+		}
 		// Check if the user has changed the description
-		if (!(textFieldDescription.getText().equals(pokerSession.getDescription())))
+		if (!unmodifiedSession.getDescription().equals(pokerSession.getDescription())) {
 			return true;
-
+		}
+		// Check if an endDate has been changed
+		if (unmodifiedSession.hasEndDate() ^ pokerSession.hasEndDate()) {
+			return true;
+		}
+		if (unmodifiedSession.hasEndDate() &&	// If one date is set, the other is guaranteed to be set
+				(!unmodifiedSession.getEndDate().equals(pokerSession.getEndDate()))) {
+			return true;
+		}
+		// Check if the poker deck was changed
+		if ((unmodifiedSession.getSessionDeck() == null) ^ (pokerSession.getSessionDeck() == null)) {
+			return true;
+		}
+		if ((unmodifiedSession.getSessionDeck() != null) && // If one is null, both are null
+				(!unmodifiedSession.getSessionDeck().equals(pokerSession.getSessionDeck()))) {
+			return true;
+		}
+		// Check if the requirements were changed
+		if (!unmodifiedSession.getRequirementIDs().equals(pokerSession.getRequirementIDs())) {
+			return true;
+		}
 		return false;
 	}
 	
