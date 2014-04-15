@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -17,6 +18,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.SelectionEvent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.SelectionListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -36,6 +40,8 @@ import java.awt.event.MouseEvent;
 public class VotingPage extends JSplitPane {
 	private JTable reqsTable = new JTable();
 	private JPanel voteOnReqPanel = new JPanel();
+	
+	private VotingManager reqsView;
 
 	private SpringLayout layout = new SpringLayout();
 	private JPanel reqDetailPanel;
@@ -45,20 +51,49 @@ public class VotingPage extends JSplitPane {
 	private List<Requirement> reqsToVoteOn;
 
 	private DefaultTableModel tableModel;
+	
+	private transient Vector<SelectionListener> selectionListeners;
+	private Requirement requirement;
+	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;		
 		reqsToVoteOn = getSessionReqs();
-
+		
+		/*addSelectionListener(new SelectionListener() {
+			@Override
+			public void selectionMade(SelectionEvent e){
+				System.out.println("Got Selection Event:" + e.getRequirement().getName());
+				reqDetailPanel = makeReqDetailPanel(e.getRequirement());
+				
+				//buildReqPanel(e.getRequirement());
+			}
+			
+		});*/
 		buildReqPanel(null);
 
 		/*buildReqTable();
 		reqsTable.getColumnModel().getColumn(0).setMaxWidth(100); // voted on check
 		reqsTable.getColumnModel().getColumn(1).setMinWidth(100); // Name of req
 		refreshTable(); */
-		JScrollPane tablePanel = new JScrollPane(reqsTable);
-
+		//JScrollPane tablePanel = new JScrollPane(reqsTable);
+		
+		reqsView = new VotingManager(getSessionReqs(), estimates, ConfigManager.getConfig().getUserName());
+		reqsView.addSelectionListener(new SelectionListener() {
+			@Override
+			public void selectionMade(SelectionEvent e){
+				System.out.println("Got Selection Event:" + e.getRequirement().getName());
+				//reqDetailPanel = makeReqDetailPanel(e.getRequirement());
+				requirement = e.getRequirement();
+				buildReqPanel(requirement);
+				setRightComponent(voteOnReqPanel);
+			}
+			
+		});
+		JScrollPane tablePanel = new JScrollPane();
+		tablePanel.setViewportView(reqsView);
+		
 		tablePanel.setMinimumSize(new Dimension(200, 300));
 		voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
@@ -123,13 +158,15 @@ public class VotingPage extends JSplitPane {
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
 		JTextArea descriptionField = new JTextArea();
+		descriptionField.setBackground(Color.WHITE);
 
 		nameField.setEditable(false);
 		descriptionField.setEditable(false);
 
 		if (reqToVoteOn!=null){		
 			nameField.setText(reqToVoteOn.getName());
-			descriptionField.setText(reqToVoteOn.getDescription());
+			String description = reqToVoteOn.getDescription();
+			descriptionField.setText(description);
 		}
 		reqDetailLayout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, reqDetails);
 		reqDetailLayout.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);
@@ -213,6 +250,15 @@ public class VotingPage extends JSplitPane {
 			@Override	
 			public void estimateSubmitted(EstimateEvent e) {
 				System.out.println("Estimate submitted: " + e.getEstimate());
+					if (requirement != null){
+					Estimate estimate = new Estimate();
+					estimate.setOwnerName(ConfigManager.getConfig().getUserName());
+					estimate.setRequirementID(requirement.getId());
+					estimate.setProject(activeSession.getProject());
+					estimate.setVote((int)e.getEstimate());
+					estimates.add(estimate);
+					reqsView = new VotingManager(getSessionReqs(), estimates, ConfigManager.getConfig().getUserName());
+				}
 			}
 		});
 
@@ -256,6 +302,22 @@ public class VotingPage extends JSplitPane {
 
 		System.out.println("finished refreshing the table");		
 	} */
+	
+	synchronized public void addSelectionListener(SelectionListener l) {
+		if (this.selectionListeners == null) {
+			this.selectionListeners = new Vector<SelectionListener>();
+		}
+		this.selectionListeners.addElement(l);
+	}  
 
-
+	/** Remove a listener for EstimateEvents */
+	synchronized public void removeSelectionListener(SelectionListener l) {
+		if (this.selectionListeners == null) {
+			this.selectionListeners = new Vector<SelectionListener>();
+		}
+		else {
+			this.selectionListeners.removeElement(l);
+		}
+	}
+	
 }
