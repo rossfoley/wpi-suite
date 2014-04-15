@@ -46,10 +46,6 @@ import javax.swing.SwingConstants;
 
 import java.awt.Font;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 
 
 /**
@@ -102,8 +98,7 @@ public class DeckVotingPanel extends JPanel
  * Builds a voting panel where the user inputs a number for their vote 
  */
 private void buildDefaultVotingPanel() {
-		estimateFieldErrorMessage.setForeground(Color.RED);
-		SpringLayout defaultPanelLayout = new SpringLayout(); 
+		estimateFieldErrorMessage.setForeground(Color.RED); 
 
 		// Create the text field for the estimation number
 		NumberFormat estimateFormat = NumberFormat.getNumberInstance();
@@ -117,10 +112,7 @@ private void buildDefaultVotingPanel() {
 		estimateField.setPreferredSize(new Dimension(200, 100));
 
 		submitButton = new JButton("Submit Estimation");
-<<<<<<< HEAD
-		submitButton.setPreferredSize(new Dimension(26, 26));
-=======
->>>>>>> more unified GUI for estimating a requirement without a deck
+		submitButton.setPreferredSize(new Dimension(50, 26));
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -128,15 +120,10 @@ private void buildDefaultVotingPanel() {
 				}
 		});
 
-		submitButton = new JButton("Submit Estimation");
-		submitButton.setPreferredSize(new Dimension(50, 26));
-
 		// Setup error message display
 		estimateFieldErrorMessage.setForeground(Color.RED);
-		submitButton = new JButton("Submit Estimation");
-		submitButton.setPreferredSize(new Dimension(50, 26));
-		// Add Label for estimation number
 
+		// Add Label for estimation number
 		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
 		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
