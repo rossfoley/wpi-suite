@@ -265,6 +265,12 @@ public class DeckVotingPanel extends JPanel
 				}
 			}
 		}
+		
+		highlightCard();
+		
+	}
+
+	private void highlightCard() {
 		layeredDeckPane.removeAll();
 		//This is the origin of the first label added.
 		Point origin = new Point(10, 20);
@@ -297,6 +303,7 @@ public class DeckVotingPanel extends JPanel
 		layeredDeckPane.repaint();
 		revalidate();
 		repaint();
+		
 	}
 
 	public void mouseDragged(MouseEvent e) {
