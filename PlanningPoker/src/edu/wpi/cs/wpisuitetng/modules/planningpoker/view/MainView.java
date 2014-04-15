@@ -22,6 +22,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewEndVotePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 
@@ -44,7 +46,8 @@ public class MainView extends JTabbedPane {
 	private JMenuItem closeAll = new JMenuItem("Close All Tabs");
 	private JMenuItem closeOthers = new JMenuItem("Close Others");
 
-
+	OverviewDetailPanel detailPanel;
+	OverviewEndVotePanel EndVotePanel;
 
 	/**
 	 * Adds main subtab when user goes to RequirementManager
@@ -244,5 +247,15 @@ public class MainView extends JTabbedPane {
 	public JMenuItem getCloseOthers() {
 		return closeOthers;
 	}
+	
+	public void setRightComponentToEndVotePanel() {
+		overviewPanel.setRightComponent(overviewPanel.getEndVotePanel());
+		ViewEventController.getInstance().setOverviewEndVotePanel(overviewPanel.getEndVotePanel());
+	}
+	public void setRightComponentToDetailPanel() {
+		overviewPanel.setRightComponent(overviewPanel.getDetailPanel());
+		ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel.getDetailPanel());
+
+		}
 
 }

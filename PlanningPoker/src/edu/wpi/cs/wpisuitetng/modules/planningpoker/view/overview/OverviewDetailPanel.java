@@ -100,7 +100,8 @@ public class OverviewDetailPanel extends JPanel {
 		
 		btnEndVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getCurrentSession().setSessionState(SessionState.VOTINGENDED);
+				ViewEventController.getInstance().getMainView().setRightComponentToEndVotePanel();
+				getCurrentSession().setSessionState(SessionState.VOTINGENDED); 
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}
@@ -112,15 +113,7 @@ public class OverviewDetailPanel extends JPanel {
 				ViewEventController.getInstance().editSession(getCurrentSession());
 			}
 		});
-		
-		/* JLabel lblDeckName = new JLabel("Deck Name:");
-		lblDeckName.setBounds(10, 110, 258, 14);
-		infoPanel.add(lblDeckName);
-		
-		JLabel lblCreatorName = new JLabel("Session Creator Name:");
-		lblCreatorName.setBounds(10, 160, 258, 14);
-		infoPanel.add(lblCreatorName); */
-		
+
 		add(infoPanel);
 		infoPanel.add(lblRequirementsLabel); 
 		infoPanel.add(listContainer);
