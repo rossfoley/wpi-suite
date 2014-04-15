@@ -64,7 +64,7 @@ public class ViewEventController {
 		this.overviewDetailPanel = overviewDetailPanel;
 	}
 	
-	public void setDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
+	public void setOverviewDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
 		this.overviewDetailInfoPanel = infoPanel;
 	}
 	
