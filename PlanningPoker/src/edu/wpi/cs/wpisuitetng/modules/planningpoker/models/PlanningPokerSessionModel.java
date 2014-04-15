@@ -6,6 +6,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import javax.swing.AbstractListModel;
@@ -19,23 +21,10 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 
 	private List<PlanningPokerSession> planningPokerSessions;
 	private static PlanningPokerSessionModel instance;
+	private boolean updateStarted = false;
 
 	private PlanningPokerSessionModel() {
 		planningPokerSessions = new ArrayList<PlanningPokerSession>();
-		System.out.println("Initialize the model for planning poker");
-		Thread t = new Thread(new Runnable() {
-			public void run() {
-				while (true) {
-					System.out.println("Checking for updates");
-					CheckForUpdatesController.getInstance().checkForUpdates();
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
 	}
 
 	public static PlanningPokerSessionModel getInstance() {
@@ -44,6 +33,25 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		}
 		return instance;
 
+	}
+	
+	public void startLiveUpdating() {
+		if (!updateStarted) {
+			updateStarted = true;
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					Timer timer = new Timer();
+					timer.scheduleAtFixedRate(new TimerTask() {
+						@Override
+						public void run() {
+							CheckForUpdatesController.getInstance().checkForUpdates();							
+						}
+					}, 0, 1000);
+				}
+			});
+			t.setDaemon(true);
+			t.run();
+		}
 	}
 
 	/**

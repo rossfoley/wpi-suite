@@ -127,11 +127,9 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	@Override
 	public String advancedGet(Session s, String[] args) throws WPISuiteException {
 		// Remove the Advanced/PlanningPokerSession part of the args
-		System.out.println("Advanced get was called!");
 		args = Arrays.copyOfRange(args, 2, args.length);
 		switch (args[0]) {
-			case "check-for-update":
-				System.out.println("Client" + s.getSessionId() + " is checking for updates");
+			case "check-for-updates":
 				return checkForUpdate(s.getSessionId());
 			default:
 				System.out.println(args[0]);
@@ -143,7 +141,11 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		if (!clientsUpdated.containsKey(sessionId)) {
 			clientsUpdated.put(sessionId, true);
 		}
-		return clientsUpdated.get(sessionId).toString();
+		if (clientsUpdated.get(sessionId)) {
+			clientsUpdated.put(sessionId, false);
+			return "true";
+		}
+		return "false";
 	}
 	
 	private void setClientsUpdated(boolean value) {
