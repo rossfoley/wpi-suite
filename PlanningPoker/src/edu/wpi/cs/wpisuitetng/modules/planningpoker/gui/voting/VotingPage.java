@@ -55,6 +55,7 @@ public class VotingPage extends JSplitPane {
 	private transient Vector<SelectionListener> selectionListeners;
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+	private JPanel reqDetails;
 
 
 	public VotingPage(PlanningPokerSession votingSession){
@@ -99,6 +100,7 @@ public class VotingPage extends JSplitPane {
 
 		this.setLeftComponent(tablePanel);
 		this.setRightComponent(voteOnReqPanel);
+		
 		this.setDividerLocation(225);		
 	}
 
@@ -148,12 +150,12 @@ public class VotingPage extends JSplitPane {
 	}
 
 	public JPanel makeReqDetailPanel(Requirement reqToVoteOn){
-		JPanel reqDetails = new JPanel();
-		SpringLayout reqDetailLayout = new SpringLayout();
-		reqDetails.setLayout(reqDetailLayout);
+		reqDetails = new JPanel();
+		SpringLayout sl_reqDetails = new SpringLayout();
+		reqDetails.setLayout(sl_reqDetails);
 
-		JLabel nameLabel = new JLabel("Requirement Name");
-		JLabel descriptionLabel = new JLabel("Description Name");
+		JLabel nameLabel = new JLabel("Requirement Name:");
+		JLabel descriptionLabel = new JLabel("Description Name:");
 
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
@@ -168,20 +170,20 @@ public class VotingPage extends JSplitPane {
 			String description = reqToVoteOn.getDescription();
 			descriptionField.setText(description);
 		}
-		reqDetailLayout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, reqDetails);
-		reqDetailLayout.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);
 
-		reqDetailLayout.putConstraint(SpringLayout.NORTH, nameField, 6, SpringLayout.SOUTH, nameLabel);
-		reqDetailLayout.putConstraint(SpringLayout.WEST, nameField, 0, SpringLayout.WEST, nameLabel);
-		reqDetailLayout.putConstraint(SpringLayout.EAST, nameField, -10, SpringLayout.EAST, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.NORTH, nameField, 6, SpringLayout.SOUTH, nameLabel);
+		sl_reqDetails.putConstraint(SpringLayout.WEST, nameField, 0, SpringLayout.WEST, nameLabel);
+		sl_reqDetails.putConstraint(SpringLayout.EAST, nameField, -10, SpringLayout.EAST, reqDetails);
 
-		reqDetailLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 6, SpringLayout.SOUTH, nameField);
-		reqDetailLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
+		sl_reqDetails.putConstraint(SpringLayout.NORTH, descriptionLabel, 6, SpringLayout.SOUTH, nameField);
+		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
 
-		reqDetailLayout.putConstraint(SpringLayout.NORTH, descriptionField, 6, SpringLayout.SOUTH, descriptionLabel);
-		reqDetailLayout.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
-		reqDetailLayout.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
-		reqDetailLayout.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.NORTH, descriptionField, 6, SpringLayout.SOUTH, descriptionLabel);
+		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
+		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
+		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
 
 		reqDetails.add(nameLabel);
 		reqDetails.add(descriptionLabel);
@@ -279,29 +281,7 @@ public class VotingPage extends JSplitPane {
 		voteOnReqPanel.add(reqDetailPanel);
 		voteOnReqPanel.add(votingPanel);
 	}
-  /*
-	public void refreshTable() {
 
-		// clear the table
-		tableModel.setRowCount(0);		
-
-		for (Requirement reqToEst:getSessionReqs()) {
-			String isReqEstimated;
-			// Handle if there was no end date set
-
-			if (isEstimated(reqToEst)){
-				isReqEstimated = "X";
-			}
-			else {
-				isReqEstimated = "  ";
-			}
-			tableModel.addRow(new Object[]{isReqEstimated, reqToEst.getName()});
-		}
-		// indicate that refresh is no longer affecting the table
-		//setChangedByRefresh(false);
-
-		System.out.println("finished refreshing the table");		
-	} */
 	
 	synchronized public void addSelectionListener(SelectionListener l) {
 		if (this.selectionListeners == null) {
