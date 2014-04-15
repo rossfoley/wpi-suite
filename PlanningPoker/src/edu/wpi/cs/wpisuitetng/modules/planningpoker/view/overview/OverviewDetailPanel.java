@@ -175,8 +175,8 @@ public class OverviewDetailPanel extends JPanel {
 		// change the visibility of the top buttons
 		setButtonVisibility(session);
 		
-
-		btnVote.setVisible(false);
+		
+		btnVote.setVisible(session.isOpen());
 		btnOpen.setVisible(false);
 		
 		
