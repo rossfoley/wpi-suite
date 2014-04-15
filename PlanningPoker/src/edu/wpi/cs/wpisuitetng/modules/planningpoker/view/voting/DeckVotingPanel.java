@@ -150,6 +150,7 @@ public class DeckVotingPanel extends JPanel
 		//Add several overlapping, card buttons to the layered pane
 		//using absolute positioning/sizing.
 		listOfCardButtons = new ArrayList<JButton>();
+		highlightCard(-1);
 		for (int i = 0; i < numbersInDeck.size(); i++) {
 			JButton cardButton = createCardButtons(numbersInDeck.get(i), origin);
 			layeredDeckPane.add(cardButton, new Integer(i));
@@ -266,18 +267,17 @@ public class DeckVotingPanel extends JPanel
 			}
 		}
 		
-		highlightCard();
-		
+		highlightCard(lastCard);
 	}
 
-	private void highlightCard() {
+	private void highlightCard(int card_index) {
 		layeredDeckPane.removeAll();
 		//This is the origin of the first label added.
 		Point origin = new Point(10, 20);
 
 		// Update card buttons in panel to highlight the moused-over card
 		for (int i = 0; i < listOfCardButtons.size(); i++) {
-			if (i == lastCard) {
+			if (i == card_index) {
 				origin.y += 30;
 			}
 			int cardValue = Integer.parseInt(listOfCardButtons.get(i).getName());
@@ -287,9 +287,9 @@ public class DeckVotingPanel extends JPanel
 				cardButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
 				cardButton.setBackground(Color.GREEN);	
 			}
-			this.listOfCardButtons.set(i, cardButton);
+			listOfCardButtons.set(i, cardButton);
 			// Set this card as the top cad if moused-over
-			if (i == this.lastCard) {
+			if (i == card_index) {
 				layeredDeckPane.add(cardButton, new Integer(this.listOfCardButtons.size() + 1));
 				origin.y -= 30;
 			}
