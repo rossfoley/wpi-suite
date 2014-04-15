@@ -39,6 +39,8 @@ public class OverviewPanel extends JSplitPane {
 
 		ViewEventController.getInstance().setOverviewTree(treePanel);
 		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+		
+		
 
 	}
 

@@ -30,103 +30,32 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-public class OverviewDetailPanel extends JPanel {
-	private JPanel infoPanel;
-	private JLabel lblSessionName;
-	private JLabel lblEndDate;
-	private DefaultListModel<Requirement> listModel;
-	private JList<Requirement> requirementsList;
-	private boolean isOpen;
-	private JButton btnOpen;
-	private JButton btnVote;
-	private JButton btnEdit;
-	private PlanningPokerSession currentSession;
-	
-	public OverviewDetailPanel() {
-		
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		infoPanel = new JPanel();
-		infoPanel.setLayout(null);
-		listModel = new DefaultListModel<Requirement>();
-		requirementsList = new JList<Requirement>(listModel);
-		lblSessionName = new JLabel("");
-		lblEndDate = new JLabel("");
-		btnOpen = new JButton("Open");
-		btnVote = new JButton("Vote");
-		btnEdit = new JButton("Edit Session");
-		JLabel lblSessionNameLabel = new JLabel("Session Name:");
-		JLabel lblEndDateLabel = new JLabel("End Date:");
-		JLabel lblRequirementsLabel = new JLabel("Requirements:");
-		JScrollPane listContainer = new JScrollPane(requirementsList);
-		
-		lblSessionNameLabel.setBounds(10, 10, 258, 14);
-		lblEndDateLabel.setBounds(10, 60, 258, 14);
-		lblRequirementsLabel.setBounds(10, 110, 258, 14);
-		listContainer.setBounds(10, 135, 258, 107);
-		lblSessionName.setBounds(10, 35, 258, 14);
-		lblEndDate.setBounds(10, 85, 258, 14);
-		btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		btnEdit.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		btnEdit.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-		// Buttons are visible by default
-		btnVote.setVisible(true);
-		btnOpen.setVisible(true);
-		btnEdit.setVisible(true);
-		
-		// create button action listeners
-		btnVote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			// TODO bro
-			}
-		});
+import javax.swing.JSplitPane;
 
-		btnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				getCurrentSession().setOpen(true);
-				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
-				ViewEventController.getInstance().refreshTable();
-			}
-		});
+public class OverviewDetailPanel extends JSplitPane {
+	PlanningPokerSession currentSession;
+
+	public OverviewDetailPanel () {
+
+		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Have the event controller open a new edit session tab
-				ViewEventController.getInstance().editSession(getCurrentSession());
-			}
-		});
+		// Create the info panel and table panel
+		OverviewDetailInfoPanel infoPanel = new OverviewDetailInfoPanel();
+		OverviewReqTable reqTable = new OverviewReqTable();
 		
-		/* JLabel lblDeckName = new JLabel("Deck Name:");
-		lblDeckName.setBounds(10, 110, 258, 14);
-		infoPanel.add(lblDeckName);
-		
-		JLabel lblCreatorName = new JLabel("Session Creator Name:");
-		lblCreatorName.setBounds(10, 160, 258, 14);
-		infoPanel.add(lblCreatorName); */
-		
-		add(infoPanel);
-		infoPanel.add(lblRequirementsLabel); 
-		infoPanel.add(listContainer);
-		infoPanel.add(lblSessionName);
-		infoPanel.add(lblEndDate);
-		infoPanel.add(lblSessionNameLabel);
-		infoPanel.add(lblEndDateLabel);
-		add(btnVote);
-		add(btnOpen);
-		add(btnEdit);
-			
+		// Put the overview table and sidebar into the tab
+		this.setTopComponent(infoPanel);
+		this.setBottomComponent(reqTable);
+		this.setResizeWeight(0.2);  // set the right screen to not show by default
+
+		ViewEventController.getInstance().setOverviewTree(treePanel);
+		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+
+				
 	}
 	
-	/**
-	 * Displays the given session in the detail panel
-	 * @param session The given session to display
-	 * @author randyacheson
-	 */
-	public void updatePanel(final PlanningPokerSession session)
-	{
+	public void updatePanel(final PlanningPokerSession session)	{
+		
 		this.currentSession = session;
 		String endDate = "No end date";
 		Set<Integer> requirements = session.getRequirementIDs();
