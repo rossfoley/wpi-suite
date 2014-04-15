@@ -59,7 +59,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 * 
 	 * @param newReq The PlanningPokerSession to be added to the list of PlanningPokerSessions in the project
 	 */
-	public void addPlanningPokerSession(PlanningPokerSession newSession){
+	public void addPlanningPokerSession(PlanningPokerSession newSession) {
 		// add the PlanningPokerSession
 		planningPokerSessions.add(newSession);
 		try 
@@ -70,6 +70,15 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		{
 
 		}
+	}
+	
+	/**
+	 * Adds a single PlanningPokerSession to the PlanningPokerSessions of the project
+	 * 
+	 * @param newReq The PlanningPokerSession to be added to the list of PlanningPokerSessions in the project
+	 */
+	public void addCachedPlanningPokerSession(PlanningPokerSession newSession) {
+		planningPokerSessions.add(newSession);
 	}
 	
 	/**

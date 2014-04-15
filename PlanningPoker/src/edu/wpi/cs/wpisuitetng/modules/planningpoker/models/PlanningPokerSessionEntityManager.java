@@ -9,10 +9,13 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -28,7 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 public class PlanningPokerSessionEntityManager implements EntityManager<PlanningPokerSession> {
 	
 	Data db;
-	HashMap<String, Boolean> clientsUpdated = new HashMap<String, Boolean>();
+	HashMap<String, ArrayList<PlanningPokerSession>> clientsUpdated = new HashMap<String, ArrayList<PlanningPokerSession>>();
 	
 	public PlanningPokerSessionEntityManager(Data db) {
 		this.db = db;
@@ -40,7 +43,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		if(!db.save(newSession, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		setClientsUpdated(true);
+		addClientUpdate(newSession);
 		return newSession;
 	}
 
@@ -94,7 +97,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 			throw new WPISuiteException();
 		}
 		
-		setClientsUpdated(true);
+		addClientUpdate(existingSession);
 		return existingSession;
 	}
 
@@ -103,19 +106,17 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 */
 	@Override
 	public void save(Session s, PlanningPokerSession model) throws WPISuiteException {
-		setClientsUpdated(true);
+		addClientUpdate(model);
 		db.save(model);
 	}
 
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		setClientsUpdated(true);
 		return db.delete(getEntity(s, id)[0]) != null;
 	}
 	
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-		setClientsUpdated(true);
 		db.deleteAll(new PlanningPokerSession(), s.getProject());
 	}
 
@@ -130,27 +131,30 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		args = Arrays.copyOfRange(args, 2, args.length);
 		switch (args[0]) {
 			case "check-for-updates":
-				return checkForUpdate(s.getSessionId());
+				ArrayList<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
+				PlanningPokerSession[] updates = new PlanningPokerSession[list.size()];
+				updates = list.toArray(updates);
+				return new Gson().toJson(updates, PlanningPokerSession[].class);
 			default:
 				System.out.println(args[0]);
 		}
 		return null;
 	}
 
-	private String checkForUpdate(String sessionId) {
+	private ArrayList<PlanningPokerSession> checkForUpdate(String sessionId) {
 		if (!clientsUpdated.containsKey(sessionId)) {
-			clientsUpdated.put(sessionId, true);
+			clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
 		}
-		if (clientsUpdated.get(sessionId)) {
-			clientsUpdated.put(sessionId, false);
-			return "true";
-		}
-		return "false";
+		ArrayList<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
+		clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
+		return updates;
 	}
 	
-	private void setClientsUpdated(boolean value) {
+	private void addClientUpdate(PlanningPokerSession value) {
 		for (String key : clientsUpdated.keySet()) {
-			clientsUpdated.put(key, value);
+			ArrayList<PlanningPokerSession> sessions = clientsUpdated.get(key);
+			sessions.add(value);
+			clientsUpdated.put(key, sessions);
 		}
 	}
 

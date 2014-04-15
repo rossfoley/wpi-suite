@@ -12,6 +12,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -59,9 +62,18 @@ public class CheckForUpdatesController implements ActionListener {
 			@Override
 			public void responseSuccess(IRequest iReq) {
 				String response = iReq.getResponse().getBody();
-				System.out.println("Check for updates response: " + response);
-				if (response.equals("true")) {
-					GetSessionController.getInstance().retrieveSessions();
+				PlanningPokerSession[] updates = PlanningPokerSession.fromJsonArray(response);
+				for (PlanningPokerSession update : updates) {
+					PlanningPokerSessionModel model = PlanningPokerSessionModel.getInstance();
+					PlanningPokerSession existing = model.getPlanningPokerSession(update.getUuid());
+					if (existing != null) {
+						model.removePlanningPokerSession(update.getUuid());
+					}
+					model.addCachedPlanningPokerSession(update);
+				}
+				
+				if (updates.length > 0) {
+					ViewEventController.getInstance().getOverviewTreePanel().refresh();
 				}
 			}
 			
