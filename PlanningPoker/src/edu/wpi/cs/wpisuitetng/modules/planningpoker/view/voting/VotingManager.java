@@ -30,7 +30,7 @@ public class VotingManager extends JPanel{
 	//private static final long serialVersionUID = 1L;
 	private List<Requirement> requirements;
 	private List<Estimate> estimate;
-	private int ownerID;
+	private String ownerName;
 	private EstimateModel estimateModel = EstimateModel.getInstance();
 	private transient Vector<SelectionListener> selectionListeners;
 	private transient Vector<EstimateListener> estimateListeners;
@@ -41,11 +41,11 @@ public class VotingManager extends JPanel{
 	private LinkedList<Requirement> notVotedList;
 	private LinkedList<Requirement> votedList;
 	
-	public VotingManager(List<Requirement> requirements, List<Estimate> estimate, int ownerID){
+	public VotingManager(List<Requirement> requirements, List<Estimate> estimate, String ownerName){
 		setName("Voting Manager");
 		this.estimate = estimate;
 		this.requirements = requirements;
-		this.ownerID = ownerID;
+		this.ownerName = ownerName;
 		
 		/*this.addActionListener(new EstimateListener() {
 			//@Override
@@ -101,6 +101,7 @@ public class VotingManager extends JPanel{
 		TreeNode rootNode = createNodes();
 		
 		tree = new JTree(rootNode);
+		tree.setEditable(true);
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -188,7 +189,7 @@ public class VotingManager extends JPanel{
 		int id = rqt.getId();
 		boolean has = false;
 		for (Estimate es : this.estimate){
-			if (es.getRequirementID() == id && es.getOwnerID() == this.ownerID){
+			if (es.getRequirementID() == id && es.getOwnerName() == this.ownerName){
 				has = true;
 			}
 		}
@@ -287,6 +288,12 @@ public class VotingManager extends JPanel{
 				l.estimateSubmitted(event);
 			}
 		}
+	}
+	*/
+	/*
+	public void addEstimate(Estimate estimate){
+		this.estimate.add(estimate);
+		this.update();
 	}
 	*/
 }

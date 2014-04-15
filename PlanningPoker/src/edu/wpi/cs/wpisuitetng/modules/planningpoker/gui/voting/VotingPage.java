@@ -53,13 +53,15 @@ public class VotingPage extends JSplitPane {
 	private DefaultTableModel tableModel;
 	
 	private transient Vector<SelectionListener> selectionListeners;
+	private Requirement requirement;
+	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;		
 		reqsToVoteOn = getSessionReqs();
 		
-		addSelectionListener(new SelectionListener() {
+		/*addSelectionListener(new SelectionListener() {
 			@Override
 			public void selectionMade(SelectionEvent e){
 				System.out.println("Got Selection Event:" + e.getRequirement().getName());
@@ -68,7 +70,7 @@ public class VotingPage extends JSplitPane {
 				//buildReqPanel(e.getRequirement());
 			}
 			
-		});
+		});*/
 		buildReqPanel(null);
 
 		/*buildReqTable();
@@ -77,7 +79,18 @@ public class VotingPage extends JSplitPane {
 		refreshTable(); */
 		//JScrollPane tablePanel = new JScrollPane(reqsTable);
 		
-		reqsView = new VotingManager(getSessionReqs(), new LinkedList<Estimate>(), 0);
+		reqsView = new VotingManager(getSessionReqs(), estimates, ConfigManager.getConfig().getUserName());
+		reqsView.addSelectionListener(new SelectionListener() {
+			@Override
+			public void selectionMade(SelectionEvent e){
+				System.out.println("Got Selection Event:" + e.getRequirement().getName());
+				//reqDetailPanel = makeReqDetailPanel(e.getRequirement());
+				requirement = e.getRequirement();
+				buildReqPanel(requirement);
+				setRightComponent(voteOnReqPanel);
+			}
+			
+		});
 		JScrollPane tablePanel = new JScrollPane();
 		tablePanel.setViewportView(reqsView);
 		
@@ -145,13 +158,15 @@ public class VotingPage extends JSplitPane {
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
 		JTextArea descriptionField = new JTextArea();
+		descriptionField.setBackground(Color.WHITE);
 
 		nameField.setEditable(false);
 		descriptionField.setEditable(false);
 
 		if (reqToVoteOn!=null){		
 			nameField.setText(reqToVoteOn.getName());
-			descriptionField.setText(reqToVoteOn.getDescription());
+			String description = reqToVoteOn.getDescription();
+			descriptionField.setText(description);
 		}
 		reqDetailLayout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, reqDetails);
 		reqDetailLayout.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);
@@ -235,6 +250,15 @@ public class VotingPage extends JSplitPane {
 			@Override	
 			public void estimateSubmitted(EstimateEvent e) {
 				System.out.println("Estimate submitted: " + e.getEstimate());
+					if (requirement != null){
+					Estimate estimate = new Estimate();
+					estimate.setOwnerName(ConfigManager.getConfig().getUserName());
+					estimate.setRequirementID(requirement.getId());
+					estimate.setProject(activeSession.getProject());
+					estimate.setVote((int)e.getEstimate());
+					estimates.add(estimate);
+					reqsView = new VotingManager(getSessionReqs(), estimates, ConfigManager.getConfig().getUserName());
+				}
 			}
 		});
 
