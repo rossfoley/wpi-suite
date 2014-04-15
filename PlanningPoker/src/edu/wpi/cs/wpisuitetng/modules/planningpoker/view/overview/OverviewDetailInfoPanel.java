@@ -42,6 +42,10 @@ public class OverviewDetailInfoPanel extends JPanel {
 		deckDisplay = new JLabel();
 		sessionDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
+		springLayout.putConstraint(SpringLayout.WEST, deckDisplay, 0, SpringLayout.WEST, endDateDisplay);
+		springLayout.putConstraint(SpringLayout.EAST, deckDisplay, -122, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, endDateDisplay, 75, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, endTimeDisplay, 6, SpringLayout.EAST, lblEndTime);
 		springLayout.putConstraint(SpringLayout.EAST, lblSessionName, -6, SpringLayout.WEST, sessionNameDisplay);
 		springLayout.putConstraint(SpringLayout.WEST, sessionNameDisplay, 105, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblSessionDescription);
@@ -76,17 +80,14 @@ public class OverviewDetailInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, lblDeck, 56, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, endDateDisplay, 137, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, endDateDisplay, 66, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, endDateDisplay, 151, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, endDateDisplay, 328, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, endTimeDisplay, 155, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, endTimeDisplay, 66, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, endTimeDisplay, 169, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, endTimeDisplay, 328, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, deckDisplay, 173, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, deckDisplay, 66, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckDisplay, 187, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, deckDisplay, 328, SpringLayout.WEST, this);
 		
