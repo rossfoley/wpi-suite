@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
@@ -113,10 +114,10 @@ public class DeckVotingPanel extends JPanel
 	}
 
 
-/**
- * Builds a voting panel where the user inputs a number for their vote 
- */
-private void buildDefaultVotingPanel() {
+	/**
+	 * 	Builds a voting panel where the user inputs a number for their vote 
+	 */
+	private void buildDefaultVotingPanel() {
 		estimateFieldErrorMessage.setForeground(Color.RED); 
 
 		// Create the text field for the estimation number
@@ -182,12 +183,15 @@ private void buildDefaultVotingPanel() {
 	 */
 	private void buildDeckVotingPanel() {
 		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
+		List<Integer> prevEstimateCards;
 		
 		// Set default values if this is the first vote
 		if (prevEstimate == null) {
 			submitButton = new JButton("Submit Estimation");
+			prevEstimateCards = new ArrayList<Integer>();
 		}
 		else {	// Set the default values if this is a re-vote
+			prevEstimateCards = cardsFromLastEstimate();
 			submitButton = new JButton("Resubmit Estimation");
 		}
 		// Create submission button
@@ -213,7 +217,16 @@ private void buildDefaultVotingPanel() {
 		//using absolute positioning/sizing.
 		listOfCardButtons = new ArrayList<JButton>();
 		for (int i = 0; i < numbersInDeck.size(); i++) {
-			JButton cardButton = createCardButtons(numbersInDeck.get(i), origin);
+			JButton cardButton;
+			// If the card should be selected by default
+			if (prevEstimateCards.contains(numbersInDeck.get(i))){
+				cardButton = createCardButtons(numbersInDeck.get(i), origin, true);
+				updateEstimate(cardButton);
+				prevEstimateCards.remove(numbersInDeck.get(i));
+			}
+			else {
+				cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
+			}
 			layeredDeckPane.add(cardButton, new Integer(i));
 			listOfCardButtons.add(cardButton);
 			origin.x += cardOffset;
@@ -225,8 +238,15 @@ private void buildDefaultVotingPanel() {
 		add(submitButton);
 	}
 
-	// Create and set up card button
-	private JButton createCardButtons(int cardValue, Point origin) {
+	
+	/**
+	 *  Create and set up card button
+	 * @param cardValue	The value of the card
+	 * @param origin	The position to place the card
+	 * @param selected	If it should be selected on startup
+	 * @return	The card button created
+	 */
+	private JButton createCardButtons(int cardValue, Point origin, boolean selected) {
 		final JButton card = new JButton();
 		// Try to load the corresponding playing card
 		try {
@@ -242,8 +262,15 @@ private void buildDefaultVotingPanel() {
 		card.setVerticalAlignment(JLabel.CENTER);
 		card.setHorizontalAlignment(JLabel.LEFT);
 		card.setOpaque(true);
-		card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		card.setBackground(Color.WHITE);
+		// If the card should be selected, set the border to green
+		if (selected) {
+			card.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+			card.setBackground(Color.GREEN);	
+		}
+		else {
+			card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			card.setBackground(Color.WHITE);
+		}
 		card.setBounds(origin.x, origin.y, 112, 140);
 		card.addActionListener(new ActionListener() {
 			@Override
@@ -324,16 +351,13 @@ private void buildDefaultVotingPanel() {
 
 		// Update card buttons in panel to highlight the moused-over card
 		for (int i = 0; i < listOfCardButtons.size(); i++) {
+			// If this card is supposed to be highlighted
 			if (i == card_index) {
 				origin.y += 30;
 			}
 			int cardValue = Integer.parseInt(listOfCardButtons.get(i).getName());
-			JButton cardButton = createCardButtons(cardValue, origin);
-			// Keep track of if the user pressed the button already
-			if (listOfCardButtons.get(i).getBackground() != Color.WHITE) {
-				cardButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
-				cardButton.setBackground(Color.GREEN);	
-			}
+			boolean cardSelected = isCardSelected(listOfCardButtons.get(i));
+			JButton cardButton = createCardButtons(cardValue, origin, cardSelected);
 			listOfCardButtons.set(i, cardButton);
 			// Set this card as the top cad if moused-over
 			if (i == card_index) {
@@ -379,6 +403,30 @@ private void buildDefaultVotingPanel() {
 		}
 		// Card is not selected (background == Color.WHITE)
 		return false;
+	}
+	
+	/**
+	 * Assumes that the cards fit exactly into the estimate
+	 * @return	The numbers from the deck that made up the previous estimate
+	 */
+	private List<Integer> cardsFromLastEstimate() {
+		// Get the list of numbers in the deck and sort in ascending order
+		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
+		Collections.sort(numbersInDeck);
+		
+		int temp = prevEstimate.getVote();
+		List<Integer> numbersInEstimate = new ArrayList<Integer>();
+		
+		// Find which numbers make up the estimate
+		for (int i = (numbersInDeck.size() - 1); i >= 0; i--) {
+			// If this card fits into the estimate
+			if (temp <= numbersInDeck.get(i)) {
+				temp -= numbersInDeck.get(i);
+				numbersInEstimate.add(numbersInDeck.get(i));
+			}
+		}
+		
+		return numbersInEstimate;
 	}
 
 	public void mouseDragged(MouseEvent e) {
