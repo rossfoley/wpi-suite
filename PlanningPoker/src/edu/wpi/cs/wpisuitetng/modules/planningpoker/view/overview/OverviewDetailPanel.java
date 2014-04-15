@@ -72,6 +72,8 @@ public class OverviewDetailPanel extends JPanel {
 		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		btnEndVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		btnEndVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		btnEdit.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		btnEdit.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
