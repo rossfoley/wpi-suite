@@ -47,7 +47,10 @@ public class PlanningPokerSession extends AbstractModel {
 	private GregorianCalendar endDate;
 	private Set<Integer> requirementIDs;
 	private UUID uuid = UUID.randomUUID();
-	private boolean isOpen;
+	public enum SessionState {
+	    OPEN, PENDING, VOTINGENDED, CLOSED, 
+	}
+	private SessionState gameState;
 	private List<Estimate> estimates;
 	private boolean isUsingDeck;
 
@@ -85,7 +88,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public PlanningPokerSession () {
 		this.name = "Planning Poker " + this.makeDefaultName();
-		this.isOpen = false;
+		this.gameState = PlanningPokerSession.SessionState.CLOSED;
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 		this.defaultSessionName = new String(this.name.toString());
@@ -183,9 +186,13 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return a boolean indicating if the session is open
 	 */
 	public boolean isOpen() {
-		return isOpen;
+		if (gameState == SessionState.OPEN) {
+			return true;
+		}	
+		else {
+			return false;
+		}
 	}
-
 	/**
 	 * Creates the default name for the session.
 	 * 
@@ -225,8 +232,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * 
 	 * @param isOpen open or closed boolean to set
 	 */
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
+	public void setOpen(SessionState isOpen) {
+		this.gameState = isOpen;
 	}
 
 	/**
@@ -355,7 +362,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return true if the session is allowed to be edited
 	 */
 	public boolean isEditable() {
-		return (!this.isOpen || (this.estimates.size() == 0)) && this.sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
+		return (this.gameState == SessionState.PENDING || ((this.estimates.size() == 0) && this.gameState == SessionState.OPEN)) && this.sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
 	}
 	
 	/**
@@ -381,7 +388,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.name = toCopyFrom.name;
 		this.endDate = toCopyFrom.endDate;
 		this.requirementIDs = toCopyFrom.requirementIDs;
-		this.isOpen = toCopyFrom.isOpen;
+		this.gameState = toCopyFrom.gameState;
 		this.requirementIDs = toCopyFrom.requirementIDs;
 		this.estimates = toCopyFrom.estimates;
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
