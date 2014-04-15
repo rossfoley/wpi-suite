@@ -20,6 +20,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.SelectFromListPanelDatabase;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -34,7 +35,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class PlanningPoker implements IJanewayModule {
 	
 	private ArrayList<JanewayTabModel> tabs;
-	
 	public PlanningPoker() {
 		tabs = new ArrayList<JanewayTabModel>();
 
@@ -48,8 +48,10 @@ public class PlanningPoker implements IJanewayModule {
 		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolBar, mainPanel);
 
 		// Add the tab to the list of tabs owned by this module
-		tabs.add(tab1);		
+		tabs.add(tab1);	
+		
 	}
+	
 	
 	/*
 	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()

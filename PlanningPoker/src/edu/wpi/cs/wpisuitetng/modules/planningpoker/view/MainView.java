@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.SelectFromListPanelDatabase;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 
@@ -54,7 +55,6 @@ public class MainView extends JTabbedPane {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		this.addTab("Open Sessions", openSessions);
 		this.addTab("Closed Sessions", closedSessions);
-
 		
 		closeAll.addActionListener(new ActionListener()
 		{
@@ -167,6 +167,7 @@ public class MainView extends JTabbedPane {
 				}
 			}
 		});
+
 	}
 
 
@@ -182,6 +183,8 @@ public class MainView extends JTabbedPane {
 			// Draw the dragged tab
 			g.drawImage(tabImage, currentMouseLocation.x, currentMouseLocation.y, this);
 		}
+		SelectFromListPanelDatabase item = new SelectFromListPanelDatabase();
+		item.run();
 	}
 
 

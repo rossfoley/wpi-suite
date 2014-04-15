@@ -452,11 +452,14 @@ public class SelectFromListPanel extends JPanel{
 			// Steal list of requirements from requirement model muhahaha.
 			List<Requirement> reqsList = requirementModel.getRequirements();
 			List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
-			if(reqsList.isEmpty()){
+			if (reqsList.isEmpty()) {
 				SelectFromListPanelDatabase item = new SelectFromListPanelDatabase();
 				item.run();
+				if (!reqsList.isEmpty()) {
+					item.cancel();
+				}
 			}
-			/*
+			/* a bad implementation
 			while(reqsList.isEmpty()){
 				requirementsController.retrieveRequirements();
 				reqsList = requirementModel.getRequirements();
