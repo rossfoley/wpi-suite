@@ -42,27 +42,26 @@ public class OverviewDetailInfoPanel extends JPanel {
 		deckDisplay = new JLabel();
 		sessionDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
+		springLayout.putConstraint(SpringLayout.EAST, lblSessionName, -6, SpringLayout.WEST, sessionNameDisplay);
+		springLayout.putConstraint(SpringLayout.WEST, sessionNameDisplay, 105, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblSessionDescription);
+		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -16, SpringLayout.NORTH, lblEndDate);
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -67, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblSessionDescription, 138, SpringLayout.WEST, this);
 		
 		setLayout(springLayout);
 		scrollPane.setViewportView(sessionDescriptionDisplay);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblSessionName, 11, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblSessionName, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblSessionName, 87, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, sessionNameDisplay, 11, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, sessionNameDisplay, 86, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, sessionNameDisplay, 25, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, sessionNameDisplay, 383, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblSessionDescription, 36, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblSessionDescription, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblSessionDescription, 119, SpringLayout.WEST, this);
-		
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblSessionDescription);
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, lblSessionDescription);
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 121, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 383, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblEndDate, 137, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblEndDate, 10, SpringLayout.WEST, this);
@@ -124,15 +123,16 @@ public class OverviewDetailInfoPanel extends JPanel {
 		// Change end time
 		try {
 			GregorianCalendar sessionDate = session.getEndDate();
-			String hour = Integer.toString(sessionDate.HOUR);
-			String minute = Integer.toString(sessionDate.MINUTE);
-			String am_pm = Integer.toString(sessionDate.AM);
+			String hour = formatHour(sessionDate);
+			String minute = formatMinute(sessionDate);
+			String am_pm = formatAM_PM(sessionDate);
 			endTime = hour + ":" + minute + am_pm;
 			
 		} catch (NullPointerException ex) {
 			endTime = new String("No end date");
 		}
 		endTimeDisplay.setText(endTime);
+		
 		
 		// Change deck name
 		if (session.isUsingDeck()) {
@@ -141,6 +141,40 @@ public class OverviewDetailInfoPanel extends JPanel {
 		else {
 			deckDisplay.setText("None");
 		}
+	}
+	
+	public String formatMinute(GregorianCalendar date){
+		String minute = "";
+		if(date.get(GregorianCalendar.MINUTE) == 0){
+			minute = Integer.toString(date.get(GregorianCalendar.MINUTE)) + "0";
+		}
+		else{
+			minute = Integer.toString(date.get(GregorianCalendar.MINUTE));
+		}
+		return minute;
+	}
+	
+	public String formatHour(GregorianCalendar date){
+		String hour = "";
+		if(date.get(GregorianCalendar.HOUR) == 0){
+			hour = "12";
+		}
+		else{
+			hour = Integer.toString(date.get(GregorianCalendar.HOUR));
+		}
+		return hour;	
+	}
+
+	public String formatAM_PM(GregorianCalendar date){
+		String AM_PM = "";
+		if(date.get(GregorianCalendar.AM_PM) == 0){
+			AM_PM = "AM";
+		}
+		else{
+			AM_PM = "PM";
+		}
+		return AM_PM;
+
 	}
 
 }
