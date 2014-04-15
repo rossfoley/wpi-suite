@@ -49,10 +49,10 @@ public class OverviewDetailPanel extends JSplitPane {
 		infoPanel = new OverviewDetailInfoPanel();
 		reqTable = new OverviewReqTable(data, columnNames);
 		
-		// Put the overview table and sidebar into the tab
+		// Put the info panel and table panel into the split pane
 		this.setTopComponent(infoPanel);
 		this.setBottomComponent(reqTable);
-		this.setResizeWeight(0.2);  // set the right screen to not show by default
+		this.setResizeWeight(0.5); 
 
 		ViewEventController.getInstance().setOverviewDetailInfoPanel(infoPanel);
 		ViewEventController.getInstance().setOverviewReqTable(reqTable);
@@ -73,82 +73,20 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 	
 	public void updatePanel(final PlanningPokerSession session)	{
+
+		this.currentSession = session;
 		
 		updateInfoPanel(session);
 		updateReqTable(session);
 		
-		this.currentSession = session;
-		String endDate = "No end date";
-		Set<Integer> requirements = session.getRequirementIDs();
-		
-		// Change name
-		this.lblSessionName.setText(session.getName());
-		
-		// Change requirements list
-		this.listModel.clear();
-		if (session.requirementsGetSize() > 0)
-		{
-			for (Integer id : requirements) {
-				Requirement requirement = RequirementModel.getInstance().getRequirement(id);
-				if (requirement != null) {
-					this.listModel.addElement(requirement);
-				}
-			}
-		}
-		
-		requirementsList = new JList<Requirement>(listModel);
-
-		// Change end date
-		try {
-			endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(session.getEndDate().getTime());
-		} catch (NullPointerException ex) {
-			endDate = new String("No end date");
-		}
-		
-		this.lblEndDate.setText(endDate);
-
 		// change the visibility of the top buttons
 		setButtonVisibility(session);
-		
-		
-		btnVote.setVisible(session.isOpen());
-		btnOpen.setVisible(false);
-		
-		
-		btnVote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			// TODO bro
-			}
-		});
-
-		btnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				session.setSessionState(SessionState.OPEN);
-				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
-				ViewEventController.getInstance().refreshTable();
-			}
-		});
-		
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Have the event controller open a new edit session tab
-				ViewEventController.getInstance().editSession(getCurrentSession());
-			}
-		});
-		
-		// Check if the buttons should appear
-/*
-		btnEdit.isVisible(false);
-		if (session.isEditable()) {
-			btnEdit.isVisible(true);
-		}
-*/
-
-		// redraw panel
-		infoPanel.revalidate();
-		infoPanel.repaint();
 	}	
 	
+	private void updateInfoPanel(PlanningPokerSession session) {
+		infoPanel.refresh(session);
+	}
+
 	private void updateReqTable(PlanningPokerSession session) {
 		reqTable.refresh(session);
 	}
