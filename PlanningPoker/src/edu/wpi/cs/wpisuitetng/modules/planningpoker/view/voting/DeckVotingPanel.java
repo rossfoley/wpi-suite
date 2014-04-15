@@ -136,7 +136,7 @@ public class DeckVotingPanel extends JPanel
 	private void buildDeckVotingPanel() {
 		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		//Create and set up the layered pane.
 		layeredDeckPane = new JLayeredPane();
 		layeredDeckPane.addMouseMotionListener(this);
@@ -160,6 +160,7 @@ public class DeckVotingPanel extends JPanel
 		}
 		// Create submission button
 		submitButton = new JButton("Submit Estimation");
+		submitButton.setAlignmentX(CENTER_ALIGNMENT);
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
