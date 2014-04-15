@@ -6,11 +6,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CheckForUpdatesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -18,6 +21,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 
 	private List<PlanningPokerSession> planningPokerSessions;
 	private static PlanningPokerSessionModel instance;
+	private boolean updateStarted = false;
 
 	private PlanningPokerSessionModel() {
 		planningPokerSessions = new ArrayList<PlanningPokerSession>();
@@ -30,13 +34,32 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		return instance;
 
 	}
+	
+	public void startLiveUpdating() {
+		if (!updateStarted) {
+			updateStarted = true;
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					Timer timer = new Timer();
+					timer.scheduleAtFixedRate(new TimerTask() {
+						@Override
+						public void run() {
+							CheckForUpdatesController.getInstance().checkForUpdates();							
+						}
+					}, 0, 10000);
+				}
+			});
+			t.setDaemon(true);
+			t.run();
+		}
+	}
 
 	/**
 	 * Adds a single PlanningPokerSession to the PlanningPokerSessions of the project
 	 * 
 	 * @param newReq The PlanningPokerSession to be added to the list of PlanningPokerSessions in the project
 	 */
-	public void addPlanningPokerSession(PlanningPokerSession newSession){
+	public void addPlanningPokerSession(PlanningPokerSession newSession) {
 		// add the PlanningPokerSession
 		planningPokerSessions.add(newSession);
 		try 
@@ -47,6 +70,15 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		{
 
 		}
+	}
+	
+	/**
+	 * Adds a single PlanningPokerSession to the PlanningPokerSessions of the project
+	 * 
+	 * @param newReq The PlanningPokerSession to be added to the list of PlanningPokerSessions in the project
+	 */
+	public void addCachedPlanningPokerSession(PlanningPokerSession newSession) {
+		planningPokerSessions.add(newSession);
 	}
 	
 	/**

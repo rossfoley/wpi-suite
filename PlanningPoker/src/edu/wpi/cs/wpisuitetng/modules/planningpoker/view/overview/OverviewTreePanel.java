@@ -195,18 +195,13 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		if(!initialized)
-		{
-			try 
-			{
+		if (!initialized) {
+			try {
 				GetSessionController.getInstance().retrieveSessions();
 				GetRequirementsController.getInstance().retrieveRequirements();
+				PlanningPokerSessionModel.getInstance().startLiveUpdating();
 				initialized = true;
-			}
-			catch (Exception e)
-			{
-
-			}
+			} catch (Exception e) {}
 		}
 
 		super.paintComponent(g);
