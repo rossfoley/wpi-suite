@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -36,7 +37,7 @@ public class OverviewDetailPanel extends JPanel {
 	private JLabel lblEndDate;
 	private DefaultListModel<Requirement> listModel;
 	private JList<Requirement> requirementsList;
-	private boolean isOpen;
+	private PlanningPokerSession.SessionState isOpen;
 	private JButton btnOpen;
 	private JButton btnVote;
 	private JButton btnEdit;
@@ -86,7 +87,7 @@ public class OverviewDetailPanel extends JPanel {
 
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getCurrentSession().setOpen(true);
+				getCurrentSession().setOpen(SessionState.OPEN);
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}
@@ -160,6 +161,40 @@ public class OverviewDetailPanel extends JPanel {
 		// change the visibility of the top buttons
 		setButtonVisibility(session);
 		
+
+		btnVote.setVisible(false);
+		btnOpen.setVisible(false);
+		
+		
+		btnVote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			// TODO bro
+			}
+		});
+
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				session.setOpen(SessionState.OPEN);
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
+				ViewEventController.getInstance().refreshTable();
+			}
+		});
+		
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Have the event controller open a new edit session tab
+				ViewEventController.getInstance().editSession(getCurrentSession());
+			}
+		});
+		
+		// Check if the buttons should appear
+/*
+		btnEdit.isVisible(false);
+		if (session.isEditable()) {
+			btnEdit.isVisible(true);
+		}
+*/
+
 		// redraw panel
 		infoPanel.revalidate();
 		infoPanel.repaint();

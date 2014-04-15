@@ -43,6 +43,7 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -322,12 +323,13 @@ public class PlanningPokerSessionTab extends JPanel {
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
 
-		JButton btnSubmit = new JButton("Submit");
+		JButton btnSave = new JButton("Save");
 		JButton btnBack = new JButton("Back");
+		JButton btnOpen = new JButton("Open");
 
 		//Position the error message for requirements
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -15, SpringLayout.SOUTH, secondPanel);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -110, SpringLayout.EAST, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -5, SpringLayout.SOUTH, btnOpen);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -90, SpringLayout.EAST, btnOpen);
 
 		// Position the requirements panel
 		secondPanelLayout.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, secondPanel);
@@ -335,17 +337,21 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, requirementPanel, -50, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.EAST, requirementPanel, -10, SpringLayout.EAST, secondPanel);
 
-		// Position the submit button
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnSubmit, -10, SpringLayout.SOUTH, secondPanel);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, btnSubmit, -10, SpringLayout.EAST, secondPanel);
+		// Position the save button
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnSave, -10, SpringLayout.SOUTH, secondPanel);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnSave, -10, SpringLayout.EAST, secondPanel);
+		
+		//Position the open button
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnOpen, 0, SpringLayout.SOUTH, btnSave);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnOpen, -70, SpringLayout.EAST, btnSave);
 
 		// Position the back button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
 
 
-		// Submit button event handler
-		btnSubmit.addActionListener(new ActionListener() {
+		// Save button event handler
+		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<Requirement> requirements =  requirementPanel.getSelected();
 				if (requirements.isEmpty()) {
@@ -356,7 +362,7 @@ public class PlanningPokerSessionTab extends JPanel {
 				} else { 
 					submitSession = true;
 					saveFields();
-					pokerSession.setOpen(true);
+					pokerSession.setOpen(SessionState.PENDING);
 					submitSessionToDatabase();
 					norequirements.setText("");
 					if (viewMode == ViewMode.CREATING){
@@ -367,6 +373,28 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 		});
 
+		// Open button event handler
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Requirement> requirements =  requirementPanel.getSelected();
+				if (requirements.isEmpty()) {
+					norequirements.setText("Requirements must be selected before creating the session.");
+					norequirements.setForeground(Color.RED);
+					secondPanel.revalidate();
+					secondPanel.repaint();
+				} else { 
+					submitSession = true;
+					saveFields();
+					pokerSession.setOpen(SessionState.OPEN);
+					submitSessionToDatabase();
+					norequirements.setText("");
+
+					MockNotification mock = new MockNotification();
+					mock.sessionStartedNotification();
+				}
+			}
+		});
+		
 		// Back button event handler
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -376,8 +404,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		});
 
 		// Add all of the elements to the second panel
-		secondPanel.add(btnSubmit);
+		secondPanel.add(btnSave);
 		secondPanel.add(btnBack);
+		secondPanel.add(btnOpen);
 		secondPanel.add(requirementPanel);
 		secondPanel.add(norequirements);
 	}
