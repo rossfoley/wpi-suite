@@ -346,8 +346,31 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
 
 
-		// Submit button event handler
+		// Save button event handler
 		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Requirement> requirements =  requirementPanel.getSelected();
+				if (requirements.isEmpty()) {
+					norequirements.setText("Requirements must be selected before creating the session.");
+					norequirements.setForeground(Color.RED);
+					secondPanel.revalidate();
+					secondPanel.repaint();
+				} else { 
+					submitSession = true;
+					saveFields();
+					pokerSession.setOpen(SessionState.PENDING);
+					submitSessionToDatabase();
+					norequirements.setText("");
+					if (viewMode == ViewMode.CREATING){
+						MockNotification mock = new MockNotification();
+						mock.sessionStartedNotification();
+					}
+				}
+			}
+		});
+
+		// Open button event handler
+		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<Requirement> requirements =  requirementPanel.getSelected();
 				if (requirements.isEmpty()) {
@@ -361,14 +384,13 @@ public class PlanningPokerSessionTab extends JPanel {
 					pokerSession.setOpen(SessionState.OPEN);
 					submitSessionToDatabase();
 					norequirements.setText("");
-					if (viewMode == ViewMode.CREATING){
-						MockNotification mock = new MockNotification();
-						mock.sessionStartedNotification();
-					}
+
+					MockNotification mock = new MockNotification();
+					mock.sessionStartedNotification();
 				}
 			}
 		});
-
+		
 		// Back button event handler
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
