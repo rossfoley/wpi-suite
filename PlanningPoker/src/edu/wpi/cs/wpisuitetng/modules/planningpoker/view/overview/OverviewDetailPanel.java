@@ -73,9 +73,9 @@ public class OverviewDetailPanel extends JPanel {
 		btnEdit.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		// Buttons are visible by default
-		btnVote.setVisible(false);
-		btnOpen.setVisible(false);
-		btnEdit.setVisible(false);
+		btnVote.setVisible(true);
+		btnOpen.setVisible(true);
+		btnEdit.setVisible(true);
 		
 		// create button action listeners
 		btnVote.addActionListener(new ActionListener() {
