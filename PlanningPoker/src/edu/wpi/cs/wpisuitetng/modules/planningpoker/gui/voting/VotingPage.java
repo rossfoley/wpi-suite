@@ -56,36 +56,22 @@ public class VotingPage extends JSplitPane {
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
-
+	private JTextArea descriptionField = new JTextArea();
+	//private JTextField descriptionField = new JTextField();
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;		
 		reqsToVoteOn = getSessionReqs();
 		
-		/*addSelectionListener(new SelectionListener() {
-			@Override
-			public void selectionMade(SelectionEvent e){
-				System.out.println("Got Selection Event:" + e.getRequirement().getName());
-				reqDetailPanel = makeReqDetailPanel(e.getRequirement());
-				
-				//buildReqPanel(e.getRequirement());
-			}
-			
-		});*/
+		
 		buildReqPanel(null);
 
-		/*buildReqTable();
-		reqsTable.getColumnModel().getColumn(0).setMaxWidth(100); // voted on check
-		reqsTable.getColumnModel().getColumn(1).setMinWidth(100); // Name of req
-		refreshTable(); */
-		//JScrollPane tablePanel = new JScrollPane(reqsTable);
 		
 		reqsView = new VotingManager(getSessionReqs(), estimates, ConfigManager.getConfig().getUserName());
 		reqsView.addSelectionListener(new SelectionListener() {
 			@Override
 			public void selectionMade(SelectionEvent e){
 				System.out.println("Got Selection Event:" + e.getRequirement().getName());
-				//reqDetailPanel = makeReqDetailPanel(e.getRequirement());
 				requirement = e.getRequirement();
 				buildReqPanel(requirement);
 				setRightComponent(voteOnReqPanel);
@@ -104,43 +90,6 @@ public class VotingPage extends JSplitPane {
 		this.setDividerLocation(225);		
 	}
 
-	/*public void buildReqTable(){
-		Object[][] data = {};
-		String[] columnNames = {"Voted On?", "Requirement Name"};
-		tableModel = new DefaultTableModel(data, columnNames);
-		reqsTable.setModel(tableModel);
-		reqsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
-		reqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		reqsTable.getTableHeader().setReorderingAllowed(false);
-		reqsTable.setAutoCreateRowSorter(true);
-		reqsTable.setFillsViewportHeight(true);
-
-		reqsTable.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-
-				if(reqsTable.getRowCount() > 0)
-				{
-					int mouseY = e.getY();
-					Rectangle lastRow = reqsTable.getCellRect(reqsTable.getRowCount() - 1, 0, true);
-					int lastRowY = lastRow.y + lastRow.height;
-
-					if(mouseY > lastRowY) 
-					{
-						//reqsTable.getSelectionModel().clearSelection();
-						repaint();
-					}
-
-
-
-					// rebuild req panel with selected req
-				}
-
-			}
-		});
-
-
-	} */
 	/**
 	 * get the session that is being voted on 
 	 * @return the session being voted on in this panel
@@ -155,24 +104,50 @@ public class VotingPage extends JSplitPane {
 		reqDetails.setLayout(sl_reqDetails);
 
 		JLabel nameLabel = new JLabel("Requirement Name:");
-		JLabel descriptionLabel = new JLabel("Description Name:");
+		JLabel descriptionLabel = new JLabel("Requirement Description:");
+		JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
 
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
-		JTextArea descriptionField = new JTextArea();
+		//JTextArea descriptionField = new JTextArea();
 		descriptionField.setBackground(Color.WHITE);
+		descriptionField.setPreferredSize(new Dimension(300, 300));
 
 		nameField.setEditable(false);
 		descriptionField.setEditable(false);
+		descriptionField.setColumns(10);
 
+		boolean estimationComplete;
+		
 		if (reqToVoteOn!=null){		
 			nameField.setText(reqToVoteOn.getName());
 			String description = reqToVoteOn.getDescription();
+			System.out.println(description);
 			descriptionField.setText(description);
+			estimationComplete = activeSession.getReqsWithCompleteEstimates().contains(reqToVoteOn.getId());
 		}
-		sl_reqDetails.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, reqDetails);
-		sl_reqDetails.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);
+		else{
+			estimationComplete = false;	
+		}
+				
+		boolean userIsModerator = ConfigManager.getConfig().getUserName().equals(activeSession.getSessionCreatorName());
+		
+		if (estimationComplete && userIsModerator){
+			requirementEstimated.setVisible(true);
 
+			sl_reqDetails.putConstraint(SpringLayout.NORTH, requirementEstimated, 10, SpringLayout.NORTH, reqDetails);
+			sl_reqDetails.putConstraint(SpringLayout.HORIZONTAL_CENTER, requirementEstimated, 0, SpringLayout.HORIZONTAL_CENTER, reqDetails);
+	
+			sl_reqDetails.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, requirementEstimated);
+			sl_reqDetails.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);	
+		}
+		else{		
+			requirementEstimated.setVisible(false);
+			
+			sl_reqDetails.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, reqDetails);
+			sl_reqDetails.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);	
+		}
+		
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, nameField, 6, SpringLayout.SOUTH, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.WEST, nameField, 0, SpringLayout.WEST, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, nameField, -10, SpringLayout.EAST, reqDetails);
@@ -184,7 +159,11 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
-
+		
+		System.out.print("currently displayed description:");
+		System.out.println(descriptionField.getText());
+		
+		reqDetails.add(requirementEstimated);
 		reqDetails.add(nameLabel);
 		reqDetails.add(descriptionLabel);
 		reqDetails.add(nameField);
