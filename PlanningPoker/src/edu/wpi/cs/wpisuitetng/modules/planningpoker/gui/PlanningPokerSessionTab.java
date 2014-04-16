@@ -29,6 +29,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -325,10 +326,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		JButton btnSave = new JButton("Save");
 		JButton btnBack = new JButton("Back");
 		JButton btnStart = new JButton("Start");
+		JButton btnCancel = new JButton("Cancel");
 
 		//Position the error message for requirements
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -5, SpringLayout.SOUTH, btnStart);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -90, SpringLayout.EAST, btnStart);
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -5, SpringLayout.SOUTH, btnCancel);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -90, SpringLayout.EAST, btnCancel);
 
 		// Position the requirements panel
 		secondPanelLayout.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, secondPanel);
@@ -347,6 +349,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Position the back button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
+		
+		// Position the cancel button
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnStart);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -70, SpringLayout.EAST, btnStart);
+
 
 
 		// Save button event handler
@@ -397,11 +404,19 @@ public class PlanningPokerSessionTab extends JPanel {
 				displayPanel(firstPanel);
 			}
 		});
+		
+		// Cancel button event handler
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				callThis();
+					}
+				});
 
 		// Add all of the elements to the second panel
 		secondPanel.add(btnSave);
 		secondPanel.add(btnBack);
 		secondPanel.add(btnStart);
+		secondPanel.add(btnCancel);
 		secondPanel.add(requirementPanel);
 		secondPanel.add(norequirements);
 	}
@@ -748,4 +763,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		return false;
 	}
 	
+	public void callThis() {
+		ViewEventController.getInstance().removeTab(this);
+	}
 }
