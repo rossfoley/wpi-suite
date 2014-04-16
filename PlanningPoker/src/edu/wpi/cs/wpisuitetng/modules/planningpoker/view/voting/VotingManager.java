@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -24,7 +25,7 @@ import java.awt.event.MouseEvent;
 public class VotingManager extends JPanel {
 	
 	private List<Requirement> requirements;
-	private List<Estimate> estimate;
+	private List<Estimate> estimates;
 	private String ownerName;
 	private transient Vector<SelectionListener> selectionListeners;
 	private transient Vector<EstimateListener> estimateListeners;
@@ -35,9 +36,9 @@ public class VotingManager extends JPanel {
 	private LinkedList<Requirement> notVotedList;
 	private LinkedList<Requirement> votedList;
 	
-	public VotingManager(List<Requirement> requirements, List<Estimate> estimate, String ownerName){
+	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName){
 		setName("Voting Manager");
-		this.estimate = estimate;
+		this.estimates = pokerSession.getEstimates();
 		this.requirements = requirements;
 		this.ownerName = ownerName;
 		
@@ -127,7 +128,7 @@ public class VotingManager extends JPanel {
 	private boolean hasEstimate(Requirement rqt) {
 		int id = rqt.getId();
 		boolean has = false;
-		for (Estimate es : this.estimate){
+		for (Estimate es : this.estimates){
 			System.out.println(es.getRequirementID() + "=" + id);
 			System.out.println(es.getOwnerName() + "=" + this.ownerName);
 			if (es.getRequirementID() == id && es.getOwnerName() == this.ownerName){
