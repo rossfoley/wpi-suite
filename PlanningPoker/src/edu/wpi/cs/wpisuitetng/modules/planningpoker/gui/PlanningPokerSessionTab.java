@@ -150,6 +150,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JLabel lblDeck = new JLabel("Deck:");
 
 		final JButton btnNext = new JButton("Next >");
+		JButton btnCancel = new JButton("Cancel");
 		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 
 		// Create disabled datePicker placeholder 
@@ -235,6 +236,11 @@ public class PlanningPokerSessionTab extends JPanel {
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, dateErrorMessage, 0, SpringLayout.NORTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, dateErrorMessage, 20, SpringLayout.EAST, lblEndDate);
+		
+		// Position the cancel button
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnNext);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -80, SpringLayout.EAST, btnNext);
+
 
 		// Handle the time dropdowns
 		populateTimeDropdown();
@@ -296,8 +302,16 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 		});
 		
+		// Cancel button event handler
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				callThis();
+			}
+		});
+		
 		// Add all of the elements to the first panel
 		firstPanel.add(btnNext);
+		firstPanel.add(btnCancel);
 		firstPanel.add(lblDeck);
 		firstPanel.add(lblSessionEndTime);
 		firstPanel.add(lblSessionName);
