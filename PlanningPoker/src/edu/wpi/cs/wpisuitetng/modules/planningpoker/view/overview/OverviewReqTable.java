@@ -14,9 +14,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -31,7 +28,6 @@ import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;

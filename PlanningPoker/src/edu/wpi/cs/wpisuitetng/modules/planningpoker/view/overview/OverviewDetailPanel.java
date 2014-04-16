@@ -9,31 +9,11 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-
 import javax.swing.JSplitPane;
+import javax.swing.JScrollPane;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
 public class OverviewDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
@@ -52,6 +32,12 @@ public class OverviewDetailPanel extends JSplitPane {
 		infoPanel = new OverviewDetailInfoPanel();
 		reqTable = new OverviewReqTable(data, columnNames);
 		tablePanel = new JScrollPane(reqTable);
+		
+		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
+		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
+		reqTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
+		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
+		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
 		// Put the info panel and table panel into the split pane
 		this.setTopComponent(infoPanel);
