@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
@@ -25,6 +26,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private JButton createButton = new JButton("<html>Create<br />Planning Poker Session</html>");
 	private JButton editButton = new JButton("<html>Edit<br />Planning Poker Session</html>");
 	private final JPanel contentPanel = new JPanel();
+	
+	public void disableEditButton() {
+		editButton.setEnabled(false);
+	}
+	
+	public void enableEditButton() {
+		editButton.setEnabled(true);
+	}
 	
 	public PlanningPokerSessionButtonsPanel(){
 		super("");
@@ -40,7 +49,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		    this.createButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(
-		    		new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/new_req.png"));
+		    		new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/edit.png"));
 		    		//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 		    this.editButton.setIcon(new ImageIcon(img));
 		    
@@ -55,14 +64,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		});	
 		
 		//action listener for the Edit Session Button
-		//editButton.addActionListener(new ActionListener() {
-			//@Override
-			//public void actionPerformed(ActionEvent e) {
-				//if (!ViewEventController.getInstance().getOverviewTable().getEditFlag()) {
-					//ViewEventController.getInstance().createIteration();
-				//}
-		//	}
-		//});
+		editButton.addActionListener(new ActionListener() {
+			@Override
+				public void actionPerformed(ActionEvent e) {
+					PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+					ViewEventController.getInstance().editSession(session);
+				}
+			
+		});
 			
 		contentPanel.add(createButton);
 		contentPanel.add(editButton);
