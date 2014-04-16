@@ -9,8 +9,13 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -26,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 public class PlanningPokerSessionEntityManager implements EntityManager<PlanningPokerSession> {
 	
 	Data db;
+	HashMap<String, ArrayList<PlanningPokerSession>> clientsUpdated = new HashMap<String, ArrayList<PlanningPokerSession>>();
 	
 	public PlanningPokerSessionEntityManager(Data db) {
 		this.db = db;
@@ -37,6 +43,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		if(!db.save(newSession, s.getProject())) {
 			throw new WPISuiteException();
 		}
+		addClientUpdate(newSession);
 		return newSession;
 	}
 
@@ -90,6 +97,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 			throw new WPISuiteException();
 		}
 		
+		addClientUpdate(existingSession);
 		return existingSession;
 	}
 
@@ -98,6 +106,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 */
 	@Override
 	public void save(Session s, PlanningPokerSession model) throws WPISuiteException {
+		addClientUpdate(model);
 		db.save(model);
 	}
 
@@ -117,10 +126,36 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 	
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
+	public String advancedGet(Session s, String[] args) throws WPISuiteException {
+		// Remove the Advanced/PlanningPokerSession part of the args
+		args = Arrays.copyOfRange(args, 2, args.length);
+		switch (args[0]) {
+			case "check-for-updates":
+				ArrayList<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
+				PlanningPokerSession[] updates = new PlanningPokerSession[list.size()];
+				updates = list.toArray(updates);
+				return new Gson().toJson(updates, PlanningPokerSession[].class);
+			default:
+				System.out.println(args[0]);
+		}
 		return null;
+	}
+
+	private ArrayList<PlanningPokerSession> checkForUpdate(String sessionId) {
+		if (!clientsUpdated.containsKey(sessionId)) {
+			clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
+		}
+		ArrayList<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
+		clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
+		return updates;
+	}
+	
+	private void addClientUpdate(PlanningPokerSession value) {
+		for (String key : clientsUpdated.keySet()) {
+			ArrayList<PlanningPokerSession> sessions = clientsUpdated.get(key);
+			sessions.add(value);
+			clientsUpdated.put(key, sessions);
+		}
 	}
 
 	@Override

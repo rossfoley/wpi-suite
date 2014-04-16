@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -36,17 +37,15 @@ public class OverviewDetailPanel extends JPanel {
 	private JLabel lblEndDate;
 	private DefaultListModel<Requirement> listModel;
 	private JList<Requirement> requirementsList;
-	private boolean isOpen;
+	private PlanningPokerSession.SessionState isOpen;
 	private JButton btnOpen;
 	private JButton btnVote;
-	private JButton editButton;
+	private JButton btnEdit;
 	private PlanningPokerSession currentSession;
 	
-	public OverviewDetailPanel(boolean isOpen) {
-	
-		this.isOpen = isOpen;
+	public OverviewDetailPanel() {
 		
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // oops?
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		infoPanel = new JPanel();
 		infoPanel.setLayout(null);
 		listModel = new DefaultListModel<Requirement>();
@@ -55,7 +54,7 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDate = new JLabel("");
 		btnOpen = new JButton("Open");
 		btnVote = new JButton("Vote");
-		editButton = new JButton("Edit Session");
+		btnEdit = new JButton("Edit Session");
 		JLabel lblSessionNameLabel = new JLabel("Session Name:");
 		JLabel lblEndDateLabel = new JLabel("End Date:");
 		JLabel lblRequirementsLabel = new JLabel("Requirements:");
@@ -65,9 +64,41 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDateLabel.setBounds(10, 60, 258, 14);
 		lblRequirementsLabel.setBounds(10, 110, 258, 14);
 		listContainer.setBounds(10, 135, 258, 107);
-		this.lblSessionName.setBounds(10, 35, 258, 14);
+		lblSessionName.setBounds(10, 35, 258, 14);
 		lblEndDate.setBounds(10, 85, 258, 14);
+		btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		btnEdit.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		btnEdit.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
+		// Buttons are visible by default
+		btnVote.setVisible(true);
+		btnOpen.setVisible(true);
+		btnEdit.setVisible(true);
+		
+		// create button action listeners
+		btnVote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			// TODO bro
+			}
+		});
+
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getCurrentSession().setOpen(SessionState.OPEN);
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
+				ViewEventController.getInstance().refreshTable();
+			}
+		});
+		
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Have the event controller open a new edit session tab
+				ViewEventController.getInstance().editSession(getCurrentSession());
+			}
+		});
 		
 		/* JLabel lblDeckName = new JLabel("Deck Name:");
 		lblDeckName.setBounds(10, 110, 258, 14);
@@ -83,19 +114,11 @@ public class OverviewDetailPanel extends JPanel {
 		infoPanel.add(lblSessionName);
 		infoPanel.add(lblEndDate);
 		infoPanel.add(lblSessionNameLabel);
-		infoPanel.add(lblEndDateLabel);		
-
-		if (this.isOpen) {
-			btnVote.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-			btnVote.setAlignmentX(Component.RIGHT_ALIGNMENT);
-			add(btnVote);
-		}
-		else {
-			btnOpen.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-			btnOpen.setAlignmentX(Component.RIGHT_ALIGNMENT);
-			add(btnOpen);
-		}
-		
+		infoPanel.add(lblEndDateLabel);
+		add(btnVote);
+		add(btnOpen);
+		add(btnEdit);
+			
 	}
 	
 	/**
@@ -133,9 +156,16 @@ public class OverviewDetailPanel extends JPanel {
 			endDate = new String("No end date");
 		}
 		
-		//System.out.println(endDate);
 		this.lblEndDate.setText(endDate);
 
+		// change the visibility of the top buttons
+		setButtonVisibility(session);
+		
+
+		btnVote.setVisible(false);
+		btnOpen.setVisible(false);
+		
+		
 		btnVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			// TODO bro
@@ -144,32 +174,43 @@ public class OverviewDetailPanel extends JPanel {
 
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				session.setOpen(true);
+				session.setOpen(SessionState.OPEN);
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}
 		});
 		
-		editButton.addActionListener(new ActionListener() {
+		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Have the event controller open a new edit session tab
 				ViewEventController.getInstance().editSession(getCurrentSession());
 			}
 		});
-		editButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		editButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		// Check if the edit session button should appear
-		remove(editButton);
+		// Check if the buttons should appear
+/*
+		btnEdit.isVisible(false);
 		if (session.isEditable()) {
-			add(editButton);
+			btnEdit.isVisible(true);
 		}
+*/
 
 		// redraw panel
 		infoPanel.revalidate();
 		infoPanel.repaint();
-		
+	}	
+	
+	private void setButtonVisibility(PlanningPokerSession session) {
+		// Check if the buttons should appear
+		/*
+			btnEdit.isVisible(false);
+			if (session.isEditable()) {
+				btnEdit.isVisible(true);
+			}
+		*/
 	}
+
+
 	
 	
 	public PlanningPokerSession getCurrentSession() {

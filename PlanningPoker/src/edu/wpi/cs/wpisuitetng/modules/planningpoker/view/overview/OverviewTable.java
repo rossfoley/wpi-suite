@@ -15,6 +15,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionControl
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 /**
  * @author rossfoley
@@ -82,7 +84,7 @@ public class OverviewTable extends JTable
 					}
 
 					// Open detail overview panel
-					displaySession();
+					//displaySession();
 				}
 				
 			}
@@ -90,17 +92,33 @@ public class OverviewTable extends JTable
 		
 		 System.out.println("finished constructing the table");
 	}
-	
+	/*
 	protected void displaySession() {
 		ViewEventController.getInstance().displayDetailedSession(this);
 	}
-
+*/
 	/**
 	 * Retrieves the list of sessions
 	 */
 	
 	public List<PlanningPokerSession> getSessions() {
 		return PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
+	}
+	
+	/**
+	 * Retrieves all open sessions
+	 * @author randyacheson
+	 */
+
+	public List<PlanningPokerSession> getOpenSessions() {
+		List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
+		List<PlanningPokerSession> openSessions = new ArrayList<PlanningPokerSession>();
+		for (PlanningPokerSession session : sessions) {
+			if (session.isOpen()){
+				openSessions.add(session);
+			}
+		}
+		return openSessions;
 	}
 	
 	
@@ -176,6 +194,7 @@ public class OverviewTable extends JTable
 		if(!initialized) {
 			try {
 				GetSessionController.getInstance().retrieveSessions();
+				GetRequirementsController.getInstance().retrieveRequirements();
 				initialized = true;
 			} catch (Exception e) {}
 		}
