@@ -203,7 +203,17 @@ public class VotingPage extends JSplitPane {
 	public void buildReqPanel(Requirement reqToVoteOn){
 		reqDetailPanel = makeReqDetailPanel(reqToVoteOn);
 
-		votingPanel = new DeckVotingPanel(activeSession.getSessionDeck());
+		Estimate estimateFillIn = new Estimate();
+		if (activeSession.getEstimates().size() > 0 && reqToVoteOn != null) {
+			for (Estimate e: activeSession.getEstimates()) {
+				if (e.getRequirementID() == reqToVoteOn.getId() && e.getOwnerName().equals(ConfigManager.getInstance().getConfig().getUserName())) {
+					estimateFillIn = e;
+				}
+			}
+		}
+		
+		
+		votingPanel = new DeckVotingPanel(activeSession.getSessionDeck(), estimateFillIn);
 		votingPanel.addEstimateListener(new EstimateListener() {
 			@Override
 			public void estimateSubmitted(EstimateEvent e) {
