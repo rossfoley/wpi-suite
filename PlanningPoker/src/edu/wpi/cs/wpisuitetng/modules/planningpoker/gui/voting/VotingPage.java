@@ -64,11 +64,10 @@ public class VotingPage extends JSplitPane {
 		this.activeSession = votingSession;		
 		reqsToVoteOn = getSessionReqs();
 		
-		
 		buildReqPanel(null);
 
 		
-		reqsView = new VotingManager(getSessionReqs(), estimates, ConfigManager.getConfig().getUserName());
+		reqsView = new VotingManager(getSessionReqs(), activeSession, ConfigManager.getConfig().getUserName());
 		reqsView.addSelectionListener(new SelectionListener() {
 			@Override
 			public void selectionMade(SelectionEvent e){
