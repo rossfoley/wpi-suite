@@ -59,7 +59,7 @@ public class VotingManager extends JPanel{
 		
 		
 		
-		tree.setEditable(true);
+		//tree.setEditable(true);
 		/*
 		tree.setModel(new DefaultTreeModel(
 			new DefaultMutableTreeNode("JTree") {
@@ -101,7 +101,7 @@ public class VotingManager extends JPanel{
 		TreeNode rootNode = createNodes();
 		
 		tree = new JTree(rootNode);
-		tree.setEditable(true);
+		//tree.setEditable(true);
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
