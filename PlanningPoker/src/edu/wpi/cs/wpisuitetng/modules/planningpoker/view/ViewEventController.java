@@ -13,9 +13,12 @@ import javax.swing.tree.TreePath;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewEndVotePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
@@ -36,7 +39,10 @@ public class ViewEventController {
 	private OverviewDetailPanel overviewDetailPanel = null;
 	private OverviewEndVotePanel overviewEndVotePanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
-	
+	private OverviewDetailInfoPanel overviewDetailInfoPanel;
+	private OverviewReqTable overviewReqTable;
+	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
+
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
 	 */
@@ -60,6 +66,17 @@ public class ViewEventController {
 		this.overviewDetailPanel = overviewDetailPanel;
 	}
 	
+	public void setOverviewDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
+		this.overviewDetailInfoPanel = infoPanel;
+	}
+	
+	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
+		this.overviewReqTable = overviewReqTable;
+	}	
+	
+	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
+		this.planningPokerSessionButtonsPanel = buttonsPanel;
+	}
 	public void setOverviewEndVotePanel(OverviewEndVotePanel overviewEndVotePanel) {
 		this.overviewEndVotePanel = overviewEndVotePanel;
 	}
@@ -117,8 +134,8 @@ public class ViewEventController {
 	 * @param overviewEndVotePanel
 	 */
 	
-	public OverviewEndVotePanel getOverviewEndVotePanel() {
-		return this.overviewEndVotePanel;
+	public PlanningPokerSessionButtonsPanel getPlanningPokerSessionButtonsPanel() {
+		return planningPokerSessionButtonsPanel;
 	}
 
 	/**
