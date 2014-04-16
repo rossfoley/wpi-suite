@@ -101,7 +101,6 @@ public class OverviewDetailPanel extends JPanel {
 		btnEndVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().getMainView().setRightComponentToEndVotePanel();
-				getCurrentSession().setSessionState(SessionState.VOTINGENDED); 
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}
