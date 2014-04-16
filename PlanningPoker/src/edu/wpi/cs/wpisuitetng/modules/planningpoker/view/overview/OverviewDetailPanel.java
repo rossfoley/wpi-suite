@@ -104,7 +104,7 @@ public class OverviewDetailPanel extends JPanel {
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}
-		}); 
+		});
 		
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
