@@ -365,10 +365,6 @@ public class PlanningPokerSessionTab extends JPanel {
 					pokerSession.setOpen(SessionState.PENDING);
 					submitSessionToDatabase();
 					norequirements.setText("");
-					if (viewMode == ViewMode.CREATING){
-						MockNotification mock = new MockNotification();
-						mock.sessionStartedNotification();
-					}
 				}
 			}
 		});
