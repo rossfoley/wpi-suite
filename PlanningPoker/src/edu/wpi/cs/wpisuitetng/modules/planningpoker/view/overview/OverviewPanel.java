@@ -25,12 +25,17 @@ public class OverviewPanel extends JSplitPane {
 	/**
 	 * Sets up directory tree of all planning poker sessions
 	 */
+	private OverviewDetailPanel detailPanel;
+	private OverviewEndVotePanel EndVotePanel;
 	public OverviewPanel()
 	{
 
 		// Create the tree panel and detail panel
 		OverviewTreePanel treePanel = new OverviewTreePanel();
 		OverviewDetailPanel detailPanel = new OverviewDetailPanel();
+		OverviewEndVotePanel EndVotePanel = new OverviewEndVotePanel();
+		this.setDetailPanel(detailPanel);
+		this.setEndVotePanel(EndVotePanel);
 		
 		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(treePanel);
@@ -39,7 +44,48 @@ public class OverviewPanel extends JSplitPane {
 
 		ViewEventController.getInstance().setOverviewTree(treePanel);
 		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+		ViewEventController.getInstance().setOverviewEndVotePanel(EndVotePanel);
 
 	}
+	/**
+	 * @return the detailPanel
+	 */
+	public OverviewDetailPanel getDetailPanel() {
+		return detailPanel;
+	}
+	/**
+	 * @param detailPanel the detailPanel to set
+	 */
+	public void setDetailPanel(OverviewDetailPanel detailPanel) {
+		this.detailPanel = detailPanel;
+	}
+	/**
+	 * @return the endVotePanel
+	 */
+	public OverviewEndVotePanel getEndVotePanel() {
+		return EndVotePanel;
+	}
+	/**
+	 * @param endVotePanel the endVotePanel to set
+	 */
+	public void setEndVotePanel(OverviewEndVotePanel endVotePanel) {
+		EndVotePanel = endVotePanel;
+	}
 
+/*
+	public void setRightComponentToEndVotePanel() {
+		
+		this.setRightComponent(EndVotePanel);
+		ViewEventController.getInstance().setOverviewEndVotePanel(EndVotePanel);
+		this.repaint();
+		this.updateUI();
+	}
+	public void setRightComponentToDetailPanel() {
+		this.setRightComponent(detailPanel);
+		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+		this.repaint();
+		this.updateUI();
+		}
+*/
+	
 }

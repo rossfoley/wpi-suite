@@ -14,6 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewEndVotePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
@@ -33,6 +34,7 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTreePanel overviewTreePanel = null;
 	private OverviewDetailPanel overviewDetailPanel = null;
+	private OverviewEndVotePanel overviewEndVotePanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	
 	/**
@@ -58,6 +60,9 @@ public class ViewEventController {
 		this.overviewDetailPanel = overviewDetailPanel;
 	}
 	
+	public void setOverviewEndVotePanel(OverviewEndVotePanel overviewEndVotePanel) {
+		this.overviewEndVotePanel = overviewEndVotePanel;
+	}
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
@@ -106,6 +111,14 @@ public class ViewEventController {
 	 */
 	public OverviewDetailPanel getOverviewDetailPanel() {
 		return this.overviewDetailPanel;
+	}
+	/**
+	 * 
+	 * @param overviewEndVotePanel
+	 */
+	
+	public OverviewEndVotePanel getOverviewEndVotePanel() {
+		return this.overviewEndVotePanel;
 	}
 
 	/**
