@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -156,6 +157,16 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 
+	public void addEstimateToPlanningPokerSession(Estimate estimate) {
+		PlanningPokerSession session = getPlanningPokerSession(estimate.getSessionID());
+		session.addEstimate(estimate);
+		removePlanningPokerSession(session.getID());
+		planningPokerSessions.add(session);
+		try {
+			UpdateEstimateController.getInstance().updateEstimate(estimate);
+		} catch (Exception e) {}
+	}
+	
 	/**
 	 * Adds the given array of planningpokersession to the list
 	 * 

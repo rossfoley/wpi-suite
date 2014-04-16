@@ -8,7 +8,6 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -27,7 +26,6 @@ public class VotingManager extends JPanel {
 	private List<Requirement> requirements;
 	private List<Estimate> estimate;
 	private String ownerName;
-	private EstimateModel estimateModel = EstimateModel.getInstance();
 	private transient Vector<SelectionListener> selectionListeners;
 	private transient Vector<EstimateListener> estimateListeners;
 	
@@ -78,7 +76,6 @@ public class VotingManager extends JPanel {
 	
 
 	private Requirement getSelected(){
-		this.estimate = getEstimates();
 		Requirement rqt = new Requirement();
 		
 		TreeNode node = (TreeNode)tree.getLastSelectedPathComponent();
@@ -100,9 +97,7 @@ public class VotingManager extends JPanel {
 		DefaultMutableTreeNode voted = new DefaultMutableTreeNode("Estimated");
 		notVotedList = new LinkedList<Requirement>();
 		votedList = new LinkedList<Requirement>();
-		this.estimate = getEstimates();
 		
-		System.out.println(estimate.size());
 		
 		for (Requirement rqt : this.requirements){
 			if (hasEstimate(rqt)){
@@ -143,14 +138,7 @@ public class VotingManager extends JPanel {
 		return has;
 	}
 	
-	private LinkedList<Estimate> getEstimates(){
-		LinkedList<Estimate> estimates = new LinkedList<Estimate>();
-		for (Estimate estimate : this.estimateModel.getEstimates()){
-			estimates.add(estimate);
-		}
-		return estimates;
-	}
-	
+
 	synchronized public void addSelectionListener(SelectionListener l) {
 		if (this.selectionListeners == null) {
 			this.selectionListeners = new Vector<SelectionListener>();

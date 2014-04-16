@@ -22,12 +22,12 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  * @author Kevin
  * 
  */
-public class Estimate extends AbstractModel{
+public class Estimate {
 	private int requirementID;
 	private int vote;
 	private String ownerName;
-	private int ownerID;
 	private UUID uuid = UUID.randomUUID();
+	private UUID sessionID;
 	
 	public Estimate() {
 		
@@ -60,14 +60,6 @@ public class Estimate extends AbstractModel{
 	
 	/**
 	 * 
-	 * @return the ID of the vote creator
-	 */
-	public int getOwnerID(){
-		return this.ownerID;
-	}
-	
-	/**
-	 * 
 	 * @return the name of the creator
 	 */
 	public String getOwnerName(){
@@ -96,13 +88,6 @@ public class Estimate extends AbstractModel{
 		this.vote = vote;
 	}
 	/**
-	 * sets the ID of the owner
-	 * @param ownerID
-	 */
-	public void setOwnerID(int ownerID){
-		this.ownerID = ownerID;
-	}
-	/**
 	 * sets the name of the owner
 	 * @param ownerName
 	 */
@@ -111,22 +96,7 @@ public class Estimate extends AbstractModel{
 	}
 
 
-	@Override
-	public void save() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
+	
 	public String toJSON() {
 		return new Gson().toJson(this, Estimate.class);
 	}
@@ -152,18 +122,11 @@ public class Estimate extends AbstractModel{
 		return parser.fromJson(json, Estimate[].class);
 	}
 
-	@Override
-	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
+	public UUID getSessionID() {
+		return this.sessionID;
 	}
-	
-	public void copyFrom(Estimate toCopyFrom){
-		this.requirementID = toCopyFrom.getRequirementID();
-		this.vote = toCopyFrom.getVote();
-		this.ownerName = toCopyFrom.getOwnerName();
-		this.ownerID = toCopyFrom.getOwnerID();
-		this.uuid = toCopyFrom.getID();
+	public void setSessionID(UUID id) {
+		this.sessionID = id;
 	}
 	
 	

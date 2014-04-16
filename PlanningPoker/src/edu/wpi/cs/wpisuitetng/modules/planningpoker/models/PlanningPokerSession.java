@@ -346,6 +346,12 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param estimate the estimate to add to the session
 	 */
 	public void addEstimate(Estimate estimate) {
+		for (Estimate e : estimates) {
+			if (e.getID().equals(estimate.getID())) {
+				this.estimates.remove(e);
+				break;
+			}
+		}
 		this.estimates.add(estimate);
 		checkReqEstimationComplete(estimate.getRequirementID());
 	}
