@@ -2,15 +2,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting;
 
-import java.text.DateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
@@ -27,11 +22,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /** 
  *  This class is the panel that is shown when the user goes to vote
@@ -39,7 +29,6 @@ import java.awt.event.MouseEvent;
  */
 
 public class VotingPage extends JSplitPane {
-	private JTable reqsTable = new JTable();
 	private JPanel voteOnReqPanel = new JPanel();
 	
 	private VotingManager reqsView;
@@ -49,20 +38,13 @@ public class VotingPage extends JSplitPane {
 	private DeckVotingPanel votingPanel;
 
 	private PlanningPokerSession activeSession;
-	private List<Requirement> reqsToVoteOn;
-
-	private DefaultTableModel tableModel;
 	
-	private transient Vector<SelectionListener> selectionListeners;
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
-	//private JTextArea descriptionField = new JTextArea();
-	private JTextField descriptionField = new JTextField();
 
 	public VotingPage(PlanningPokerSession votingSession){
-		this.activeSession = votingSession;		
-		reqsToVoteOn = getSessionReqs();
+		this.activeSession = votingSession;
 		
 		buildReqPanel(null);
 
@@ -71,7 +53,6 @@ public class VotingPage extends JSplitPane {
 		reqsView.addSelectionListener(new SelectionListener() {
 			@Override
 			public void selectionMade(SelectionEvent e){
-				System.out.println("Got Selection Event:" + e.getRequirement().getName());
 				requirement = e.getRequirement();
 				buildReqPanel(requirement);
 				JScrollPane tablePanel = new JScrollPane();
@@ -93,10 +74,9 @@ public class VotingPage extends JSplitPane {
 		tablePanel.setMinimumSize(new Dimension(200, 300));
 		voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
-		this.setLeftComponent(tablePanel);
-		this.setRightComponent(voteOnReqPanel);
-		
-		this.setDividerLocation(225);		
+		setLeftComponent(tablePanel);
+		setRightComponent(voteOnReqPanel);
+		setDividerLocation(225);		
 	}
 
 	/**
@@ -104,7 +84,7 @@ public class VotingPage extends JSplitPane {
 	 * @return the session being voted on in this panel
 	 */
 	public PlanningPokerSession getDisplaySession(){
-		return activeSession;
+		return this.activeSession;
 	}
 
 	public JPanel makeReqDetailPanel(Requirement reqToVoteOn) {
@@ -119,21 +99,19 @@ public class VotingPage extends JSplitPane {
 
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
-		//JTextArea descriptionField = new JTextArea();
+		nameField.setEditable(false);
+		
+		JTextArea descriptionField = new JTextArea("");
 		descriptionField.setBackground(Color.WHITE);
 		descriptionField.setPreferredSize(new Dimension(300, 300));
-
-		nameField.setEditable(false);
 		descriptionField.setEditable(false);
 		descriptionField.setColumns(10);
 
 		boolean estimationComplete;
 		
-		if (reqToVoteOn!=null){		
+		if (reqToVoteOn != null) {		
 			nameField.setText(reqToVoteOn.getName());
-			String description = reqToVoteOn.getDescription();
-			System.out.println(description);
-			descriptionField.setText(description);
+			descriptionField.append(reqToVoteOn.getDescription());
 			estimationComplete = activeSession.getReqsWithCompleteEstimates().contains(reqToVoteOn.getId());
 		}
 		else{
@@ -142,7 +120,7 @@ public class VotingPage extends JSplitPane {
 				
 		boolean userIsModerator = ConfigManager.getConfig().getUserName().equals(activeSession.getSessionCreatorName());
 		
-		if (estimationComplete && userIsModerator){
+		if (estimationComplete && userIsModerator) {
 			requirementEstimated.setVisible(true);
 
 			sl_reqDetails.putConstraint(SpringLayout.NORTH, requirementEstimated, 10, SpringLayout.NORTH, reqDetails);
@@ -170,7 +148,7 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
 		
-		System.out.print("currently displayed description:");
+		System.out.println("currently displayed description:" + descriptionField.getText());
 		System.out.println(descriptionField.getText());
 		
 		reqDetails.add(requirementEstimated);
@@ -195,13 +173,11 @@ public class VotingPage extends JSplitPane {
 
 		String currentUser = ConfigManager.getConfig().getUserName();
 		// match current user and given requirement
-
 		for (Estimate e:sessionEstimates){
 			if ((checkReq.getId()==e.getRequirementID())&&(e.getOwnerName().equals(currentUser))){
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -229,7 +205,7 @@ public class VotingPage extends JSplitPane {
 
 		votingPanel = new DeckVotingPanel(activeSession.getSessionDeck());
 		votingPanel.addEstimateListener(new EstimateListener() {
-			@Override	
+			@Override
 			public void estimateSubmitted(EstimateEvent e) {
 				System.out.println("Estimate submitted: " + e.getEstimate());
 				if (requirement != null) {
@@ -278,22 +254,4 @@ public class VotingPage extends JSplitPane {
 		voteOnReqPanel.add(votingPanel);
 	}
 
-	
-	synchronized public void addSelectionListener(SelectionListener l) {
-		if (this.selectionListeners == null) {
-			this.selectionListeners = new Vector<SelectionListener>();
-		}
-		this.selectionListeners.addElement(l);
-	}  
-
-	/** Remove a listener for EstimateEvents */
-	synchronized public void removeSelectionListener(SelectionListener l) {
-		if (this.selectionListeners == null) {
-			this.selectionListeners = new Vector<SelectionListener>();
-		}
-		else {
-			this.selectionListeners.removeElement(l);
-		}
-	}
-	
 }
