@@ -27,6 +27,8 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private JButton editButton = new JButton("<html>Edit<br />Planning Poker Session</html>");
 	private final JPanel contentPanel = new JPanel();
 	
+	private boolean sessionSelected;
+	
 	public void disableEditButton() {
 		editButton.setEnabled(false);
 	}
@@ -35,9 +37,13 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		editButton.setEnabled(true);
 	}
 	
+	public void updatePanel(PlanningPokerSession session){
+		
+	}
+	
 	public PlanningPokerSessionButtonsPanel(){
 		super("");
-		
+		this.disableEditButton();
 		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(350);
 		this.createButton.setHorizontalAlignment(SwingConstants.CENTER);
