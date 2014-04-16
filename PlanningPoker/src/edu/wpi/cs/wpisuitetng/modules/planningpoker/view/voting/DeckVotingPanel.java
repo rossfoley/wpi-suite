@@ -142,8 +142,10 @@ public class DeckVotingPanel extends JPanel
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (validateEstimate()){
 					fireEstimateEvent();
 				}
+			}
 		});
 
 		// Setup error message display
@@ -164,16 +166,20 @@ public class DeckVotingPanel extends JPanel
 		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
 		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, subPanel);
 		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
-		subPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, -10, SpringLayout.NORTH, submitButton);
+		subPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, -25, SpringLayout.NORTH, submitButton);
 		subPanelLayout.putConstraint(SpringLayout.WEST, submitButton, -70, SpringLayout.HORIZONTAL_CENTER, subPanel);
 		subPanelLayout.putConstraint(SpringLayout.EAST, submitButton, 70, SpringLayout.HORIZONTAL_CENTER, subPanel);
 		subPanelLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, subPanel);
 		
+		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
+		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		
+		
+		subPanel.add(estimateFieldErrorMessage);		
 		subPanel.add(submitButton);
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
 
-		add(estimateFieldErrorMessage, BorderLayout.EAST);
 		add(subPanel, BorderLayout.CENTER);				
 	}
 
@@ -199,7 +205,9 @@ public class DeckVotingPanel extends JPanel
 		submitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fireEstimateEvent();
+				if (validateEstimate()){
+					fireEstimateEvent();
+				}
 			}
 		});
 		
@@ -441,16 +449,18 @@ public class DeckVotingPanel extends JPanel
 	 */
 	public boolean validateEstimate() {
 		if (userEstimate < 0) {
-			userEstimate = 0;
+			System.out.println("invalid number entered");
 			estimateFieldErrorMessage.setText("Please enter a positive number");
-			estimateField.setValue(new Double(0));
+			estimateFieldErrorMessage.setVisible(true);
 			estimateFieldErrorMessage.revalidate();
 			estimateFieldErrorMessage.repaint();
 			revalidate();
 			repaint();
 			return false;
 		}
+		System.out.println("valid number entered");
 		estimateFieldErrorMessage.setText("");
+		estimateFieldErrorMessage.setVisible(false);
 		estimateFieldErrorMessage.revalidate();
 		estimateFieldErrorMessage.repaint();
 		revalidate();
