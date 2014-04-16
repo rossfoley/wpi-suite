@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
@@ -95,6 +96,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			public void actionPerformed(ActionEvent e) {
 				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				session.setGameState(PlanningPokerSession.SessionState.VOTINGENDED);
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(session);
 				ViewEventController.getInstance().getOverviewTreePanel().refresh();
 			}
 		});	
