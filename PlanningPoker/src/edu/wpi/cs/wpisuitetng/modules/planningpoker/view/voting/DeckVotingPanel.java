@@ -345,30 +345,28 @@ public class DeckVotingPanel extends JPanel
 	 * Moves the specified card slightly lower (y-direction) with respect to the other cards
 	 */
 	private void highlightCard() {
-		// Highlight this card if in the index
+		int layerLevel = layeredDeckPane.getComponentCount() - 1;
+		// Un-highlight all cards not selected for highlighting
 		for (int i = 0; i < listOfCardButtons.size(); i++) {
-			if (i == lastCard) {
-				Point origin = new Point(10 + cardOffset*i, 50);
-				JButton card = listOfCardButtons.get(i); 
-				card.setBounds(origin.x, origin.y, 112, 140);
-				card.revalidate();
-				card.repaint();
-				layeredDeckPane.setComponentZOrder(card, new Integer(0));
-				layeredDeckPane.moveToFront(card);
-			}
-			else {
+			if (i != lastCard) {
 				Point origin = new Point(10 + cardOffset*i, 20);
 				JButton card = listOfCardButtons.get(i); 	
 				card.setBounds(origin.x, origin.y, 112, 140);
+				layeredDeckPane.setComponentZOrder(card, (layerLevel - i));
+				layeredDeckPane.moveToBack(card);
 				card.revalidate();
 				card.repaint();
-				try {
-					layeredDeckPane.setComponentZOrder(card, new Integer(listOfCardButtons.size() - i));
-					layeredDeckPane.moveToBack(card);
-				} catch (IllegalArgumentException ex) {
-					System.out.println("Illegal Argument: " + i);
 			}
-			}
+		}
+		// Highlight this card if in the index
+		if ((lastCard >= 0) && (lastCard < listOfCardButtons.size())) {
+			Point origin = new Point(10 + cardOffset*lastCard, 50);
+			JButton card = listOfCardButtons.get(lastCard);
+			card.setBounds(origin.x, origin.y, 112, 140);
+			layeredDeckPane.setComponentZOrder(card, 0);
+			layeredDeckPane.moveToFront(card);
+			card.revalidate();
+			card.repaint();
 		}
 		layeredDeckPane.revalidate();
 		layeredDeckPane.repaint();
