@@ -40,7 +40,7 @@ public class OverviewDetailPanel extends JPanel {
 	private PlanningPokerSession.SessionState isOpen;
 	private JButton btnOpen;
 	private JButton btnVote;
-	private JButton btnEndVote; 
+	private JButton btnEndVote;
 	private JButton btnEdit;
 	private PlanningPokerSession currentSession;
 	
@@ -55,7 +55,7 @@ public class OverviewDetailPanel extends JPanel {
 		lblEndDate = new JLabel("");
 		btnOpen = new JButton("Open");
 		btnVote = new JButton("Vote");
-		btnEndVote = new JButton("End Voting"); 
+		btnEndVote = new JButton("End Voting");
 		btnEdit = new JButton("Edit Session");
 		JLabel lblSessionNameLabel = new JLabel("Session Name:");
 		JLabel lblEndDateLabel = new JLabel("End Date:");
@@ -101,7 +101,6 @@ public class OverviewDetailPanel extends JPanel {
 		btnEndVote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().getMainView().setRightComponentToEndVotePanel();
-				getCurrentSession().setSessionState(SessionState.VOTINGENDED); 
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
 				ViewEventController.getInstance().refreshTable();
 			}
