@@ -25,24 +25,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private JButton createButton = new JButton("<html>Create<br />Planning Poker Session</html>");
 	private JButton editButton = new JButton("<html>Edit<br />Planning Poker Session</html>");
+	private JButton voteButton = new JButton("<html>Vote on<br />Planning Poker Session</html>");
 	private final JPanel contentPanel = new JPanel();
-	
 	private boolean sessionSelected;
-	
-	public void disableEditButton() {
-		editButton.setEnabled(false);
-	}
-	
-	public void enableEditButton() {
-		editButton.setEnabled(true);
-	}
-	
-	public void updatePanel(PlanningPokerSession session){
-		
-	}
 	
 	public PlanningPokerSessionButtonsPanel(){
 		super("");
+		
+		ViewEventController.getInstance().setPlanningPokerSessionButtonsPanel(this);
+		
 		this.disableEditButton();
 		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(350);
@@ -77,7 +68,18 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 					ViewEventController.getInstance().editSession(session);
 				}
 			
-		});
+		});		
+		
+		// the action listener for the Vote Planning Poker Session Button
+		voteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				System.out.println("vote");
+				// implement vote method call pls
+			}
+		});	
+		
 			
 		contentPanel.add(createButton);
 		contentPanel.add(editButton);
@@ -94,12 +96,27 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		return createButton;
 	}
 
-
 	/**
 	 * Method geteditButton
 	
 	 * @return JButton */
 	public JButton getCreateIterationButton() {
 		return editButton;
+	}
+	
+	public void disableEditButton() {
+		editButton.setEnabled(false);
+	}
+	
+	public void enableEditButton() {
+		editButton.setEnabled(true);
+	}
+	
+	public void disableVoteButton() {
+		voteButton.setEnabled(false);
+	}
+	
+	public void enableVoteButton() {
+		voteButton.setEnabled(true);
 	}
 }

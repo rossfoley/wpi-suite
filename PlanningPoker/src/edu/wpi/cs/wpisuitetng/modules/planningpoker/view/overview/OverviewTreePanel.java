@@ -136,17 +136,21 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				if (node.getUserObject() instanceof PlanningPokerSession) {
 					// Shawn added lines here
 					try{
-						if(((PlanningPokerSession) node.getUserObject()).getSessionCreatorName().equals(ConfigManager.getConfig().getUserName())){
-							ViewEventController.getInstance().getOverviewDetailPanel().getEditButton().setVisible(true);
-							ViewEventController.getInstance().getOverviewDetailPanel().getEndVoteButton().setVisible(true);
-							// now here implement the button visibility for creator
+					if (((PlanningPokerSession) node.getUserObject()).getSessionCreatorName().equals(ConfigManager.getConfig().getUserName())) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
+					}
+					else if (!((PlanningPokerSession) node.getUserObject()).isOpen()) {
 						} else {
 							ViewEventController.getInstance().getOverviewDetailPanel().getEditButton().setVisible(false);
-							ViewEventController.getInstance().getOverviewDetailPanel().getEndVoteButton().setVisible(false);
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
 						}
 					} catch (Exception a){
 						System.out.println("Exception caught");
 					}
+					
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+					
 					PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
 					displaySession(session);
 				}
