@@ -36,7 +36,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		
 		this.disableEditButton();
 		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(350);
+		this.setPreferredWidth(1000);
 		this.createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		// Add image icon for the create planning poker session button
 		try {
@@ -75,14 +75,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
-				System.out.println("vote");
-				// implement vote method call pls
+				ViewEventController.getInstance().voteOnSession(session);
 			}
 		});	
 		
 			
 		contentPanel.add(createButton);
 		contentPanel.add(editButton);
+		contentPanel.add(voteButton);
 		contentPanel.setOpaque(false);
 
 		this.add(contentPanel);

@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.swing.JTextArea;
+
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -58,6 +60,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private String sessionCreatorName;
 	private Deck sessionDeck;
 	private String defaultSessionName;
+	private Set<Integer> reqsWithCompleteEstimates;
 	
 	/**
 	 * @return the sessionCreatorID
@@ -91,6 +94,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.gameState = PlanningPokerSession.SessionState.PENDING;
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
+		this.reqsWithCompleteEstimates = new HashSet<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
 	}
 	/**
@@ -366,10 +370,63 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param estimate the estimate to add to the session
 	 */
 	public void addEstimate(Estimate estimate) {
+		for (Estimate e : estimates) {
+			if (e.getID().equals(estimate.getID())) {
+				this.estimates.remove(e);
+				break;
+			}
+		}
 		this.estimates.add(estimate);
+		//checkReqEstimationComplete(estimate.getRequirementID());
+	}
+	
+	/**
+	 * checks to see if all users in the current project have estimated the requirement assosciated with the given id
+	 * @param reqID requirement to check estimations of
+	 */
+	public void checkReqEstimationComplete(Integer reqID){
+		// get all estimates for this reqID
+		ArrayList<Estimate> estimatesForReq = new ArrayList<Estimate>();
+		for (Estimate e: estimates){
+			if (e.getRequirementID() == reqID){
+				estimatesForReq.add(e);
+			}
+		}
+		
+		boolean estimationComplete = true;
+		for (User teamMember : getProject().getTeam()) {
+			if (teamMember != null) {
+				String currentUsername = teamMember.getUsername();
+				boolean foundCurrentUserEstimate = false;
+				for (Estimate e:estimatesForReq){
+					if (currentUsername.equals(e.getOwnerName())){
+						foundCurrentUserEstimate = true;
+					}
+				}
+				if (!foundCurrentUserEstimate){
+					estimationComplete = false;
+				}
+			}
+		}
+		
+		if (estimationComplete) {
+			reqsWithCompleteEstimates.add(reqID);
+		}
 	}
 	
 	
+	/**
+	 * @return the reqsWithCompleteEstimates		
+	 */
+	public Set<Integer> getReqsWithCompleteEstimates() {
+		return reqsWithCompleteEstimates;
+	}
+	/**
+	 * @param reqsWithCompleteEstimates the reqsWithCompleteEstimates to set
+	 */
+	public void setReqsWithCompleteEstimates(Set<Integer> reqsWithCompleteEstimates) {
+		this.reqsWithCompleteEstimates = reqsWithCompleteEstimates;
+	}
 	/**
 	 * @return true if the session is allowed to be edited
 	 */
