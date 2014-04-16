@@ -305,7 +305,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Cancel button event handler
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				callThis();
+				closePanel();
 			}
 		});
 		
@@ -422,7 +422,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Cancel button event handler
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				callThis();
+				closePanel();
 					}
 				});
 
@@ -777,7 +777,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		return false;
 	}
 	
-	public void callThis() {
+	//closes this panel
+	public void closePanel() {
 		ViewEventController.getInstance().removeTab(this);
 	}
 }
