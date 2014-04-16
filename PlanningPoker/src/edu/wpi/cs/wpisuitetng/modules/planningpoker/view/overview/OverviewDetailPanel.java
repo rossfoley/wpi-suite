@@ -11,9 +11,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 
 import java.awt.Dimension;
+
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class OverviewDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
@@ -46,11 +51,6 @@ public class OverviewDetailPanel extends JSplitPane {
 
 		ViewEventController.getInstance().setOverviewDetailInfoPanel(infoPanel);
 		ViewEventController.getInstance().setOverviewReqTable(reqTable);
-				getCurrentSession().setSessionState(SessionState.VOTINGENDED); 
-				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(getCurrentSession());
-				ViewEventController.getInstance().refreshTable();
-			}
-		});
 		
 		// Makes the split pane divide 50/50 for each portion
 		Dimension d = new Dimension(200, 200);
@@ -61,10 +61,6 @@ public class OverviewDetailPanel extends JSplitPane {
         // Disable the split pane from being movable
         // Why that's the method name I have no idea
         this.setEnabled(false);
-			}
-		});
-
-				
 	}
 	
 	public void updatePanel(final PlanningPokerSession session)	{
@@ -96,14 +92,6 @@ public class OverviewDetailPanel extends JSplitPane {
 				btnEdit.isVisible(true);
 			}
 		*/
-	}
-	
-	/**
-	 * 
-	 * @return endButton
-	 */
-	public JButton getEndVoteButton() {
-		return this.btnEndVote;
 	}
 	
 	public PlanningPokerSession getCurrentSession() {

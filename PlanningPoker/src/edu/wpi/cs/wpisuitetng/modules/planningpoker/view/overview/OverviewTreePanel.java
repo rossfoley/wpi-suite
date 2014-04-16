@@ -134,18 +134,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			if(node != null) {
 				
 				if (node.getUserObject() instanceof PlanningPokerSession) {
-					// Shawn added lines here
-					try{
 					if (((PlanningPokerSession) node.getUserObject()).getSessionCreatorName().equals(ConfigManager.getConfig().getUserName())) {
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
 					}
 					else if (!((PlanningPokerSession) node.getUserObject()).isOpen()) {
-						} else {
-							ViewEventController.getInstance().getOverviewDetailPanel().getEditButton().setVisible(false);
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-						}
-					} catch (Exception a){
-						System.out.println("Exception caught");
 					}
 					
 					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
@@ -156,11 +149,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				}
 			}
 		}
-	
-			/* Right button!
-		    if (SwingUtilities.isRightMouseButton(e)) {
-		    }
-		    */
 	}
 	
 	protected void displaySession(PlanningPokerSession session) {
@@ -219,104 +207,4 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 
 		super.paintComponent(g);
 	}
-
-	/**
-	 * Method valueChanged.
-	 * @param e TreeSelectionEvent
-	 * @see javax.swing.event.TreeSelectionListener#valueChanged(TreeSelectionEvent)
-	 */
-	/*	@Override
-	public void valueChanged(TreeSelectionEvent e) {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
-		if(node != null)
-		{
-			if(node.getUserObject() instanceof Iteration)
-			{	
-				ViewEventController.getInstance().getIterationOverview().highlight((Iteration)node.getUserObject());
-			}
-			else
-			{
-				ViewEventController.getInstance().getIterationOverview().highlight(IterationModel.getInstance().getBacklog());
-			}
-		}
-	}
-*/
-	/**
-	 * Method selectIteration.
-	 * @param iteration Iteration
-	 */
-/*	public void selectIteration(Iteration iteration) {
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode)tree.getModel().getRoot();
-		Enumeration<DefaultMutableTreeNode> e = root.breadthFirstEnumeration();
-		
-		DefaultMutableTreeNode foundNode = null;
-		while(e.hasMoreElements())
-		{
-			DefaultMutableTreeNode node = e.nextElement();
-			if(node.getUserObject() == iteration)
-			{
-				foundNode = node;
-				break;
-			}
-		}
-		
-		if(foundNode != null) 
-		{
-			TreePath path = new TreePath(foundNode.getPath());
-			tree.setSelectionPath(path);
-			tree.scrollPathToVisible(path);
-		}
-	}
-*/
-	/**
-	 * @param list the list of iterations to be sorted
-	 * @return the same list sorted by start date
-	 */
-	/*public List<Iteration> sortIterations(List<Iteration> list) {
-		
-		Collections.sort(list, new IterationComparator());
-
-		return list;
-	}
-	*/
-	/**
-	 * @param list requirements to be sorted
-	 * @return the same list sorted by name
-	 * 
-	 */
-/*	public List<Requirement> sortRequirements(List<Requirement> list) {
-		
-		Collections.sort(list, new RequirementComparator());
-
-		return list;
-	}*/
 }
-
-
-/**
- * @author Kevin
- * sorts the Iterations by date
- *
- */
-	/*
-class IterationComparator implements Comparator<Iteration> {
-    public int compare(Iteration I1, Iteration I2) {
-       if(I1.getStart() == null) 
-    	   return -1;
-       if(I2.getStart() == null)
-    	   return 1;
-       return I1.getStart().getDate().compareTo(I2.getStart().getDate());
-    }
-}*/
-
-/**
- * @author Kevin
- * sorts Requirements by name
- *
- */
-	/*
-class RequirementComparator implements Comparator<Requirement>{
-	public int compare(Requirement R1, Requirement R2){
-		return R1.getName().compareTo(R2.getName());
-	}
-}*/
