@@ -33,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
@@ -78,16 +79,20 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
 		DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
 		DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
+		DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
 		DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
-		System.out.println(sessions.size());
 
 		for(PlanningPokerSession session : sessions) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
-			if (session.isOpen()) {
+			
+			if (session.getGameState() == SessionState.OPEN) {
 				openSessions.add(newSessionNode);
 			}
-			else if (session.isPending()) {
+			else if (session.getGameState() == SessionState.PENDING) {
 				pendingSessions.add(newSessionNode);
+			}
+			else if (session.getGameState() == SessionState.VOTINGENDED) {
+				endedSessions.add(newSessionNode);
 			}
 			else {
 				closedSessions.add(newSessionNode);
@@ -96,6 +101,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		
 		top.add(pendingSessions);
 		top.add(openSessions);
+		top.add(endedSessions);
 		top.add(closedSessions);
 		
         tree = new JTree(top); //create the tree with the top node as the top
@@ -134,17 +140,18 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			if(node != null) {
 				
 				if (node.getUserObject() instanceof PlanningPokerSession) {
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+					
 					if (((PlanningPokerSession) node.getUserObject()).getSessionCreatorName().equals(ConfigManager.getConfig().getUserName())) {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
-					}
-					else {
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
 					}
 					if (!((PlanningPokerSession) node.getUserObject()).isOpen()) {
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
 					}
-					else {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
+					if ((((PlanningPokerSession) node.getUserObject()).getGameState()) == SessionState.VOTINGENDED) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEndVoteButton();
 					}
 					
 					PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();

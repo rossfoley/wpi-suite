@@ -137,6 +137,14 @@ public class PlanningPokerSession extends AbstractModel {
 		this.description = description.trim();
 	}
 	
+	public SessionState getGameState() {
+		return gameState;
+	}
+	
+	public void setGameState(SessionState gameState) {
+		this.gameState = gameState;
+	}
+	
 	/**
 	 * @return the endDate
 	 */
@@ -240,16 +248,6 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setName(String name) {
 		this.name = name.trim();
-	}
-
-	/**
-	 * If isOpen is true, the session is open;
-	 * if it is false, it is closed.
-	 * 
-	 * @param isOpen open or closed boolean to set
-	 */
-	public void setSessionState(SessionState theState) {
-		this.gameState = theState;
 	}
 
 	/**
