@@ -14,7 +14,15 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+
+/**
+ * The general information (name, description etc) for a given session
+ * that's being displayed in the overview detail panel
+ * 
+ * Top half of the overviewDetailPanel split pane
+ */
 public class OverviewDetailInfoPanel extends JPanel {
 	JLabel lblSessionName;
 	JLabel lblSessionDescription;
@@ -30,6 +38,9 @@ public class OverviewDetailInfoPanel extends JPanel {
 	SpringLayout springLayout;
 	
 	public OverviewDetailInfoPanel() {
+
+		ViewEventController.getInstance().setOverviewDetailInfoPanel(this);
+		
 		lblSessionName = new JLabel("Session Name:");
 		sessionNameDisplay = new JLabel("");
 		lblSessionDescription = new JLabel("Session Description:");
@@ -130,7 +141,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 			endTime = hour + ":" + minute + am_pm;
 			
 		} catch (NullPointerException ex) {
-			endTime = new String("No end date");
+			endTime = new String("No end time");
 		}
 		endTimeDisplay.setText(endTime);
 		

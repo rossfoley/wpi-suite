@@ -34,7 +34,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+
+/**
+ * The table containing all requirements for the given session 
+ * that is being displayed in the overview detail panel
+ * 
+ * Bottom half of the overviewDetailPanel split pane
+ */
 public class OverviewReqTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
@@ -46,14 +54,15 @@ public class OverviewReqTable extends JTable {
 	 * @param data	Initial data to fill OverviewReqTable
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
-	public OverviewReqTable(Object[][] data, String[] columnNames)
-	{
+	public OverviewReqTable(Object[][] data, String[] columnNames) {
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
+        
+    	ViewEventController.getInstance().setOverviewReqTable(this);
     
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
@@ -84,11 +93,12 @@ public class OverviewReqTable extends JTable {
 	 * updates OverviewReqTable with the contents of the requirement model
 	 */
 	public void refresh(PlanningPokerSession session) {
-		// TODO Implement Estimate column
+		// TODO Implement Your Vote, Estimate columns
 		// Currently is 0 for every estimate
 		
 		Set<Integer> requirementIDs = session.getRequirementIDs();
 		RequirementModel reqs = RequirementModel.getInstance();
+		int vote = 0;
 		int estimate = 0;
 		//List<Estimate> estimates = session.getEstimates();
 				
@@ -101,12 +111,11 @@ public class OverviewReqTable extends JTable {
 
 			tableModel.addRow(new Object[]{
 					reqName,
+					vote,
 					estimate});	
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
-		
-		System.out.println("finished refreshing the table");		
 	}
 	
 	/**
@@ -140,8 +149,6 @@ public class OverviewReqTable extends JTable {
 		super.paintComponent(g);
 	}
 	
-
-	
 	/**
 	 * Method prepareRenderer.
 	 * @param renderer TableCellRenderer
@@ -162,10 +169,8 @@ public class OverviewReqTable extends JTable {
 	
 	/**
 	 * Overrides the isCellEditable method to ensure no cells are editable.
-	 * 
 	 * @param row	row of OverviewReqTable cell is located
 	 * @param col	column of OverviewReqTable cell is located
-	
 	 * @return boolean */
 	@Override
 	public boolean isCellEditable(int row, int col)	{

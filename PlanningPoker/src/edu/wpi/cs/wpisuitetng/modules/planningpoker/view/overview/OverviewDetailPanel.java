@@ -9,7 +9,9 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -37,21 +39,23 @@ public class OverviewDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
 	OverviewDetailInfoPanel infoPanel;
 	OverviewReqTable reqTable;
+	JScrollPane tablePanel;
 
 	public OverviewDetailPanel () {
 
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
-		String[] columnNames = {"Name", "Estimate"};
+		String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
 		Object[][] data = {};
 		
 		// Create the info panel and table panel
 		infoPanel = new OverviewDetailInfoPanel();
 		reqTable = new OverviewReqTable(data, columnNames);
+		tablePanel = new JScrollPane(reqTable);
 		
 		// Put the info panel and table panel into the split pane
 		this.setTopComponent(infoPanel);
-		this.setBottomComponent(reqTable);
+		this.setBottomComponent(tablePanel);
 		this.setResizeWeight(0.5); 
 
 		ViewEventController.getInstance().setOverviewDetailInfoPanel(infoPanel);
@@ -62,10 +66,15 @@ public class OverviewDetailPanel extends JSplitPane {
 			}
 		});
 		
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Have the event controller open a new edit session tab
-				ViewEventController.getInstance().editSession(getCurrentSession());
+		// Makes the split pane divide 50/50 for each portion
+		Dimension d = new Dimension(200, 200);
+        infoPanel.setMinimumSize(d);
+        infoPanel.setPreferredSize(d);
+        tablePanel.setMinimumSize(d);
+        
+        // Disable the split pane from being movable
+        // Why that's the method name I have no idea
+        this.setEnabled(false);
 			}
 		});
 
@@ -76,6 +85,7 @@ public class OverviewDetailPanel extends JSplitPane {
 
 		this.currentSession = session;
 		
+		// update each part of the split panel
 		updateInfoPanel(session);
 		updateReqTable(session);
 		
@@ -92,6 +102,7 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 
 	private void setButtonVisibility(PlanningPokerSession session) {
+		// TODO
 		// Check if the buttons should appear
 		/*
 			btnEdit.isVisible(false);
