@@ -345,37 +345,18 @@ public class DeckVotingPanel extends JPanel
 	 * @param card_index	The card to highlight
 	 */
 	private void highlightCard(int card_index) {
-		layeredDeckPane.removeAll();
-		//This is the origin of the first label added.
-		Point origin = new Point(10, 20);
 
-		// Update card buttons in panel to highlight the moused-over card
-		for (int i = 0; i < listOfCardButtons.size(); i++) {
-			// If this card is supposed to be highlighted
-			if (i == card_index) {
-				origin.y += 30;
-			}
-			int cardValue = Integer.parseInt(listOfCardButtons.get(i).getName());
-			boolean cardSelected = isCardSelected(listOfCardButtons.get(i));
+		if ((card_index >= 0) && (card_index < listOfCardButtons.size())) {
+			//This is the origin of the first label added.
+			Point origin = new Point(10, 50);
+			
+			boolean cardSelected = isCardSelected(listOfCardButtons.get(card_index));
+			int cardValue = Integer.parseInt(listOfCardButtons.get(card_index).getName());
 			JButton cardButton = createCardButtons(cardValue, origin, cardSelected);
-			listOfCardButtons.set(i, cardButton);
-			// Set this card as the top cad if moused-over
-			if (i == card_index) {
-				layeredDeckPane.add(cardButton, new Integer(this.listOfCardButtons.size() + 1));
-				origin.y -= 30;
-			}
-			else {
-				layeredDeckPane.add(cardButton, new Integer(i));
-			}
-			origin.x += cardOffset;
+			layeredDeckPane.setComponentZOrder(cardButton, new Integer(this.listOfCardButtons.size() + 1));
 		}
-		// Refresh panes
-		layeredDeckPane.revalidate();
-		layeredDeckPane.repaint();
-		revalidate();
-		repaint();
-		
 	}
+	
 
 	/**
 	 * @param card	The card to set properties for
