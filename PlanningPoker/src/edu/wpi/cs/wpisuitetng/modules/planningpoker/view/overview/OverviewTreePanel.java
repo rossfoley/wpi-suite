@@ -137,12 +137,15 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 					if (((PlanningPokerSession) node.getUserObject()).getSessionCreatorName().equals(ConfigManager.getConfig().getUserName())) {
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
 					}
-					else if (!((PlanningPokerSession) node.getUserObject()).isOpen()) {
+					else {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
+					}
+					if (!((PlanningPokerSession) node.getUserObject()).isOpen()) {
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
 					}
-					
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+					else {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
+					}
 					
 					PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
 					displaySession(session);
