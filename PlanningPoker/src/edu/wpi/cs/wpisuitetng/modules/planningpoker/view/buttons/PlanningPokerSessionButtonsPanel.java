@@ -23,6 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  */
 public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private JButton createButton = new JButton("<html>Create<br />Planning Poker Session</html>");
+	private JButton editButton = new JButton("<html>Edit<br />Planning Poker Session</html>");
 	private final JPanel contentPanel = new JPanel();
 	
 	public PlanningPokerSessionButtonsPanel(){
@@ -37,6 +38,12 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		    		new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/new_req.png"));
 		    		//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 		    this.createButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(
+		    		new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/new_req.png"));
+		    		//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+		    this.editButton.setIcon(new ImageIcon(img));
+		    
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
 		
 		// the action listener for the Create Planning Poker Session Button
@@ -45,9 +52,20 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().createPlanningPokerSession();
 			}
-		});		
+		});	
+		
+		//action listener for the Edit Session Button
+		//editButton.addActionListener(new ActionListener() {
+			//@Override
+			//public void actionPerformed(ActionEvent e) {
+				//if (!ViewEventController.getInstance().getOverviewTable().getEditFlag()) {
+					//ViewEventController.getInstance().createIteration();
+				//}
+		//	}
+		//});
 			
 		contentPanel.add(createButton);
+		contentPanel.add(editButton);
 		contentPanel.setOpaque(false);
 
 		this.add(contentPanel);
@@ -59,5 +77,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	 * @return JButton */
 	public JButton getCreateButton() {
 		return createButton;
+	}
+
+
+	/**
+	 * Method geteditButton
+	
+	 * @return JButton */
+	public JButton getCreateIterationButton() {
+		return editButton;
 	}
 }
