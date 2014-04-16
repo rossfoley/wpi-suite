@@ -22,12 +22,8 @@ import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class VotingManager extends JPanel{
+public class VotingManager extends JPanel {
 	
-	/**
-	 * 
-	 */
-	//private static final long serialVersionUID = 1L;
 	private List<Requirement> requirements;
 	private List<Estimate> estimate;
 	private String ownerName;
@@ -47,45 +43,9 @@ public class VotingManager extends JPanel{
 		this.requirements = requirements;
 		this.ownerName = ownerName;
 		
-		/*this.addActionListener(new EstimateListener() {
-			//@Override
-			public void actionPerformed(EstimateEvent e){
-				update();
-			};
-		});
-		*/
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
-		
-		
-		//tree.setEditable(true);
-		/*
-		tree.setModel(new DefaultTreeModel(
-			new DefaultMutableTreeNode("JTree") {
-				{
-					DefaultMutableTreeNode node_1;
-					node_1 = new DefaultMutableTreeNode("colors");
-						node_1.add(new DefaultMutableTreeNode("blue"));
-						node_1.add(new DefaultMutableTreeNode("violet"));
-						node_1.add(new DefaultMutableTreeNode("red"));
-						node_1.add(new DefaultMutableTreeNode("yellow"));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("sports");
-						node_1.add(new DefaultMutableTreeNode("basketball"));
-						node_1.add(new DefaultMutableTreeNode("soccer"));
-						node_1.add(new DefaultMutableTreeNode("football"));
-						node_1.add(new DefaultMutableTreeNode("hockey"));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("food");
-						node_1.add(new DefaultMutableTreeNode("hot dogs"));
-						node_1.add(new DefaultMutableTreeNode("pizza"));
-						node_1.add(new DefaultMutableTreeNode("ravioli"));
-						node_1.add(new DefaultMutableTreeNode("bananas"));
-					add(node_1);
-				}
-			}
-		));*/
 		update();
 		springLayout.putConstraint(SpringLayout.NORTH, tree, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, tree, 0, SpringLayout.WEST, this);
@@ -101,7 +61,6 @@ public class VotingManager extends JPanel{
 		TreeNode rootNode = createNodes();
 		
 		tree = new JTree(rootNode);
-		//tree.setEditable(true);
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -121,26 +80,6 @@ public class VotingManager extends JPanel{
 	private Requirement getSelected(){
 		this.estimate = getEstimates();
 		Requirement rqt = new Requirement();
-		/*
-		TreePath paths[] = tree.getSelectionPaths();
-		LinkedList<TreePath> path = new LinkedList<TreePath>();
-		for (TreePath tPath : paths){
-			path.addLast(tPath);
-		}
-		
-		TreeNode node = (TreeNode)path.getLast().getLastPathComponent();
-		String selected = node.toString();
-		for (Requirement requirement : this.requirements){
-			if (requirement.getName() == selected){
-				return requirement;
-			}
-		}*/
-		/*
-		int selected[] = tree.getSelectionRows();
-		for (int n : selected){
-			int row = n - 2;
-			if (row <=)
-		}*/
 		
 		TreeNode node = (TreeNode)tree.getLastSelectedPathComponent();
 		if (node != null){
@@ -199,7 +138,6 @@ public class VotingManager extends JPanel{
 	
 	private LinkedList<Estimate> getEstimates(){
 		LinkedList<Estimate> estimates = new LinkedList<Estimate>();
-		//estimates = (LinkedList<Estimate>)this.estimateModel.getEstimates();
 		for (Estimate estimate : this.estimateModel.getEstimates()){
 			estimates.add(estimate);
 		}
@@ -265,35 +203,4 @@ public class VotingManager extends JPanel{
 		}
 	}
 
-	/** Fire an EstimateEvent to all registered listeners */
-	/*protected void fireEstimateEvent() {
-		// if we have no listeners, do nothing...
-		if (this.estimateListeners != null && !this.estimateListeners.isEmpty()) {
-			// create the event object to send
-			EstimateEvent event = 
-					new EstimateEvent(this, this.getEstimate());
-
-			// make a copy of the listener list in case
-			//   anyone adds/removes listeners
-			Vector<EstimateListener> targets;
-			synchronized (this) {
-				targets = (Vector<EstimateListener>) this.estimateListeners.clone();
-			}
-
-			// walk through the listener list and
-			//   call the sunMoved method in each
-			Enumeration e = targets.elements();
-			while (e.hasMoreElements()) {
-				EstimateListener l = (EstimateListener) e.nextElement();
-				l.estimateSubmitted(event);
-			}
-		}
-	}
-	*/
-	/*
-	public void addEstimate(Estimate estimate){
-		this.estimate.add(estimate);
-		this.update();
-	}
-	*/
 }
