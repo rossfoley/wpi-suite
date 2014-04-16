@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -36,9 +37,11 @@ public class VotingManager extends JPanel {
 	private LinkedList<Requirement> notVotedList;
 	private LinkedList<Requirement> votedList;
 	
-	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName){
+	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName) {		
 		setName("Voting Manager");
 		this.estimates = pokerSession.getEstimates();
+		System.out.println("Voting manager says that there are " + this.estimates.size() + " estimates");
+		System.out.println("Model says that there are " + PlanningPokerSessionModel.getInstance().getPlanningPokerSession(pokerSession.getID()).getEstimates().size() + " estimates");
 		this.requirements = requirements;
 		this.ownerName = ownerName;
 		
@@ -110,12 +113,12 @@ public class VotingManager extends JPanel {
 		}
 		System.out.println("Not Voted:" + notVotedList.size());
 		System.out.println("Voted:" + votedList.size());
-		for (Requirement rqt : votedList){
+		for (Requirement rqt : votedList) {
 			DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(rqt.getName());
 			voted.add(node1);
 		}
 		
-		for (Requirement rqt : notVotedList){
+		for (Requirement rqt : notVotedList) {
 			DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(rqt.getName());
 			notVoted.add(node1);
 		}
@@ -127,16 +130,14 @@ public class VotingManager extends JPanel {
 
 	private boolean hasEstimate(Requirement rqt) {
 		int id = rqt.getId();
-		boolean has = false;
-		for (Estimate es : this.estimates){
-			System.out.println(es.getRequirementID() + "=" + id);
-			System.out.println(es.getOwnerName() + "=" + this.ownerName);
-			if (es.getRequirementID() == id && es.getOwnerName() == this.ownerName){
-				has = true;
+		for (Estimate es : this.estimates) {
+
+			if (es.getRequirementID() == id && es.getOwnerName().equals(this.ownerName)) {
+				return true;
 			}
 		}
 		
-		return has;
+		return false;
 	}
 	
 
