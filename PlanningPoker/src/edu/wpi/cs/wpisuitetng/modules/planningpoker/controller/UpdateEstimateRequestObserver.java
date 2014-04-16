@@ -51,7 +51,7 @@ public class UpdateEstimateRequestObserver implements RequestObserver {
 	@Override
 	public void responseError(IRequest iReq) {
 		System.err.println(iReq.getResponse().getStatusMessage());
-		System.err.println("The request to update an Estiamte failed.");
+		System.err.println("The request to update an Estimate failed.");
 	}
 
 	/**
