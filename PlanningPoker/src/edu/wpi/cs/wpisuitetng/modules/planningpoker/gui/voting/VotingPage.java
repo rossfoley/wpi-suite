@@ -101,7 +101,7 @@ public class VotingPage extends JSplitPane {
 		nameField.setBackground(Color.WHITE);
 		nameField.setEditable(false);
 		
-		JTextArea descriptionField = new JTextArea("");
+		JTextField descriptionField = new JTextField("");
 		descriptionField.setBackground(Color.WHITE);
 		descriptionField.setPreferredSize(new Dimension(300, 300));
 		descriptionField.setEditable(false);
@@ -111,7 +111,7 @@ public class VotingPage extends JSplitPane {
 		
 		if (reqToVoteOn != null) {		
 			nameField.setText(reqToVoteOn.getName());
-			descriptionField.append(reqToVoteOn.getDescription());
+			descriptionField.setText(reqToVoteOn.getDescription());
 			estimationComplete = activeSession.getReqsWithCompleteEstimates().contains(reqToVoteOn.getId());
 		}
 		else{
