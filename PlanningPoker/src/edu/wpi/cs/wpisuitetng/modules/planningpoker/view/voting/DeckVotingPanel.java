@@ -200,6 +200,9 @@ public class DeckVotingPanel extends JPanel
 			prevEstimateCards = cardsFromLastEstimate();
 			submitButton = new JButton("Resubmit Estimation");
 		}
+		for (int temp : prevEstimateCards) {
+			System.out.println("PrevCard: " + temp);
+		}
 		// Create submission button
 		submitButton.setAlignmentX(CENTER_ALIGNMENT);
 		submitButton.addActionListener(new ActionListener() {
@@ -226,15 +229,7 @@ public class DeckVotingPanel extends JPanel
 		listOfCardButtons = new ArrayList<JButton>();
 		for (int i = 0; i < numbersInDeck.size(); i++) {
 			JButton cardButton;
-			// If the card should be selected by default
-			if (prevEstimateCards.contains(numbersInDeck.get(i))){
-				cardButton = createCardButtons(numbersInDeck.get(i), origin, true);
-				updateEstimate(cardButton);
-				prevEstimateCards.remove(numbersInDeck.get(i));
-			}
-			else {
-				cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
-			}
+			cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
 			layeredDeckPane.add(cardButton, new Integer(i));
 			listOfCardButtons.add(cardButton);
 			origin.x += cardOffset;
@@ -424,10 +419,14 @@ public class DeckVotingPanel extends JPanel
 		// Find which numbers make up the estimate
 		for (int i = (numbersInDeck.size() - 1); i >= 0; i--) {
 			// If this card fits into the estimate
-			if (temp <= numbersInDeck.get(i)) {
+			if (temp >= numbersInDeck.get(i)) {
 				temp -= numbersInDeck.get(i);
 				numbersInEstimate.add(numbersInDeck.get(i));
 			}
+		}
+		// If estimate was not 0, remove the 0 card
+		if (numbersInEstimate.size() > 1) {
+			numbersInEstimate.remove(new Integer(0));
 		}
 		
 		return numbersInEstimate;
@@ -528,4 +527,5 @@ public class DeckVotingPanel extends JPanel
 			}
 		}
 	}
+
 }
