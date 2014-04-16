@@ -29,6 +29,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -59,7 +60,6 @@ import javax.swing.JCheckBox;
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
 	private final PlanningPokerSession unmodifiedSession = new PlanningPokerSession();
-
 	private final SpringLayout layout = new SpringLayout();
 	private SpringLayout firstPanelLayout = new SpringLayout();
 	private SpringLayout secondPanelLayout = new SpringLayout();
@@ -150,6 +150,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JLabel lblDeck = new JLabel("Deck:");
 
 		final JButton btnNext = new JButton("Next >");
+		JButton btnCancel = new JButton("Cancel");
 		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 
 		// Create disabled datePicker placeholder 
@@ -235,6 +236,11 @@ public class PlanningPokerSessionTab extends JPanel {
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, dateErrorMessage, 0, SpringLayout.NORTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, dateErrorMessage, 20, SpringLayout.EAST, lblEndDate);
+		
+		// Position the cancel button
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnNext);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -85, SpringLayout.EAST, btnNext);
+
 
 		// Handle the time dropdowns
 		populateTimeDropdown();
@@ -296,8 +302,16 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 		});
 		
+		// Cancel button event handler
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				closePanel();
+			}
+		});
+		
 		// Add all of the elements to the first panel
 		firstPanel.add(btnNext);
+		firstPanel.add(btnCancel);
 		firstPanel.add(lblDeck);
 		firstPanel.add(lblSessionEndTime);
 		firstPanel.add(lblSessionName);
@@ -325,11 +339,12 @@ public class PlanningPokerSessionTab extends JPanel {
 
 		JButton btnSave = new JButton("Save");
 		JButton btnBack = new JButton("Back");
-		JButton btnOpen = new JButton("Open");
+		JButton btnStart = new JButton("Start");
+		JButton btnCancel = new JButton("Cancel");
 
 		//Position the error message for requirements
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -5, SpringLayout.SOUTH, btnOpen);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -90, SpringLayout.EAST, btnOpen);
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -5, SpringLayout.SOUTH, btnCancel);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, norequirements, -90, SpringLayout.EAST, btnCancel);
 
 		// Position the requirements panel
 		secondPanelLayout.putConstraint(SpringLayout.NORTH, requirementPanel, 10, SpringLayout.NORTH, secondPanel);
@@ -341,13 +356,18 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnSave, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.EAST, btnSave, -10, SpringLayout.EAST, secondPanel);
 		
-		//Position the open button
-		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnOpen, 0, SpringLayout.SOUTH, btnSave);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, btnOpen, -70, SpringLayout.EAST, btnSave);
+		//Position the Start button
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnStart, 0, SpringLayout.SOUTH, btnSave);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnStart, -70, SpringLayout.EAST, btnSave);
 
 		// Position the back button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
+		
+		// Position the cancel button
+		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnStart);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -70, SpringLayout.EAST, btnStart);
+
 
 
 		// Save button event handler
@@ -369,8 +389,8 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 		});
 
-		// Open button event handler
-		btnOpen.addActionListener(new ActionListener() {
+		// Start button event handler
+		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<Requirement> requirements =  requirementPanel.getSelected();
 				if (requirements.isEmpty()) {
@@ -398,11 +418,19 @@ public class PlanningPokerSessionTab extends JPanel {
 				displayPanel(firstPanel);
 			}
 		});
+		
+		// Cancel button event handler
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				closePanel();
+					}
+				});
 
 		// Add all of the elements to the second panel
 		secondPanel.add(btnSave);
 		secondPanel.add(btnBack);
-		secondPanel.add(btnOpen);
+		secondPanel.add(btnStart);
+		secondPanel.add(btnCancel);
 		secondPanel.add(requirementPanel);
 		secondPanel.add(norequirements);
 	}
@@ -749,4 +777,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		return false;
 	}
 	
+	//closes this panel
+	public void closePanel() {
+		ViewEventController.getInstance().removeTab(this);
+	}
 }
