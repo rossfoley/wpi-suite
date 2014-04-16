@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -26,7 +27,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -96,7 +99,7 @@ public class OverviewReqTable extends JTable {
 		RequirementModel reqs = RequirementModel.getInstance();
 		int vote = 0;
 		int estimate = 0;
-		//List<Estimate> estimates = session.getEstimates();
+		List<Estimate> estimates = session.getEstimates();
 				
 		// clear the table
 		tableModel.setRowCount(0);		
@@ -104,6 +107,12 @@ public class OverviewReqTable extends JTable {
 		for (Integer requirementID : requirementIDs) {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
+			vote = 0;
+			for (Estimate e : estimates) {
+				if (e.getRequirementID() == requirementID && e.getOwnerName().equals(ConfigManager.getConfig().getUserName())) {
+					vote = e.getVote();
+				}
+			}
 
 			tableModel.addRow(new Object[]{
 					reqName,
