@@ -239,7 +239,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		// Position the cancel button
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnNext);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -80, SpringLayout.EAST, btnNext);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -85, SpringLayout.EAST, btnNext);
 
 
 		// Handle the time dropdowns
