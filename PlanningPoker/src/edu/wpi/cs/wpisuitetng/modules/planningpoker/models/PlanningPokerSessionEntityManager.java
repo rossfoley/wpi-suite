@@ -168,7 +168,17 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	@Override
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
+		switch (string) {
+			case "update-estimate":
+				Estimate estimate = Estimate.fromJson(content);
+				PlanningPokerSession pokerSession = getEntity(s, estimate.getSessionID().toString())[0];
+				pokerSession.addEstimate(estimate);
+				update(s, pokerSession.toJSON());
+				//addClientUpdate(pokerSession);
+			default:
+				System.out.println(string);
+		}
+
 		return null;
 	}
 }

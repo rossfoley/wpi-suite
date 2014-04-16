@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateModel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
@@ -108,9 +108,7 @@ public class VotingPage extends JSplitPane {
 		return activeSession;
 	}
 
-	public JPanel makeReqDetailPanel(Requirement reqToVoteOn){
-		
-		System.out.println("Number of estimates saved: " + EstimateModel.getInstance().getSize());
+	public JPanel makeReqDetailPanel(Requirement reqToVoteOn) {
 		
 		reqDetails = new JPanel();
 		SpringLayout sl_reqDetails = new SpringLayout();
@@ -186,15 +184,6 @@ public class VotingPage extends JSplitPane {
 	}
 
 
-	private void populateReqsTable(){
-		// 2 columns
-		// 1 for voted on
-		// 1 for req name
-
-
-
-	}
-
 
 	/**
 	 * checks a requirement in the session to vote on to see if it has been voted on
@@ -244,14 +233,13 @@ public class VotingPage extends JSplitPane {
 			@Override	
 			public void estimateSubmitted(EstimateEvent e) {
 				System.out.println("Estimate submitted: " + e.getEstimate());
-					if (requirement != null){
+				if (requirement != null) {
 					Estimate estimate = new Estimate();
 					estimate.setOwnerName(ConfigManager.getConfig().getUserName());
 					estimate.setRequirementID(requirement.getId());
-					estimate.setProject(activeSession.getProject());
+					estimate.setSessionID(activeSession.getID());
 					estimate.setVote((int)e.getEstimate());
 					estimates.add(estimate);
-					EstimateModel.getInstance().addEstimate(estimate);
 					reqsView = new VotingManager(getSessionReqs(), null, ConfigManager.getConfig().getUserName());
 					JScrollPane tablePanel = new JScrollPane();
 					tablePanel.setViewportView(reqsView);
