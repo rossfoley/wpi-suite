@@ -318,43 +318,60 @@ public class DeckVotingPanel extends JPanel
 		else {
 			JButton currentCard = (JButton) e.getSource();
 			// Find the index of the card
+			int tempIndex = -1;
 			for (int i = 0; i < listOfCardButtons.size(); i++) {
 				if (currentCard == listOfCardButtons.get(i)) {
-					// Only handle the event if the mouse moved to a new card
-					if (lastCard != i) {
-						// Check the location of the mouse wrt the cards origin
-						if ((e.getX() < cardOffset) || (i == listOfCardButtons.size() - 1)) {
-							lastCard = i;						
-						}
-						// If the mouse is on the right side of the card, highlight the next card
-						else {
-							lastCard = i + 1;
-						}
-						break;
+					// Check the location of the mouse wrt the cards origin
+					if ((e.getX() < cardOffset) || (i == listOfCardButtons.size() - 1)) {
+						tempIndex = i;
 					}
-					return;	// if this card is already highlighted
+					// If the mouse is on the right side of the card, highlight the next card
+					else {
+						tempIndex = i + 1;
+					}
+					break;
 				}
 			}
+			// Only handle the event if the mouse moved to a new card
+			if (tempIndex == lastCard) {
+				return;
+			}
+			lastCard = tempIndex;
 		}
-		
-		highlightCard(lastCard);
+		highlightCard();
 	}
 
 	/**
 	 * Moves the specified card slightly lower (y-direction) with respect to the other cards
-	 * @param card_index	The card to highlight
 	 */
-	private void highlightCard(int card_index) {
-
-		if ((card_index >= 0) && (card_index < listOfCardButtons.size())) {
-			//This is the origin of the first label added.
-			Point origin = new Point(10, 50);
-			
-			boolean cardSelected = isCardSelected(listOfCardButtons.get(card_index));
-			int cardValue = Integer.parseInt(listOfCardButtons.get(card_index).getName());
-			JButton cardButton = createCardButtons(cardValue, origin, cardSelected);
-			layeredDeckPane.setComponentZOrder(cardButton, new Integer(this.listOfCardButtons.size() + 1));
+	private void highlightCard() {
+		// Highlight this card if in the index
+		for (int i = 0; i < listOfCardButtons.size(); i++) {
+			if (i == lastCard) {
+				Point origin = new Point(10 + cardOffset*i, 50);
+				JButton card = listOfCardButtons.get(i); 
+				card.setBounds(origin.x, origin.y, 112, 140);
+				card.revalidate();
+				card.repaint();
+				layeredDeckPane.setComponentZOrder(card, new Integer(0));
+				layeredDeckPane.moveToFront(card);
+			}
+			else {
+				Point origin = new Point(10 + cardOffset*i, 20);
+				JButton card = listOfCardButtons.get(i); 	
+				card.setBounds(origin.x, origin.y, 112, 140);
+				card.revalidate();
+				card.repaint();
+				try {
+					layeredDeckPane.setComponentZOrder(card, new Integer(listOfCardButtons.size() - i));
+					layeredDeckPane.moveToBack(card);
+				} catch (IllegalArgumentException ex) {
+					System.out.println("Illegal Argument: " + i);
+			}
+			}
 		}
+		layeredDeckPane.revalidate();
+		layeredDeckPane.repaint();
 	}
 	
 
