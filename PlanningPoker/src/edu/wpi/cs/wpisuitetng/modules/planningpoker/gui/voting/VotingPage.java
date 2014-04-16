@@ -14,8 +14,8 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -234,12 +234,18 @@ public class VotingPage extends JSplitPane {
 				System.out.println("Estimate submitted: " + e.getEstimate());
 				if (requirement != null) {
 					Estimate estimate = new Estimate();
+					for (Estimate e2: estimates) {
+						if (e2.getRequirementID() == requirement.getId()) {
+							estimate = e2;
+						}
+					}
 					estimate.setOwnerName(ConfigManager.getConfig().getUserName());
 					estimate.setRequirementID(requirement.getId());
 					estimate.setSessionID(activeSession.getID());
 					estimate.setVote((int)e.getEstimate());
 					estimates.add(estimate);
-					reqsView = new VotingManager(getSessionReqs(), null, ConfigManager.getConfig().getUserName());
+					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
+					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
 					JScrollPane tablePanel = new JScrollPane();
 					tablePanel.setViewportView(reqsView);
 					

@@ -189,7 +189,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 
-	public void addEstimateToPlanningPokerSession(Estimate estimate) {
+	public PlanningPokerSession addEstimateToPlanningPokerSession(Estimate estimate) {
 		PlanningPokerSession session = getPlanningPokerSession(estimate.getSessionID());
 		session.addEstimate(estimate);
 		removePlanningPokerSession(session.getID());
@@ -197,6 +197,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		try {
 			UpdateEstimateController.getInstance().updateEstimate(estimate);
 		} catch (Exception e) {}
+		return session;
 	}
 	
 	/**
