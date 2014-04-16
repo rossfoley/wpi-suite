@@ -382,7 +382,7 @@ public class PlanningPokerSessionTab extends JPanel {
 				} else { 
 					submitSession = true;
 					saveFields();
-					pokerSession.setSessionState(SessionState.PENDING);
+					pokerSession.setGameState(SessionState.PENDING);
 					submitSessionToDatabase();
 					norequirements.setText("");
 				}
@@ -401,7 +401,7 @@ public class PlanningPokerSessionTab extends JPanel {
 				} else { 
 					submitSession = true;
 					saveFields();
-					pokerSession.setSessionState(SessionState.OPEN);
+					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
 					norequirements.setText("");
 
