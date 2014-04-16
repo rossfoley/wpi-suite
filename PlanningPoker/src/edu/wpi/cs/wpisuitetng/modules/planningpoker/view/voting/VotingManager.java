@@ -100,15 +100,20 @@ public class VotingManager extends JPanel {
 		DefaultMutableTreeNode voted = new DefaultMutableTreeNode("Estimated");
 		notVotedList = new LinkedList<Requirement>();
 		votedList = new LinkedList<Requirement>();
+		this.estimate = getEstimates();
 		
-		for (Requirement rqt : this.requirements)
+		System.out.println(estimate.size());
+		
+		for (Requirement rqt : this.requirements){
 			if (hasEstimate(rqt)){
 				votedList.add(rqt);
 			}
 			else{
 				notVotedList.add(rqt);
 			}
-		
+		}
+		System.out.println("Not Voted:" + notVotedList.size());
+		System.out.println("Voted:" + votedList.size());
 		for (Requirement rqt : votedList){
 			DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(rqt.getName());
 			voted.add(node1);
@@ -128,6 +133,8 @@ public class VotingManager extends JPanel {
 		int id = rqt.getId();
 		boolean has = false;
 		for (Estimate es : this.estimate){
+			System.out.println(es.getRequirementID() + "=" + id);
+			System.out.println(es.getOwnerName() + "=" + this.ownerName);
 			if (es.getRequirementID() == id && es.getOwnerName() == this.ownerName){
 				has = true;
 			}

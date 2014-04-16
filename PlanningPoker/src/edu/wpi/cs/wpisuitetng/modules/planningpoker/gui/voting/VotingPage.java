@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
@@ -74,7 +75,16 @@ public class VotingPage extends JSplitPane {
 				System.out.println("Got Selection Event:" + e.getRequirement().getName());
 				requirement = e.getRequirement();
 				buildReqPanel(requirement);
+				JScrollPane tablePanel = new JScrollPane();
+				tablePanel.setViewportView(reqsView);
+				
+				tablePanel.setMinimumSize(new Dimension(200, 300));
+				voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
+
+				setLeftComponent(tablePanel);
 				setRightComponent(voteOnReqPanel);
+				
+				setDividerLocation(225);
 			}
 			
 		});
@@ -99,6 +109,9 @@ public class VotingPage extends JSplitPane {
 	}
 
 	public JPanel makeReqDetailPanel(Requirement reqToVoteOn){
+		
+		System.out.println("Number of estimates saved: " + EstimateModel.getInstance().getSize());
+		
 		reqDetails = new JPanel();
 		SpringLayout sl_reqDetails = new SpringLayout();
 		reqDetails.setLayout(sl_reqDetails);
@@ -238,7 +251,18 @@ public class VotingPage extends JSplitPane {
 					estimate.setProject(activeSession.getProject());
 					estimate.setVote((int)e.getEstimate());
 					estimates.add(estimate);
-					reqsView = new VotingManager(getSessionReqs(), estimates, ConfigManager.getConfig().getUserName());
+					EstimateModel.getInstance().addEstimate(estimate);
+					reqsView = new VotingManager(getSessionReqs(), null, ConfigManager.getConfig().getUserName());
+					JScrollPane tablePanel = new JScrollPane();
+					tablePanel.setViewportView(reqsView);
+					
+					tablePanel.setMinimumSize(new Dimension(200, 300));
+					voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
+
+					setLeftComponent(tablePanel);
+					setRightComponent(voteOnReqPanel);
+					
+					setDividerLocation(225);
 				}
 			}
 		});
