@@ -222,6 +222,24 @@ public class VotingPage extends JSplitPane {
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
 					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
+					reqsView.addSelectionListener(new SelectionListener() {
+						@Override
+						public void selectionMade(SelectionEvent e){
+							requirement = e.getRequirement();
+							buildReqPanel(requirement);
+							JScrollPane tablePanel = new JScrollPane();
+							tablePanel.setViewportView(reqsView);
+							
+							tablePanel.setMinimumSize(new Dimension(200, 300));
+							voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
+
+							setLeftComponent(tablePanel);
+							setRightComponent(voteOnReqPanel);
+							
+							setDividerLocation(225);
+						}
+						
+					});
 					JScrollPane tablePanel = new JScrollPane();
 					tablePanel.setViewportView(reqsView);
 					
