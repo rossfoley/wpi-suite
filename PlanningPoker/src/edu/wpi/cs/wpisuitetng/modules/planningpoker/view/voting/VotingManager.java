@@ -63,6 +63,9 @@ public class VotingManager extends JPanel {
 		TreeNode rootNode = createNodes();
 		
 		tree = new JTree(rootNode);
+		for (int i = 0; i < tree.getRowCount(); i++){
+			tree.expandRow(i);
+		}
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
