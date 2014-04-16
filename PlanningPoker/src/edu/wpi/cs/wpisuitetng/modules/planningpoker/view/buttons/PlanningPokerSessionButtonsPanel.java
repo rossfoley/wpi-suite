@@ -50,6 +50,16 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/edit.png"));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			this.editButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/voting-icon.png"));
+			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+			this.voteButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/end-icon.png"));
+			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+			this.endVoteButton.setIcon(new ImageIcon(img));
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
 
