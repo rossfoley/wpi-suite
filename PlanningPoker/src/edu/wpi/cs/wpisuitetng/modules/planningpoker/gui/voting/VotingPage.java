@@ -56,8 +56,8 @@ public class VotingPage extends JSplitPane {
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
-	private JTextArea descriptionField = new JTextArea();
-	//private JTextField descriptionField = new JTextField();
+	//private JTextArea descriptionField = new JTextArea();
+	private JTextField descriptionField = new JTextField();
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;		
