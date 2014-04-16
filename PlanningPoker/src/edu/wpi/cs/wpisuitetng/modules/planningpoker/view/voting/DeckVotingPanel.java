@@ -72,8 +72,6 @@ public class DeckVotingPanel extends JPanel
 	private Integer lastCard = -1;
 	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
-	private boolean changedByValidate = false;
-	private double lastChangedEstimate = 0;
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -454,11 +452,8 @@ public class DeckVotingPanel extends JPanel
 	public boolean validateEstimate() {
 		if (userEstimate < 0) {
 			System.out.println("invalid number entered");
-			changedByValidate = true;
-			userEstimate = 0;
 			estimateFieldErrorMessage.setText("Please enter a positive number");
 			estimateFieldErrorMessage.setVisible(true);
-			estimateField.setValue(new Double(0));
 			estimateFieldErrorMessage.revalidate();
 			estimateFieldErrorMessage.repaint();
 			revalidate();
@@ -466,7 +461,6 @@ public class DeckVotingPanel extends JPanel
 			return false;
 		}
 		System.out.println("valid number entered");
-		changedByValidate = false;
 		estimateFieldErrorMessage.setText("");
 		estimateFieldErrorMessage.setVisible(false);
 		estimateFieldErrorMessage.revalidate();
@@ -483,16 +477,8 @@ public class DeckVotingPanel extends JPanel
 	public void propertyChange(PropertyChangeEvent evt) {
 		Object source = evt.getSource();
 		if (source == estimateField) {
-			lastChangedEstimate = userEstimate;
 			 userEstimate = ((Number) estimateField.getValue()).doubleValue();
-			 if (!(changedByValidate)){
-				// if (!((lastChangedEstimate==0)&&(userEstimate== 0))){
-					 validateEstimate();
-				 //}
-			 }
-			 else {
-				 changedByValidate = false;
-			 }
+			 validateEstimate();
 		}
 	}
 
