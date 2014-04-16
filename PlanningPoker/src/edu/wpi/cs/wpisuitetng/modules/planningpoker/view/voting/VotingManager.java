@@ -8,7 +8,8 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -25,9 +26,8 @@ import java.awt.event.MouseEvent;
 public class VotingManager extends JPanel {
 	
 	private List<Requirement> requirements;
-	private List<Estimate> estimate;
+	private List<Estimate> estimates;
 	private String ownerName;
-	private EstimateModel estimateModel = EstimateModel.getInstance();
 	private transient Vector<SelectionListener> selectionListeners;
 	private transient Vector<EstimateListener> estimateListeners;
 	
@@ -37,9 +37,11 @@ public class VotingManager extends JPanel {
 	private LinkedList<Requirement> notVotedList;
 	private LinkedList<Requirement> votedList;
 	
-	public VotingManager(List<Requirement> requirements, List<Estimate> estimate, String ownerName){
+	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName) {		
 		setName("Voting Manager");
-		this.estimate = estimate;
+		this.estimates = pokerSession.getEstimates();
+		System.out.println("Voting manager says that there are " + this.estimates.size() + " estimates");
+		System.out.println("Model says that there are " + PlanningPokerSessionModel.getInstance().getPlanningPokerSession(pokerSession.getID()).getEstimates().size() + " estimates");
 		this.requirements = requirements;
 		this.ownerName = ownerName;
 		
@@ -78,7 +80,6 @@ public class VotingManager extends JPanel {
 	
 
 	private Requirement getSelected(){
-		this.estimate = getEstimates();
 		Requirement rqt = new Requirement();
 		
 		TreeNode node = (TreeNode)tree.getLastSelectedPathComponent();
@@ -101,20 +102,23 @@ public class VotingManager extends JPanel {
 		notVotedList = new LinkedList<Requirement>();
 		votedList = new LinkedList<Requirement>();
 		
-		for (Requirement rqt : this.requirements)
+		
+		for (Requirement rqt : this.requirements){
 			if (hasEstimate(rqt)){
 				votedList.add(rqt);
 			}
 			else{
 				notVotedList.add(rqt);
 			}
-		
-		for (Requirement rqt : votedList){
+		}
+		System.out.println("Not Voted:" + notVotedList.size());
+		System.out.println("Voted:" + votedList.size());
+		for (Requirement rqt : votedList) {
 			DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(rqt.getName());
 			voted.add(node1);
 		}
 		
-		for (Requirement rqt : notVotedList){
+		for (Requirement rqt : notVotedList) {
 			DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(rqt.getName());
 			notVoted.add(node1);
 		}
@@ -126,24 +130,17 @@ public class VotingManager extends JPanel {
 
 	private boolean hasEstimate(Requirement rqt) {
 		int id = rqt.getId();
-		boolean has = false;
-		for (Estimate es : this.estimate){
-			if (es.getRequirementID() == id && es.getOwnerName() == this.ownerName){
-				has = true;
+		for (Estimate es : this.estimates) {
+
+			if (es.getRequirementID() == id && es.getOwnerName().equals(this.ownerName)) {
+				return true;
 			}
 		}
 		
-		return has;
+		return false;
 	}
 	
-	private LinkedList<Estimate> getEstimates(){
-		LinkedList<Estimate> estimates = new LinkedList<Estimate>();
-		for (Estimate estimate : this.estimateModel.getEstimates()){
-			estimates.add(estimate);
-		}
-		return estimates;
-	}
-	
+
 	synchronized public void addSelectionListener(SelectionListener l) {
 		if (this.selectionListeners == null) {
 			this.selectionListeners = new Vector<SelectionListener>();

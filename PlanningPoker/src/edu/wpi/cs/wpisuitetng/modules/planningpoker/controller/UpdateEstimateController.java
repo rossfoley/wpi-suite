@@ -47,7 +47,7 @@ public class UpdateEstimateController {
 	 */
 	public void updateEstimate(Estimate newEstimate) 
 	{
-		final Request request = Network.getInstance().makeRequest("planningpoker/estimate", HttpMethod.POST); // POST == update
+		final Request request = Network.getInstance().makeRequest("Advanced/planningpoker/planningpokersession/update-estimate", HttpMethod.POST); // POST == update
 		request.setBody(newEstimate.toJSON()); // put the new estimate in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); 

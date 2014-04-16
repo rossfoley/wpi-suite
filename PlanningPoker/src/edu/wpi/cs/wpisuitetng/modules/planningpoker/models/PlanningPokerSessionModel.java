@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -156,6 +157,17 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 
+	public PlanningPokerSession addEstimateToPlanningPokerSession(Estimate estimate) {
+		PlanningPokerSession session = getPlanningPokerSession(estimate.getSessionID());
+		session.addEstimate(estimate);
+		removePlanningPokerSession(session.getID());
+		planningPokerSessions.add(session);
+		try {
+			UpdateEstimateController.getInstance().updateEstimate(estimate);
+		} catch (Exception e) {}
+		return session;
+	}
+	
 	/**
 	 * Adds the given array of planningpokersession to the list
 	 * 
@@ -178,30 +190,4 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	public List<PlanningPokerSession> getPlanningPokerSessions() {
 		return planningPokerSessions;
 	}
-
-	
-//	/**
-//	 * Returns the Requirement with the given ID
-//	 * 
-//	 * @param id The ID number of the requirement to be returned
-//	
-//	 * @return the requirement for the id or null if the requirement is not found */
-//	public Requirement getRequirement(int id)
-//	{
-//		
-//	}
-//	
-//	/**
-//	 * Provides the number of elements in the list of requirements for the project. This
-//	 * function is called internally by the JList in NewRequirementPanel. Returns elements
-//	 * in reverse order, so the newest requirement is returned first.
-//	 * 	
-//	 * @return the number of requirements in the project * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize() * @see javax.swing.ListModel#getSize()
-//	 */
-//	// need to rename part of this function to work in this package
-//	public int requirementsGetSize() {
-//		return ;
-//	}
-
-
 }

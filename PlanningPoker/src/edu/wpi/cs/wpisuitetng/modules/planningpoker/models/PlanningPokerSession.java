@@ -346,6 +346,12 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param estimate the estimate to add to the session
 	 */
 	public void addEstimate(Estimate estimate) {
+		for (Estimate e : estimates) {
+			if (e.getID().equals(estimate.getID())) {
+				this.estimates.remove(e);
+				break;
+			}
+		}
 		this.estimates.add(estimate);
 		checkReqEstimationComplete(estimate.getRequirementID());
 	}
@@ -356,33 +362,33 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void checkReqEstimationComplete(Integer reqID){
 		// get all estimates for this reqID
-		User[] teamMembers = getProject().getTeam();
 		ArrayList<Estimate> estimatesForReq = new ArrayList<Estimate>();
 		for (Estimate e: estimates){
-			if (e.getRequirementID()==reqID){
+			if (e.getRequirementID() == reqID){
 				estimatesForReq.add(e);
 			}
 		}
 		
 		boolean estimationComplete = true;
-		int numberInTeam = teamMembers.length;
-		for (int i = 0; i<numberInTeam; i++){
-			String currentUsername = teamMembers[i].getUsername();
-			boolean foundCurrentUserEstimate = false;
-			for (Estimate e:estimatesForReq){
-				if (currentUsername.equals(e.getOwnerName())){
-					foundCurrentUserEstimate = true;
+		for (User teamMember : getProject().getTeam()) {
+			if (teamMember != null) {
+				String currentUsername = teamMember.getUsername();
+				boolean foundCurrentUserEstimate = false;
+				for (Estimate e:estimatesForReq){
+					if (currentUsername.equals(e.getOwnerName())){
+						foundCurrentUserEstimate = true;
+					}
 				}
-			}
-			if (!foundCurrentUserEstimate){
-				estimationComplete = false;
+				if (!foundCurrentUserEstimate){
+					estimationComplete = false;
+				}
 			}
 		}
 		
 		if (estimationComplete){
 			if (!(reqsWithCompleteEstimates.contains(reqID))){
 				reqsWithCompleteEstimates.add(reqID);
-				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(this);
+				//PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(this);
 			}
 		}
 	}
