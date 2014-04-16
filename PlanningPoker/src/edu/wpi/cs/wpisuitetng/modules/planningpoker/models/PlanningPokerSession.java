@@ -377,7 +377,7 @@ public class PlanningPokerSession extends AbstractModel {
 			}
 		}
 		this.estimates.add(estimate);
-		checkReqEstimationComplete(estimate.getRequirementID());
+		//checkReqEstimationComplete(estimate.getRequirementID());
 	}
 	
 	/**
@@ -409,11 +409,8 @@ public class PlanningPokerSession extends AbstractModel {
 			}
 		}
 		
-		if (estimationComplete){
-			if (!(reqsWithCompleteEstimates.contains(reqID))){
-				reqsWithCompleteEstimates.add(reqID);
-				//PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(this);
-			}
+		if (estimationComplete) {
+			reqsWithCompleteEstimates.add(reqID);
 		}
 	}
 	

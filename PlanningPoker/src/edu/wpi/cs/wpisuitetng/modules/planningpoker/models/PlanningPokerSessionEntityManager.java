@@ -174,7 +174,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 				PlanningPokerSession pokerSession = getEntity(s, estimate.getSessionID().toString())[0];
 				pokerSession.addEstimate(estimate);
 				update(s, pokerSession.toJSON());
-				//addClientUpdate(pokerSession);
+				addClientUpdate(pokerSession);
 			default:
 				System.out.println(string);
 		}
