@@ -59,7 +59,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		endDateDisplay = new JLabel();
 		endTimeDisplay = new JLabel();
 		deckDisplay = new JLabel();
-		sessionCreatorDisplay = new JLabel("sessionCreatorDisplay");
+		sessionCreatorDisplay = new JLabel("");
 		sessionDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
 		
