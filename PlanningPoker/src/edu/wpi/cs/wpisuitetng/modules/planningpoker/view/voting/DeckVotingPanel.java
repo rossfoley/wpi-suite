@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
@@ -72,6 +73,7 @@ public class DeckVotingPanel extends JPanel
 	private Integer lastCard = -1;
 	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
+	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -119,6 +121,8 @@ public class DeckVotingPanel extends JPanel
 	 */
 	private void buildDefaultVotingPanel() {
 		estimateFieldErrorMessage.setForeground(Color.RED); 
+		estimateSubmittedMessage.setForeground(Color.GREEN);
+		estimateSubmittedMessage.setVisible(false);
 
 		// Create the text field for the estimation number
 		NumberFormat estimateFormat = NumberFormat.getNumberInstance();
@@ -129,6 +133,14 @@ public class DeckVotingPanel extends JPanel
 		estimateField.addPropertyChangeListener("value", this);
 
 		estimateField.setPreferredSize(new Dimension(200, 100));
+		
+		estimateField.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				estimateSubmittedMessage.setVisible(false);
+			}
+		});
+		
 		// Set default values if this is the first vote
 		if (prevEstimate == null) {
 			estimateField.setValue(new Double(0));
@@ -157,30 +169,31 @@ public class DeckVotingPanel extends JPanel
 		estimateLabel.setLabelFor(estimateField);
 		setLayout(new BorderLayout(10, 10));
 
-		JPanel subPanel = new JPanel();
-		subPanel.setPreferredSize(new Dimension(400, 100));
-		SpringLayout subPanelLayout = new SpringLayout();
-		subPanel.setLayout(subPanelLayout);
+		//JPanel subPanel = new JPanel();
+		//subPanel.setPreferredSize(new Dimension(400, 100));
+		SpringLayout thisLayout = new SpringLayout();
+		this.setLayout(thisLayout);
 		
-		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
-		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
-		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, subPanel);
-		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
-		subPanelLayout.putConstraint(SpringLayout.SOUTH, estimateField, -25, SpringLayout.NORTH, submitButton);
-		subPanelLayout.putConstraint(SpringLayout.WEST, submitButton, -70, SpringLayout.HORIZONTAL_CENTER, subPanel);
-		subPanelLayout.putConstraint(SpringLayout.EAST, submitButton, 70, SpringLayout.HORIZONTAL_CENTER, subPanel);
-		subPanelLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, subPanel);
+		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		thisLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, this);
+		thisLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
+		thisLayout.putConstraint(SpringLayout.SOUTH, estimateField, -25, SpringLayout.NORTH, submitButton);
+		thisLayout.putConstraint(SpringLayout.WEST, submitButton, -90, SpringLayout.HORIZONTAL_CENTER, this);
+		thisLayout.putConstraint(SpringLayout.EAST, submitButton, 90, SpringLayout.HORIZONTAL_CENTER, this);
+		thisLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
 		
-		subPanelLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
-		subPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		thisLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
+		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		
+		thisLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
+		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		
-		subPanel.add(estimateFieldErrorMessage);		
-		subPanel.add(submitButton);
-		subPanel.add(estimateLabel);
-		subPanel.add(estimateField);
-
-		add(subPanel, BorderLayout.CENTER);				
+		add(estimateSubmittedMessage);
+		add(estimateFieldErrorMessage);		
+		add(submitButton);
+		add(estimateLabel);
+		add(estimateField);			
 	}
 
 
@@ -474,8 +487,9 @@ public class DeckVotingPanel extends JPanel
 	public void propertyChange(PropertyChangeEvent evt) {
 		Object source = evt.getSource();
 		if (source == estimateField) {
-			 userEstimate = ((Number) estimateField.getValue()).doubleValue();
-			 validateEstimate();
+			estimateSubmittedMessage.setVisible(false);
+			userEstimate = ((Number) estimateField.getValue()).doubleValue();
+			validateEstimate();
 		}
 	}
 
@@ -525,6 +539,7 @@ public class DeckVotingPanel extends JPanel
 				EstimateListener l = (EstimateListener) e.nextElement();
 				l.estimateSubmitted(event);
 			}
+			estimateSubmittedMessage.setVisible(true);
 		}
 	}
 
