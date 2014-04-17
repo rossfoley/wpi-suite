@@ -121,7 +121,7 @@ public class DeckVotingPanel extends JPanel
 	 */
 	private void buildDefaultVotingPanel() {
 		estimateFieldErrorMessage.setForeground(Color.RED); 
-		estimateSubmittedMessage.setForeground(Color.GREEN);
+		estimateSubmittedMessage.setForeground(Color.BLUE);
 		estimateSubmittedMessage.setVisible(false);
 
 		// Create the text field for the estimation number
@@ -204,7 +204,7 @@ public class DeckVotingPanel extends JPanel
 		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 		List<Integer> prevEstimateCards;
 		
-		estimateSubmittedMessage.setForeground(Color.GREEN);
+		estimateSubmittedMessage.setForeground(Color.BLUE);
 		estimateSubmittedMessage.setVisible(false);
 		
 		// Set default values if this is the first vote
