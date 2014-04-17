@@ -75,20 +75,23 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	public void refresh(){
 
 		List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
+		boolean isOwner;
 		
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
 		DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
 		DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
 		DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
 		DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
-
+		
+		
 		for(PlanningPokerSession session : sessions) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
+			isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
 			
 			if (session.getGameState() == SessionState.OPEN) {
 				openSessions.add(newSessionNode);
 			}
-			else if (session.getGameState() == SessionState.PENDING) {
+			else if (session.getGameState() == SessionState.PENDING && isOwner) {
 				pendingSessions.add(newSessionNode);
 			}
 			else if (session.getGameState() == SessionState.VOTINGENDED) {
