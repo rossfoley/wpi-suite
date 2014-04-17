@@ -204,6 +204,9 @@ public class DeckVotingPanel extends JPanel
 		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 		List<Integer> prevEstimateCards;
 		
+		estimateSubmittedMessage.setForeground(Color.GREEN);
+		estimateSubmittedMessage.setVisible(false);
+		
 		// Set default values if this is the first vote
 		if (prevEstimate == null) {
 			submitButton = new JButton("Submit Estimation");
@@ -247,11 +250,27 @@ public class DeckVotingPanel extends JPanel
 			listOfCardButtons.add(cardButton);
 			origin.x += cardOffset;
 		}
-
+		layeredDeckPane.setPreferredSize(new Dimension(400, 250));
 		//Add control pane and layered pane to this JPanel.
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		JPanel subPanel = new JPanel();
+		SpringLayout subLayout = new SpringLayout();
+		subPanel.setLayout(subLayout);
+		subPanel.setPreferredSize(new Dimension(400, 30));
+		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, submitButton, 0, SpringLayout.VERTICAL_CENTER, subPanel);
+		subLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+		
+		subLayout.putConstraint(SpringLayout.WEST, estimateSubmittedMessage, 10, SpringLayout.EAST, submitButton);
+		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.VERTICAL_CENTER, submitButton);
+		
+		subPanel.add(estimateSubmittedMessage);
+		subPanel.add(submitButton);
+		
+		
 		add(layeredDeckPane);
-		add(submitButton);
+		add(subPanel);
+/*		add(submitButton);
+		add(estimateSubmittedMessage);*/
 	}
 
 	
@@ -291,6 +310,7 @@ public class DeckVotingPanel extends JPanel
 		card.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				estimateSubmittedMessage.setVisible(false);
 				setCardSelected(card, !isCardSelected(card));
 				updateEstimate(card);
 			}
