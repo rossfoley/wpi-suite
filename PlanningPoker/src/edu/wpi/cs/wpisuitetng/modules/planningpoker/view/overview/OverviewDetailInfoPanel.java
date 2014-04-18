@@ -24,6 +24,13 @@ import javax.swing.SwingConstants;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+import java.awt.Dimension;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * The general information (name, description etc) for a given session
  * that's being displayed in the overview detail panel
@@ -87,6 +94,19 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(endTimeDisplay);
 		add(deckDisplay);
 		add(sessionCreatorDisplay);
+		
+		Button sendEstimatesBtn = new Button("Send Estimates");
+		sendEstimatesBtn.setForeground(Color.BLUE);
+		sendEstimatesBtn.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 14));
+		sendEstimatesBtn.setBackground(Color.LIGHT_GRAY);
+		springLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesBtn, 0, SpringLayout.SOUTH, lblEndTime);
+		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesBtn, 0, SpringLayout.EAST, sessionCreatorDisplay);
+		add(sendEstimatesBtn);
+		sendEstimatesBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OverviewDetailPanel.sendAllEstimates();
+			}
+		});
 	}
 	
 	/**
@@ -239,6 +259,4 @@ public class OverviewDetailInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, sessionCreatorDisplay, 0, SpringLayout.SOUTH, lblSessionName);
 		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);
 	}
-
-
 }

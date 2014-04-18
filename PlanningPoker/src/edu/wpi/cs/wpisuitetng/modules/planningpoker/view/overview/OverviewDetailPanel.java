@@ -9,6 +9,14 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.awt.Dimension;
 
 import javax.swing.JSplitPane;
@@ -24,7 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * @version 4/18/14
  */
 public class OverviewDetailPanel extends JSplitPane {
-	PlanningPokerSession currentSession;
+	static PlanningPokerSession currentSession;
 	OverviewDetailInfoPanel infoPanel;
 	OverviewReqTable reqTable;
 	JScrollPane tablePanel;
@@ -88,6 +96,29 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 	
 	public PlanningPokerSession getCurrentSession() {
+<<<<<<< HEAD
 		return currentSession;
+=======
+		
+		return currentSession;
+	}
+
+	/** 
+	 * Sends all of the requirements' new estimation values to the requirement manager. 
+	 */
+	public static void sendAllEstimates() {
+		LinkedList<Requirement> sessionRequirementList = new LinkedList<Requirement>();
+		Set<Integer> requirementIDs;
+		requirementIDs = currentSession.getRequirementIDs();
+		Object[] arrayOfIDs = requirementIDs.toArray();
+		int i;
+		for (i = 0; i < arrayOfIDs.length; i++) {
+			sessionRequirementList.addLast(RequirementModel.getInstance().getRequirement((int) arrayOfIDs[1]));
+		}
+		int j;
+		for (j = 0; j < sessionRequirementList.size(); i++) {
+			sessionRequirementList.get(j).setEstimate(currentSession.getFinalEstimates()[j]); 
+		}
+>>>>>>> Send new requirements' final estimation values to the requirement manager to overwrite the old estimation values. Brian Flynn
 	}
 }
