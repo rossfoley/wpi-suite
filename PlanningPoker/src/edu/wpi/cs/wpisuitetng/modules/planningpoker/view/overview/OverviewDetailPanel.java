@@ -9,25 +9,20 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.util.List;
-import java.util.Set;
-
 import java.awt.Dimension;
 
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
+/**
+ * This is the right half of the overview panel, and contains
+ * the OverviewDetailInfoPanel and the OverviewReqTable
+ * @author Randy Acheson
+ * @version 4/18/14
+ */
 public class OverviewDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
 	OverviewDetailInfoPanel infoPanel;
@@ -38,8 +33,8 @@ public class OverviewDetailPanel extends JSplitPane {
 
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
-		String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
-		Object[][] data = {};
+		final String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
+		final Object[][] data = {};
 		
 		// Create the info panel and table panel
 		infoPanel = new OverviewDetailInfoPanel();
@@ -61,7 +56,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		ViewEventController.getInstance().setOverviewReqTable(reqTable);
 		
 		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(200, 200);
+		final Dimension d = new Dimension(200, 200);
         infoPanel.setMinimumSize(d);
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
@@ -71,17 +66,18 @@ public class OverviewDetailPanel extends JSplitPane {
         this.setEnabled(false);
 	}
 	
-	public void updatePanel(final PlanningPokerSession session)	{
+	/**
+	 * Updates each part of this split panel
+	 * @param session The given session to update each panel with
+	 */
+	public void updatePanel(final PlanningPokerSession session) {
 
-		this.currentSession = session;
+		currentSession = session;
 		
 		// update each part of the split panel
 		updateInfoPanel(session);
 		updateReqTable(session);
-		
-		// change the visibility of the top buttons
-		setButtonVisibility(session);
-	}	
+	}
 	
 	private void updateInfoPanel(PlanningPokerSession session) {
 		infoPanel.refresh(session);
@@ -90,20 +86,9 @@ public class OverviewDetailPanel extends JSplitPane {
 	private void updateReqTable(PlanningPokerSession session) {
 		reqTable.refresh(session);
 	}
-
-	private void setButtonVisibility(PlanningPokerSession session) {
-		// TODO
-		// Check if the buttons should appear
-		/*
-			btnEdit.isVisible(false);
-			if (session.isEditable()) {
-				btnEdit.isVisible(true);
-			}
-		*/
-	}
 	
 	public PlanningPokerSession getCurrentSession() {
 		
-		return this.currentSession;
+		return currentSession;
 	}
 }

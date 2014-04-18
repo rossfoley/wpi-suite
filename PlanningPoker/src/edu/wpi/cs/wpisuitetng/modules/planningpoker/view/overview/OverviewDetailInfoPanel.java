@@ -9,26 +9,28 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-
+import java.awt.Dimension;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import java.awt.Dimension;
 
 /**
  * The general information (name, description etc) for a given session
  * that's being displayed in the overview detail panel
  * 
  * Top half of the overviewDetailPanel split pane
+ * @author Randy Acheson
+ * @version 4/18/14
  */
 public class OverviewDetailInfoPanel extends JPanel {
 	JLabel lblSessionName;
@@ -72,7 +74,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		sessionDescriptionDisplay.setLineWrap(true);
 		sessionDescriptionDisplay.setEditable(false);
 		
-		setConstraints();
+		createConstraints();
 		
 		add(lblSessionName);
 		add(sessionNameDisplay);
@@ -87,6 +89,10 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(sessionCreatorDisplay);
 	}
 	
+	/**
+	 * Changes the information in this panel to be the given session
+	 * @param session The session to display information about
+	 */
 	public void refresh(PlanningPokerSession session) {
 
 		// Change session name
@@ -101,22 +107,23 @@ public class OverviewDetailInfoPanel extends JPanel {
 		String endDate, endTime;
 		// Change end date
 		try {
-			endDate = DateFormat.getDateInstance(DateFormat.FULL).format(session.getEndDate().getTime());
+			endDate = DateFormat.getDateInstance(DateFormat.FULL)
+					.format(session.getEndDate().getTime());
 		} catch (NullPointerException ex) {
-			endDate = new String("No end date");
+			endDate = "No end date";
 		}
-		endDateDisplay.setText(endDate);		
+		endDateDisplay.setText(endDate);
 		
 		// Change end time
 		try {
-			GregorianCalendar sessionDate = session.getEndDate();
-			String hour = formatHour(sessionDate);
-			String minute = formatMinute(sessionDate);
-			String am_pm = formatAM_PM(sessionDate);
+			final GregorianCalendar sessionDate = session.getEndDate();
+			final String hour = formatHour(sessionDate);
+			final String minute = formatMinute(sessionDate);
+			final String am_pm = formatAM_PM(sessionDate);
 			endTime = hour + ":" + minute + am_pm;
 			
 		} catch (NullPointerException ex) {
-			endTime = new String("No end time");
+			endTime = "No end time";
 		}
 		endTimeDisplay.setText(endTime);
 		
@@ -130,6 +137,11 @@ public class OverviewDetailInfoPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Formats the minute of a given GregorianCalendar 
+	 * @param date The GregorianCalendar date
+	 * @return A formatted minute string
+	 */
 	public String formatMinute(GregorianCalendar date){
 		String minute = "";
 		if(date.get(GregorianCalendar.MINUTE) == 0){
@@ -141,6 +153,11 @@ public class OverviewDetailInfoPanel extends JPanel {
 		return minute;
 	}
 	
+	/**
+	 * Formats the hour of a given GregorianCalendar 
+	 * @param date The GregorianCalendar date
+	 * @return A formatted hour string
+	 */
 	public String formatHour(GregorianCalendar date){
 		String hour = "";
 		if(date.get(GregorianCalendar.HOUR) == 0){
@@ -149,9 +166,14 @@ public class OverviewDetailInfoPanel extends JPanel {
 		else{
 			hour = Integer.toString(date.get(GregorianCalendar.HOUR));
 		}
-		return hour;	
+		return hour;
 	}
 
+	/**
+	 * Formats the AM/PM of a given GregorianCalendar 
+	 * @param date The GregorianCalendar date
+	 * @return A formatted AM or PM string
+	 */
 	public String formatAM_PM(GregorianCalendar date){
 		String AM_PM = "";
 		if(date.get(GregorianCalendar.AM_PM) == 0){
@@ -164,7 +186,10 @@ public class OverviewDetailInfoPanel extends JPanel {
 
 	}
 	
-	private void setConstraints() {
+	/**
+	 * Creates the constraints for the panel
+	 */
+	private void createConstraints() {
 		springLayout.putConstraint(SpringLayout.WEST, deckDisplay, 0, SpringLayout.WEST, endDateDisplay);
 		springLayout.putConstraint(SpringLayout.EAST, deckDisplay, -122, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, endDateDisplay, 75, SpringLayout.WEST, this);
@@ -212,7 +237,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, deckDisplay, 328, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.SOUTH, sessionCreatorDisplay, 0, SpringLayout.SOUTH, lblSessionName);
-		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);		
+		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);
 	}
 
 
