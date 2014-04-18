@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -48,6 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -502,8 +504,14 @@ public class PlanningPokerSessionTab extends JPanel {
 					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
 
-					MockNotification mock = new MockNotification();
-					mock.sessionStartedNotification();
+					LinkedList<String> recipients = new LinkedList<String>();
+					recipients.add("kjb594@yahoo.com");
+					recipients.add("kjd594@gmail.com");
+					Mailer mailer = new Mailer();
+					mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
+					
+					//MockNotification mock = new MockNotification();
+					//mock.sessionStartedNotification();
 				}
 			}
 		});
