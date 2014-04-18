@@ -7,7 +7,7 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.statistics;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
- * @author cassandrahamlin
+ * @author rossfoley
  * @version $Revision: 1.0 $
  */
 public class StatisticsPanel extends JSplitPane {
@@ -26,23 +26,20 @@ public class StatisticsPanel extends JSplitPane {
 	 * Sets up directory tree of all planning poker sessions
 	 */
 	private StatisticsDetailPanel detailPanel;
-	private OverviewEndVotePanel EndVotePanel;
-	public OverviewPanel()
+	private StatisticsUserTable userTable;
+	public StatisticsPanel()
 	{
 
-		// Create the tree panel and detail panel
-		OverviewTreePanel treePanel = new OverviewTreePanel();
-		OverviewDetailPanel detailPanel = new OverviewDetailPanel();
-		OverviewEndVotePanel EndVotePanel = new OverviewEndVotePanel();
-		this.setDetailPanel(detailPanel);
-		this.setEndVotePanel(EndVotePanel);
+		// Create the user table panel and detail panel
+		detailPanel = new StatisticsDetailPanel();
+		userTable = new StatisticsUserTable();
+
 		
 		// Put the overview table and sidebar into the tab
-		this.setLeftComponent(treePanel);
-		this.setRightComponent(detailPanel);
-		this.setResizeWeight(0.2);  // set the right screen to not show by default
+		this.setLeftComponent(detailPanel);
+		this.setRightComponent(userTable);
 
-		ViewEventController.getInstance().setOverviewTree(treePanel);
+		ViewEventController.getInstance().setStatisticsUserTable(userTable);
 		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
 		
 		

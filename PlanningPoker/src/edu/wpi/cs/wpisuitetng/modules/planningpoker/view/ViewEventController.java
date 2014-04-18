@@ -15,6 +15,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetail
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
+
+
 
 
 /**
@@ -69,7 +78,15 @@ public class ViewEventController {
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		this.planningPokerSessionButtonsPanel = buttonsPanel;
 	}
-
+	public void setOverviewEndVotePanel(OverviewEndVotePanel overviewEndVotePanel) {
+		this.overviewEndVotePanel = overviewEndVotePanel;
+	}
+	
+	//Statistics package set functions
+	
+	public void setStatisticsUserTable(StatisticsUserTable userTable) {
+		this.planningPokerSessionButtonsPanel = userTable;
+	}
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
