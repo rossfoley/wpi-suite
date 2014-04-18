@@ -6,6 +6,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates;
 import java.awt.Dimension;
 import java.awt.Panel;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.SpringLayout;
@@ -31,6 +32,9 @@ public class SelectEstimatesToSendToRequirementManagerSplitPane extends JSplitPa
 	private JList noFinalEstimateList;
 	private JTable alreadySentTable;
 	private JPanel summaryPanel = new JPanel();
+	private Object[][] data = {};
+	private String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
+	private LinkedList<Integer> selectableRequirementIDs;
 	
 	public SelectEstimatesToSendToRequirementManagerSplitPane(PlanningPokerSession currentSession){
 		this.currentSession = currentSession;
@@ -38,7 +42,10 @@ public class SelectEstimatesToSendToRequirementManagerSplitPane extends JSplitPa
 		
 		// replace with actual final estimates 
 		finalEstimates = new HashMap<Integer, Integer>();
-		selectToUpdateTable = new SelectRequirementToUpdateTable();
+		selectableRequirementIDs = determineSelectableRequirements();
+		
+		selectToUpdateTable = new SelectRequirementToUpdateTable(data, columnNames, selectableRequirementIDs, finalEstimates);
+
 		buildSummaryPanel();		
 		
 		summaryPanel.setMinimumSize(new Dimension(200, 200));
@@ -68,5 +75,21 @@ public class SelectEstimatesToSendToRequirementManagerSplitPane extends JSplitPa
 		
 		summaryPanel.add(alreadySentTable);
 		summaryPanel.add(noFinalEstimateList);
+	}
+	
+	private LinkedList<Integer> determineSelectableRequirements(){
+		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
+		for (Integer reqID:currentSession.getRequirementIDs()){
+			if (!(reqsWithExportedEstimates.contains(reqID))){
+				if (finalEstimates.containsKey(reqID)){
+					selectableRequirements.add(reqID);
+				}
+			}
+		}
+		return selectableRequirements;
+	}
+	
+	private LinkedList<Integer> getSelectableRequirements(){
+		return selectableRequirementIDs;	
 	}
 }

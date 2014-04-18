@@ -3,12 +3,12 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates;
 
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DropMode;
@@ -18,14 +18,12 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
- * @author Amanda
+ * @author amandaadkins
  *
  */
 public class SelectRequirementToUpdateTable extends JTable {
@@ -34,14 +32,15 @@ public class SelectRequirementToUpdateTable extends JTable {
 	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
 	private List<Integer> requirementsToDisplay;
+	private HashMap<Integer, Integer> finalEstimates;
 
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill OverviewTable
 	 * @param columnNames	Column headers of OverviewTable
 	 */
-	public SelectRequirementToUpdateTable(Object[][] data, String[] columnNames, List<Integer> displayRequirementIDs)
-	{
+	public SelectRequirementToUpdateTable(Object[][] data, String[] columnNames, List<Integer> displayRequirementIDs, 
+			HashMap<Integer, Integer> finalEstimates)	{
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
@@ -49,15 +48,12 @@ public class SelectRequirementToUpdateTable extends JTable {
 		this.setDragEnabled(true);
 		this.setDropMode(DropMode.ON);
 		this.requirementsToDisplay = displayRequirementIDs;
-
-
-		//ViewEventController.getInstance().setOverviewReqTable(this);
+		this.finalEstimates = finalEstimates;
 
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 
-		//ViewEventController.getInstance().setOverviewReqTable(this);
 		initialized = false;
 
 		/* Create double-click event listener */
@@ -79,32 +75,20 @@ public class SelectRequirementToUpdateTable extends JTable {
 	}
 
 	public void refresh(PlanningPokerSession session) {
-		// TODO Implement Your Vote, Estimate columns
-		// Currently is 0 for every estimate
-
-		Set<Integer> requirementIDs = session.getRequirementIDs();
 		RequirementModel reqs = RequirementModel.getInstance();
-		int vote = 0;
-		int estimate = 0;
-		List<Estimate> estimates = session.getEstimates();
-
 		// clear the table
 		tableModel.setRowCount(0);		
 
-		for (Integer requirementID : requirementIDs) {
+		for (Integer requirementID : requirementsToDisplay) {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
-			vote = 0;
-			for (Estimate e : estimates) {
-				if (e.getRequirementID() == requirementID && e.getOwnerName().equals(ConfigManager.getConfig().getUserName())) {
-					vote = e.getVote();
-				}
-			}
+
+			Integer reqEstimate = finalEstimates.get(requirementID);
 
 			tableModel.addRow(new Object[]{
 					reqName,
-					vote,
-					estimate});	
+					reqEstimate
+					});	
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
@@ -138,7 +122,12 @@ public class SelectRequirementToUpdateTable extends JTable {
 			return true;
 		}
 	}
-
-
-
+	
+	/**
+	 * @return returns a list of the ids of the requirements 
+	 * that have been selected to update in requirement manager
+	 */
+	public List<Integer> getSelectedRequirements(){
+		return new ArrayList<Integer>();	
+	}
 }
