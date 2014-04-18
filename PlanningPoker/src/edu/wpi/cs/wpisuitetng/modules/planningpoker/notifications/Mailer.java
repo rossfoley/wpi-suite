@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications;
 
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.PasswordAuthentication;
@@ -144,6 +145,17 @@ public class Mailer {
 		return isValidSender && isValidReciever;
 	}
 	
+	public boolean mailToGroup(List<String> recipients, String subject, String body) {
+		boolean allValid = true;
+		boolean thisValid;
+		for (int i = 0; i < recipients.size(); i++) {
+			thisValid = MailTo(recipients.get(i), subject, body);
+			if (!thisValid) {
+				allValid = false;
+			}
+		}
+		return allValid;
+	}
 	
 }
 
