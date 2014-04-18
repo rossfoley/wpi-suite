@@ -20,47 +20,46 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
 /**
- * @author amandaadkins
+ * This class contains the toolbar buttons for the planning poker module. 
  *
  */
-public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
+public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 	private JButton createButton = new JButton("<html>Create<br />Planning Poker Session</html>");
 	private JButton editButton = new JButton("<html>Edit<br />Planning Poker Session</html>");
 	private JButton voteButton = new JButton("<html>Vote on<br />Planning Poker Session</html>");
 	private JButton endVoteButton = new JButton("<html>End Voting on<br />Planning Poker Session</html>");
 	private final JPanel contentPanel = new JPanel();
-	private boolean sessionSelected;
 
 	public PlanningPokerSessionButtonsPanel(){
 		super("");
 
 		ViewEventController.getInstance().setPlanningPokerSessionButtonsPanel(this);
 
-		this.disableEditButton();
-		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(1000);
-		this.createButton.setHorizontalAlignment(SwingConstants.CENTER);
+		disableEditButton();
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+		setPreferredWidth(1000);
+		createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		// Add image icon for the create planning poker session button
 		try {
 			Image img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/new_req.png"));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.createButton.setIcon(new ImageIcon(img));
+			createButton.setIcon(new ImageIcon(img));
 
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/edit.png"));
-			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.editButton.setIcon(new ImageIcon(img));
+			//getClass().getResource("edit.png"));	// this should work... but doesn't...
+			editButton.setIcon(new ImageIcon(img));
 			
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/voting-icon.png"));
-			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.voteButton.setIcon(new ImageIcon(img));
+			//getClass().getResource("voting-icon.png"));	// this should work... but doesn't...
+			voteButton.setIcon(new ImageIcon(img));
 			
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/end-icon.png"));
-			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.endVoteButton.setIcon(new ImageIcon(img));
+			//getClass().getResource("end-icon.png"));	// this should work... but doesn't...
+			endVoteButton.setIcon(new ImageIcon(img));
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
 
@@ -108,21 +107,21 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		contentPanel.add(endVoteButton);
 		contentPanel.setOpaque(false);
 
-		this.add(contentPanel);
+		add(contentPanel);
 	}
 
 	/**
 	 * Method getCreateButton.
 	 * @return JButton */
 	public JButton getCreateButton() {
-		return createButton;
+		return this.createButton;
 	}
 
 	/**
 	 * Method geteditButton
 	 * @return JButton */
 	public JButton getCreateIterationButton() {
-		return editButton;
+		return this.editButton;
 	}
 
 	public void disableEditButton() {
