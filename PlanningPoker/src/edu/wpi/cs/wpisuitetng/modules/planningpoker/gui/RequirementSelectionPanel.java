@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -37,6 +38,7 @@ import java.awt.event.MouseEvent;
 
 public class RequirementSelectionPanel extends JPanel{
 	
+	private RequirementSelectionView parent;
 	private LinkedList<Requirement> requirements;
 	private LinkedList<Boolean> selection;
 	private JList selectedListGui;
@@ -53,8 +55,9 @@ public class RequirementSelectionPanel extends JPanel{
 	/**
 	 * Constructor to create the requirement selection panel
 	 */
-	RequirementSelectionPanel(){
+	public RequirementSelectionPanel(RequirementSelectionView parent){
 		
+		this.parent = parent;
 		populateRequirements();
 		populateBooleans();
 		
