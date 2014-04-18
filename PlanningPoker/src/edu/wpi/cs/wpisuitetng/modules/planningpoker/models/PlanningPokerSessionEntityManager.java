@@ -38,23 +38,6 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	
 	public PlanningPokerSessionEntityManager(final Data db) {
 		this.db = db;
-		// Set up a daemon to check for end date completion
-		Thread t = new Thread(new Runnable() {	
-			@Override
-			public void run() {
-				// Loop through all sessions to check if they are ended
-				Timer timer = new Timer();
-				timer.scheduleAtFixedRate(new TimerTask() {
-					@Override
-					public void run() {
-						 PlanningPokerSession[] sessions = db.retrieveAll(new PlanningPokerSession()).toArray(new PlanningPokerSession[0]);							
-						 // Figure out what sessions need to end
-					}
-				}, 0, 1000*60*10);
-			}
-		});
-		t.setDaemon(true);
-		t.run();
 	}
 
 	@Override

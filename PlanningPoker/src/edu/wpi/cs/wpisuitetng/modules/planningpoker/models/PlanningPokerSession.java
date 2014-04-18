@@ -80,6 +80,13 @@ public class PlanningPokerSession extends AbstractModel {
 	public boolean isUsingDeck() {
 		return isUsingDeck;
 	}
+	
+	public boolean isEnded() {
+		if ((new GregorianCalendar()).after(endDate)) {
+			gameState = SessionState.CLOSED;
+		}
+		return gameState == SessionState.CLOSED || gameState == SessionState.VOTINGENDED;
+	}
 	/**
 	 * @param isUsingDeck the isUsingDeck to set
 	 */
