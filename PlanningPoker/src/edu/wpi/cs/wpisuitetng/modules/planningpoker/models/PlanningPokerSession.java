@@ -58,6 +58,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Map<Requirement, Integer> finalEstimatesMap;
 	private List<Integer> requirementsWithExportedEstimates;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
+	private HashMap<Requirement, Integer> finalEstimatesMap;
 	private List<String> VoterNameList;
 	private List<EstimateVoters> estimateVoterList;
 	
