@@ -204,6 +204,8 @@ public class DeckVotingPanel extends JPanel
 		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 		List<Integer> prevEstimateCards;
 		
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
 		estimateSubmittedMessage.setForeground(Color.BLUE);
 		estimateSubmittedMessage.setVisible(false);
 		
@@ -249,7 +251,7 @@ public class DeckVotingPanel extends JPanel
 
 		//This is the origin of the first label added.
 		Point origin = new Point(10, 20);
-		cardOffset = 700/numbersInDeck.size();
+		cardOffset = 600/numbersInDeck.size();
 
 		//Add several overlapping, card buttons to the layered pane
 		//using absolute positioning/sizing.
@@ -262,17 +264,19 @@ public class DeckVotingPanel extends JPanel
 			origin.x += cardOffset;
 		}
 		layeredDeckPane.setPreferredSize(new Dimension(400, 250));
-		//Add control pane and layered pane to this JPanel.
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		JPanel subPanel = new JPanel();
-		SpringLayout subLayout = new SpringLayout();
-		subPanel.setLayout(subLayout);
-		subPanel.setPreferredSize(new Dimension(400, 30));
-		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, submitButton, 0, SpringLayout.VERTICAL_CENTER, subPanel);
-		subLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
+
+		// Create control panel for submit, clear, etc. buttons
+		JPanel controlPanel = new JPanel();
+		SpringLayout controlPanelLayout = new SpringLayout();
+		controlPanel.setLayout(controlPanelLayout);
+		controlPanel.setPreferredSize(new Dimension(400, 30));
+		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, submitButton, 0, SpringLayout.VERTICAL_CENTER, controlPanel);
+		controlPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, controlPanel);
 		
 		subLayout.putConstraint(SpringLayout.EAST, clearButton, -10, SpringLayout.WEST, submitButton);
 		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, clearButton, 0, SpringLayout.VERTICAL_CENTER, submitButton);
+		controlPanelLayout.putConstraint(SpringLayout.WEST, estimateSubmittedMessage, 10, SpringLayout.EAST, submitButton);
+		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.VERTICAL_CENTER, submitButton);
 		
 		subLayout.putConstraint(SpringLayout.WEST, estimateSubmittedMessage, 10, SpringLayout.EAST, submitButton);
 		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.VERTICAL_CENTER, submitButton);
@@ -280,10 +284,26 @@ public class DeckVotingPanel extends JPanel
 		subPanel.add(estimateSubmittedMessage);
 		subPanel.add(submitButton);
 		subPanel.add(clearButton);
-		
-		
+
+		// Create sum of cards label and field
+		JPanel sumPane = new JPanel();
+		JLabel estimateLabel = new JLabel("Sum of Cards: ");
+		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		estimateLabel.setLabelFor(estimateField);
+		estimateField = new JFormattedTextField();
+		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
+		estimateField.setEditable(false);
+		estimateField.setBackground(Color.WHITE);
+		estimateField.setValue(new Integer(0));
+		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		sumPane.add(estimateLabel);
+		sumPane.add(estimateField);
+		sumPane.setBounds(700, origin.y, 112, 140);
+		layeredDeckPane.add(sumPane, layeredDeckPane.getComponentCount());
+
+		// Add the control and deck sub-panels to the overall panel
 		add(layeredDeckPane);
-		add(subPanel);
+		add(controlPanel);
 	}
 
 	
