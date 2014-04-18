@@ -55,6 +55,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private final String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
 	private Map<Requirement, Integer> finalEstimatesMap;
+	private List<Integer> requirementsWithExportedEstimates;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
 	private List<EstimateVoters> estimateVoterList;
@@ -69,6 +70,7 @@ public class PlanningPokerSession extends AbstractModel {
 		estimates = new ArrayList<Estimate>();
 		reqsWithCompleteEstimates = new HashSet<Integer>();
 		reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
+		requirementsWithExportedEstimates = new ArrayList<Integer>();
 		finalEstimatesMap = new HashMap<Requirement, Integer>(); 
 		defaultSessionName = new String(name.toString());
 		finalEstimatesMap = new HashMap<Requirement, Integer>();
@@ -101,8 +103,28 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setUsingDeck(boolean isUsingDeck) {
 		this.isUsingDeck = isUsingDeck;
 	}
-
-
+	
+	/**
+	 * @return the requirementsWithExportedEstimates
+	 */
+	public List<Integer> getRequirementsWithExportedEstimates() {
+		return requirementsWithExportedEstimates;
+	}
+	
+	/**
+	 * @param requirementsWithExportedEstimates the requirementsWithExportedEstimates to set
+	 */
+	public void setRequirementsWithExportedEstimates(List<Integer> requirementsWithExportedEstimates) {
+		this.requirementsWithExportedEstimates = requirementsWithExportedEstimates;
+	}
+	
+	/**
+	 * @param idToAdd idOfTheRequirementToAddToExportedEstimates
+	 */
+	public void addIDToSetRequirementsWithExportedEstimates(int idToAdd){
+		requirementsWithExportedEstimates.add(idToAdd);
+	}
+	
 	/**
 	 * @return uuid
 	 */
@@ -549,6 +571,8 @@ public class PlanningPokerSession extends AbstractModel {
 		finalEstimatesMap = toCopyFrom.getFinalEstimates();
 		VoterNameList = toCopyFrom.VoterNameList;
 		estimateVoterList = toCopyFrom.estimateVoterList;
+		reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
+		requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
 	}
 
 	/** 
