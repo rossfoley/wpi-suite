@@ -88,7 +88,6 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 	
 	public PlanningPokerSession getCurrentSession() {
-		
 		return currentSession;
 	}
 }
