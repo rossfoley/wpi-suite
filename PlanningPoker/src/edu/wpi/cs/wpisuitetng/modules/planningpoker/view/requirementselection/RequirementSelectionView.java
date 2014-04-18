@@ -22,7 +22,7 @@ public class RequirementSelectionView extends JSplitPane{
 		infoPanel = new RequirementCreationPanel(-1);
 		
 		setLeftComponent(reqPanel);
-		setRightComponent(null);
+		setRightComponent(infoPanel);
 		setDividerLocation(600);
 	}
 	
