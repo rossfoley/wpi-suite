@@ -23,7 +23,28 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class Deck extends AbstractModel {
 	private String deckName;
 	private ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
+	private boolean allowMultipleSelections;
 	private int id;
+	
+	/** constructor for Decks that takes in a list to use as the deck
+	 * 
+	 * @param numbersInDeck numbers to use in the new deck
+	 */
+	public Deck(ArrayList<Integer> numbersInDeck, boolean allowMultipleSelections) {
+		this.numbersInDeck = numbersInDeck;
+		this.allowMultipleSelections = allowMultipleSelections;
+		this.deckName = "";
+	}
+	/**
+	 * constructor for decks that does not have a list given at initialization
+	 * 
+	 * deckName is set to "" as a default
+	 */
+	public Deck(){
+		this.deckName = "";
+		this.allowMultipleSelections = false;
+	}
+	
 	
 	/**
 	 * @return the deckName
@@ -37,23 +58,6 @@ public class Deck extends AbstractModel {
 	 */
 	public void setDeckName(String deckName) {
 		this.deckName = deckName;
-	}
-
-	/** constructor for Decks that takes in a list to use as the deck
-	 * 
-	 * @param numbersInDeck numbers to use in the new deck
-	 */
-	public Deck(ArrayList<Integer> numbersInDeck){
-		this.numbersInDeck = numbersInDeck;
-		this.deckName = "";
-	}
-	/**
-	 * constructor for decks that does not have a list given at initialization
-	 * 
-	 * deckName is set to "" as a default
-	 */
-	public Deck(){
-		this.deckName = "";
 	}
 	
 	/** 
@@ -140,6 +144,21 @@ public class Deck extends AbstractModel {
 	public void setNumbersInDeck(ArrayList<Integer> numbersInDeck) {
 		this.numbersInDeck = numbersInDeck;
 	}
+	
+	/**
+	 * @param allowMultipleSelections	If multiple cards can be selected when voting
+	 */
+	public void setAllowMultipleSelections(boolean allowMultipleSelections) {
+		this.allowMultipleSelections = allowMultipleSelections;
+	}
+	
+	/**
+	 * @return	If multiple cards can be selected when voting
+	 */
+	public boolean getAllowMultipleSelections() {
+		return this.allowMultipleSelections;
+	}
+	
 
 	/**
 	 * @return the iD
@@ -165,6 +184,7 @@ public class Deck extends AbstractModel {
 	public void copyFrom(Deck toCopyFrom) {
 		this.id = toCopyFrom.getId();
 		this.numbersInDeck = toCopyFrom.getNumbersInDeck();
+		this.allowMultipleSelections = toCopyFrom.getAllowMultipleSelections();
 		this.deckName = toCopyFrom.getDeckName();
 	}
 	
