@@ -190,10 +190,10 @@ public class DeckVotingPanel extends JPanel
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		
 		add(estimateSubmittedMessage);
-		add(estimateFieldErrorMessage);		
+		add(estimateFieldErrorMessage);
 		add(submitButton);
 		add(estimateLabel);
-		add(estimateField);			
+		add(estimateField);
 	}
 
 
@@ -229,7 +229,18 @@ public class DeckVotingPanel extends JPanel
 				}
 			}
 		});
-		
+
+		// Create clear button
+		JButton clearButton = new JButton("Clear selected cards");
+		clearButton.setAlignmentX(CENTER_ALIGNMENT);
+		clearButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clearSelectedCards();
+				userEstimate = 0;
+			}
+		});
+
 		//Create and set up the layered pane.
 		layeredDeckPane = new JLayeredPane();
 		layeredDeckPane.addMouseMotionListener(this);
@@ -260,17 +271,19 @@ public class DeckVotingPanel extends JPanel
 		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, submitButton, 0, SpringLayout.VERTICAL_CENTER, subPanel);
 		subLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, subPanel);
 		
+		subLayout.putConstraint(SpringLayout.EAST, clearButton, -10, SpringLayout.WEST, submitButton);
+		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, clearButton, 0, SpringLayout.VERTICAL_CENTER, submitButton);
+		
 		subLayout.putConstraint(SpringLayout.WEST, estimateSubmittedMessage, 10, SpringLayout.EAST, submitButton);
 		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.VERTICAL_CENTER, submitButton);
 		
 		subPanel.add(estimateSubmittedMessage);
 		subPanel.add(submitButton);
+		subPanel.add(clearButton);
 		
 		
 		add(layeredDeckPane);
 		add(subPanel);
-/*		add(submitButton);
-		add(estimateSubmittedMessage);*/
 	}
 
 	
