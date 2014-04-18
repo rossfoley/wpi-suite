@@ -14,6 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting.VotingPage;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Voters;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
@@ -116,6 +117,11 @@ public class ViewEventController {
 	 * @return toolbar */
 	public ToolbarView getToolbar() {
 		return toolbar;
+	}
+	
+	public void test() {
+		Voters test = new Voters();
+		test.testvote();
 	}
 
 	/**

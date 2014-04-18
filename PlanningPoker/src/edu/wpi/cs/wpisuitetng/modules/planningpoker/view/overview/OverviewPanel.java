@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Voters;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
