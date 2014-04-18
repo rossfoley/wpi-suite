@@ -50,6 +50,8 @@ public class VotingPage extends JSplitPane {
 		
 		// Disable the vote button in the planning poker module toolbar
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+
 		
 		buildReqPanel(null);
 

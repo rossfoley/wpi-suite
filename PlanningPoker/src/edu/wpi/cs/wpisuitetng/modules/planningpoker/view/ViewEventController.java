@@ -157,6 +157,7 @@ public class ViewEventController {
 		if (comp instanceof VotingPage) {
 			this.listOfVotingPanels.remove(comp);
 			planningPokerSessionButtonsPanel.enableVoteButton();
+			planningPokerSessionButtonsPanel.enableEndVoteButton();
 		}		
 		
 		main.remove(comp);
