@@ -157,17 +157,6 @@ public class ViewEventController {
 	public void refreshTable() {
 		this.overviewTreePanel.refresh();
 	}
-
-	/**
-	 * Returns an array of the currently selected rows in the table.
-	 * @return the currently selected rows in the table */
-	
-	/*
-	public int[] getTableSelection()
-	{
-		return OverviewTable.getSelectedRows();
-	}
-	*/
 	
 	/**
 	 * Returns the main view
@@ -176,21 +165,15 @@ public class ViewEventController {
 		return main;
 	}
 
-
-
 	/**
 	 * Closes all of the tabs besides the overview tab in the main view.
 	 */
 	public void closeAllTabs() {
-
 		int tabCount = main.getTabCount();
 
-		for(int i = tabCount - 1; i >= 0; i--)
-		{
+		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
-
 			if(toBeRemoved instanceof OverviewPanel) continue;
-
 			main.removeTabAt(i);
 		}
 
@@ -205,15 +188,16 @@ public class ViewEventController {
 		int tabCount = main.getTabCount();
 		Component selected = main.getSelectedComponent();
 
-		for(int i = tabCount - 1; i >= 0; i--)
-		{
+		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
 
-			if(toBeRemoved instanceof OverviewPanel){
-				continue;}
-			if(toBeRemoved == selected){
-				continue;}
-
+			if (toBeRemoved instanceof OverviewPanel) {
+				continue;
+			}
+			
+			if (toBeRemoved == selected) {
+				continue;
+			}
 
 			main.removeTabAt(i);
 		}

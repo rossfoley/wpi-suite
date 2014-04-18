@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
@@ -196,7 +195,11 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return a boolean indicating if the session is open
 	 */
 	public boolean isOpen() {
-		return (new GregorianCalendar()).before(endDate) && gameState == SessionState.OPEN;
+		boolean open = true;
+		if (endDate != null) {
+			open = (new GregorianCalendar()).before(endDate);
+		}
+		return open && gameState == SessionState.OPEN;
 	}
 	
 	/**

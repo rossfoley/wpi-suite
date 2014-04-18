@@ -72,9 +72,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * This will wipe out the current tree and rebuild it
 	 */
 	public void refresh() {
-
 		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
-		boolean isOwner;
 		
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
 		final DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
@@ -82,23 +80,18 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
 		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
 		
-		
 		for(PlanningPokerSession session : sessions) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
-			isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
-			session.isEnded();
-			
-			if (session.getGameState() == SessionState.OPEN) {
-				openSessions.add(newSessionNode);
-			}
-			else if (session.getGameState() == SessionState.PENDING && isOwner) {
-				pendingSessions.add(newSessionNode);
-			}
-			else if (session.getGameState() == SessionState.VOTINGENDED) {
-				endedSessions.add(newSessionNode);
-			}
-			else {
+			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
+
+			if (session.isClosed()) {
 				closedSessions.add(newSessionNode);
+			} else if (session.isEnded()) {
+				endedSessions.add(newSessionNode);
+			} else if (session.isOpen()) {
+				openSessions.add(newSessionNode);
+			} else if (session.isPending() && isOwner) {
+				pendingSessions.add(newSessionNode);
 			}
 		}
 		
@@ -153,6 +146,8 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 					// If the current user is the owner of the session
 					if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
 						// Enable editing if pending
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
+						}
 						if (session.getGameState() == SessionState.PENDING) {
 							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
 						}
