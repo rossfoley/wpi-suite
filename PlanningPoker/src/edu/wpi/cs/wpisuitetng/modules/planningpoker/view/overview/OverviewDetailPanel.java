@@ -113,12 +113,36 @@ public class OverviewDetailPanel extends JSplitPane {
 		Object[] arrayOfIDs = requirementIDs.toArray();
 		int i;
 		for (i = 0; i < arrayOfIDs.length; i++) {
-			sessionRequirementList.addLast(RequirementModel.getInstance().getRequirement((int) arrayOfIDs[1]));
+			sessionRequirementList.addLast(RequirementModel.getInstance().getRequirement((int) arrayOfIDs[i]));
 		}
 		int j;
 		for (j = 0; j < sessionRequirementList.size(); i++) {
+			// if the requirement's estimate has not yet been sent.
+			if (!getReqsWithExportedEstimatesList().contains(sessionRequirementList.get(j))) { 
 			sessionRequirementList.get(j).setEstimate(currentSession.getFinalEstimates().get(sessionRequirementList.get(j)));
+			currentSession.addRequirementToExportedList((int) arrayOfIDs[j]);
+			}	
+			// otherwise, do nothing and go to the next element.
 		}
 >>>>>>> Send new requirements' final estimation values to the requirement manager to overwrite the old estimation values. Brian Flynn
+	}
+	
+	/**
+	 * Sends a single requirement's final estimate to the requirement manager.
+	 * 
+	 * @param reqToSendFinalEstimate the requirement which is to have its final estimate sent to the
+	 * requirement manager.
+	 */
+	public static void sendSingleEstimate(Requirement reqToSendFinalEstimate) {
+		// if the requirement's estimate has not yet been sent
+		if (!getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate)) { 
+			reqToSendFinalEstimate.setEstimate(currentSession.getFinalEstimates().get(reqToSendFinalEstimate));
+			currentSession.addRequirementToExportedList((int) reqToSendFinalEstimate.getId());
+		}
+		// otherwise, do nothing.
+	}
+
+	private static LinkedList<Requirement> getReqsWithExportedEstimatesList() {
+		return currentSession.getReqsWithExportedEstimatesList();
 	}
 }

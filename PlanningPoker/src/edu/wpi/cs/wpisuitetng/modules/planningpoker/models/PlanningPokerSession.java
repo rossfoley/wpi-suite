@@ -57,6 +57,8 @@ public class PlanningPokerSession extends AbstractModel {
 	private Set<Integer> reqsWithCompleteEstimates;
 	private Map<Requirement, Integer> finalEstimatesMap;
 	private List<Integer> requirementsWithExportedEstimates;
+
+	private List<Integer> requirementsWithExportedEstimatesIDs;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private HashMap<Requirement, Integer> finalEstimatesMap;
 	private List<String> VoterNameList;
@@ -73,6 +75,7 @@ public class PlanningPokerSession extends AbstractModel {
 		reqsWithCompleteEstimates = new HashSet<Integer>();
 		reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
 		requirementsWithExportedEstimates = new ArrayList<Integer>();
+		requirementsWithExportedEstimatesIDs = new ArrayList<Integer>();
 		finalEstimatesMap = new HashMap<Requirement, Integer>(); 
 		defaultSessionName = new String(name.toString());
 		finalEstimatesMap = new HashMap<Requirement, Integer>();
@@ -111,21 +114,21 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return the requirementsWithExportedEstimates
 	 */
 	public List<Integer> getRequirementsWithExportedEstimates() {
-		return requirementsWithExportedEstimates;
+		return requirementsWithExportedEstimatesIDs;
 	}
 	
 	/**
 	 * @param requirementsWithExportedEstimates the requirementsWithExportedEstimates to set
 	 */
 	public void setRequirementsWithExportedEstimates(List<Integer> requirementsWithExportedEstimates) {
-		this.requirementsWithExportedEstimates = requirementsWithExportedEstimates;
+		this.requirementsWithExportedEstimatesIDs = requirementsWithExportedEstimates;
 	}
 	
 	/**
 	 * @param idToAdd idOfTheRequirementToAddToExportedEstimates
 	 */
 	public void addIDToSetRequirementsWithExportedEstimates(int idToAdd){
-		requirementsWithExportedEstimates.add(idToAdd);
+		requirementsWithExportedEstimatesIDs.add(idToAdd);
 	}
 	
 	/**
@@ -576,6 +579,7 @@ public class PlanningPokerSession extends AbstractModel {
 		estimateVoterList = toCopyFrom.estimateVoterList;
 		reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
 		requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
+		requirementsWithExportedEstimatesIDs = toCopyFrom.requirementsWithExportedEstimatesIDs;
 	}
 
 	/** 
@@ -588,15 +592,38 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 
 	/**
+	 * Returns a list or Requirement of those requirements which have had their final estimates sent to
+	 * the requirement manager. 
+	 * 
+	 * @return LinkedList<Requirement> of all requirements that have had their final estimates sent to
+	 * the requirement manager.
+	 */
+	public LinkedList<Requirement> getReqsWithExportedEstimatesList() {
+		LinkedList<Requirement> requirementsWithExportedEstimatesList = new LinkedList<Requirement>();
+		int i;
+		for (i = 0; i < requirementsWithExportedEstimatesIDs.size(); i++) {
+			requirementsWithExportedEstimatesList.add(RequirementModel.getInstance().getRequirement(requirementsWithExportedEstimatesIDs.get(i)));
+		}
+		return requirementsWithExportedEstimatesList;		
+	}
+	
+	/**
+	 * Adds a requirement ID to the list of requirement IDs representing the requirements that have
+	 * had their final estimates sent to the requirement manager.
+	 * 
+	 * @param reqIDToAdd the requirement ID of the requirement which has had its final estimate sent to the
+	 * requirement manager.
+	 */
+	public void addRequirementToExportedList(int reqIDToAdd) {
+		requirementsWithExportedEstimatesIDs.add(reqIDToAdd);
+}
+	/**
 	 * @return the VoterNameList
 	 */
 	public List<String> getVoterNameList() {
 		return VoterNameList;
 	}
-	/**
-	 * @param VoterNameList the VoterNameList to set
-	 */
-	public void setVoterNameList(List<String> VoterNameList) {
+	public void setVoterNameList(List<String> VoterNameList)  {
 		this.VoterNameList = VoterNameList;
 	}
 	public List<EstimateVoters> getEstimateVoterList() {
