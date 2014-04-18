@@ -15,13 +15,13 @@ import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreePath;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.IterationIcon;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.RequirementIcon;
 
 /**
+ * @author Randy Acheson
  * @version $Revision: 1.0 $
  */
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
@@ -29,7 +29,6 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon iterationIcon;
 
 	public CustomTreeCellRenderer() {
-		super();
 		requirementIcon = new RequirementIcon();
 		iterationIcon = new IterationIcon();
 	}
@@ -54,19 +53,13 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
 				row, hasFocus);
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
 		if (node.getUserObject() instanceof PlanningPokerSession) {
 			setIcon(requirementIcon);
-		} else {
+		} 
+		else {
 			setIcon(iterationIcon);
-			/*
-			DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode) tree
-					.getModel().getRoot());
-			tree.setSelectionPath(new TreePath(firstLeaf.getPath()));
-			String label = firstLeaf.toString(); //Does not work
-
-			setToolTipText("" + value);*/
 		}
 		return this; 
 	}

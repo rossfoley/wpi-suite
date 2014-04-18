@@ -41,12 +41,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * that is being displayed in the overview detail panel
  * 
  * Bottom half of the overviewDetailPanel split pane
+ * @author Randy Acheson
+ * @version 4/18/14
  */
 public class OverviewReqTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	
 	/**
 	 * Sets initial table view
@@ -54,7 +56,7 @@ public class OverviewReqTable extends JTable {
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
 	public OverviewReqTable(Object[][] data, String[] columnNames) {
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -67,7 +69,6 @@ public class OverviewReqTable extends JTable {
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 
-		//ViewEventController.getInstance().setOverviewReqTable(this);
 		initialized = false;
 
 		/* Create double-click event listener */
@@ -75,9 +76,9 @@ public class OverviewReqTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(getRowCount() > 0) {
-					int mouseY = e.getY();
-					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
-					int lastRowY = lastRow.y + lastRow.height;
+					final int mouseY = e.getY();
+					final Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
+					final int lastRowY = lastRow.y + lastRow.height;
 
 					if(mouseY > lastRowY) {
 						getSelectionModel().clearSelection();
@@ -89,27 +90,29 @@ public class OverviewReqTable extends JTable {
 	}
 	
 	/**
-	 * updates OverviewReqTable with the contents of the requirement model
+	 * Updates OverviewReqTable with the contents of the requirement model
+	 * @param session The session to display the requirements of
 	 */
 	public void refresh(PlanningPokerSession session) {
 		// TODO Implement Your Vote, Estimate columns
 		// Currently is 0 for every estimate
 		
-		Set<Integer> requirementIDs = session.getRequirementIDs();
-		RequirementModel reqs = RequirementModel.getInstance();
+		final Set<Integer> requirementIDs = session.getRequirementIDs();
+		final RequirementModel reqs = RequirementModel.getInstance();
 		int vote = 0;
-		int estimate = 0;
-		List<Estimate> estimates = session.getEstimates();
+		final int estimate = 0;
+		final List<Estimate> estimates = session.getEstimates();
 				
 		// clear the table
-		tableModel.setRowCount(0);		
+		tableModel.setRowCount(0);
 
 		for (Integer requirementID : requirementIDs) {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
 			vote = 0;
 			for (Estimate e : estimates) {
-				if (e.getRequirementID() == requirementID && e.getOwnerName().equals(ConfigManager.getConfig().getUserName())) {
+				if (e.getRequirementID() == requirementID && e.getOwnerName()
+						.equals(ConfigManager.getConfig().getUserName())) {
 					vote = e.getVote();
 				}
 			}
@@ -117,7 +120,7 @@ public class OverviewReqTable extends JTable {
 			tableModel.addRow(new Object[]{
 					reqName,
 					vote,
-					estimate});	
+					estimate});
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
@@ -163,7 +166,7 @@ public class OverviewReqTable extends JTable {
 	 */
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component comp = super.prepareRenderer(renderer, row, column);
+        final Component comp = super.prepareRenderer(renderer, row, column);
 
         if (JComponent.class.isInstance(comp)) {
             ((JComponent)comp).setBorder(paddingBorder);
@@ -178,7 +181,7 @@ public class OverviewReqTable extends JTable {
 	 * @param col	column of OverviewReqTable cell is located
 	 * @return boolean */
 	@Override
-	public boolean isCellEditable(int row, int col)	{
+	public boolean isCellEditable(int row, int col) {
 		return false;
 	}
 }

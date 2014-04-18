@@ -3,27 +3,18 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting.VotingPage;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewEndVotePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 
 
 /**
@@ -38,7 +29,6 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTreePanel overviewTreePanel = null;
 	private OverviewDetailPanel overviewDetailPanel = null;
-	private OverviewEndVotePanel overviewEndVotePanel = null;
 	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	private OverviewDetailInfoPanel overviewDetailInfoPanel;
 	private ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
@@ -79,9 +69,7 @@ public class ViewEventController {
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		this.planningPokerSessionButtonsPanel = buttonsPanel;
 	}
-	public void setOverviewEndVotePanel(OverviewEndVotePanel overviewEndVotePanel) {
-		this.overviewEndVotePanel = overviewEndVotePanel;
-	}
+
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
