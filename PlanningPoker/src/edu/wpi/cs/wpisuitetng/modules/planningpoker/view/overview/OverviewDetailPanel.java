@@ -117,7 +117,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		}
 		int j;
 		for (j = 0; j < sessionRequirementList.size(); i++) {
-			sessionRequirementList.get(j).setEstimate(currentSession.getFinalEstimates()[j]); 
+			sessionRequirementList.get(j).setEstimate(currentSession.getFinalEstimates().get(sessionRequirementList.get(j)));
 		}
 >>>>>>> Send new requirements' final estimation values to the requirement manager to overwrite the old estimation values. Brian Flynn
 	}

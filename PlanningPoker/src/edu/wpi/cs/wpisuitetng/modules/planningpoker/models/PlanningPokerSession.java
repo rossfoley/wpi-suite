@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
 	private List<Integer> requirementsWithExportedEstimates;
+	private HashMap<Requirement, Integer> finalEstimatesMap;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -501,8 +503,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * 
 	 * @return int[] of all the final requirement estimation values.
 	 */
-	public int[] getFinalEstimates() { 
-		return finalEstimates;
+	public HashMap<Requirement, Integer> getFinalEstimates() { 
+		return finalEstimatesMap;
 	}
 	
 }
