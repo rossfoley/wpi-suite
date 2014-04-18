@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -24,6 +26,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CheckForUpdatesController;
 
 /**
  * @author rossfoley
@@ -35,6 +38,23 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	
 	public PlanningPokerSessionEntityManager(Data db) {
 		this.db = db;
+		// Set up a daemon to check for end date completion
+		Thread t = new Thread(new Runnable() {	
+			@Override
+			public void run() {
+				// Loop through all sessions to check if they are ended
+				Timer timer = new Timer();
+				timer.scheduleAtFixedRate(new TimerTask() {
+					@Override
+					public void run() {
+						// Manually call DB4O instead of the entity manager
+						// PlanningPokerSession[] sessions = 							
+					}
+				}, 0, 1000*60*10);
+			}
+		});
+		t.setDaemon(true);
+		t.run();
 	}
 
 	@Override
