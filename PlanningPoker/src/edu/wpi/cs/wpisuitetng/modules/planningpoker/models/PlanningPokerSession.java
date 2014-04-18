@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
 
 /**
  * @author rossfoley
@@ -433,6 +434,21 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setReqsWithCompleteEstimates(Set<Integer> reqsWithCompleteEstimates) {
 		this.reqsWithCompleteEstimates = reqsWithCompleteEstimates;
 	}
+	
+	/**
+	 * @return the reqsWithSubmittedEstimates
+	 */
+	public HashMap<Requirement, Integer> getFinalEstimatesMap() {
+		return finalEstimatesMap; 
+	}
+	
+	/**
+	 * @param sets reqsWithSubmittedEstimates to the input HashMap 
+	 */
+	public void setFinalEstimatesMap(HashMap<Requirement, Integer> reqsWithSubmissions) {
+		finalEstimatesMap = reqsWithSubmissions; 
+	}
+	
 	/**
 	 * @return true if the session is allowed to be edited
 	 */
