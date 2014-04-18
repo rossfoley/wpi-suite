@@ -156,6 +156,8 @@ public class ViewEventController {
 		// Check if the tab is a voteOnSession tab
 		if (comp instanceof VotingPage) {
 			this.listOfVotingPanels.remove(comp);
+			planningPokerSessionButtonsPanel.enableVoteButton();
+			planningPokerSessionButtonsPanel.enableEndVoteButton();
 		}		
 		
 		main.remove(comp);

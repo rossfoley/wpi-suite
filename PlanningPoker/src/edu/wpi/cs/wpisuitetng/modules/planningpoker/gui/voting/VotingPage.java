@@ -5,12 +5,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -45,6 +47,11 @@ public class VotingPage extends JSplitPane {
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;
+		
+		// Disable the vote button in the planning poker module toolbar
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+
 		
 		buildReqPanel(null);
 
