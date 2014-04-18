@@ -37,6 +37,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
@@ -239,7 +240,6 @@ public class DeckVotingPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				clearSelectedCards();
-				userEstimate = 0;
 			}
 		});
 
@@ -273,17 +273,17 @@ public class DeckVotingPanel extends JPanel
 		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, submitButton, 0, SpringLayout.VERTICAL_CENTER, controlPanel);
 		controlPanelLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, controlPanel);
 		
-		subLayout.putConstraint(SpringLayout.EAST, clearButton, -10, SpringLayout.WEST, submitButton);
-		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, clearButton, 0, SpringLayout.VERTICAL_CENTER, submitButton);
+		controlPanelLayout.putConstraint(SpringLayout.EAST, clearButton, -10, SpringLayout.WEST, submitButton);
+		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, clearButton, 0, SpringLayout.VERTICAL_CENTER, submitButton);
 		controlPanelLayout.putConstraint(SpringLayout.WEST, estimateSubmittedMessage, 10, SpringLayout.EAST, submitButton);
 		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.VERTICAL_CENTER, submitButton);
 		
-		subLayout.putConstraint(SpringLayout.WEST, estimateSubmittedMessage, 10, SpringLayout.EAST, submitButton);
-		subLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.VERTICAL_CENTER, submitButton);
+		controlPanelLayout.putConstraint(SpringLayout.WEST, estimateSubmittedMessage, 10, SpringLayout.EAST, submitButton);
+		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.VERTICAL_CENTER, submitButton);
 		
-		subPanel.add(estimateSubmittedMessage);
-		subPanel.add(submitButton);
-		subPanel.add(clearButton);
+		controlPanel.add(estimateSubmittedMessage);
+		controlPanel.add(submitButton);
+		controlPanel.add(clearButton);
 
 		// Create sum of cards label and field
 		JPanel sumPane = new JPanel();
@@ -296,6 +296,8 @@ public class DeckVotingPanel extends JPanel
 		estimateField.setBackground(Color.WHITE);
 		estimateField.setValue(new Integer(0));
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		estimateField.setHorizontalAlignment(JTextField.CENTER);
+		estimateField.setPreferredSize(new Dimension(112, 112));
 		sumPane.add(estimateLabel);
 		sumPane.add(estimateField);
 		sumPane.setBounds(700, origin.y, 112, 140);
@@ -381,6 +383,7 @@ public class DeckVotingPanel extends JPanel
 				userEstimate = 0;
 			}
 		}
+		estimateField.setValue(new Integer((int) userEstimate));
 	}
 
 	/**
@@ -391,6 +394,8 @@ public class DeckVotingPanel extends JPanel
 		for (JButton card : listOfCardButtons) {
 			setCardSelected(card, false);
 		}
+		userEstimate = 0;
+		estimateField.setValue(new Integer(0));
 	}
 
 	public void mouseMoved(MouseEvent e) {
