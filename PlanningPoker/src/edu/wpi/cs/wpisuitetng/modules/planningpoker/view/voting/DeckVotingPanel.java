@@ -292,7 +292,6 @@ public class DeckVotingPanel extends JPanel
 	 * @param card	the card clicked
 	 */
 	private void updateEstimate(JButton card) {
-		System.out.println("Allow Multiple selections: " + votingDeck.getAllowMultipleSelections());
 		// If multiple cards can be selected
 		if (votingDeck.getAllowMultipleSelections()) {
 			// If card was selected from estimate
