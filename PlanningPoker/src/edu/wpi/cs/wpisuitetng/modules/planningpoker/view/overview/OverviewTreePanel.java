@@ -9,15 +9,9 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DropMode;
@@ -35,14 +29,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller.GetIterationController;
 
 
 /**
  * Displays all sessions in a tree for the left side of the overview panel
  * @see requirementmanager.view.overview.overviewtree
+ * @author Randy Acheson
+ * @version 4/18/14
  */
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
 
@@ -77,16 +71,16 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	/**
 	 * This will wipe out the current tree and rebuild it
 	 */
-	public void refresh(){
+	public void refresh() {
 
-		List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
+		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
 		boolean isOwner;
 		
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
-		DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
-		DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
-		DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
-		DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
+		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
+		final DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
+		final DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
+		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
+		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
 		
 		
 		for(PlanningPokerSession session : sessions) {
@@ -120,7 +114,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         tree.addMouseListener(this); //add a listener to check for clicking
         tree.addTreeSelectionListener(this);
         
-        //tree.setTransferHandler(new IterationTransferHandler());
         tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON);
         
@@ -137,19 +130,19 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent) */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
+		final int x = e.getX();
+		final int y = e.getY();
 
-		TreePath treePath = tree.getPathForLocation(x, y);
+		final TreePath treePath = tree.getPathForLocation(x, y);
 			
 		if(treePath != null) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
 			
 			if(node != null) {
 				
 				if (node.getUserObject() instanceof PlanningPokerSession) {
-					PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
-					String sessionOwner = session.getSessionCreatorName();
+					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
+					final String sessionOwner = session.getSessionCreatorName();
 
 					// Disable everything by default
 					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
@@ -182,6 +175,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		}
 	}
 	
+	/**
+	 * Updates the OverviewDetailPanel with the given session
+	 * @param session The session that has been selected
+	 */
 	protected void displaySession(PlanningPokerSession session) {
 		ViewEventController.getInstance().displayDetailedSession(session);
 	}
@@ -192,7 +189,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @param e MouseEvent
 	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent) */
 	@Override
-	public void mousePressed(MouseEvent e) {		
+	public void mousePressed(MouseEvent e) {
 	}
 
 	/**
@@ -200,7 +197,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @param e MouseEvent
 	 * @see java.awt.event.MouseListener#mouseReleased(MouseEvent) */
 	@Override
-	public void mouseReleased(MouseEvent e) {		
+	public void mouseReleased(MouseEvent e) {
 	}
 
 	/**
@@ -216,7 +213,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @param e MouseEvent
 	 * @see java.awt.event.MouseListener#mouseExited(MouseEvent) */
 	@Override
-	public void mouseExited(MouseEvent e) {		
+	public void mouseExited(MouseEvent e) {
 	}
 	/**
 	 * @return the tree */
