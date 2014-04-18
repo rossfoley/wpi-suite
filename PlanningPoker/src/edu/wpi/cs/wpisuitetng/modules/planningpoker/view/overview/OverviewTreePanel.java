@@ -47,7 +47,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller.Get
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
 
 	private JTree tree;
-	private PlanningPokerSession currentSession;
 	private boolean initialized;
 	
 	/**
@@ -59,6 +58,12 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         ViewEventController.getInstance().setOverviewTree(this);
 		this.refresh();  
 		initialized = false;
+		// Disable all toolbar buttons on initialization
+		try {
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+		} catch (NullPointerException ex) {} // Do nothing if the toolbar has not been instantiated yet
 	}
 	
 	/**
@@ -143,30 +148,37 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			if(node != null) {
 				
 				if (node.getUserObject() instanceof PlanningPokerSession) {
-					String sessionOwner = ((PlanningPokerSession) node.getUserObject()).getSessionCreatorName();
-					
+					PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
+					String sessionOwner = session.getSessionCreatorName();
+
+					// Disable everything by default
 					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
 					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
 					
+					// If the current user is the owner of the session
 					if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
-						if ((((PlanningPokerSession) node.getUserObject()).getGameState()) == SessionState.PENDING) {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
-						}
-						else if ((((PlanningPokerSession) node.getUserObject()).getGameState()) == SessionState.OPEN) {
+						// Enable editing if pending
+						if (session.getGameState() == SessionState.PENDING) {
 							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
+						}
+						// Allow end of voting if open and editing if no estimates yet
+						else if (session.getGameState() == SessionState.OPEN) {
 							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEndVoteButton();
+							// If no estimates yet, allow editing
+							if (session.getEstimates().size() == 0) {
+								ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
+							}
+							else {
+								ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+							}
 						}
 					}
-					if (!((PlanningPokerSession) node.getUserObject()).isOpen()) {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
+					// If session is open, allow voting
+					if (session.isOpen()) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
 					}
-
 					
-					PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
-					if (session.getEstimates().size()!=0){
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-					}
 					displaySession(session);
 				}
 			}
