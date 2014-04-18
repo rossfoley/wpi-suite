@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -64,6 +65,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementsWithExportedEstimates = new ArrayList<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
 	}
+	//private int[] finalEstimates;
 	
 	/**
 	 * @return the sessionCreatorID
@@ -492,6 +494,15 @@ public class PlanningPokerSession extends AbstractModel {
 		this.sessionDeck = toCopyFrom.sessionDeck;
 		this.reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
 		this.requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
+	}
+	
+	/** 
+	 * Returns an array of all of the final estimation values for a finished planning poker session.
+	 * 
+	 * @return int[] of all the final requirement estimation values.
+	 */
+	public int[] getFinalEstimates() { 
+		return finalEstimates;
 	}
 	
 }
