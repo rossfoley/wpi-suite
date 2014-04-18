@@ -36,7 +36,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	Data db;
 	HashMap<String, ArrayList<PlanningPokerSession>> clientsUpdated = new HashMap<String, ArrayList<PlanningPokerSession>>();
 	
-	public PlanningPokerSessionEntityManager(Data db) {
+	public PlanningPokerSessionEntityManager(final Data db) {
 		this.db = db;
 		// Set up a daemon to check for end date completion
 		Thread t = new Thread(new Runnable() {	
@@ -47,8 +47,8 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 				timer.scheduleAtFixedRate(new TimerTask() {
 					@Override
 					public void run() {
-						// Manually call DB4O instead of the entity manager
-						// PlanningPokerSession[] sessions = 							
+						 PlanningPokerSession[] sessions = db.retrieveAll(new PlanningPokerSession()).toArray(new PlanningPokerSession[0]);							
+						 // Figure out what sessions need to end
 					}
 				}, 0, 1000*60*10);
 			}
