@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -48,6 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
@@ -337,10 +339,19 @@ public class PlanningPokerSessionTab extends JPanel {
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
 
-		JButton btnSave = new JButton("Save");
+		final JButton btnSave = new JButton("Save");
 		JButton btnBack = new JButton("Back");
-		JButton btnStart = new JButton("Start");
+		final JButton btnStart = new JButton("Start");
 		JButton btnCancel = new JButton("Cancel");
+		
+		// Disable buttons if in creating mode (since no requirements are selected yet) 
+		if (viewMode == ViewMode.CREATING) {
+			btnStart.setEnabled(false);
+			btnSave.setEnabled(false);
+		}
+		else {
+			norequirements.setVisible(false);
+		}
 
 		//Position the error message for requirements
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, norequirements, -5, SpringLayout.SOUTH, btnCancel);
@@ -375,8 +386,6 @@ public class PlanningPokerSessionTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				List<Requirement> requirements =  requirementPanel.getSelected();
 				if (requirements.isEmpty()) {
-					norequirements.setText("Requirements must be selected before creating the session.");
-					norequirements.setForeground(Color.RED);
 					secondPanel.revalidate();
 					secondPanel.repaint();
 				} else { 
@@ -384,7 +393,6 @@ public class PlanningPokerSessionTab extends JPanel {
 					saveFields();
 					pokerSession.setGameState(SessionState.PENDING);
 					submitSessionToDatabase();
-					norequirements.setText("");
 				}
 			}
 		});
@@ -394,8 +402,6 @@ public class PlanningPokerSessionTab extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				List<Requirement> requirements =  requirementPanel.getSelected();
 				if (requirements.isEmpty()) {
-					norequirements.setText("Requirements must be selected before creating the session.");
-					norequirements.setForeground(Color.RED);
 					secondPanel.revalidate();
 					secondPanel.repaint();
 				} else { 
@@ -403,7 +409,6 @@ public class PlanningPokerSessionTab extends JPanel {
 					saveFields();
 					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
-					norequirements.setText("");
 
 					MockNotification mock = new MockNotification();
 					mock.sessionStartedNotification();
@@ -425,6 +430,26 @@ public class PlanningPokerSessionTab extends JPanel {
 				closePanel();
 					}
 				});
+		
+		// setup action listener for the requirement selection
+		requirementPanel.addRequirementsSelectedListener(new RequirementsSelectedListener() {
+			@Override
+			public void setRequirementsSelected(RequirementsSelectedEvent e) {
+				// If requirements are selected, enable the start and save buttons
+				if (e.areRequirementsSelected()) {
+					norequirements.setVisible(false);
+					btnStart.setEnabled(true);
+					btnSave.setEnabled(true);
+				}
+				else {
+					norequirements.setVisible(true);
+					btnStart.setEnabled(false);
+					btnSave.setEnabled(false);
+				}
+			}
+			
+		});
+				
 
 		// Add all of the elements to the second panel
 		secondPanel.add(btnSave);
