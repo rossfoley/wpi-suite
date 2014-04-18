@@ -28,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * @author rossfoley
@@ -52,7 +53,8 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	private List<Integer> requirementsWithExportedEstimates;
+
+	private List<Integer> requirementsWithExportedEstimatesIDs;
 	private HashMap<Requirement, Integer> finalEstimatesMap;
 	
 	/**
@@ -64,11 +66,11 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
-		this.requirementsWithExportedEstimates = new ArrayList<Integer>();
+		this.requirementsWithExportedEstimatesIDs = new ArrayList<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
 	}
 	//private int[] finalEstimates;
-	
+
 	/**
 	 * @return the sessionCreatorID
 	 */
@@ -99,21 +101,21 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return the requirementsWithExportedEstimates
 	 */
 	public List<Integer> getRequirementsWithExportedEstimates() {
-		return requirementsWithExportedEstimates;
+		return requirementsWithExportedEstimatesIDs;
 	}
 	
 	/**
 	 * @param requirementsWithExportedEstimates the requirementsWithExportedEstimates to set
 	 */
 	public void setRequirementsWithExportedEstimates(List<Integer> requirementsWithExportedEstimates) {
-		this.requirementsWithExportedEstimates = requirementsWithExportedEstimates;
+		this.requirementsWithExportedEstimatesIDs = requirementsWithExportedEstimates;
 	}
 	
 	/**
 	 * @param idToAdd idOfTheRequirementToAddToExportedEstimates
 	 */
 	public void addIDToSetRequirementsWithExportedEstimates(int idToAdd){
-		requirementsWithExportedEstimates.add(idToAdd);
+		requirementsWithExportedEstimatesIDs.add(idToAdd);
 	}
 	
 	/**
@@ -495,7 +497,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
 		this.reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
-		this.requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
+		this.requirementsWithExportedEstimatesIDs = toCopyFrom.requirementsWithExportedEstimatesIDs;
 	}
 	
 	/** 
@@ -505,6 +507,33 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public HashMap<Requirement, Integer> getFinalEstimates() { 
 		return finalEstimatesMap;
+	}
+	
+	/** 
+	 * Returns a list or Requirement of those requirements which have had their final estimates sent to
+	 * the requirement manager. 
+	 * 
+	 * @return LinkedList<Requirement> of all requirements that have had their final estimates sent to
+	 * the requirement manager.
+	 */
+	public LinkedList<Requirement> getReqsWithExportedEstimatesList() {
+		LinkedList<Requirement> requirementsWithExportedEstimatesList = new LinkedList<Requirement>();
+		int i;
+		for (i = 0; i < requirementsWithExportedEstimatesIDs.size(); i++) {
+			requirementsWithExportedEstimatesList.add(RequirementModel.getInstance().getRequirement(requirementsWithExportedEstimatesIDs.get(i)));
+		}
+		return requirementsWithExportedEstimatesList;		
+	}
+	
+	/**
+	 * Adds a requirement ID to the list of requirement IDs representing the requirements that have
+	 * had their final estimates sent to the requirement manager.
+	 * 
+	 * @param reqIDToAdd the requirement ID of the requirement which has had its final estimate sent to the
+	 * requirement manager.
+	 */
+	public void addRequirementToExportedList(int reqIDToAdd) {
+		requirementsWithExportedEstimatesIDs.add(reqIDToAdd);
 	}
 	
 }
