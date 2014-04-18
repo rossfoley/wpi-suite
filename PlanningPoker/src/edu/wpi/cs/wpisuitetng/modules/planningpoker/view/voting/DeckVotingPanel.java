@@ -325,13 +325,38 @@ public class DeckVotingPanel extends JPanel
 	 * @param card	the card clicked
 	 */
 	private void updateEstimate(JButton card) {
-		// If card was selected from estimate
-		if (isCardSelected(card)) {
-			userEstimate += Integer.parseInt(card.getName());
+		// If multiple cards can be selected
+		if (votingDeck.getAllowMultipleSelections()) {
+			// If card was selected from estimate
+			if (isCardSelected(card)) {
+				userEstimate += Integer.parseInt(card.getName());
+			}
+			// If card was removed from estimate
+			else if (userEstimate >= 0) {
+				userEstimate -= Integer.parseInt(card.getName());
+			}
 		}
-		// If card was removed from estimate
-		else if (userEstimate >= 0) {
-			userEstimate -= Integer.parseInt(card.getName());
+		else {	// If only one card can be selected
+			// Set the card if it wasn't set before
+			if (isCardSelected(card)) {
+				clearSelectedCards();
+				setCardSelected(card, true);
+				userEstimate = Integer.parseInt(card.getName());
+			}
+			else {	// If it was set, don't set
+				clearSelectedCards();
+				userEstimate = 0;
+			}
+		}
+	}
+
+	/**
+	 * Sets all the cards as not selected and the current estimate to zero.
+	 */
+	private void clearSelectedCards() {
+		// De-select all cards
+		for (JButton card : listOfCardButtons) {
+			setCardSelected(card, false);
 		}
 	}
 

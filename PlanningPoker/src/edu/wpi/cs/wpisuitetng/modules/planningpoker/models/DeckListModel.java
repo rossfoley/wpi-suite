@@ -124,7 +124,7 @@ public class DeckListModel extends AbstractListModel {
 		defaultDeckNums.add(5);
 		defaultDeckNums.add(8);
 		defaultDeckNums.add(13);
-		Deck defaultDeck = new Deck(defaultDeckNums);
+		Deck defaultDeck = new Deck(defaultDeckNums, true);
 		defaultDeck.setDeckName("Default"); 
 		return defaultDeck;
 	}
