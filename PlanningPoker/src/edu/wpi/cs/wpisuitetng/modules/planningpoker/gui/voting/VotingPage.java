@@ -201,6 +201,19 @@ public class VotingPage extends JSplitPane {
 		}
 		return sessionReqs;
 	}
+	
+	/**
+	 * adds the user id to the voted people's list
+	 * @param id
+	 */
+	public void addIds(String username) {
+		if (activeSession.getVoterIdList().contains(username)) {
+			System.out.println("Username exist");
+		} else {
+			activeSession.getVoterIdList().add(username);
+			System.out.println(username + "HAHAHA");
+		}
+	}
 
 	/**
 	 * build the part of the panel that is specific to the selected requirement
@@ -241,6 +254,7 @@ public class VotingPage extends JSplitPane {
 					estimate.setRequirementID(requirement.getId());
 					estimate.setSessionID(activeSession.getID());
 					estimate.setVote((int)e.getEstimate());
+					addIds(ConfigManager.getConfig().getUserName());
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
 					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
