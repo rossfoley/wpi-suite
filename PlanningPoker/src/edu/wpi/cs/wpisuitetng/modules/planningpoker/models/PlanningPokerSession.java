@@ -52,6 +52,8 @@ public class PlanningPokerSession extends AbstractModel {
 	private Set<Integer> reqsWithCompleteEstimates;
 	private HashMap<Requirement, Integer> finalEstimatesMap;
 
+	private List<String> voterIdList;
+
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
@@ -63,6 +65,8 @@ public class PlanningPokerSession extends AbstractModel {
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
 		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
+		this.setVoterIdList(new ArrayList<String>());
+
 	}
 
 	/**
@@ -480,4 +484,18 @@ public class PlanningPokerSession extends AbstractModel {
 	public HashMap<Requirement, Integer> getFinalEstimates() { 
 		return finalEstimatesMap;
 	}
+
+	/**
+	 * @return the voterIdList
+	 */
+	public List<String> getVoterIdList() {
+		return voterIdList;
+	}
+	/**
+	 * @param voterIdList the voterIdList to set
+	 */
+	public void setVoterIdList(List<String> voterIdList) {
+		this.voterIdList = voterIdList;
+	}
+	
 }

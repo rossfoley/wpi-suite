@@ -38,9 +38,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -168,6 +170,7 @@ public class DeckVotingPanel extends JPanel
 			public void actionPerformed(ActionEvent e) {
 				if (validateEstimate()){
 					fireEstimateEvent();
+
 				}
 			}
 		});

@@ -9,6 +9,11 @@ import javax.swing.JComponent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting.VotingPage;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+<<<<<<< HEAD
+=======
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Voters;
+>>>>>>> stores the list of usernames in a list if they voted
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
@@ -105,6 +110,8 @@ public class ViewEventController {
 	public ToolbarView getToolbar() {
 		return toolbar;
 	}
+	
+
 
 	/**
 	 * @return OverviewTreePanel
