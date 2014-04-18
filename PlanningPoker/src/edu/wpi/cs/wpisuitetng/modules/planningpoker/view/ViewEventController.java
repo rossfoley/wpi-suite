@@ -24,8 +24,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsRe
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
 
 
-
-
 /**
  * Provides an interface for interaction with the main GUI elements
  * All actions on GUI elements should be conducted through this controller.
