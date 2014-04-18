@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
 
 /**
  * @author rossfoley
@@ -50,7 +52,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	
+	private HashMap<Requirement, Integer> reqsWithSubmittedEstimates; 
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
@@ -60,6 +62,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
+		this.reqsWithSubmittedEstimates = new HashMap<Requirement, Integer>(); 
 		this.defaultSessionName = new String(this.name.toString());
 	}
 	
@@ -431,6 +434,21 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setReqsWithCompleteEstimates(Set<Integer> reqsWithCompleteEstimates) {
 		this.reqsWithCompleteEstimates = reqsWithCompleteEstimates;
 	}
+	
+	/**
+	 * @return the reqsWithSubmittedEstimates
+	 */
+	public HashMap<Requirement, Integer> getReqsWithSubmittedEstimates() {
+		return reqsWithSubmittedEstimates; 
+	}
+	
+	/**
+	 * @param sets reqsWithSubmittedEstimates to the input HashMap 
+	 */
+	public void setReqsWithSubmittedEstimates(HashMap<Requirement, Integer> reqsWithSubmissions) {
+		reqsWithSubmittedEstimates = reqsWithSubmissions; 
+	}
+	
 	/**
 	 * @return true if the session is allowed to be edited
 	 */
