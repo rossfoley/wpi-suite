@@ -50,6 +50,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
+	private List<Integer> requirementsWithExportedEstimates;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -60,6 +61,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
+		this.requirementsWithExportedEstimates = new ArrayList<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
 	}
 	
@@ -87,6 +89,27 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setUsingDeck(boolean isUsingDeck) {
 		this.isUsingDeck = isUsingDeck;
+	}
+	
+	/**
+	 * @return the requirementsWithExportedEstimates
+	 */
+	public List<Integer> getRequirementsWithExportedEstimates() {
+		return requirementsWithExportedEstimates;
+	}
+	
+	/**
+	 * @param requirementsWithExportedEstimates the requirementsWithExportedEstimates to set
+	 */
+	public void setRequirementsWithExportedEstimates(List<Integer> requirementsWithExportedEstimates) {
+		this.requirementsWithExportedEstimates = requirementsWithExportedEstimates;
+	}
+	
+	/**
+	 * @param idToAdd idOfTheRequirementToAddToExportedEstimates
+	 */
+	public void addIDToSetRequirementsWithExportedEstimates(int idToAdd){
+		requirementsWithExportedEstimates.add(idToAdd);
 	}
 	
 	/**
@@ -467,6 +490,8 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
+		this.reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
+		this.requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
 	}
 	
 }
