@@ -16,6 +16,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectEstimatesToSendToReqManagerPane;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
+
 
 /**
  * Provides an interface for interaction with the main GUI elements
@@ -34,6 +38,7 @@ public class ViewEventController {
 	private ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
 	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
+	private ArrayList<SelectEstimatesToSendToReqManagerPane> listOfUpdateRequirementPages = new ArrayList<SelectEstimatesToSendToReqManagerPane>();
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -270,7 +275,6 @@ public class ViewEventController {
 				break;
 			}
 		}
-		
 		if (exists == null)
 		{
 			VotingPage votingPanel = new VotingPage(toVoteOn);
@@ -290,5 +294,36 @@ public class ViewEventController {
 		{
 			main.setSelectedComponent(exists);
 		}
+	}
+	
+	public void sendEstimates(PlanningPokerSession sendEstimatesFrom){
+		SelectEstimatesToSendToReqManagerPane exists = null;
+		
+		for(SelectEstimatesToSendToReqManagerPane page : listOfUpdateRequirementPages){
+			if(page.getDisplaySession() == sendEstimatesFrom){
+				exists = page;
+				break;
+			}
+		}
+		if (exists == null)	{
+			SelectEstimatesToSendToReqManagerPane sendPane = new SelectEstimatesToSendToReqManagerPane(sendEstimatesFrom);
+			
+			StringBuilder tabName = new StringBuilder();
+			int subStringLength = sendEstimatesFrom.getName().length() > 6 ? 7 : sendEstimatesFrom.getName().length();
+			tabName.append(sendEstimatesFrom.getName().substring(0,subStringLength));
+			if(sendEstimatesFrom.getName().length() > 6) tabName.append("..");
+			
+			main.addTab(tabName.toString(), null, sendPane, sendEstimatesFrom.getName());
+			this.listOfUpdateRequirementPages.add(sendPane);
+			main.invalidate();
+			main.repaint();
+			main.setSelectedComponent(sendPane);
+		}
+		else
+		{
+			main.setSelectedComponent(exists);
+		}
+		
+		
 	}
 }
