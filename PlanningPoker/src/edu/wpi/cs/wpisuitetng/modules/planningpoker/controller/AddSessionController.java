@@ -36,8 +36,8 @@ public class AddSessionController{
 	}
 	
 	/**
-	
 	 * @return the instance of the AddSessionController
+	 * */
 	public static AddSessionController getInstance() {
 		return instance;
 	}
