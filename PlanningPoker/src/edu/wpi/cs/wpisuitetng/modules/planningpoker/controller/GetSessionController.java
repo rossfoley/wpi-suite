@@ -39,9 +39,8 @@ public class GetSessionController implements ActionListener {
 	}
 	
 	/**
-	
-	 * @return the instance of the GetRequirementController or creates one if it does not
-	 * exist. */
+	 * @return the instance of the GetRequirementController
+	 */
 	public static GetSessionController getInstance() {
 		return instance;
 	}

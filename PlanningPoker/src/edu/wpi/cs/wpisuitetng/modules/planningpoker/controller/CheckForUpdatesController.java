@@ -32,8 +32,8 @@ public class CheckForUpdatesController implements ActionListener {
 	private CheckForUpdatesController() {}
 	
 	/**
-	 * @return the instance of the CheckForUpdatesController or creates one if it does not
-	 * exist. */
+	 * @return the instance of the CheckForUpdatesController
+	 */
 	public static CheckForUpdatesController getInstance() {
 		return instance;
 	}
