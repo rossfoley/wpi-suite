@@ -156,8 +156,7 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
 
 		System.out.println("currently displayed description:" + descriptionField.getText());
-		System.out.println(descriptionField.getText());
-
+		
 		reqDetails.add(requirementEstimated);
 		reqDetails.add(nameLabel);
 		reqDetails.add(descriptionLabel);
