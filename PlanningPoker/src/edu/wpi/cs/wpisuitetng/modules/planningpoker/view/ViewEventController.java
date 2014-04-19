@@ -28,6 +28,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterT
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectEstimatesToSendToReqManagerPane;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
 
@@ -53,6 +57,7 @@ public class ViewEventController {
 	private StatisticsReqTable statisticsReqTable;
 	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
 	private final List<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
+	private ArrayList<SelectEstimatesToSendToReqManagerPane> listOfUpdateRequirementPages = new ArrayList<SelectEstimatesToSendToReqManagerPane>();
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -310,7 +315,6 @@ public class ViewEventController {
 				break;
 			}
 		}
-		
 		if (exists == null)
 		{
 			final VotingPage votingPanel = new VotingPage(toVoteOn);
@@ -360,5 +364,33 @@ public class ViewEventController {
 		} else {
 			main.setSelectedComponent(exists);
 		}
+	}
+public void sendEstimates(PlanningPokerSession sendEstimatesFrom){
+		SelectEstimatesToSendToReqManagerPane exists = null;
+		
+		for(SelectEstimatesToSendToReqManagerPane page : listOfUpdateRequirementPages){
+			if(page.getDisplaySession() == sendEstimatesFrom){
+				exists = page;
+				break;
+			}
+		}
+		if (exists == null)	{
+			SelectEstimatesToSendToReqManagerPane sendPane = new SelectEstimatesToSendToReqManagerPane(sendEstimatesFrom);
+			
+			StringBuilder tabName = new StringBuilder();
+			int subStringLength = sendEstimatesFrom.getName().length() > 6 ? 7 : sendEstimatesFrom.getName().length();
+			tabName.append(sendEstimatesFrom.getName().substring(0,subStringLength));
+			if(sendEstimatesFrom.getName().length() > 6) tabName.append("..");
+			
+			main.addTab(tabName.toString(), null, sendPane, sendEstimatesFrom.getName());
+			this.listOfUpdateRequirementPages.add(sendPane);
+			main.invalidate();
+			main.repaint();
+			main.setSelectedComponent(sendPane);
+		}
+		else
+		{
+			main.setSelectedComponent(exists);
+		}	
 	}
 }

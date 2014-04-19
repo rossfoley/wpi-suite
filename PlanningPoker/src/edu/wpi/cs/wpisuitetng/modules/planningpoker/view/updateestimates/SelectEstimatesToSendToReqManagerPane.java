@@ -23,7 +23,7 @@ import javax.swing.JTable;
  * @author Amanda
  *
  */
-public class SelectEstimatesToSendToRequirementManagerSplitPane extends JSplitPane {
+public class SelectEstimatesToSendToReqManagerPane extends JSplitPane {
 	private PlanningPokerSession currentSession;
 	private List<Integer> reqsWithExportedEstimates;
 	private HashMap<Integer, Integer> finalEstimates;
@@ -36,7 +36,7 @@ public class SelectEstimatesToSendToRequirementManagerSplitPane extends JSplitPa
 	private String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
 	private LinkedList<Integer> selectableRequirementIDs;
 	
-	public SelectEstimatesToSendToRequirementManagerSplitPane(PlanningPokerSession currentSession){
+	public SelectEstimatesToSendToReqManagerPane(PlanningPokerSession currentSession){
 		this.currentSession = currentSession;
 		reqsWithExportedEstimates = currentSession.getRequirementsWithExportedEstimates();
 		
@@ -91,5 +91,9 @@ public class SelectEstimatesToSendToRequirementManagerSplitPane extends JSplitPa
 	
 	private LinkedList<Integer> getSelectableRequirements(){
 		return selectableRequirementIDs;	
+	}
+	
+	public PlanningPokerSession getDisplaySession(){
+		return currentSession;
 	}
 }
