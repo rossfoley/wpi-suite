@@ -44,8 +44,7 @@ public class UpdateEstimateController {
 	 * This method updates an estimate to the server.
 	 * @param newEstimate the estimate to be updated to the server.
 	 */
-	public void updateEstimate(Estimate newEstimate) 
-	{
+	public void updateEstimate(Estimate newEstimate) {
 		final Request request = Network.getInstance()
 				.makeRequest("Advanced/planningpoker/planningpokersession/update-estimate",
 						HttpMethod.POST); // POST is update

@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
  * @version $Revision: 1.0 $
  * @author randyacheson and kevinbarry
  */
-public class AddSessionController{
+public class AddSessionController {
 	
 	private static final AddSessionController instance = new AddSessionController();
 	private final AddSessionRequestObserver observer;
@@ -46,8 +46,7 @@ public class AddSessionController{
 	 * This method adds a Session to the server.
 	 * @param newSession is the PlanningPokerSession to be added to the server.
 	 */
-	public void addPlanningPokerSession(PlanningPokerSession newSession) 
-	{
+	public void addPlanningPokerSession(PlanningPokerSession newSession) {
 		final Request request = Network.getInstance()
 				.makeRequest("planningpoker/planningpokersession", HttpMethod.PUT); // PUT is create
 		request.setBody(newSession.toJSON()); // put the session in the body of the request

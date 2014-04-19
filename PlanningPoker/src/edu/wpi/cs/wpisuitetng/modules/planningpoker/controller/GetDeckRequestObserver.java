@@ -27,7 +27,7 @@ public class GetDeckRequestObserver implements RequestObserver {
 	 * Constructs the observer given a GetDckController
 	 * @param controller the controller used to retrieve decks
 	 */
-	public GetDeckRequestObserver(GetDeckController controller){
+	public GetDeckRequestObserver(GetDeckController controller) {
 		this.controller = controller;
 	}
 	

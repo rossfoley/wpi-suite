@@ -46,8 +46,7 @@ public class UpdatePlanningPokerSessionController {
 	 * This method updates a planning poker session to the server.
 	 * @param newSession is the planning poker session to be updated to the server.
 	 */
-	public void updatePlanningPokerSession(PlanningPokerSession newSession) 
-	{
+	public void updatePlanningPokerSession(PlanningPokerSession newSession) {
 		// POST is update
 		final Request request = Network.getInstance()
 				.makeRequest("planningpoker/planningpokersession", HttpMethod.POST);
