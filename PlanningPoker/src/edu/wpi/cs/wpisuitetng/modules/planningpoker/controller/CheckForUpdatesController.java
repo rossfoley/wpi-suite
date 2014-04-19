@@ -23,29 +23,22 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * @author rossfoley
- *
+ * @version 1.0
  */
 public class CheckForUpdatesController implements ActionListener {
 	
-	private static CheckForUpdatesController instance;
+	private static final CheckForUpdatesController instance = new CheckForUpdatesController();
 	
-	private CheckForUpdatesController() {
-		
-	}
+	private CheckForUpdatesController() {}
 	
 	/**
-	 * @return the instance of the CheckForUpdatesController or creates one if it does not
-	 * exist. */
-	public static CheckForUpdatesController getInstance()
-	{
-		if (instance == null) {
-			instance = new CheckForUpdatesController();
-		}
-		
+	 * @return the instance of the CheckForUpdatesController
+	 */
+	public static CheckForUpdatesController getInstance() {
 		return instance;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
@@ -57,12 +50,13 @@ public class CheckForUpdatesController implements ActionListener {
 	 * Check with the server to see if there are any updates to Planning Poker Sessions
 	 */
 	public void checkForUpdates() {
-		final Request request = Network.getInstance().makeRequest("Advanced/planningpoker/planningpokersession/check-for-updates", HttpMethod.GET);
+		final Request request = Network.getInstance().makeRequest(
+				"Advanced/planningpoker/planningpokersession/check-for-updates", HttpMethod.GET);
 		request.addObserver(new RequestObserver() {
 			@Override
 			public void responseSuccess(IRequest iReq) {
-				String response = iReq.getResponse().getBody();
-				PlanningPokerSession[] updates = PlanningPokerSession.fromJsonArray(response);
+				final String response = iReq.getResponse().getBody();
+				final PlanningPokerSession[] updates = PlanningPokerSession.fromJsonArray(response);
 				for (PlanningPokerSession update : updates) {
 					PlanningPokerSessionModel model = PlanningPokerSessionModel.getInstance();
 					PlanningPokerSession existing = model.getPlanningPokerSession(update.getUuid());

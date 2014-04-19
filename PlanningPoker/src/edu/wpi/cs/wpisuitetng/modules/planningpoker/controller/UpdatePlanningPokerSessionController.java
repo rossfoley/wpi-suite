@@ -23,8 +23,9 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class UpdatePlanningPokerSessionController {
 	
-	private static UpdatePlanningPokerSessionController instance;
-	private UpdatePlanningPokerSessionRequestObserver observer;
+	private static final UpdatePlanningPokerSessionController instance = 
+			new UpdatePlanningPokerSessionController();
+	private final UpdatePlanningPokerSessionRequestObserver observer;
 	
 	/**
 	 * Construct an UpdateRequirementController for the given model, view pair
@@ -37,13 +38,7 @@ public class UpdatePlanningPokerSessionController {
 	
 	 * @return the instance of the UpdateRequirementController or creates one if it does not
 	 * exist. */
-	public static UpdatePlanningPokerSessionController getInstance()
-	{
-		if(instance == null)
-		{
-			instance = new UpdatePlanningPokerSessionController();
-		}
-		
+	public static UpdatePlanningPokerSessionController getInstance() {
 		return instance;
 	}
 
@@ -51,9 +46,10 @@ public class UpdatePlanningPokerSessionController {
 	 * This method updates a planning poker session to the server.
 	 * @param newSession is the planning poker session to be updated to the server.
 	 */
-	public void updatePlanningPokerSession(PlanningPokerSession newSession) 
-	{
-		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.POST); // POST == update
+	public void updatePlanningPokerSession(PlanningPokerSession newSession) {
+		// POST is update
+		final Request request = Network.getInstance()
+				.makeRequest("planningpoker/planningpokersession", HttpMethod.POST);
 		request.setBody(newSession.toJSON()); // put the new session in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); 

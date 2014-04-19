@@ -10,11 +10,16 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEstimateController;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
+/**
+ * This observer handles responses to request for all estimates
+ * 
+ * @author TheTeam8s
+ * @version 1.0
+ */
 public class UpdateEstimateRequestObserver implements RequestObserver {
 	
 	private final UpdateEstimateController controller;
@@ -31,7 +36,8 @@ public class UpdateEstimateRequestObserver implements RequestObserver {
 	 * Parse the request that was received from the server then pass them to
 	 * the controller.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess
+	 * (edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
@@ -39,7 +45,7 @@ public class UpdateEstimateRequestObserver implements RequestObserver {
 		final ResponseModel response = iReq.getResponse();
 		
 		// Parse the estimate out of the response body
-		final Estimate estimate = Estimate.fromJson(response.getBody());		
+		final Estimate estimate = Estimate.fromJson(response.getBody());
 	}
 	
 	/**

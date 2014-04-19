@@ -15,10 +15,15 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * Gets the estimates from the server and loads them into the local model
+ * @author TheTeam8s
+ * @version 1.0
+ */
 public class UpdateEstimateController {
 	
-	private static UpdateEstimateController instance;
-	private UpdateEstimateRequestObserver observer;
+	private static final UpdateEstimateController instance = new UpdateEstimateController();
+	private final UpdateEstimateRequestObserver observer;
 	
 	/**
 	 * Construct an UpdateRequirementController for the given model, view pair
@@ -31,23 +36,18 @@ public class UpdateEstimateController {
 	
 	 * @return the instance of the UpdateRequirementController or creates one if it does not
 	 * exist. */
-	public static UpdateEstimateController getInstance()
-	{
-		if(instance == null)
-		{
-			instance = new UpdateEstimateController();
-		}
-		
+	public static UpdateEstimateController getInstance() {
 		return instance;
 	}
 
 	/**
 	 * This method updates an estimate to the server.
-	 * @param newSession is the estimate to be updated to the server.
+	 * @param newEstimate the estimate to be updated to the server.
 	 */
-	public void updateEstimate(Estimate newEstimate) 
-	{
-		final Request request = Network.getInstance().makeRequest("Advanced/planningpoker/planningpokersession/update-estimate", HttpMethod.POST); // POST == update
+	public void updateEstimate(Estimate newEstimate) {
+		final Request request = Network.getInstance()
+				.makeRequest("Advanced/planningpoker/planningpokersession/update-estimate",
+						HttpMethod.POST); // POST is update
 		request.setBody(newEstimate.toJSON()); // put the new estimate in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); 

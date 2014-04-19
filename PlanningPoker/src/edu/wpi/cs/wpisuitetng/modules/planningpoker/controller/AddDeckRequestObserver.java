@@ -9,7 +9,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -18,11 +17,15 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * This observer is called when a response is received from a request
  * to the server to add a deck.
  * @author amandaadkins
- *
+ * @version 1.0
  */
 public class AddDeckRequestObserver implements RequestObserver {
-	private AddDeckController controller;
+	private final AddDeckController controller;
 	
+	/**
+	 * Adds the given controller to the observer
+	 * @param controller The given controller
+	 */
 	public AddDeckRequestObserver(AddDeckController controller) {
 		this.controller = controller;
 	}
@@ -31,15 +34,15 @@ public class AddDeckRequestObserver implements RequestObserver {
 	 * Parse the deck that was received from the server then pass them to
 	 * the controller.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess
+	 * (edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
-		//System.out.println (response);
 		System.out.println("Sent successfully");
 		// Parse the session out of the response body
-		final Deck addedDeck = Deck.fromJson(response.getBody());		
+		final Deck addedDeck = Deck.fromJson(response.getBody());
 	}
 	
 	/**
