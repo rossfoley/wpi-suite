@@ -51,6 +51,7 @@ public class RequirementSelectionPanel extends JPanel{
 	JButton btnAdd;
 	JButton btnRemove;
 	JButton btnRemoveAll;
+	JButton btnNewReq;
 	
 	/**
 	 * Constructor to create the requirement selection panel
@@ -141,6 +142,17 @@ public class RequirementSelectionPanel extends JPanel{
 		sl_btnPanel.putConstraint(SpringLayout.WEST, btnRemoveAll, 10, SpringLayout.WEST, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.EAST, btnRemoveAll, -10, SpringLayout.EAST, btnPanel);
 		btnPanel.add(btnRemoveAll);
+		
+		btnNewReq = new JButton("New Req");
+		btnNewReq.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openCreationPanel();
+			}
+		});
+		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnNewReq, 6, SpringLayout.SOUTH, btnRemoveAll);
+		sl_btnPanel.putConstraint(SpringLayout.WEST, btnNewReq, 10, SpringLayout.WEST, btnPanel);
+		sl_btnPanel.putConstraint(SpringLayout.EAST, btnNewReq, -10, SpringLayout.EAST, btnPanel);
+		btnPanel.add(btnNewReq);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		sl_btnPanel.putConstraint(SpringLayout.NORTH, horizontalStrut, 24, SpringLayout.SOUTH, btnRemoveAll);
@@ -467,5 +479,9 @@ public class RequirementSelectionPanel extends JPanel{
 			this.selection.add(pos, true);
 		}
 		update();
+	}
+	
+	public void openCreationPanel(){
+		parent.openCreationPanel();
 	}
 }

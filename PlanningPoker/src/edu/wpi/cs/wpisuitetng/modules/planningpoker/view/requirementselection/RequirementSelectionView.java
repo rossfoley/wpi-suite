@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 
+import java.awt.Frame;
 import java.util.List;
 import java.util.Set;
 
@@ -15,15 +16,24 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 public class RequirementSelectionView extends JSplitPane{
 	
 	private RequirementSelectionPanel reqPanel;
-	private RequirementCreationPanel infoPanel;
+	private RequirementCreationPanel createPanel;
 	
 	public RequirementSelectionView(){
 		reqPanel = new RequirementSelectionPanel(this);
-		infoPanel = new RequirementCreationPanel(-1);
+		createPanel = new RequirementCreationPanel(-1, this);
 		
 		setLeftComponent(reqPanel);
-		setRightComponent(infoPanel);
-		setDividerLocation(600);
+		setRightComponent(null);
+		setDividerLocation(getSize().width - getInsets().right - getDividerSize() - 500);
+		setResizeWeight(1.0);
+	}
+	
+	public void openCreationPanel(){
+		setRightComponent(createPanel);
+	}
+	
+	public void closeCreationPanel(){
+		setRightComponent(null);
 	}
 	
 	public List<Requirement> getSelected(){

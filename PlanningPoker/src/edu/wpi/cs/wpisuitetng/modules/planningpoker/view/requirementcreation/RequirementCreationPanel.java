@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
@@ -34,36 +35,27 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 {
 	private List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
 	private Requirement displayRequirement;
-	private ViewMode viewMode;
+	private final ViewMode viewMode = ViewMode.CREATING;
 	
 	private RequirementCreationInformationPanel infoPanel;
 	private RequirementCreationButtonPanel buttonPanel;
+	private RequirementSelectionView parent;
 	
 	private boolean readyToClose = false;
 	private boolean readyToRemove = true;
 	
 	
-
-	/**
-	 * Constructor for editing a requirement
-	 * @param editingRequirement requirement to edit
-	 */
-	public RequirementCreationPanel(Requirement editingRequirement)
-	{
-		viewMode = (ViewMode.EDITING);
-		
-		displayRequirement = editingRequirement;
-		this.buildLayout();
-	}
 	
 	/**
 	 * Constructor for creating a requirement
 	 * @param parentID the parent id, or -1 if no parent.
 	 * @wbp.parser.constructor
 	 */
-	public RequirementCreationPanel(int parentID)
+	public RequirementCreationPanel(int parentID, RequirementSelectionView myParent)
 	{
-		viewMode = (ViewMode.CREATING);
+		//viewMode = (ViewMode.CREATING);
+		
+		parent = myParent;
 		
 		displayRequirement = new Requirement();
 		displayRequirement.setId(-2);
@@ -124,6 +116,8 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	{
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
+		clearPressed();
+		parent.closeCreationPanel();
 	}
 	
 	/**
@@ -133,16 +127,16 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	 */
 	public void deletePressed() 
 	{
-		if (this.displayRequirement.getStatus() == RequirementStatus.INPROGRESS)
+		/*if (this.displayRequirement.getStatus() == RequirementStatus.INPROGRESS)
 			return;
 		readyToClose = true;
-		displayRequirement.setStatus(RequirementStatus.DELETED);
+		//displayRequirement.setStatus(RequirementStatus.DELETED);
 
 		UpdateRequirementController.getInstance().updateRequirement(displayRequirement);
 		
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
-		ViewEventController.getInstance().removeTab(this);	
+		//ViewEventController.getInstance().removeTab(this);*/	
 	}	
 
 	/**

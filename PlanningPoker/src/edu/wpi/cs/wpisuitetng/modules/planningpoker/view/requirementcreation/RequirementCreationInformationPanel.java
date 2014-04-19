@@ -181,6 +181,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		boxEstimate = (new JTextField());
 		boxEstimate.setPreferredSize(new Dimension(50, 20));
 		boxEstimate.addKeyListener(this);
+		boxEstimate.setEnabled(false);
 		boxChildEstimate = (new JTextField());
 		boxChildEstimate.setEnabled(false);
 		boxTotalEstimate = new JTextField();
@@ -324,26 +325,26 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 */
 	private void refreshParentInformation()
 	{
-		boolean isCreating = viewMode == ViewMode.CREATING;
-		boolean hasChildren = !currentRequirement.getChildren().isEmpty();
-		labelChildEstimate.setVisible(hasChildren);
-		boxChildEstimate.setText(
-				Integer.toString(currentRequirement.getChildEstimate()));
-		boxChildEstimate.setVisible(hasChildren);
-		boxTotalEstimate.setText(Integer.toString(currentRequirement.getTotalEstimate()));
-		boxTotalEstimate.setVisible(hasChildren);
-		labelTotalEstimate.setVisible(hasChildren);
+//		boolean isCreating = viewMode == ViewMode.CREATING;
+//		boolean hasChildren = !currentRequirement.getChildren().isEmpty();
+//		labelChildEstimate.setVisible(hasChildren);
+//		boxChildEstimate.setText(
+//				Integer.toString(currentRequirement.getChildEstimate()));
+//		boxChildEstimate.setVisible(hasChildren);
+//		boxTotalEstimate.setText(Integer.toString(currentRequirement.getTotalEstimate()));
+//		boxTotalEstimate.setVisible(hasChildren);
+//		labelTotalEstimate.setVisible(hasChildren);
 		
 		if (currentRequirement.getParentID() != -1) {
 			currentParent.setText("Parent: " + currentRequirement.getParent().getName());
 			currentParent.setVisible(true);
-			editParent.setVisible(true && !isCreating);
-			removeFromParent.setVisible(true && !isCreating);
+//			editParent.setVisible(true && !isCreating);
+//			removeFromParent.setVisible(true && !isCreating);
 			noParentInfoPanel.setVisible(false);
 		}
 		else {
 			currentParent.setText("Parent: ");
-			currentParent.setVisible(true && !isCreating);
+//			currentParent.setVisible(true && !isCreating);
 			editParent.setVisible(false);
 			removeFromParent.setVisible(false);
 			noParentInfoPanel.setVisible(true);
@@ -650,7 +651,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		
 		this.getBoxName().setEnabled(!allDisabled);
 		this.getBoxDescription().setEnabled(!allDisabled);
-		this.getBoxEstimate().setEnabled(!inProgress && !allDisabled);
+	//	this.getBoxEstimate().setEnabled(false);
 		this.getBoxReleaseNum().setEnabled(!allDisabled);
 		this.getDropdownType().setEnabled(!allDisabled);
 		this.getDropdownStatus().setEnabled(!isCreating);
