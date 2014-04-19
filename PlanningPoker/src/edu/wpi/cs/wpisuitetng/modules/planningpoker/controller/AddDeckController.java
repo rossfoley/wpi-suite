@@ -9,19 +9,18 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * This controller responds when a deck is added and sends a request over the network to save the deck 
- * 
+ * This controller responds when a deck is added 
+ * and sends a request over the network to save the deck 
  * @author amandaadkins
  */
 public class AddDeckController {
 	private static AddDeckController instance;
-	private AddDeckRequestObserver observer;
+	private final AddDeckRequestObserver observer;
 	
 	/**
 	 * Construct an AddDeckController for the given model, view pair
