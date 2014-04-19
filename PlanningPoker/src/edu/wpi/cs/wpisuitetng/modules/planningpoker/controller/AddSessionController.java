@@ -30,8 +30,6 @@ public class AddSessionController{
 	
 	/**
 	 * Construct an AddSessionController for the given model, view pair
-	
-	
 	 */
 	private AddSessionController() {
 		observer = new AddSessionRequestObserver(this);
@@ -39,8 +37,7 @@ public class AddSessionController{
 	
 	/**
 	
-	 * @return the instance of the AddSessionController or creates one if it does not
-	 * exist. */
+	 * @return the instance of the AddSessionController
 	public static AddSessionController getInstance() {
 		return instance;
 	}

@@ -16,11 +16,11 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * This observer handles responses to request for all decks
  * 
  * @author amandaadkins
- *
+ * @version 1.0
  */
 public class GetDeckRequestObserver implements RequestObserver {
 	
-	private GetDeckController controller;
+	private final GetDeckController controller;
 	
 	
 	/**
@@ -34,19 +34,21 @@ public class GetDeckRequestObserver implements RequestObserver {
 	/**
 	 * Parse the decks out of the response body and pass them to the controller
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess
+	 * (edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of decks to a Deck object array
-		Deck[] decks= Deck.fromJsonArray(iReq.getResponse().getBody());
+		final Deck[] decks= Deck.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these Decks to the controller
 		controller.receivedDecks(decks);
 	}
 	
 	/**
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError
+	 * (edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
@@ -58,7 +60,8 @@ public class GetDeckRequestObserver implements RequestObserver {
 	 * @param ireq network request
 	 * @param exception 
 	 *
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(edu.wpi.cs.wpisuitetng.network.models.IRequest, java.lang.Exception)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail
+	 * (edu.wpi.cs.wpisuitetng.network.models.IRequest, java.lang.Exception)
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
