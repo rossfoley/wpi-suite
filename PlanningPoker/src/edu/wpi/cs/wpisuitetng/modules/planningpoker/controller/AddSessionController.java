@@ -26,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 public class AddSessionController{
 	
 	private static AddSessionController instance;
-	private AddSessionRequestObserver observer;
+	private final AddSessionRequestObserver observer;
 	
 	/**
 	 * Construct an AddSessionController for the given model, view pair

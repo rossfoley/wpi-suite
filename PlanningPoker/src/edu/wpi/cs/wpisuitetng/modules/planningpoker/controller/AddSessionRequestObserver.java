@@ -9,7 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
-import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -23,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 public class AddSessionRequestObserver implements RequestObserver {
 		
-	private AddSessionController controller;
+	private final AddSessionController controller;
 	
 	/**
 	 * Constructs the observer given an AddsessionController
@@ -43,10 +42,9 @@ public class AddSessionRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
-		//System.out.println (response);
 		
 		// Parse the session out of the response body
-		final PlanningPokerSession session = PlanningPokerSession.fromJson(response.getBody());		
+		final PlanningPokerSession session = PlanningPokerSession.fromJson(response.getBody());
 	}
 
 	/**
