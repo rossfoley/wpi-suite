@@ -1,6 +1,12 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  * 
- */
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates;
 
 import java.awt.Rectangle;
@@ -24,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * @author amandaadkins
- *
+ * this class is the table for displaying and selecting which final estimates from a planning poker session should be sent to requirement manager
  */
 public class SelectRequirementToUpdateTable extends JTable {
 	private DefaultTableModel tableModel = null;
@@ -74,7 +80,11 @@ public class SelectRequirementToUpdateTable extends JTable {
 		});
 	}
 
-	public void refresh(PlanningPokerSession session) {
+	/**
+	 * refresh the table containing the requirements that can be selected
+	 * @param session
+	 */
+	public void refresh() {
 		RequirementModel reqs = RequirementModel.getInstance();
 		// clear the table
 		tableModel.setRowCount(0);		
