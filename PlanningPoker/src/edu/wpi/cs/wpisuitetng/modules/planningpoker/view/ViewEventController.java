@@ -365,6 +365,11 @@ public class ViewEventController {
 			main.setSelectedComponent(exists);
 		}
 	}
+
+	/**
+	 * this opens the pane used for sending estimates from the given planning poker session to requirement manager
+	 * @param sendEstimatesFrom planning poker session to take the final estimates from
+	 */
 public void sendEstimates(PlanningPokerSession sendEstimatesFrom){
 		SelectEstimatesToSendToReqManagerPane exists = null;
 		
@@ -388,8 +393,7 @@ public void sendEstimates(PlanningPokerSession sendEstimatesFrom){
 			main.repaint();
 			main.setSelectedComponent(sendPane);
 		}
-		else
-		{
+		else {
 			main.setSelectedComponent(exists);
 		}	
 	}
