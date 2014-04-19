@@ -9,7 +9,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -21,8 +20,12 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  *
  */
 public class AddDeckRequestObserver implements RequestObserver {
-	private AddDeckController controller;
+	private final AddDeckController controller;
 	
+	/**
+	 * Adds the given controller to the observer
+	 * @param controller The given controller
+	 */
 	public AddDeckRequestObserver(AddDeckController controller) {
 		this.controller = controller;
 	}
@@ -36,10 +39,9 @@ public class AddDeckRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
-		//System.out.println (response);
 		System.out.println("Sent successfully");
 		// Parse the session out of the response body
-		final Deck addedDeck = Deck.fromJson(response.getBody());		
+		final Deck addedDeck = Deck.fromJson(response.getBody());
 	}
 	
 	/**
