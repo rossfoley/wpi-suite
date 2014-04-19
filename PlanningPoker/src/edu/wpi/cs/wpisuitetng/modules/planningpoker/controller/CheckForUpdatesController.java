@@ -23,6 +23,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * @author rossfoley
+ * @version 
  *
  */
 public class CheckForUpdatesController implements ActionListener {
@@ -45,7 +46,7 @@ public class CheckForUpdatesController implements ActionListener {
 		return instance;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
@@ -61,8 +62,8 @@ public class CheckForUpdatesController implements ActionListener {
 		request.addObserver(new RequestObserver() {
 			@Override
 			public void responseSuccess(IRequest iReq) {
-				String response = iReq.getResponse().getBody();
-				PlanningPokerSession[] updates = PlanningPokerSession.fromJsonArray(response);
+				final String response = iReq.getResponse().getBody();
+				final PlanningPokerSession[] updates = PlanningPokerSession.fromJsonArray(response);
 				for (PlanningPokerSession update : updates) {
 					PlanningPokerSessionModel model = PlanningPokerSessionModel.getInstance();
 					PlanningPokerSession existing = model.getPlanningPokerSession(update.getUuid());

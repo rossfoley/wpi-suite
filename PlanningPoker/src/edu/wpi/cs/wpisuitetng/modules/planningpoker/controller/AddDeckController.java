@@ -17,29 +17,24 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * This controller responds when a deck is added 
  * and sends a request over the network to save the deck 
  * @author amandaadkins
+ * @version 1.0
  */
 public class AddDeckController {
-	private static AddDeckController instance;
+	
+	private static final AddDeckController instance = new AddDeckController();
 	private final AddDeckRequestObserver observer;
 	
 	/**
 	 * Construct an AddDeckController for the given model, view pair
-	
 	 */
 	private AddDeckController() {
 		observer = new AddDeckRequestObserver(this);
 	}
-	/**
 	
+	/**
 	 * @return the instance of the AddSessionController or creates one if it does not
 	 * exist. */
-	public static AddDeckController getInstance()
-	{
-		if(instance == null)
-		{
-			instance = new AddDeckController();
-		}
-		
+	public static AddDeckController getInstance() {
 		return instance;
 	}
 	
@@ -47,14 +42,11 @@ public class AddDeckController {
 	 * This method adds a Deck to the server.
 	 * @param newDeck is the Deck to be added to the server.
 	 */
-	public void addDeck(Deck newDeck) 
-	{
-		final Request request = Network.getInstance().makeRequest("planningpoker/deck", HttpMethod.PUT); // PUT == create
-		request.setBody(newDeck.toJSON()); // put the new Planning Poker Session in the body of the request
+	public void addDeck(Deck newDeck) {
+		final Request request = Network.getInstance()
+				.makeRequest("planningpoker/deck", HttpMethod.PUT); // PUT is create
+		request.setBody(newDeck.toJSON()); // put the new session in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); 
 	}
-	
-	
-
 }

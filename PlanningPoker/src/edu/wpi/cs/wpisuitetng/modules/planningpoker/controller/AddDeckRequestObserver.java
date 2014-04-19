@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * This observer is called when a response is received from a request
  * to the server to add a deck.
  * @author amandaadkins
- *
+ * @version 1.0
  */
 public class AddDeckRequestObserver implements RequestObserver {
 	private final AddDeckController controller;
@@ -34,7 +34,8 @@ public class AddDeckRequestObserver implements RequestObserver {
 	 * Parse the deck that was received from the server then pass them to
 	 * the controller.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess
+	 * (edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request

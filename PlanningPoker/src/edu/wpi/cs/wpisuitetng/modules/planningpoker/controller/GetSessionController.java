@@ -28,14 +28,13 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class GetSessionController implements ActionListener {
 
-	private GetSessionRequestObserver observer;
-	private static GetSessionController instance;
+	private final GetSessionRequestObserver observer;
+	private static final GetSessionController instance = new GetSessionController();
 
 	/**
 	 * Constructs the controller given a RequirementModel
 	 */
 	private GetSessionController() {
-		
 		observer = new GetSessionRequestObserver(this);
 	}
 	
@@ -43,13 +42,7 @@ public class GetSessionController implements ActionListener {
 	
 	 * @return the instance of the GetRequirementController or creates one if it does not
 	 * exist. */
-	public static GetSessionController getInstance()
-	{
-		if(instance == null)
-		{
-			instance = new GetSessionController();
-		}
-		
+	public static GetSessionController getInstance() {
 		return instance;
 	}
 
@@ -62,7 +55,8 @@ public class GetSessionController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Send a request to the core to save this requirement
-		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance()
+				.makeRequest("planningpoker/planningpokersession", HttpMethod.GET); // GET is read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}
@@ -71,16 +65,17 @@ public class GetSessionController implements ActionListener {
 	 * Sends an HTTP request to retrieve all requirements
 	 */
 	public void retrieveSessions() {
-		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance()
+				.makeRequest("planningpoker/planningpokersession", HttpMethod.GET); // GET is read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}
 
 	/**
-	 * Add the given requirements to the local model (they were received from the core).
-	 * This method is called by the GetRequirementsRequestObserver
+	 * Add the given sessions to the local model (they were received from the core).
+	 * This method is called by the GetSessionRequestObserver
 	 * 
-	 * @param requirements array of requirements received from the server
+	 * @param pokerSessions list of sessions received from the server
 	 */
 	
 	public void receivedSessions(PlanningPokerSession[] pokerSessions) {

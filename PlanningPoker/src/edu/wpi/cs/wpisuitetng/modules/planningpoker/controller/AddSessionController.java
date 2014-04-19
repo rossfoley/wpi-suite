@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
  */
 public class AddSessionController{
 	
-	private static AddSessionController instance;
+	private static final AddSessionController instance = new AddSessionController();
 	private final AddSessionRequestObserver observer;
 	
 	/**
@@ -41,13 +41,7 @@ public class AddSessionController{
 	
 	 * @return the instance of the AddSessionController or creates one if it does not
 	 * exist. */
-	public static AddSessionController getInstance()
-	{
-		if(instance == null)
-		{
-			instance = new AddSessionController();
-		}
-		
+	public static AddSessionController getInstance() {
 		return instance;
 	}
 
@@ -57,8 +51,9 @@ public class AddSessionController{
 	 */
 	public void addPlanningPokerSession(PlanningPokerSession newSession) 
 	{
-		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokersession", HttpMethod.PUT); // PUT == create
-		request.setBody(newSession.toJSON()); // put the new Planning Poker Session in the body of the request
+		final Request request = Network.getInstance()
+				.makeRequest("planningpoker/planningpokersession", HttpMethod.PUT); // PUT is create
+		request.setBody(newSession.toJSON()); // put the session in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); 
 	}
