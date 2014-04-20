@@ -36,6 +36,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -48,7 +50,7 @@ import java.awt.Font;
  * @version $Revision: 1.0 $
  */
 public class CreateDeck extends JPanel {
-	private List<Integer> listOfCards = new ArrayList<Integer>();
+	private ArrayList<Integer> listOfCards = new ArrayList<Integer>();
 	private boolean multiSelectionMode = false;
 	private JTextField txtDeckName = new JTextField();
 	private JTextField txtCardValue;
@@ -263,6 +265,8 @@ public class CreateDeck extends JPanel {
 		Deck newDeck = new Deck(listOfCards, false);
 		newDeck.setDeckName(txtDeckName.getText());
 		newDeck.setAllowMultipleSelections(multiSelectionMode);
+		
+		DeckListModel.getInstance().addDeck(newDeck);
 	}
 
 	/**

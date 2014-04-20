@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class Deck extends AbstractModel {
 	private String deckName;
-	private List<Integer> numbersInDeck = new ArrayList<Integer>();
+	private ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
 	private boolean allowMultipleSelections;
 	private int id;
 	
@@ -31,7 +31,7 @@ public class Deck extends AbstractModel {
 	 * 
 	 * @param listOfCards numbers to use in the new deck
 	 */
-	public Deck(List<Integer> listOfCards, boolean allowMultipleSelections) {
+	public Deck(ArrayList<Integer> listOfCards, boolean allowMultipleSelections) {
 		this.numbersInDeck = listOfCards;
 		this.allowMultipleSelections = allowMultipleSelections;
 		this.deckName = "";
@@ -135,7 +135,7 @@ public class Deck extends AbstractModel {
 	/**
 	 * @return the numbersInDeck
 	 */
-	public List<Integer> getNumbersInDeck() {
+	public ArrayList<Integer> getNumbersInDeck() {
 		return numbersInDeck;
 	}
 
