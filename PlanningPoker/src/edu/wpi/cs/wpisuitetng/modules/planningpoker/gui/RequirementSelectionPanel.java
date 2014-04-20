@@ -484,4 +484,12 @@ public class RequirementSelectionPanel extends JPanel{
 	public void openCreationPanel(){
 		parent.openCreationPanel();
 	}
+	
+	public void newRequirementAdded(Requirement newReq){
+		populateRequirements();
+		populateBooleans();
+		int pos = this.requirements.indexOf(newReq);
+		this.selection.set(pos, true);
+		update();
+	}
 }

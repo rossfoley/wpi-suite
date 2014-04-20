@@ -32,6 +32,11 @@ public class RequirementSelectionView extends JSplitPane{
 		setRightComponent(createPanel);
 	}
 	
+	public void newRequirementCreated(){
+		reqPanel.newRequirementAdded(createPanel.getDisplayRequirement());
+		closeCreationPanel();
+	}
+	
 	public void closeCreationPanel(){
 		setRightComponent(null);
 	}

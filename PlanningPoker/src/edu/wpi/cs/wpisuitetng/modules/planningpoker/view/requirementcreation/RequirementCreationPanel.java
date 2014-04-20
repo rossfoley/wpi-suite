@@ -93,6 +93,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	public void OKPressed() {
 		if (infoPanel.validateFields(true)) {
 			infoPanel.update();
+			parent.newRequirementCreated();
 			readyToClose = true;
 		}		
 	}
