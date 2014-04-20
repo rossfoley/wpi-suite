@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  * @author Kevin
  * 
  */
-public class Estimate {
+public class Estimate implements Comparable<Estimate> {
 	private int requirementID;
 	private int vote;
 	private String ownerName;
@@ -31,6 +31,22 @@ public class Estimate {
 	
 	public Estimate() {
 		
+	}
+	
+	/**
+	 * compares this estimate to the given estimate by votes
+	 * @return -1 if this estimate has a smaller vote than the given, 1 if larger, and 0 if same 
+	 */
+	public int compareTo(Estimate e) {
+		if (vote < e.vote) {
+			return -1; 
+		}
+		else if (vote > e.vote) {
+			return 1; 
+		}
+		else {
+			return 0; 
+		}
 	}
 	
 	//---------------Gets
