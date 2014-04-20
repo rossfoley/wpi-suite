@@ -18,6 +18,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.Array;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -156,6 +157,9 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		boxIteration.addItemListener(this);
 		boxIteration.setBackground(Color.WHITE);
 		boxIteration.setMaximumSize(new Dimension(150, 25));
+		
+		storedIteration = IterationModel.getInstance().getIteration(currentRequirement.getIteration());
+		boxIteration.setSelectedItem(storedIteration);
 
 		errorName = (new JLabel());
 		errorDescription = (new JLabel());
@@ -361,9 +365,15 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		storedIteration = IterationModel.getInstance().getIteration("Backlog");
 		boxIteration.setSelectedItem(storedIteration);
 
+		
 
-		setStatus();
+		//setStatus();
 
+		dropdownStatus.addItem(RequirementStatus.NEW);
+		storedStatus = currentRequirement.getStatus();
+		dropdownStatus.setSelectedItem(storedStatus);
+
+		
 		dropdownType.setSelectedItem(currentRequirement.getType());
 
 		this.dropdownPriority.setSelectedItem(currentRequirement.getPriority());
@@ -384,20 +394,6 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	}
 
 	/**
-	 * Sets the status dropdown
-	 */
-	private void setStatus() {
-
-			dropdownStatus.removeAllItems();
-			dropdownStatus.addItem(RequirementStatus.NEW);
-			dropdownStatus.addItem(RequirementStatus.DELETED);
-		
-		storedStatus = currentRequirement.getStatus();
-		dropdownStatus.setSelectedItem(storedStatus);
-		lastValidStatus = currentRequirement.getStatus();		
-	}
-
-	/**
 	 * Validates the values of the fields in the requirement panel to ensure
 	 * they are valid
 	 * @param warn whether to warn the user or not
@@ -406,7 +402,6 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	public boolean validateFields(boolean warn) {
 		boolean isNameValid;
 		boolean isDescriptionValid;
-		boolean isEstimateValid;
 		
 		parentPanel.removeError("Name can be no more than 100 chars.");
 		parentPanel.removeError("Name is required.");
@@ -455,40 +450,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 			}
 			isDescriptionValid = true;
 		}
-
-		if (getBoxEstimate().getText().trim().length() <= 0) {
-			getBoxEstimate().setText("");
-			getErrorEstimate().setText("");
-			getBoxEstimate().setBorder(defaultBorder);
-			isEstimateValid = true;
-		} else if (!(isInteger(getBoxEstimate().getText()))) {
-			getErrorEstimate()
-			.setText("Estimate must be non-negative integer");
-			getBoxEstimate().setBorder(errorBorder);
-			getBoxEstimate().setBorder((new JTextField()).getBorder());
-			getErrorEstimate().setForeground(Color.RED);
-			isEstimateValid = false;
-		} else if (Integer.parseInt(getBoxEstimate().getText()) < 0) {
-			getErrorEstimate()
-			.setText("Estimate must be non-negative integer");
-			getBoxEstimate().setBorder(errorBorder);
-			getErrorEstimate().setForeground(Color.RED);
-			isEstimateValid = false;
-/*		} else if (((Integer.parseInt(getBoxEstimate().getText()) == 0) || (getBoxEstimate().getText().trim().length() == 0))
-				&& !(getBoxIteration().getSelectedItem().equals(IterationModel.getInstance().getBacklog()))) {
-			getErrorEstimate()
-			.setText(
-					"Cannot have an estimate of 0 and be assigned to an iteration.");
-			getBoxEstimate().setBorder(errorBorder);
-			getErrorEstimate().setForeground(Color.RED);
-			isEstimateValid = false;
-*/		} else {
-			getErrorEstimate().setText("");
-			getBoxEstimate().setBorder(defaultBorder);
-			isEstimateValid = true;
-		}
-		parentPanel.displayError(getErrorEstimate().getText());
-		return isNameValid && isDescriptionValid && isEstimateValid;
+		return isNameValid && isDescriptionValid;
 	}
 
 	/**
@@ -506,16 +468,16 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * Updates the requirement/creates the requirement based on the view mode.
 	 */
 	public void update() {
-		updateRequirement(viewMode == ViewMode.CREATING);
+		updateRequirement();
 	}
 
 	/**
 	 * Updates the requirement based on whether it is being created or not
 	 * @param wasCreated whether the requirement is being created or edited.
 	 */
-	private void updateRequirement(boolean wasCreated) {
+	private void updateRequirement() {
 		currentRequirement.setId(RequirementModel.getInstance().getNextID());
-		currentRequirement.setWasCreated(wasCreated);
+		currentRequirement.setWasCreated(true);
 		
 		// Extract the name, release number, and description from the GUI fields
 		String stringName = this.getBoxName().getText();
@@ -609,14 +571,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * @return Returns whether any field in the panel has been changed */
 	public boolean anythingChanged()
 	{
-		if(viewMode == ViewMode.CREATING)
-		{
-			return anythingChangedCreating();
-		}
-		else
-		{
-			return anythingChangedEditing();
-		}
+		return anythingChangedCreating();
 	}
 
 	/**
@@ -650,35 +605,6 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		return false;
 	}
 
-	/**
-	
-	 * @return whether any fields have been changed. */
-	private boolean anythingChangedEditing() {
-		// Check if the user has changed the name
-		if (!(getBoxName().getText().equals(currentRequirement.getName()))){
-			return true;}
-		// Check if the user has changed the description
-		if (!(getBoxDescription().getText().equals(currentRequirement.getDescription()))){
-			return true;}
-		// Check if the user has changed the release number
-		if (!(getBoxReleaseNum().getText().equals(currentRequirement.getRelease()))){
-			return true;}
-		// Check if the user has changed the type
-		if (!(((RequirementType)getDropdownType().getSelectedItem()) == currentRequirement.getType())){
-			return true;}
-		// Check if the user has changed the status
-		if (!(((RequirementStatus)getDropdownStatus().getSelectedItem()) == currentRequirement.getStatus())){
-			return true;}
-
-		RequirementPriority reqPriority = currentRequirement.getPriority();
-		
-		if (reqPriority != dropdownPriority.getSelectedItem())
-		{
-			return true;
-		}
-
-		return false;
-	}
 
 	/**
 	 * Returns whether the panel is ready to be removed or not based on if there are changes that haven't been
