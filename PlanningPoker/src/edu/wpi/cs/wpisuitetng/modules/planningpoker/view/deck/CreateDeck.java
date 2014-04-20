@@ -271,7 +271,7 @@ public class CreateDeck extends JPanel {
 	 */
 	private JPanel createModeSelectionPanel() {
 		JRadioButton rbtnSingle = new JRadioButton("Single Selection");
-		rbtnSingle.setMnemonic(KeyEvent.VK_C);
+		rbtnSingle.setSelected(true);
 		rbtnSingle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -280,7 +280,6 @@ public class CreateDeck extends JPanel {
 		});
 		
 		JRadioButton rbtnMulti = new JRadioButton("Multiple Selection");
-		rbtnMulti.setMnemonic(KeyEvent.VK_M);
 		rbtnMulti.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
