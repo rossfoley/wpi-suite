@@ -117,7 +117,6 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	{
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
-		clearPressed();
 		parent.closeCreationPanel();
 	}
 	
@@ -128,16 +127,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	 */
 	public void deletePressed() 
 	{
-		/*if (this.displayRequirement.getStatus() == RequirementStatus.INPROGRESS)
-			return;
-		readyToClose = true;
-		//displayRequirement.setStatus(RequirementStatus.DELETED);
-
-		UpdateRequirementController.getInstance().updateRequirement(displayRequirement);
 		
-		ViewEventController.getInstance().refreshTable();
-		ViewEventController.getInstance().refreshTree();
-		//ViewEventController.getInstance().removeTab(this);*/	
 	}	
 
 	/**

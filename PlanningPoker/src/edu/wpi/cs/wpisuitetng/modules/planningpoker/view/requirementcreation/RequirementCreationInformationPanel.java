@@ -102,8 +102,8 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * @param curr the requirement being edited/created.
 	 */
 	public RequirementCreationInformationPanel(RequirementCreationPanel parentPanel,
-			ViewMode mode, Requirement curr) {
-		this.currentRequirement = curr;
+			ViewMode mode, Requirement currRequirement) {
+		this.currentRequirement = currRequirement;
 		this.parentPanel = parentPanel;
 		this.viewMode = mode;
 		this.setMinimumSize(new Dimension(500,200));
@@ -188,7 +188,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		boxTotalEstimate.setEnabled(false);
 		errorEstimate = (new JLabel());
 
-		boolean hasChildren = !currentRequirement.getChildren().isEmpty();
+		boolean hasChildren = false;//!currentRequirement.getChildren().isEmpty();
 		labelChildEstimate.setVisible(hasChildren);
 		boxChildEstimate.setVisible(hasChildren);
 
@@ -298,53 +298,23 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 */
 	public void fireRefresh() {
 		parentSelector.refreshList();
-		refreshIteration();
 		refreshParentInformation();
 		adjustFieldEnability();
 	}
-	
-	/**
-	 * Refreshes the selected iteration if its been changed in the requirement
-	 */
-	private void refreshIteration() {
-		Iteration cur = IterationModel.getInstance().getIteration(currentRequirement.getIteration());
-		if(cur != storedIteration)
-		{
-			storedIteration = cur;
-			boxIteration.setSelectedItem(storedIteration);
-		}
-		
-		if(storedStatus != currentRequirement.getStatus())
-		{
-			setStatus();
-		}
-	}
+
 	
 	/**
 	 * Refresh information about the parent
 	 */
 	private void refreshParentInformation()
 	{
-//		boolean isCreating = viewMode == ViewMode.CREATING;
-//		boolean hasChildren = !currentRequirement.getChildren().isEmpty();
-//		labelChildEstimate.setVisible(hasChildren);
-//		boxChildEstimate.setText(
-//				Integer.toString(currentRequirement.getChildEstimate()));
-//		boxChildEstimate.setVisible(hasChildren);
-//		boxTotalEstimate.setText(Integer.toString(currentRequirement.getTotalEstimate()));
-//		boxTotalEstimate.setVisible(hasChildren);
-//		labelTotalEstimate.setVisible(hasChildren);
-		
 		if (currentRequirement.getParentID() != -1) {
 			currentParent.setText("Parent: " + currentRequirement.getParent().getName());
 			currentParent.setVisible(true);
-//			editParent.setVisible(true && !isCreating);
-//			removeFromParent.setVisible(true && !isCreating);
 			noParentInfoPanel.setVisible(false);
 		}
 		else {
 			currentParent.setText("Parent: ");
-//			currentParent.setVisible(true && !isCreating);
 			editParent.setVisible(false);
 			removeFromParent.setVisible(false);
 			noParentInfoPanel.setVisible(true);
@@ -388,7 +358,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		boxEstimate.setText(
 				String.valueOf(storedEstimate));
 		boxReleaseNum.setText(currentRequirement.getRelease());
-		storedIteration = IterationModel.getInstance().getIteration(currentRequirement.getIteration());
+		storedIteration = IterationModel.getInstance().getIteration("Backlog");
 		boxIteration.setSelectedItem(storedIteration);
 
 
@@ -417,36 +387,11 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * Sets the status dropdown
 	 */
 	private void setStatus() {
-		if (currentRequirement.getStatus().equals(RequirementStatus.NEW)) {
+
 			dropdownStatus.removeAllItems();
 			dropdownStatus.addItem(RequirementStatus.NEW);
 			dropdownStatus.addItem(RequirementStatus.DELETED);
-		} else if (currentRequirement.getStatus().equals(
-				RequirementStatus.INPROGRESS)) {
-			dropdownStatus.removeAllItems();
-			dropdownStatus.addItem(RequirementStatus.INPROGRESS);
-			dropdownStatus.addItem(RequirementStatus.COMPLETE);
-		} else if (currentRequirement.getStatus()
-				.equals(RequirementStatus.OPEN)) {
-			dropdownStatus.removeAllItems();
-			dropdownStatus.addItem(RequirementStatus.OPEN);
-			dropdownStatus.addItem(RequirementStatus.DELETED);
-		} else if (currentRequirement.getStatus().equals(
-				RequirementStatus.COMPLETE)
-				|| currentRequirement.getStatus().equals(
-						RequirementStatus.DELETED)) {
-			if (currentRequirement.getIteration().equals("Backlog")) {
-				dropdownStatus.removeAllItems();
-				dropdownStatus.addItem(RequirementStatus.OPEN);
-				dropdownStatus.addItem(RequirementStatus.COMPLETE);
-				dropdownStatus.addItem(RequirementStatus.DELETED);
-			} else {
-				dropdownStatus.removeAllItems();
-				dropdownStatus.addItem(RequirementStatus.INPROGRESS);
-				dropdownStatus.addItem(RequirementStatus.COMPLETE);
-				dropdownStatus.addItem(RequirementStatus.DELETED);
-			}
-		}
+		
 		storedStatus = currentRequirement.getStatus();
 		dropdownStatus.setSelectedItem(storedStatus);
 		lastValidStatus = currentRequirement.getStatus();		
@@ -569,7 +514,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * @param wasCreated whether the requirement is being created or edited.
 	 */
 	private void updateRequirement(boolean wasCreated) {
-		if(wasCreated) currentRequirement.setId(RequirementModel.getInstance().getNextID());
+		currentRequirement.setId(RequirementModel.getInstance().getNextID());
 		currentRequirement.setWasCreated(wasCreated);
 		
 		// Extract the name, release number, and description from the GUI fields
@@ -599,16 +544,14 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		currentRequirement.setEstimate(estimate);
 		currentRequirement.setIteration(stringIteration);
 		currentRequirement.setType(type);
-		if(wasCreated)
-		{
-			// Set the time stamp for the transaction for the creation of the requirement
-			currentRequirement.getHistory().setTimestamp(System.currentTimeMillis());
-			System.out.println("The Time Stamp is now :" + currentRequirement.getHistory().getTimestamp());
-			currentRequirement.getHistory().add("Requirement created");
+		
+		// Set the time stamp for the transaction for the creation of the requirement
+		currentRequirement.getHistory().setTimestamp(System.currentTimeMillis());
+		System.out.println("The Time Stamp is now :" + currentRequirement.getHistory().getTimestamp());
+		currentRequirement.getHistory().add("Requirement created");
 
-			RequirementModel.getInstance().addRequirement(currentRequirement);
-		}
-
+		RequirementModel.getInstance().addRequirement(currentRequirement);
+		
 		UpdateRequirementController.getInstance().updateRequirement(
 				currentRequirement);
 
@@ -619,6 +562,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		{
 			ViewEventController.getInstance().refreshEditRequirementPanel(currentRequirement.getParent());
 		}
+		
 	}
 	
 	/**
@@ -719,17 +663,11 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		// Check if the user has changed the release number
 		if (!(getBoxReleaseNum().getText().equals(currentRequirement.getRelease()))){
 			return true;}
-		// Check if the user has changed the iteration number
-		if (!(getBoxIteration().getSelectedItem().toString().equals(currentRequirement.getIteration()))){
-			return true;}
 		// Check if the user has changed the type
 		if (!(((RequirementType)getDropdownType().getSelectedItem()) == currentRequirement.getType())){
 			return true;}
 		// Check if the user has changed the status
 		if (!(((RequirementStatus)getDropdownStatus().getSelectedItem()) == currentRequirement.getStatus())){
-			return true;}
-		// Check if the user has changed the estimate
-		if (!(getBoxEstimate().getText().trim().equals(String.valueOf(currentRequirement.getEstimate())))){
 			return true;}
 
 		RequirementPriority reqPriority = currentRequirement.getPriority();

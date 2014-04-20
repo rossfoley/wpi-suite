@@ -45,7 +45,6 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 	private final JButton buttonOK;
 	private final JButton buttonCancel;
 	private final JButton buttonClear;
-//	private final JButton buttonDelete;
 	
 	private boolean changes;
 	private boolean valid;
@@ -64,33 +63,12 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 		errorDisplay = new ErrorPanel();
 		this.parentPanel = parentPanel;
 		viewMode = mode;
+		
+		buttonOK = new JButton("Create");
+		buttonCancel = new JButton("Cancel");
+		buttonClear = new JButton("Clear");
+		
 
-		String okString;
-		final String cancelString = "Cancel";
-		String clearString;
-		final String deleteString = "Delete";
-		
-		buttonOK = new JButton();
-		buttonCancel = new JButton(cancelString);
-		buttonClear = new JButton();
-//		buttonDelete = new JButton(deleteString);
-		
-		this.add(buttonOK);
-		this.add(buttonClear);
-/*		if(viewMode == ViewMode.CREATING)
-		{
-			okString = "Create";
-			clearString = "Clear";
-		}
-		else
-		{
-			System.out.print("Problem, should not be something other than create");
-			return;
-//			okString = "Update";
-//			clearString = "Undo Changes";
-//			this.add(buttonDelete);
-		}
-	*/	
 	/**	try {
 		    Image img = ImageIO.read(getClass().getResource("save-icon.png"));
 		    buttonOK.setIcon(new ImageIcon(img));
@@ -102,8 +80,9 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 		    buttonDelete.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {}
 		*/
-		buttonOK.setText("Create");
-		buttonClear.setText("Clear");
+		
+		this.add(buttonOK);
+		this.add(buttonClear);
 		this.add(buttonCancel);
 		buttonOK.setEnabled(false);
 		buttonClear.setEnabled(false);
@@ -136,13 +115,6 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 				parentPanel.cancelPressed();
 			}
 		});
-/*		
-		buttonDelete.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e)
-			{
-				parentPanel.deletePressed();
-			}
-		});*/
 	}
 
 	/**
@@ -213,15 +185,7 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 	public JButton getButtonClear() {
 		return buttonClear;
 	}
-	/*
-	/**
-	 *
 	
-	 * * @return the delete button  */
-/*	public JButton getButtonDelete() {
-		return buttonDelete;
-	}
-	*/
 	/**
 	 *
 	 * * @return the ok button */
