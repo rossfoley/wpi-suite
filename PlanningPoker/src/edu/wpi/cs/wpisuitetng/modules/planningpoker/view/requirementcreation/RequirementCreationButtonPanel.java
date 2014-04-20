@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 public class RequirementCreationButtonPanel extends JPanel implements RequirementPanelListener
 {
 	private final RequirementCreationPanel parentPanel;
-	private final ViewMode viewMode;
 	
 	private final ErrorPanel errorDisplay;
 	
@@ -62,7 +61,6 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 		valid = false;
 		errorDisplay = new ErrorPanel();
 		this.parentPanel = parentPanel;
-		viewMode = mode;
 		
 		buttonOK = new JButton("Create");
 		buttonCancel = new JButton("Cancel");
@@ -111,7 +109,6 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 		
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//parentPanel.cancelPressed();
 				parentPanel.cancelPressed();
 			}
 		});
@@ -125,7 +122,6 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 	@Override
 	public void fireDeleted(boolean b) 
 	{
-//		this.buttonDelete.setEnabled(!b);
 	}
 
 	/**
@@ -136,7 +132,7 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 	@Override
 	public void fireValid(boolean b) {
 		valid = b;
-		this.buttonOK.setEnabled(b && changes);
+		buttonOK.setEnabled(b && changes);
 	}
 
 	/**
@@ -147,8 +143,8 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 	@Override
 	public void fireChanges(boolean b) {
 		changes = b;
-		this.buttonOK.setEnabled(b && valid);
-		this.buttonClear.setEnabled(b);
+		buttonOK.setEnabled(b && valid);
+		buttonClear.setEnabled(b);
 	}
 	
 	/**
@@ -175,7 +171,7 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 	 * @return the error panel */
 	public ErrorPanel getErrorPanel()
 	{
-		return this.errorDisplay;
+		return errorDisplay;
 	}
 	
 	/**

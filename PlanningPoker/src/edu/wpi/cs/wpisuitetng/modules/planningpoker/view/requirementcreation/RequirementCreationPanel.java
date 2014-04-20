@@ -10,18 +10,18 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
+//import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
+//import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementButtonListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
@@ -33,13 +33,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
  */
 public class RequirementCreationPanel extends JPanel implements RequirementButtonListener
 {
-	private List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
-	private Requirement displayRequirement;
+	private final List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
+	private final Requirement displayRequirement;
 	private final ViewMode viewMode = ViewMode.CREATING;
 	
 	private RequirementCreationInformationPanel infoPanel;
 	private RequirementCreationButtonPanel buttonPanel;
-	private RequirementSelectionView parent;
+	private final RequirementSelectionView parent;
 	
 	private boolean readyToClose = false;
 	private boolean readyToRemove = true;
@@ -47,13 +47,12 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	
 	
 	/**
-	 * Constructor for creating a requirement
+	 * Constructor for Planning Poker Requirement Creation Panel
 	 * @param parentID the parent id, or -1 if no parent.
-	 * @wbp.parser.constructor
+	 * @param myParent the parent view which contains this panel
 	 */
 	public RequirementCreationPanel(int parentID, RequirementSelectionView myParent)
 	{
-		//viewMode = (ViewMode.CREATING);
 		
 		parent = myParent;
 		
@@ -95,7 +94,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 			infoPanel.update();
 			parent.newRequirementCreated();
 			readyToClose = true;
-		}		
+		}
 	}
 
 	/**
@@ -128,13 +127,13 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	public void deletePressed() 
 	{
 		
-	}	
+	}
 
 	/**
 	 * Fires to all listeners whether the requirement has been deleted or not
 	 * @param b whether the requirement has been deleted or not.
 	 */
-	public void fireDeleted(boolean b) {	
+	public void fireDeleted(boolean b) {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireDeleted(b);
@@ -145,7 +144,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	 * Fires to all listeners whether the requirement is valid or not
 	 * @param b whether the requirement is valid or not.
 	 */
-	public void fireValid(boolean b) {		
+	public void fireValid(boolean b) {	
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireValid(b);
@@ -156,11 +155,11 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	 * Fires to all listeners whether changes have occured
 	 * @param b whether changes have occured.
 	 */
-	public void fireChanges(boolean b) {	
+	public void fireChanges(boolean b) {
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireChanges(b);
-		}	
+		}
 	}
 	
 	/**
@@ -171,7 +170,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 		for(RequirementPanelListener listener : listeners)
 		{
 			listener.fireRefresh();
-		}	
+		}
 	}
 
 	/**
@@ -210,7 +209,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 		}
 		else
 		{
-			int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			final int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			
 			return result == 0;
 		}
@@ -221,7 +220,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	 * @return the requirement information panel. */
 	public RequirementCreationInformationPanel getInfoPanel()
 	{
-		return this.infoPanel;
+		return infoPanel;
 	}
 	
 	/**
@@ -229,7 +228,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	 * @return the button panel */
 	public RequirementCreationButtonPanel getButtonPanel()
 	{
-		return this.buttonPanel;
+		return buttonPanel;
 	}
 	
 	/**
@@ -239,7 +238,6 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 		return displayRequirement;
 	}
 
-	
 	/**
 	 * Method isReadyToRemove.
 	 * @return boolean
