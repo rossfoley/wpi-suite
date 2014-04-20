@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -22,16 +23,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class Deck extends AbstractModel {
 	private String deckName;
-	private ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
+	private List<Integer> numbersInDeck = new ArrayList<Integer>();
 	private boolean allowMultipleSelections;
 	private int id;
 	
 	/** constructor for Decks that takes in a list to use as the deck
 	 * 
-	 * @param numbersInDeck numbers to use in the new deck
+	 * @param listOfCards numbers to use in the new deck
 	 */
-	public Deck(ArrayList<Integer> numbersInDeck, boolean allowMultipleSelections) {
-		this.numbersInDeck = numbersInDeck;
+	public Deck(List<Integer> listOfCards, boolean allowMultipleSelections) {
+		this.numbersInDeck = listOfCards;
 		this.allowMultipleSelections = allowMultipleSelections;
 		this.deckName = "";
 	}
@@ -134,7 +135,7 @@ public class Deck extends AbstractModel {
 	/**
 	 * @return the numbersInDeck
 	 */
-	public ArrayList<Integer> getNumbersInDeck() {
+	public List<Integer> getNumbersInDeck() {
 		return numbersInDeck;
 	}
 
