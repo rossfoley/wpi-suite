@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -14,8 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
@@ -89,6 +95,28 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 				session.setGameState(PlanningPokerSession.SessionState.VOTINGENDED);
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(session);
 				ViewEventController.getInstance().getOverviewTreePanel().refresh();
+				
+				List<String> recipients = new LinkedList<String>();
+				List<EmailAddress> emailRecipients = null;
+				
+				GetEmailController getEmailController = GetEmailController.getInstance();
+				getEmailController.retrieveEmails();
+				
+				EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+				try {
+					emailRecipients = emailAddressModel.getEmailAddresses();
+				}
+				catch (Exception E) {
+					
+				}
+				
+				for (int i = 0; i < emailRecipients.size(); i++) {
+					recipients.add(emailRecipients.get(i).getEmail());
+				}
+				
+				
+				Mailer mailer = new Mailer();
+				mailer.notifyOfPlanningPokerSessionClose(recipients, session);
 			}
 		});	
 

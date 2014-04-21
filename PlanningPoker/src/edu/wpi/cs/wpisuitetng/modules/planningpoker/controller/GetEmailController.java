@@ -69,7 +69,7 @@ public class GetEmailController implements ActionListener {
 	/**
 	 * Sends an HTTP request to retrieve all emails
 	 */
-	public void retrieveDecks() {
+	public void retrieveEmails() {
 		final Request request = Network.getInstance().makeRequest("planningpoker/emailAddress", HttpMethod.GET); // GET == read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
