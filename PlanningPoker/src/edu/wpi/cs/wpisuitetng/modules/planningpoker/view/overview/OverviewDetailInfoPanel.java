@@ -104,7 +104,9 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(sendEstimatesBtn);
 		sendEstimatesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OverviewDetailPanel.sendAllEstimates();
+				//OverviewDetailPanel.replaceTable();
+				ViewEventController.getInstance().sendEstimatesFromSession();
+				//ViewEventController.getInstance().sendEstimates(OverviewDetailPanel.currentSession);
 			}
 		});
 	}

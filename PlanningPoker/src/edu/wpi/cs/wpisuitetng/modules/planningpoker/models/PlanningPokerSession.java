@@ -113,14 +113,14 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @return the requirementsWithExportedEstimates
 	 */
-	public List<Integer> getRequirementsWithExportedEstimates() {
+	public ArrayList<Integer> getRequirementsWithExportedEstimates() {
 		return requirementsWithExportedEstimatesIDs;
 	}
 	
 	/**
 	 * @param requirementsWithExportedEstimates the requirementsWithExportedEstimates to set
 	 */
-	public void setRequirementsWithExportedEstimates(List<Integer> requirementsWithExportedEstimates) {
+	public void setRequirementsWithExportedEstimates(ArrayList<Integer> requirementsWithExportedEstimates) {
 		this.requirementsWithExportedEstimatesIDs = requirementsWithExportedEstimates;
 	}
 	
