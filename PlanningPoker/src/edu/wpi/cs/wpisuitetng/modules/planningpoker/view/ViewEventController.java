@@ -40,8 +40,10 @@ public class ViewEventController {
 	private ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
 	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
-	private OverviewVoterTable overviewVoterTable = null;
-
+	private StatisticsUserTable statisticsUserTable;
+	private StatisticsDetailPanel statisticsDetailPanel;
+	private StatisticsReqTable statisticsReqTable;
+	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
 	 */
@@ -86,7 +88,16 @@ public class ViewEventController {
 	//Statistics package set functions
 	
 	public void setStatisticsUserTable(StatisticsUserTable userTable) {
-		this.planningPokerSessionButtonsPanel = userTable;
+		this.statisticsUserTable = userTable;
+	}
+	public void setStatisticsDetailPanel(StatisticsDetailPanel detailPanel) {
+		this.statisticsDetailPanel = detailPanel;
+	}
+	public void setStatisticsReqTable(StatisticsReqTable reqTable) {
+		this.statisticsReqTable = reqTable;
+	}
+	public void setStatisticsInfoPanel(StatisticsInfoPanel infoPanel) {
+		this.statisticsInfoPanel = infoPanel;		
 	}
 	/**
 	 * Sets the main view to the given view.
@@ -311,4 +322,40 @@ public class ViewEventController {
 			main.setSelectedComponent(exists);
 		}
 	}
+	
+public void openStatisticsTab(PlanningPokerSession viewStats){
+		
+		PlanningPokerSessionTab exists = null;
+		
+		// Check if the session is already open in a tab
+		for(PlanningPokerSessionTab panel : listOfEditingPanels)
+		{
+			if(panel.getDisplaySession() == viewStats)
+			{
+				exists = panel;
+				break;
+			}
+		}
+		
+		if (exists == null)
+		{
+			// eventually want to add session to edit as an argument
+			StatisticsPanel statsPanel = new StatisticsPanel();
+			
+			StringBuilder tabName = new StringBuilder();
+			int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
+			tabName.append(viewStats.getName().substring(0,subStringLength));
+			if(viewStats.getName().length() > 6) tabName.append("..");
+			
+			main.addTab(tabName.toString(), null, statsPanel, viewStats.getName());
+			main.invalidate();
+			main.repaint();
+			main.setSelectedComponent(statsPanel);
+		}
+		else
+		{
+			main.setSelectedComponent(exists);
+		}	
+	}
+	
 }

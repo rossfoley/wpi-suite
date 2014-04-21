@@ -30,11 +30,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 public class StatisticsDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
-	OverviewDetailInfoPanel infoPanel;
-	OverviewReqTable reqTable;
+	StatisticsReqTable reqTable;
+	StatisticsInfoPanel infoPanel;
 	JScrollPane tablePanel;
 
-	public OverviewDetailPanel () {
+	public StatisticsDetailPanel () {
 
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
@@ -42,8 +42,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 		Object[][] data = {};
 		
 		// Create the info panel and table panel
-		infoPanel = new OverviewDetailInfoPanel();
-		reqTable = new OverviewReqTable(data, columnNames);
+		reqTable = new StatisticsReqTable(data, columnNames);
+		infoPanel = new StatisticsInfoPanel();
 		tablePanel = new JScrollPane(reqTable);
 		
 		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
@@ -57,8 +57,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 		this.setBottomComponent(tablePanel);
 		this.setResizeWeight(0.5); 
 
-		ViewEventController.getInstance().setOverviewDetailInfoPanel(infoPanel);
-		ViewEventController.getInstance().setOverviewReqTable(reqTable);
+		ViewEventController.getInstance().setStatisticsInfoPanel(infoPanel);
+		ViewEventController.getInstance().setStatisticsReqTable(reqTable);
 		
 		// Makes the split pane divide 50/50 for each portion
 		Dimension d = new Dimension(200, 200);

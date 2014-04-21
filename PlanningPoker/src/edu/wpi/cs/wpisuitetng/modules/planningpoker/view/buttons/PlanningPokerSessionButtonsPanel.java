@@ -29,11 +29,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * This class contains the toolbar buttons for the planning poker module. 
  *
  */
-public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
-	private JButton createButton = new JButton("<html>Create<br />Planning Poker Session</html>");
-	private JButton editButton = new JButton("<html>Edit<br />Planning Poker Session</html>");
-	private JButton voteButton = new JButton("<html>Vote on<br />Planning Poker Session</html>");
-	private JButton endVoteButton = new JButton("<html>End Voting on<br />Planning Poker Session</html>");
+public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
+	private JButton createButton = new JButton("<html>Create <br /> Session</html>");
+	private JButton editButton = new JButton("<html>Edit <br /> Session</html>");
+	private JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
+	private JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
+	private JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
 	private final JPanel contentPanel = new JPanel();
 
 	public PlanningPokerSessionButtonsPanel(){
@@ -58,6 +59,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 			
 			img = ImageIO.read(getClass().getResource("end-icon.png"));
 			endVoteButton.setIcon(new ImageIcon(img));
+			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+			this.endVoteButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
+			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+			this.statisticsButton.setIcon(new ImageIcon(img));
+			
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
 
@@ -135,6 +144,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 		contentPanel.add(editButton);
 		contentPanel.add(voteButton);
 		contentPanel.add(endVoteButton);
+		contentPanel.add(statisticsButton);
 		contentPanel.setOpaque(false);
 
 		add(contentPanel);
