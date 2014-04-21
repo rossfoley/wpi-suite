@@ -191,11 +191,13 @@ public class RequirementSelectionPanel extends JPanel{
 	 * status of the associated requirement 
 	 */
 	private void populateBooleans() {
-		this.selection = new LinkedList<Boolean>();
-		for (Requirement rqt : this.requirements){
-			this.selection.addLast(false);
+		if (selection == null){
+			this.selection = new LinkedList<Boolean>();
 		}
 		
+		while (requirements.size() > selection.size()){
+			selection.addLast(false);
+		}
 	}
 	
 	/**
