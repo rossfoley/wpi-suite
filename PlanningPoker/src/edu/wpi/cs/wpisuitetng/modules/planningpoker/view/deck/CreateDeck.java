@@ -53,16 +53,18 @@ public class CreateDeck extends JPanel {
 	private ArrayList<Integer> listOfCards = new ArrayList<Integer>();
 	private boolean multiSelectionMode = false;
 	private JTextField txtDeckName = new JTextField();
+	private JLabel lblDeckNameError = new JLabel("A deck name is required");
 	private JTextField txtCardValue;
 	private JButton btnAddCard;
 	private JLabel lblAddCardError = new JLabel("Card value must be a positive number");
 	private JButton btnRemove;
 	private JButton btnRemoveAll;
 	private JButton btnCreate;
+	private JLabel lblNoCardsError = new JLabel("Please add cards to the deck");
 	private JTable cardTable;
 	private DefaultTableModel cardTableModel;
 	private SpringLayout springLayout;
-
+	
 
 	public CreateDeck() {
 		buildPanel();
@@ -74,6 +76,24 @@ public class CreateDeck extends JPanel {
 
 		JLabel lblDeckName = new JLabel("Deck Name:* ");
 		lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		Deck tempDeck = new Deck();
+		txtDeckName.setText(tempDeck.getDeckName());
+		txtDeckName.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validateButtons();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validateButtons();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validateButtons();
+			}
+		});
+		lblDeckNameError.setVisible(false);
+		lblDeckNameError.setForeground(Color.RED);
 
 		JLabel lblCard = new JLabel("New Card Value: ");
 		lblCard.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -94,6 +114,8 @@ public class CreateDeck extends JPanel {
 			}
 		});
 		lblAddCardError.setVisible(false);
+		lblAddCardError.setForeground(Color.RED);
+		
 
 		txtCardValue = new JTextField();
 		txtCardValue.setPreferredSize(new Dimension(26, 26));
@@ -112,6 +134,7 @@ public class CreateDeck extends JPanel {
 				warnCardValue();
 			}
 		});
+		txtCardValue.setText("0");
 
 		buildCardTable();
 
@@ -156,7 +179,9 @@ public class CreateDeck extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, txtDeckName, 10, SpringLayout.EAST, lblDeckName);
 		springLayout.putConstraint(SpringLayout.EAST, txtDeckName, 0, SpringLayout.EAST, btnAddCard);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txtDeckName, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
-
+		springLayout.putConstraint(SpringLayout.WEST, lblDeckNameError, 10, SpringLayout.EAST, txtDeckName);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblDeckNameError, 0, SpringLayout.VERTICAL_CENTER, txtDeckName);
+		
 		springLayout.putConstraint(SpringLayout.WEST, modeSelectionPanel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, modeSelectionPanel, 10, SpringLayout.SOUTH, txtDeckName);
 
@@ -183,12 +208,14 @@ public class CreateDeck extends JPanel {
 
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnCreate, 0, SpringLayout.EAST, cardScrollPane);
 		springLayout.putConstraint(SpringLayout.NORTH, btnCreate, 10, SpringLayout.SOUTH, cardScrollPane);
-
+		springLayout.putConstraint(SpringLayout.WEST, lblNoCardsError, 10, SpringLayout.EAST, btnCreate);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblNoCardsError, 0, SpringLayout.VERTICAL_CENTER, btnCreate);
 
 		// Add all components to the JPanel
 		add(modeSelectionPanel);
 		add(lblDeckName);
 		add(txtDeckName);
+		add(lblDeckNameError);
 		add(lblCard);
 		add(btnAddCard);
 		add(lblAddCardError);
@@ -197,6 +224,7 @@ public class CreateDeck extends JPanel {
 		add(btnRemove);
 		add(btnRemoveAll);
 		add(btnCreate);
+		add(lblNoCardsError);
 
 		refresh();
 	}
@@ -255,27 +283,36 @@ public class CreateDeck extends JPanel {
 	 *  Enables the valid buttons and disables all other buttons
 	 */
 	private void validateButtons() {
-		// Only display remove buttons if there are cards in the deck
+		// Only display remove all button and create buton if there are cards in the deck
+		btnCreate.setEnabled(true);
 		if (listOfCards.size() > 0) {
 			btnRemoveAll.setEnabled(true);
+			lblNoCardsError.setVisible(false);
 		}
 		else {
 			btnRemoveAll.setEnabled(false);
+			btnCreate.setEnabled(false);
+			lblNoCardsError.setVisible(true);
 		}
-		// If an element in the table has been selected
+		// Disable the create button if no deck name
+		if (txtDeckName.getText().equals("")) {
+			btnCreate.setEnabled(false);
+			lblDeckNameError.setVisible(true);
+		}
+		else {
+			lblDeckNameError.setVisible(false);
+		}
+		
+		// Display single card remove button if an element in the table has been selected
 		if (cardTable.getSelectedRow() >= 0) {
 			btnRemove.setEnabled(true);
 		}
 		else {
 			btnRemove.setEnabled(false);
 		}
+		
 		// Disable add card button if no text entered
-		if (txtCardValue.getText().equals("")) {
-			btnAddCard.setEnabled(false);
-		}
-		else {
-			btnAddCard.setEnabled(true);
-		}
+		warnCardValue();
 	}
 
 	/**
@@ -292,9 +329,8 @@ public class CreateDeck extends JPanel {
 	}
 
 	public void createDeck() {
-		Deck newDeck = new Deck(listOfCards, false);
+		Deck newDeck = new Deck(listOfCards, multiSelectionMode);
 		newDeck.setDeckName(txtDeckName.getText());
-		newDeck.setAllowMultipleSelections(multiSelectionMode);
 
 		DeckListModel.getInstance().addDeck(newDeck);
 	}
@@ -341,24 +377,24 @@ public class CreateDeck extends JPanel {
 		// Disable adding card if nothing is input
 		if (txtCardValue.getText().equals("")) {
 			btnAddCard.setEnabled(false);
-			lblAddCardError.setText("Please enter a non-negative number");
-			lblAddCardError.setForeground(Color.BLACK);
-			lblAddCardError.setVisible(true);
+			lblAddCardError.setVisible(false);
 		}
 		else {
 			try {
-				Integer.parseInt(txtCardValue.getText());
-				btnAddCard.setEnabled(true);
-				lblAddCardError.setVisible(false);
+				if (Integer.parseInt(txtCardValue.getText()) >= 0) {
+					btnAddCard.setEnabled(true);
+					lblAddCardError.setVisible(false);
+				}
+				else {
+					btnAddCard.setEnabled(false);
+					lblAddCardError.setVisible(true);					
+				}
 			// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {
 				btnAddCard.setEnabled(false);
 				lblAddCardError.setVisible(true);
-				lblAddCardError.setText("Card value must be a positive number");
-				lblAddCardError.setForeground(Color.RED);
 			}
 		}
-
 	}
 
 }
