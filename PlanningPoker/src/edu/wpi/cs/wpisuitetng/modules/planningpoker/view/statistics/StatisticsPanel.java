@@ -12,12 +12,25 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.UUID;
+
+import javax.swing.BorderFactory;
+import javax.swing.DropMode;
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
- * @author rossfoley
+ * @author cassiehamlin
  * @version $Revision: 1.0 $
  */
 public class StatisticsPanel extends JSplitPane {
@@ -29,18 +42,18 @@ public class StatisticsPanel extends JSplitPane {
 	private StatisticsUserTable userTable;
 	public StatisticsPanel()
 	{
-
+	
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel();
-		userTable = new StatisticsUserTable();
+		//userTable = new StatisticsUserTable();
 
 		
 		// Put the overview table and sidebar into the tab
-		this.setLeftComponent(detailPanel);
-		this.setRightComponent(userTable);
+		this.setTopComponent(detailPanel);
+		this.setBottomComponent(userTable);
 
 		ViewEventController.getInstance().setStatisticsUserTable(userTable);
-		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);
+		ViewEventController.getInstance().setStatisticsDetailPanel(detailPanel);
 		
 		
 
@@ -48,26 +61,26 @@ public class StatisticsPanel extends JSplitPane {
 	/**
 	 * @return the detailPanel
 	 */
-	public OverviewDetailPanel getDetailPanel() {
+	public StatisticsDetailPanel getDetailPanel() {
 		return detailPanel;
 	}
 	/**
 	 * @param detailPanel the detailPanel to set
 	 */
-	public void setDetailPanel(OverviewDetailPanel detailPanel) {
+	public void setDetailPanel(StatisticsDetailPanel detailPanel) {
 		this.detailPanel = detailPanel;
 	}
 	/**
-	 * @return the endVotePanel
+	 * @return the statistics user tree panel
 	 */
-	public OverviewEndVotePanel getEndVotePanel() {
-		return EndVotePanel;
+	public StatisticsUserTable getStatisticsUserTable() {
+		return userTable;
 	}
 	/**
 	 * @param endVotePanel the endVotePanel to set
 	 */
-	public void setEndVotePanel(OverviewEndVotePanel endVotePanel) {
-		EndVotePanel = endVotePanel;
+	public void setStatisticsUserTable(StatisticsUserTable userTable) {
+		this.userTable = userTable;
 	}
 
 /*

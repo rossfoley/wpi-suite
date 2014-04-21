@@ -44,14 +44,14 @@ public class StatisticsUserTable extends JTable
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
-	private OverviewDetailPanel detailPanel;
+	private StatisticsPanel statsPanel;
 	
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill OverviewTable
 	 * @param columnNames	Column headers of OverviewTable
 	 */
-	public OverviewTable(Object[][] data, String[] columnNames)
+	public StatisticsUserTable(Object[][] data, String[] columnNames)
 	{
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
@@ -236,8 +236,8 @@ public class StatisticsUserTable extends JTable
 		return false;
 	}
 	
-	public OverviewDetailPanel getDetailPanel() {
-		return this.detailPanel;
+	public StatisticsPanel getStatisticsPanel() {
+		return this.statsPanel;
 	}
 }
 

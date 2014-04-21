@@ -50,10 +50,10 @@ public class StatisticsReqTable extends JTable {
 	
 	/**
 	 * Sets initial table view
-	 * @param data	Initial data to fill OverviewReqTable
+	 * @param data	Initial data to fill StatisticsReqTable
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
-	public OverviewReqTable(Object[][] data, String[] columnNames) {
+	public StatisticsReqTable(Object[][] data, String[] columnNames) {
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
@@ -61,7 +61,7 @@ public class StatisticsReqTable extends JTable {
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
         
-    	ViewEventController.getInstance().setOverviewReqTable(this);
+    	ViewEventController.getInstance().setStatisticsReqTable(this);
     
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
