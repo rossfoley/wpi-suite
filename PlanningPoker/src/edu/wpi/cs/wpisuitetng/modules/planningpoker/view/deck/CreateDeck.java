@@ -11,7 +11,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DropMode;
@@ -29,15 +28,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -54,8 +53,10 @@ public class CreateDeck extends JPanel {
 	private boolean multiSelectionMode = false;
 	private JTextField txtDeckName = new JTextField();
 	private JTextField txtCardValue;
+	private JButton btnAddCard;
 	private JButton btnRemove;
 	private JButton btnRemoveAll;
+	private JButton btnCreate;
 	private JTable cardTable;
 	private DefaultTableModel cardTableModel;
 	private SpringLayout springLayout;
@@ -78,7 +79,7 @@ public class CreateDeck extends JPanel {
 		// Radio button group for multiple vs. single selection mode
 		JPanel modeSelectionPanel = createModeSelectionPanel();
 
-		JButton btnAddCard = new JButton("Add Card:");
+		btnAddCard = new JButton("Add Card:");
 		btnAddCard.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -93,6 +94,21 @@ public class CreateDeck extends JPanel {
 
 		txtCardValue = new JTextField();
 		txtCardValue.setPreferredSize(new Dimension(26, 26));
+		txtCardValue.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				warnCardValue();
+
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				warnCardValue();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				warnCardValue();
+			}
+		});
 
 		buildCardTable();
 
@@ -122,11 +138,12 @@ public class CreateDeck extends JPanel {
 		JScrollPane cardScrollPane = new JScrollPane(cardTable);
 
 		// Create deck button
-		JButton btnCreate = new JButton("Create Deck");
+		btnCreate = new JButton("Create Deck");
 		btnCreate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				createDeck();
+				btnCreate.setEnabled(false);
 			}
 		});
 
@@ -139,7 +156,7 @@ public class CreateDeck extends JPanel {
 
 		springLayout.putConstraint(SpringLayout.WEST, modeSelectionPanel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, modeSelectionPanel, 10, SpringLayout.SOUTH, txtDeckName);
-		
+
 		springLayout.putConstraint(SpringLayout.WEST, lblCard, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblCard, 0, SpringLayout.VERTICAL_CENTER, txtCardValue);
 
@@ -162,7 +179,7 @@ public class CreateDeck extends JPanel {
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnCreate, 0, SpringLayout.EAST, cardScrollPane);
 		springLayout.putConstraint(SpringLayout.NORTH, btnCreate, 10, SpringLayout.SOUTH, cardScrollPane);
 
-		
+
 		// Add all components to the JPanel
 		add(modeSelectionPanel);
 		add(lblDeckName);
@@ -246,6 +263,13 @@ public class CreateDeck extends JPanel {
 		else {
 			btnRemove.setEnabled(false);
 		}
+		// Disable add card button if no text entered
+		if (txtCardValue.getText().equals("")) {
+			btnAddCard.setEnabled(false);
+		}
+		else {
+			btnAddCard.setEnabled(true);
+		}
 	}
 
 	/**
@@ -265,7 +289,7 @@ public class CreateDeck extends JPanel {
 		Deck newDeck = new Deck(listOfCards, false);
 		newDeck.setDeckName(txtDeckName.getText());
 		newDeck.setAllowMultipleSelections(multiSelectionMode);
-		
+
 		DeckListModel.getInstance().addDeck(newDeck);
 	}
 
@@ -282,7 +306,7 @@ public class CreateDeck extends JPanel {
 				multiSelectionMode = false;
 			}
 		});
-		
+
 		JRadioButton rbtnMulti = new JRadioButton("Multiple Selection");
 		rbtnMulti.addActionListener(new ActionListener() {
 			@Override
@@ -290,21 +314,38 @@ public class CreateDeck extends JPanel {
 				multiSelectionMode = true;
 			}
 		});
-		
+
 		ButtonGroup rGroup = new ButtonGroup();
 		rGroup.add(rbtnSingle);
 		rGroup.add(rbtnMulti);
-		
+
 		JPanel modeBtnPanel = new JPanel(new GridLayout(0, 1));
 		modeBtnPanel.add(rbtnSingle);
 		modeBtnPanel.add(rbtnMulti);
-		
+
 		JPanel modePanel = new JPanel(new BorderLayout());
 		JLabel lblMode = new JLabel("Card Selection Mode: ");
 		modePanel.add(lblMode, BorderLayout.LINE_START);
 		modePanel.add(modeBtnPanel, BorderLayout.CENTER);
-		
+
 		return modePanel;
+	}
+	
+	private void warnCardValue() {
+		// Disable adding card if nothing is input
+		if (txtCardValue.getText().equals("")) {
+			btnAddCard.setEnabled(false);
+		}
+		else {
+			try {
+				Integer.parseInt(txtCardValue.getText());
+				btnAddCard.setEnabled(true);
+			// Disable and warn if it is not a number
+			} catch (NumberFormatException ex) {
+				btnAddCard.setEnabled(false);
+			}
+		}
+
 	}
 
 }
