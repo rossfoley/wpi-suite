@@ -89,7 +89,7 @@ public class StatisticsReqTable extends JTable {
 	}
 	
 	/**
-	 * updates OverviewReqTable with the contents of the requirement model
+	 * updates StatistcsReqTable with the contents of the requirement model
 	 */
 	public void refresh(PlanningPokerSession session) {
 		// TODO Implement Your Vote, Estimate columns

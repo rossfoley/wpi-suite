@@ -328,9 +328,7 @@ public class ViewEventController {
 	public void openStatisticsTab(PlanningPokerSession viewStats){
 	
 	//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-		
-		
-		
+
 		StatisticsPanel exists = null;
 		
 		// Check if the session is already open in a tab
@@ -352,7 +350,7 @@ public class ViewEventController {
 			tabName.append(viewStats.getName().substring(0,subStringLength));
 			if(viewStats.getName().length() > 6) tabName.append("..");
 			
-			main .addTab("Statistics", null, statisticsPanel, "Statistics");
+			main .addTab(tabName.toString(), null, statisticsPanel, viewStats.getName());
 			main.invalidate(); //force the tabbedpane to redraw.
 			main.repaint();
 			main.setSelectedComponent(statisticsPanel);
@@ -361,38 +359,8 @@ public class ViewEventController {
 		{
 			main.setSelectedComponent(exists);
 		}
-		
-		//PlanningPokerSessionTab exists = null;
-		
-		// Check if the session is already open in a tab
-		/**for(PlanningPokerSessionTab panel : listOfEditingPanels)
-		{
-			if(panel.getDisplaySession() == viewStats)
-			{
-				exists = panel;
-				break;
-			}
-		}
-		
-		if (exists == null)
-		{
-			// eventually want to add session to edit as an argument
-			StatisticsPanel statsPanel = new StatisticsPanel();
-			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
-			tabName.append(viewStats.getName().substring(0,subStringLength));
-			if(viewStats.getName().length() > 6) tabName.append("..");
-			
-			main.addTab(tabName.toString(), null, statsPanel, viewStats.getName());
-			main.invalidate();
-			main.repaint();
-			main.setSelectedComponent(statsPanel);
-		}
-		else
-		{
-			main.setSelectedComponent(exists);
-		}*/	
+
+	
 	}
 	
 }
