@@ -28,9 +28,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.Component;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -52,6 +54,9 @@ public class RequirementSelectionPanel extends JPanel{
 	JButton btnRemove;
 	JButton btnRemoveAll;
 	JButton btnNewReq;
+	private transient Vector<RequirementsSelectedListener> listeners;
+	private int numRequirementsAdded = 0;
+
 	
 	/**
 	 * Constructor to create the requirement selection panel
@@ -252,6 +257,8 @@ public class RequirementSelectionPanel extends JPanel{
 		updateSelectedList();
 		
 		validButtons();
+		fireRequirementsSelectedEvent();
+
 	}
 	
 	/**
@@ -324,7 +331,7 @@ public class RequirementSelectionPanel extends JPanel{
 			this.selection.remove(position);
 			this.selection.add(position, true);
 		}
-		
+		numRequirementsAdded += 1;
 		update();
 	}
 	
@@ -340,7 +347,9 @@ public class RequirementSelectionPanel extends JPanel{
 			this.selection.remove(position);
 			this.selection.add(position, false);
 		}
+		numRequirementsAdded -= 1;
 		update();
+
 	}
 	
 	/**
@@ -353,7 +362,9 @@ public class RequirementSelectionPanel extends JPanel{
 			this.selection.remove(n);
 			this.selection.add(n, true);
 		}
+		numRequirementsAdded = selection.size();
 		update();
+
 	}
 	
 	/**
@@ -366,6 +377,7 @@ public class RequirementSelectionPanel extends JPanel{
 			this.selection.remove(n);
 			this.selection.add(n, false);
 		}
+		numRequirementsAdded = 0;
 		update();
 	}
 	
@@ -474,11 +486,13 @@ public class RequirementSelectionPanel extends JPanel{
 	 * @param selectedRequirements a set of requirement Id's 
 	 */
 	public void setSelectedRequirements(Set<Integer> selectedRequirements) {
+		numRequirementsAdded = 0;
 		for (Integer id : selectedRequirements) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
 			int pos = this.requirements.indexOf(current);
 			this.selection.remove(pos);
 			this.selection.add(pos, true);
+			numRequirementsAdded += 1;
 		}
 		update();
 	}
@@ -493,5 +507,50 @@ public class RequirementSelectionPanel extends JPanel{
 		int pos = this.requirements.indexOf(newReq);
 		this.selection.set(pos, true);
 		update();
+		numRequirementsAdded += 1; //Should probably be integrated better
+	}
+	
+	synchronized public void addRequirementsSelectedListener(RequirementsSelectedListener l) {
+		if (listeners == null) {
+			listeners = new Vector<RequirementsSelectedListener>();
+		}
+		listeners.addElement(l);
+	}  
+
+	/**
+	 * Remove a listener for RequirementsSelectedEvents
+	 */
+	synchronized public void removeRequirementsSelectedListener(RequirementsSelectedListener l) {
+		if (listeners == null) {
+			listeners = new Vector<RequirementsSelectedListener>();
+		}
+		else {
+			listeners.removeElement(l);
+		}
+	}
+
+	/**
+	 * Fire an EstimateEvent to all registered listeners
+	 */
+	protected void fireRequirementsSelectedEvent() {
+		// Do nothing if we have no listeners
+		if (listeners != null && !listeners.isEmpty()) {
+			// Create the event object to send
+			RequirementsSelectedEvent event = 
+					new RequirementsSelectedEvent(this, (numRequirementsAdded != 0));
+
+			// Make a copy of the listener list in case anyone adds/removes listeners
+			Vector<RequirementsSelectedListener> targets;
+			synchronized (this) {
+				targets = (Vector<RequirementsSelectedListener>) listeners.clone();
+			}
+
+			// Walk through the listener list and call the estimateSubmitted method in each
+			Enumeration<RequirementsSelectedListener> e = targets.elements();
+			while (e.hasMoreElements()) {
+				RequirementsSelectedListener l = (RequirementsSelectedListener) e.nextElement();
+				l.setRequirementsSelected(event);
+			}
+		}
 	}
 }

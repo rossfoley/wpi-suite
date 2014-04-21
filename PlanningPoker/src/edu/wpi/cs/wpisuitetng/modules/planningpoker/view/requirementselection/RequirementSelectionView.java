@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementSelectionPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementsSelectedListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationInformationPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -47,6 +48,11 @@ public class RequirementSelectionView extends JSplitPane{
 	
 	public void setSelectedRequirements(Set<Integer> selectedRequirements){
 		reqPanel.setSelectedRequirements(selectedRequirements);
+	}
+	
+	//This is a Hack - Perry
+	synchronized public void addRequirementsSelectedListener(RequirementsSelectedListener l){
+		reqPanel.addRequirementsSelectedListener(l);
 	}
 	
 }
