@@ -323,12 +323,19 @@ public class ViewEventController {
 		}
 	}
 	
-public void openStatisticsTab(PlanningPokerSession viewStats){
+	public void openStatisticsTab(PlanningPokerSession viewStats){
+	
+	//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
+			StatisticsPanel panel = new StatisticsPanel();
+			main .addTab("New Session.", null, panel, "New Session");
+			main.invalidate(); //force the tabbedpane to redraw.
+			main.repaint();
+			main.setSelectedComponent(panel);
 		
-		PlanningPokerSessionTab exists = null;
+		//PlanningPokerSessionTab exists = null;
 		
 		// Check if the session is already open in a tab
-		for(PlanningPokerSessionTab panel : listOfEditingPanels)
+		/**for(PlanningPokerSessionTab panel : listOfEditingPanels)
 		{
 			if(panel.getDisplaySession() == viewStats)
 			{
@@ -355,7 +362,7 @@ public void openStatisticsTab(PlanningPokerSession viewStats){
 		else
 		{
 			main.setSelectedComponent(exists);
-		}	
+		}*/	
 	}
 	
 }

@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -28,6 +29,7 @@ import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewTable;
 
 /**
  * @author cassiehamlin
@@ -42,10 +44,15 @@ public class StatisticsPanel extends JSplitPane {
 	private StatisticsUserTable userTable;
 	public StatisticsPanel()
 	{
-	
+		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		
+		String[] columnNames = {"User", "Estimate"};
+		Object[][] data = {};
+		
+		
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel();
-		//userTable = new StatisticsUserTable();
+		userTable = new StatisticsUserTable(data, columnNames);
 
 		
 		// Put the overview table and sidebar into the tab
