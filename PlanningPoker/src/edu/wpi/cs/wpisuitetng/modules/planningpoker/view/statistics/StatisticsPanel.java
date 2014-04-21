@@ -14,7 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -27,8 +29,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewTable;
 
 /**
@@ -42,14 +46,21 @@ public class StatisticsPanel extends JSplitPane {
 	 */
 	private StatisticsDetailPanel detailPanel;
 	private StatisticsUserTable userTable;
-	public StatisticsPanel()
+	
+	private PlanningPokerSession activeSession;
+	
+	private Requirement requirement;
+	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+	private JPanel reqDetails;
+	
+	public StatisticsPanel(PlanningPokerSession statisticsSession)
 	{
-		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		this.activeSession = statisticsSession;
 		
+		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		String[] columnNames = {"User", "Estimate"};
 		Object[][] data = {};
-		
-		
+
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel();
 		userTable = new StatisticsUserTable(data, columnNames);
@@ -62,8 +73,13 @@ public class StatisticsPanel extends JSplitPane {
 		ViewEventController.getInstance().setStatisticsUserTable(userTable);
 		ViewEventController.getInstance().setStatisticsDetailPanel(detailPanel);
 		
-		
+		// Makes the split pane divide 50/50 for each portion
+		Dimension d = new Dimension(200, 200);
+        detailPanel.setMinimumSize(d);
+        detailPanel.setPreferredSize(d);
+        userTable.setMinimumSize(d);
 
+        this.setEnabled(false);
 	}
 	/**
 	 * @return the detailPanel
@@ -88,6 +104,9 @@ public class StatisticsPanel extends JSplitPane {
 	 */
 	public void setStatisticsUserTable(StatisticsUserTable userTable) {
 		this.userTable = userTable;
+	}
+	public PlanningPokerSession getDisplaySession() {
+		return this.activeSession;
 	}
 
 /*

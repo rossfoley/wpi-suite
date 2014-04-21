@@ -44,6 +44,8 @@ public class ViewEventController {
 	private StatisticsDetailPanel statisticsDetailPanel;
 	private StatisticsReqTable statisticsReqTable;
 	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
+	private ArrayList<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
+
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
 	 */
@@ -326,11 +328,39 @@ public class ViewEventController {
 	public void openStatisticsTab(PlanningPokerSession viewStats){
 	
 	//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-			StatisticsPanel panel = new StatisticsPanel();
-			main .addTab("New Session.", null, panel, "New Session");
+		
+		
+		
+		StatisticsPanel exists = null;
+		
+		// Check if the session is already open in a tab
+		for(StatisticsPanel statsPanel : listOfStatisticsPanels)
+		{
+			if(statsPanel.getDisplaySession() == viewStats)
+			{
+				exists = statsPanel;
+				break;
+			}
+		}
+		
+		if (exists == null)
+		{
+			StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
+			
+			StringBuilder tabName = new StringBuilder();
+			int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
+			tabName.append(viewStats.getName().substring(0,subStringLength));
+			if(viewStats.getName().length() > 6) tabName.append("..");
+			
+			main .addTab("Statistics", null, statisticsPanel, "Statistics");
 			main.invalidate(); //force the tabbedpane to redraw.
 			main.repaint();
-			main.setSelectedComponent(panel);
+			main.setSelectedComponent(statisticsPanel);
+		}
+		else
+		{
+			main.setSelectedComponent(exists);
+		}
 		
 		//PlanningPokerSessionTab exists = null;
 		
