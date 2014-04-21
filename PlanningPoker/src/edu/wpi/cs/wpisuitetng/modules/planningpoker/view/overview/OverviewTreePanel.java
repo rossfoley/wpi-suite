@@ -145,9 +145,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 					
 					// If the current user is the owner of the session
 					if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
-						// Enable editing if pending
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
-					
+						// Enable editing if pending					
 						if (session.isPending()) {
 							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
 						}

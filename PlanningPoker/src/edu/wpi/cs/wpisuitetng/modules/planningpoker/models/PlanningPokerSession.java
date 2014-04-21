@@ -435,7 +435,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return true if the session is allowed to be edited
 	 */
 	public boolean isEditable() {
-		return (this.gameState == SessionState.PENDING || ((this.estimates.size() == 0) && this.gameState == SessionState.OPEN)) && this.sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
+		return (isPending() || ((estimates.size() == 0) && isOpen())) && sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
 	}
 	
 	/**
