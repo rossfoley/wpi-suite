@@ -1,43 +1,25 @@
-/*******************************************************************************
- * Copyright (c) 2012-2014 -- WPI Suite
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.ProjectModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-import java.awt.event.ActionListener;
-
-/**
- *  This controller coordinates retrieving all of the decks
- * from the server.
- * 
- * @author amandaadkins
- *
- */
-public class GetDeckController implements ActionListener {
-	private GetDeckRequestObserver observer;
-	private static GetDeckController instance;
+public class GetProjectController implements ActionListener {
+	private GetProjectRequestObserver observer;
+	private static GetProjectController instance;
 	
 	/**
 	 * Constructs the controller given a Deck
 	 */
-	private GetDeckController() {
-		observer = new GetDeckRequestObserver(this);
-		GetUserController.getInstance().retrieveUsers();
-
+	private GetProjectController() {
+		observer = new GetProjectRequestObserver(this);
 	}
 	
 	
@@ -45,11 +27,11 @@ public class GetDeckController implements ActionListener {
 	
 	 * @return the instance of the GetDeckController or creates one if it does not
 	 * exist. */
-	public static GetDeckController getInstance()
+	public static GetProjectController getInstance()
 	{
 		if(instance == null)
 		{
-			instance = new GetDeckController();
+			instance = new GetProjectController();
 		}
 		
 		return instance;
@@ -64,7 +46,7 @@ public class GetDeckController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Send a request to the core to save this requirement
-		final Request request = Network.getInstance().makeRequest("planningpoker/deck", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET); // GET == read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}
@@ -72,8 +54,8 @@ public class GetDeckController implements ActionListener {
 	/**
 	 * Sends an HTTP request to retrieve all decks
 	 */
-	public void retrieveDecks() {
-		final Request request = Network.getInstance().makeRequest("planningpoker/deck", HttpMethod.GET); // GET == read
+	public void retrieveProjects() {
+		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET); // GET == read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}
@@ -85,15 +67,14 @@ public class GetDeckController implements ActionListener {
 	 * @param requirements array of requirements received from the server
 	 */
 	
-	public void receivedDecks(Deck[] pokerDecks) {
+	public void receivedProject(Project project) {
 		// Empty the local model to eliminate duplications
-		DeckListModel.getInstance().emptyModel();
-		
+		ProjectModel.getInstance().emptyModel();
 		// Make sure the response was not null
-		if (pokerDecks != null) {
+		if (project != null) {
 			
 			// add the requirements to the local model
-			DeckListModel.getInstance().addDecks(pokerDecks);
+			ProjectModel.getInstance().addProject(project);
 		}
 	}
 

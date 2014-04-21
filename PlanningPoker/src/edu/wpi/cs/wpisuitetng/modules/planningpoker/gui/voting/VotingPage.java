@@ -2,15 +2,26 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetProjectController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.ProjectModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -19,6 +30,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.SelectionListene
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.database.*;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,6 +55,8 @@ public class VotingPage extends JSplitPane {
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
+
+	
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;
@@ -199,15 +214,65 @@ public class VotingPage extends JSplitPane {
 	 * adds the user id to the voted people's list
 	 * @param id
 	 */
-	public void addIds(String username) {
-		if (activeSession.getVoterIdList().contains(username)) {
+	public void addVoterNameToList(String username) {
+		if (activeSession.getVoterNameList().contains(username)) {
 			System.out.println("Username exist");
 		} else {
-			activeSession.getVoterIdList().add(username);
+			activeSession.getVoterNameList().add(username);
 			System.out.println(username + "HAHAHA");
 		}
 	}
 
+	/**
+	 * returns the list of users in a project
+	 */
+	public String getVoterName() {
+		String name = ConfigManager.getInstance().getConfig().getProjectName();
+		System.out.println(name);
+		return name;
+	}
+	public List<String> getAllVoterNamesList() {
+		List<String> allVoters = new ArrayList<String>();
+		GetUserController.getInstance().retrieveUsers();
+		List<User> user = UserModel.getInstance().getUsers();
+		System.out.println(user.size() + "IS THE SIZE user");
+		for(User u : user) {
+			try {
+				allVoters.add(u.getName());
+				System.out.println(u.getName());
+			} catch (Exception E) {
+				System.out.println("User is null");
+			}
+		}
+		return allVoters;
+	}
+	
+	public void getAllVoterNames() {
+		GetUserController.getInstance().retrieveUsers();
+		List<User> user = UserModel.getInstance().getUsers();
+		System.out.println(user.size() + "IS THE SIZE user");
+		for(User u : user) {
+			try {
+				System.out.println(u.getName());
+			} catch (Exception E) {
+				System.out.println("User is null");
+			}
+		}
+		
+	}
+	public void displayVoters() {
+		System.out.println("Displaying voters");
+		List<String> allVoters = getAllVoterNamesList();
+		String currentVoter = getVoterName();
+		addVoterNameToList(currentVoter);
+		for (String s : allVoters) {
+			if (activeSession.getVoterNameList().contains(s)) {
+				System.out.println(s + " has voted ");
+			} else {
+				System.out.println(s + " has not voted ");
+			}
+		}
+	}
 	/**
 	 * build the part of the panel that is specific to the selected requirement
 	 * displays the requirement name, description, and allows the user to vote on it
@@ -242,7 +307,14 @@ public class VotingPage extends JSplitPane {
 					estimate.setRequirementID(requirement.getId());
 					estimate.setSessionID(activeSession.getID());
 					estimate.setVote((int)e.getEstimate());
-					addIds(ConfigManager.getConfig().getUserName());
+					//writng here
+					addVoterNameToList(ConfigManager.getConfig().getUserName());
+					getVoterName();
+					getAllVoterNames();
+					displayVoters();
+					
+					
+					
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
 					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());

@@ -51,7 +51,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 	JLabel deckDisplay;
 	JLabel sessionCreatorDisplay;
 	SpringLayout springLayout;
-	private JButton btnNewButton;
 	
 	public OverviewDetailInfoPanel() {
 
@@ -93,18 +92,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(endTimeDisplay);
 		add(deckDisplay);
 		add(sessionCreatorDisplay);
-		
-		btnNewButton = new JButton("New button");
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Voters test = new Voters();
-				test.testvote();
-			}
-		});
-		springLayout.putConstraint(SpringLayout.NORTH, btnNewButton, 4, SpringLayout.SOUTH, deckDisplay);
-		springLayout.putConstraint(SpringLayout.WEST, btnNewButton, 179, SpringLayout.WEST, this);
-		add(btnNewButton);
 	}
 	
 	public void refresh(PlanningPokerSession session) {

@@ -61,7 +61,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	private List<String> voterIdList;
+	private List<String> VoterNameList;
 	
 	/**
 	 * @return the sessionCreatorID
@@ -97,7 +97,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.estimates = new ArrayList<Estimate>();
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
-		this.setVoterIdList(new ArrayList<String>());
+		this.setVoterNameList(new ArrayList<String>());
 	}
 	/**
 	 * @return uuid
@@ -466,16 +466,16 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 
 	/**
-	 * @return the voterIdList
+	 * @return the VoterNameList
 	 */
-	public List<String> getVoterIdList() {
-		return voterIdList;
+	public List<String> getVoterNameList() {
+		return VoterNameList;
 	}
 	/**
-	 * @param voterIdList the voterIdList to set
+	 * @param VoterNameList the VoterNameList to set
 	 */
-	public void setVoterIdList(List<String> voterIdList) {
-		this.voterIdList = voterIdList;
+	public void setVoterNameList(List<String> VoterNameList) {
+		this.VoterNameList = VoterNameList;
 	}
 	
 }
