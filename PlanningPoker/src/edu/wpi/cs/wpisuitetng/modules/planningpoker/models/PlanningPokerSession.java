@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
@@ -20,23 +19,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.swing.JTextArea;
-
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author rossfoley
@@ -63,6 +52,18 @@ public class PlanningPokerSession extends AbstractModel {
 	private Set<Integer> reqsWithCompleteEstimates;
 	
 	/**
+	 * Constructor for PlanningPokerSession
+	 */
+	public PlanningPokerSession () {
+		this.name = "Planning Poker " + this.makeDefaultName();
+		this.gameState = PlanningPokerSession.SessionState.PENDING;
+		this.requirementIDs = new HashSet<Integer>();
+		this.estimates = new ArrayList<Estimate>();
+		this.reqsWithCompleteEstimates = new HashSet<Integer>();
+		this.defaultSessionName = new String(this.name.toString());
+	}
+	
+	/**
 	 * @return the sessionCreatorID
 	 */
 	public String getSessionCreatorName() {
@@ -80,23 +81,14 @@ public class PlanningPokerSession extends AbstractModel {
 	public boolean isUsingDeck() {
 		return isUsingDeck;
 	}
+
 	/**
 	 * @param isUsingDeck the isUsingDeck to set
 	 */
 	public void setUsingDeck(boolean isUsingDeck) {
 		this.isUsingDeck = isUsingDeck;
 	}
-	/**
-	 * Constructor for PlanningPokerSession
-	 */
-	public PlanningPokerSession () {
-		this.name = "Planning Poker " + this.makeDefaultName();
-		this.gameState = PlanningPokerSession.SessionState.PENDING;
-		this.requirementIDs = new HashSet<Integer>();
-		this.estimates = new ArrayList<Estimate>();
-		this.reqsWithCompleteEstimates = new HashSet<Integer>();
-		this.defaultSessionName = new String(this.name.toString());
-	}
+	
 	/**
 	 * @return uuid
 	 */
@@ -111,6 +103,8 @@ public class PlanningPokerSession extends AbstractModel {
 	public void addRequirement(int requirementID) {
 		requirementIDs.add((Integer) requirementID);
 	}
+	
+	
 	public void setID(UUID iD) {
 		uuid = iD;
 	}
@@ -173,7 +167,10 @@ public class PlanningPokerSession extends AbstractModel {
 		return defaultSessionName;
 	}
 
-	 @Override
+	 /* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
      public String toString(){
           return name;
      }
@@ -198,25 +195,34 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return a boolean indicating if the session is open
 	 */
 	public boolean isOpen() {
-		if (gameState == SessionState.OPEN) {
-			return true;
-		}	
-		else {
-			return false;
+		boolean open = true;
+		if (endDate != null) {
+			open = (new GregorianCalendar()).before(endDate);
 		}
+		return open && gameState == SessionState.OPEN;
 	}
+	
 	/**
 	 * @return a boolean indicating if the session is pending
 	 */
-	
 	public boolean isPending() {
-		if (gameState == SessionState.PENDING) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return gameState == SessionState.PENDING;
 	}
+	
+	/**
+	 * @return a boolean indicating if the session has ended
+	 */
+	public boolean isEnded() {
+		return (new GregorianCalendar()).after(endDate) || gameState == SessionState.VOTINGENDED;
+	}
+	
+	/**
+	 * @return a boolean indicating if the session has been closed with a final estimate
+	 */
+	public boolean isClosed() {
+		return gameState == SessionState.CLOSED;
+	}
+	
 	/**
 	 * Creates the default name for the session.
 	 * 
@@ -429,7 +435,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return true if the session is allowed to be edited
 	 */
 	public boolean isEditable() {
-		return (this.gameState == SessionState.PENDING || ((this.estimates.size() == 0) && this.gameState == SessionState.OPEN)) && this.sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
+		return (isPending() || ((estimates.size() == 0) && isOpen())) && sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
 	}
 	
 	/**

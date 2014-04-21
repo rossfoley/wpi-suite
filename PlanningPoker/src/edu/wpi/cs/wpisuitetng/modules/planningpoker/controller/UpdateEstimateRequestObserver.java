@@ -9,10 +9,12 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import javax.swing.JOptionPane;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer handles responses to request for all estimates
@@ -42,10 +44,13 @@ public class UpdateEstimateRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
-		
-		// Parse the estimate out of the response body
-		final Estimate estimate = Estimate.fromJson(response.getBody());
+		final String response = iReq.getResponse().getBody();
+		if (response != null && !response.trim().equals("")) {
+			// Close the voting tab and show a popup
+			MainView main = ViewEventController.getInstance().getMainView();
+			main.removeTabAt(main.getSelectedIndex());
+			JOptionPane.showMessageDialog(null, response);
+		}
 	}
 	
 	/**
