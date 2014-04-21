@@ -24,6 +24,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
@@ -229,6 +230,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				GetSessionController.getInstance().retrieveSessions();
 				GetRequirementsController.getInstance().retrieveRequirements();
 				PlanningPokerSessionModel.getInstance().startLiveUpdating();
+				GetDeckController.getInstance().retrieveDecks();
 				initialized = true;
 			} catch (Exception e) {}
 		}
