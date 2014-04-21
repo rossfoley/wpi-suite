@@ -505,8 +505,8 @@ public class PlanningPokerSessionTab extends JPanel {
 					submitSessionToDatabase();
 
 					LinkedList<String> recipients = new LinkedList<String>();
-					recipients.add("kjb594@yahoo.com");
-					recipients.add("kjd594@gmail.com");
+					//recipients.add("kjb594@yahoo.com");
+					//recipients.add("kjd594@gmail.com");
 					Mailer mailer = new Mailer();
 					mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
 					

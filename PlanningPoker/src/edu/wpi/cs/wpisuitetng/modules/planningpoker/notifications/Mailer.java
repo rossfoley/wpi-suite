@@ -91,6 +91,10 @@ public class Mailer {
 	public boolean mailTo(String recipient, String subject, String body){
 		//System.out.println("starting to mail");
 		
+		if (recipient == null || subject == null || body == null) {
+			return false;
+		}
+		
 		boolean isValidSender = true;
 		boolean isValidReciever = true;
 		try {
@@ -149,8 +153,13 @@ public class Mailer {
 	 * @param body Body of the message to send to the recipients.
 	 * @return A list of people who could not be messaged because they did not have a properly formatted e-mail address.
 	 */
-	public List<String> mailToGroup(List<String> recipients, String subject, String body) {
+	public List<String> mailToGroup(List<String> recipients, String subject, String body) {		
 		List<String> didNotSendTo = null;
+		
+		if (recipients == null || subject == null || body == null) {
+			return didNotSendTo;
+		}
+		
 		boolean thisValid;
 		for (int i = 0; i < recipients.size(); i++) {
 			thisValid = mailTo(recipients.get(i), subject, body);
@@ -170,6 +179,10 @@ public class Mailer {
 	 */
 	public List<String> notifyOfPlanningPokerSessionStart(List<String> recipients, PlanningPokerSession planningPokerSession) {
 		List<String> didNotSendTo = null;
+		
+		if (recipients == null || planningPokerSession == null) {
+			return didNotSendTo;
+		}
 		
 		boolean thisValid;
 		
@@ -199,6 +212,11 @@ public class Mailer {
 	 */
 	public List<String> notifyOfPlanningPokerSessionClose(List<String> recipients, PlanningPokerSession planningPokerSession) {
 		List<String> didNotSendTo = null;
+		
+		if (recipients == null || planningPokerSession == null) {
+			return didNotSendTo;
+		}
+		
 		boolean thisValid;
 		for (int i = 0; i < recipients.size(); i++) {
 			thisValid = mailTo(recipients.get(i), "Planning Poker Session: " + planningPokerSession.getName() + " has closed", "The Session: " + planningPokerSession.getName() + " has been closed. \n\nThank you for participating! \n\n --Your Development Team");
