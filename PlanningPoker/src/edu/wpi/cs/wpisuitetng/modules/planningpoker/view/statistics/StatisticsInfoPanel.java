@@ -45,9 +45,9 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel sessionCreatorDisplay;
 	SpringLayout springLayout;
 	
-	public OverviewDetailInfoPanel() {
+	public StatisticsInfoPanel() {
 
-		ViewEventController.getInstance().setOverviewDetailInfoPanel(this);
+		ViewEventController.getInstance().setStatisticsInfoPanel(this);
 		
 		lblSessionName = new JLabel("Session Name:");
 		sessionNameDisplay = new JLabel("");
