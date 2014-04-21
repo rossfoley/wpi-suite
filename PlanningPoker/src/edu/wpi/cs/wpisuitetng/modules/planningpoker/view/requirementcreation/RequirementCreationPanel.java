@@ -34,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 public class RequirementCreationPanel extends JPanel implements RequirementButtonListener
 {
 	private final List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
-	private final Requirement displayRequirement;
+	private Requirement displayRequirement;
 	private final ViewMode viewMode = ViewMode.CREATING;
 	
 	private RequirementCreationInformationPanel infoPanel;
@@ -94,6 +94,8 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 			infoPanel.update();
 			parent.newRequirementCreated();
 			readyToClose = true;
+			displayRequirement = new Requirement();
+			infoPanel.resetRequirement(displayRequirement);
 		}
 	}
 

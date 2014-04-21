@@ -750,4 +750,9 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		parentSelector.setVisible(false);
 		chooseParent.setVisible(true);
 	}
+	
+	public void resetRequirement(Requirement currRequirement){
+		currentRequirement = currRequirement;
+		clearInfo();
+	}
 }
