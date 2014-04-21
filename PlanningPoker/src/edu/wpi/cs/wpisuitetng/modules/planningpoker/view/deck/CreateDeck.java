@@ -24,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -54,6 +55,7 @@ public class CreateDeck extends JPanel {
 	private JTextField txtDeckName = new JTextField();
 	private JTextField txtCardValue;
 	private JButton btnAddCard;
+	private JLabel lblAddCardError = new JLabel("Card value must be a positive number");
 	private JButton btnRemove;
 	private JButton btnRemoveAll;
 	private JButton btnCreate;
@@ -70,7 +72,7 @@ public class CreateDeck extends JPanel {
 		springLayout = new SpringLayout();
 		setLayout(springLayout);
 
-		JLabel lblDeckName = new JLabel("Deck Name: ");
+		JLabel lblDeckName = new JLabel("Deck Name:* ");
 		lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		JLabel lblCard = new JLabel("New Card Value: ");
@@ -91,6 +93,7 @@ public class CreateDeck extends JPanel {
 				} catch (NumberFormatException ex) {}
 			}
 		});
+		lblAddCardError.setVisible(false);
 
 		txtCardValue = new JTextField();
 		txtCardValue.setPreferredSize(new Dimension(26, 26));
@@ -165,7 +168,9 @@ public class CreateDeck extends JPanel {
 
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddCard, 0, SpringLayout.VERTICAL_CENTER, txtCardValue);
 		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 10, SpringLayout.EAST, txtCardValue);		
-
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, btnAddCard);
+		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, btnAddCard);
+		
 		springLayout.putConstraint(SpringLayout.EAST, cardScrollPane, 0, SpringLayout.EAST, txtCardValue);
 		springLayout.putConstraint(SpringLayout.NORTH, cardScrollPane, 10, SpringLayout.SOUTH, txtCardValue);
 		springLayout.putConstraint(SpringLayout.SOUTH, cardScrollPane, 150, SpringLayout.NORTH, cardScrollPane);
@@ -186,6 +191,7 @@ public class CreateDeck extends JPanel {
 		add(txtDeckName);
 		add(lblCard);
 		add(btnAddCard);
+		add(lblAddCardError);
 		add(txtCardValue);
 		add(cardScrollPane);
 		add(btnRemove);
@@ -196,7 +202,7 @@ public class CreateDeck extends JPanel {
 	}
 
 	private void buildCardTable() {
-		final String[] columnNames = {"Card(s)"};
+		final String[] columnNames = {"Card(s)*"};
 		final Object[][] data = {};
 		cardTable = new JTable(data, columnNames);
 		cardTableModel = new DefaultTableModel(data, columnNames);
@@ -335,14 +341,21 @@ public class CreateDeck extends JPanel {
 		// Disable adding card if nothing is input
 		if (txtCardValue.getText().equals("")) {
 			btnAddCard.setEnabled(false);
+			lblAddCardError.setText("Please enter a non-negative number");
+			lblAddCardError.setForeground(Color.BLACK);
+			lblAddCardError.setVisible(true);
 		}
 		else {
 			try {
 				Integer.parseInt(txtCardValue.getText());
 				btnAddCard.setEnabled(true);
+				lblAddCardError.setVisible(false);
 			// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {
 				btnAddCard.setEnabled(false);
+				lblAddCardError.setVisible(true);
+				lblAddCardError.setText("Card value must be a positive number");
+				lblAddCardError.setForeground(Color.RED);
 			}
 		}
 
