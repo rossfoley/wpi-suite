@@ -375,7 +375,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void addEstimate(Estimate estimate) {
 		for (Estimate e : estimates) {
-			if (e.getID().equals(estimate.getID())) {
+			if (e.getOwnerName().equals(estimate.getOwnerName()) && e.getRequirementID() == estimate.getRequirementID()) {
 				this.estimates.remove(e);
 				break;
 			}
