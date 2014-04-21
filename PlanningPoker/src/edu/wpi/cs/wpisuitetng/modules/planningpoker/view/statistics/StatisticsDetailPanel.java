@@ -38,13 +38,14 @@ public class StatisticsDetailPanel extends JSplitPane {
 
 		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
-		String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
-		Object[][] data = {};
+		String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
+		Object[][] reqData = {};
 		
 		// Create the info panel and table panel
-		reqTable = new StatisticsReqTable(data, columnNames);
+		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
 		infoPanel = new StatisticsInfoPanel();
 		tablePanel = new JScrollPane(reqTable);
+		
 		
 		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
 		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote

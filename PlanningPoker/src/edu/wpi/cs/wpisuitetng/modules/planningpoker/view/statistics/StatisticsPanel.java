@@ -44,8 +44,9 @@ public class StatisticsPanel extends JSplitPane {
 	/**
 	 * Sets up directory tree of all planning poker sessions
 	 */
-	private StatisticsDetailPanel detailPanel;
-	private StatisticsUserTable userTable;
+	StatisticsDetailPanel detailPanel;
+	StatisticsUserTable userTable;
+	JScrollPane tablePanel; 
 	
 	private PlanningPokerSession activeSession;
 	
@@ -58,17 +59,22 @@ public class StatisticsPanel extends JSplitPane {
 		this.activeSession = statisticsSession;
 		
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		String[] columnNames = {"User", "Estimate"};
-		Object[][] data = {};
+		String[] userColumnNames = {"User", "Estimate"};
+		Object[][] userData = {};
 
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel();
-		userTable = new StatisticsUserTable(data, columnNames);
+		userTable = new StatisticsUserTable(userData, userColumnNames);
+		tablePanel = new JScrollPane(userTable);
+		
+		userTable.getColumnModel().getColumn(0).setMinWidth(200); // User Name
+		userTable.getColumnModel().getColumn(1).setMinWidth(300); // User Vote
+		userTable.getColumnModel().getColumn(1).setMaxWidth(500); // User Vote
 
 		
 		// Put the overview table and sidebar into the tab
 		this.setTopComponent(detailPanel);
-		this.setBottomComponent(userTable);
+		this.setBottomComponent(tablePanel);
 
 		ViewEventController.getInstance().setStatisticsUserTable(userTable);
 		ViewEventController.getInstance().setStatisticsDetailPanel(detailPanel);

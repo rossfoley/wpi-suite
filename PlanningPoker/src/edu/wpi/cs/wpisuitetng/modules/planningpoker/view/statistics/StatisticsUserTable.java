@@ -14,10 +14,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DropMode;
@@ -29,149 +27,105 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+
 
 /**
- * @author rossfoley
+ * The table containing all requirements for the given session 
+ * that is being displayed in the overview detail panel
+ * 
+ * Bottom half of the overviewDetailPanel split pane
  */
-public class StatisticsUserTable extends JTable
-{
+public class StatisticsUserTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
-	private StatisticsPanel statsPanel;
+	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	
 	/**
 	 * Sets initial table view
-	 * @param data	Initial data to fill OverviewTable
-	 * @param columnNames	Column headers of OverviewTable
+	 * @param data	Initial data to fill StatisticsReqTable
+	 * @param columnNames	Column headers of OverviewReqTable
 	 */
-	public StatisticsUserTable(Object[][] data, String[] columnNames)
-	{
+	public StatisticsUserTable(Object[][] data, String[] columnNames) {
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
+        
+    	//ViewEventController.getInstance().setStatisticsUserTable(this);
     
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 
-		//ViewEventController.getInstance().setOverviewTable(this);
+		//ViewEventController.getInstance().setOverviewReqTable(this);
 		initialized = false;
 
 		/* Create double-click event listener */
-		this.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
+		this.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
 				
-				if(getRowCount() > 0)
-				{
+				if(getRowCount() > 0) {
 					int mouseY = e.getY();
 					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
 					int lastRowY = lastRow.y + lastRow.height;
 
-					if(mouseY > lastRowY) 
-					{
+					if(mouseY > lastRowY) {
 						getSelectionModel().clearSelection();
 						repaint();
 					}
-
-					// Open detail overview panel
-					//displaySession();
 				}
-				
 			}
 		});
+	}
+	
+	/**
+	 * updates OverviewReqTable with the contents of the requirement model
+	 */
+	public void refresh(PlanningPokerSession session) {
+		// TODO Implement Your Vote, Estimate columns
+		// Currently is 0 for every estimate
 		
-		 System.out.println("finished constructing the table");
-	}
-	/*
-	protected void displaySession() {
-		ViewEventController.getInstance().displayDetailedSession(this);
-	}
-*/
-	/**
-	 * Retrieves the list of sessions
-	 */
-	
-	public List<PlanningPokerSession> getSessions() {
-		return PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
-	}
-	
-	/**
-	 * Retrieves all open sessions
-	 * @author randyacheson
-	 */
-
-	public List<PlanningPokerSession> getOpenSessions() {
-		List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
-		List<PlanningPokerSession> openSessions = new ArrayList<PlanningPokerSession>();
-		for (PlanningPokerSession session : sessions) {
-			if (session.isOpen()){
-				openSessions.add(session);
-			}
-		}
-		return openSessions;
-	}
-	
-	
-	/**
-	 * updates OverviewTable with the contents of the requirement model
-	 */
-	public void refresh() {
-				
-		List<PlanningPokerSession> pokerSessions = getSessions();
+		Set<Integer> requirementIDs = session.getRequirementIDs();
+		RequirementModel reqs = RequirementModel.getInstance();
+		int vote = 0;
+		int estimate = 0;
+		List<Estimate> estimates = session.getEstimates();
 				
 		// clear the table
 		tableModel.setRowCount(0);		
 
-		for (PlanningPokerSession pokerSession : pokerSessions) {
-			String endDate, createrName, deckName;
-			// Handle if there was no end date set
-			try {
-				endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(pokerSession.getEndDate().getTime());
-			} catch (NullPointerException ex) {
-				endDate = new String("No end date");
-			}
-			
-			// Handle if there was no owner
-			try {
-				createrName = pokerSession.getSessionCreatorName();
-			} catch (NullPointerException ex) {
-				createrName = new String("Creater not set");
-			}
-			
-			// Handle if there was no deck set
-			try {
-				deckName = pokerSession.getSessionDeck().getDeckName();
-			} catch (NullPointerException ex) {
-				deckName = new String("None");
+		for (Integer requirementID : requirementIDs) {
+			Requirement req = reqs.getRequirement(requirementID);
+			String reqName = req.getName();
+			vote = 0;
+			for (Estimate e : estimates) {
+				if (e.getRequirementID() == requirementID && e.getOwnerName().equals(ConfigManager.getConfig().getUserName())) {
+					vote = e.getVote();
+				}
 			}
 
 			tableModel.addRow(new Object[]{
-					pokerSession.getID(),
-					pokerSession.getName(),
-					endDate,
-					Integer.toString(pokerSession.requirementsGetSize()), 
-					deckName,
-					createrName});	
+					reqName,
+					vote,
+					estimate});	
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
-		
-		System.out.println("finished refreshing the table");		
 	}
 	
 	/**
-	
-	 * @return the changedByRefresh */
+	 * @return the changedByRefresh 
+	 */
 	public boolean wasChangedByRefresh() {
 		return changedByRefresh;
 	}
@@ -185,7 +139,6 @@ public class StatisticsUserTable extends JTable
 
 	/**
 	 * Overrides the paintComponent method to retrieve the requirements on the first painting.
-	 * 
 	 * @param g	The component object to paint
 	 */
 	@Override
@@ -194,15 +147,12 @@ public class StatisticsUserTable extends JTable
 		if(!initialized) {
 			try {
 				GetSessionController.getInstance().retrieveSessions();
-				GetRequirementsController.getInstance().retrieveRequirements();
 				initialized = true;
 			} catch (Exception e) {}
 		}
 
 		super.paintComponent(g);
 	}
-	
-
 	
 	/**
 	 * Method prepareRenderer.
@@ -215,29 +165,20 @@ public class StatisticsUserTable extends JTable
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component comp = super.prepareRenderer(renderer, row, column);
 
-        if (JComponent.class.isInstance(comp)){
+        if (JComponent.class.isInstance(comp)) {
             ((JComponent)comp).setBorder(paddingBorder);
         }
 		return comp;
 
     }
 	
-	
 	/**
 	 * Overrides the isCellEditable method to ensure no cells are editable.
-	 * 
-	 * @param row	row of OverviewTable cell is located
-	 * @param col	column of OverviewTable cell is located
-	
+	 * @param row	row of OverviewReqTable cell is located
+	 * @param col	column of OverviewReqTable cell is located
 	 * @return boolean */
 	@Override
-	public boolean isCellEditable(int row, int col)
-	{
+	public boolean isCellEditable(int row, int col)	{
 		return false;
 	}
-	
-	public StatisticsPanel getStatisticsPanel() {
-		return this.statsPanel;
-	}
 }
-
