@@ -36,7 +36,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 
 	public StatisticsDetailPanel () {
 
-		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
 		String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
 		Object[][] data = {};
@@ -53,8 +53,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
 		// Put the info panel and table panel into the split pane
-		this.setTopComponent(infoPanel);
-		this.setBottomComponent(tablePanel);
+		this.setLeftComponent(tablePanel);
+		this.setRightComponent(infoPanel);
 		this.setResizeWeight(0.5); 
 
 		ViewEventController.getInstance().setStatisticsInfoPanel(infoPanel);

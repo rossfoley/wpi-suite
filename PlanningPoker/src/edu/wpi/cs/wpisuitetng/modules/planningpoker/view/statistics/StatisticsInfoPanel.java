@@ -31,72 +31,65 @@ import java.awt.Dimension;
  * Top half of the overviewDetailPanel split pane
  */
 public class StatisticsInfoPanel extends JPanel {
-	JLabel lblSessionName;
-	JLabel lblSessionDescription;
-	JLabel lblEndDate;
-	JLabel lblEndTime;
-	JLabel lblDeck;
-	JLabel sessionNameDisplay;
-	JTextArea sessionDescriptionDisplay;
+	JLabel lblReqName;
+	JLabel lblReqDescription;
+	JLabel lblMean;
+	JLabel lblMedian;
+	JLabel lblStdDev;
+	JLabel reqNameDisplay;
+	JTextArea reqDescriptionDisplay;
 	JScrollPane scrollPane;
-	JLabel endDateDisplay;
-	JLabel endTimeDisplay;
-	JLabel deckDisplay;
-	JLabel sessionCreatorDisplay;
+	JLabel meanDisplay;
+	JLabel medianDisplay;
+	JLabel stdDevDisplay;
 	SpringLayout springLayout;
 	
 	public StatisticsInfoPanel() {
 
 		ViewEventController.getInstance().setStatisticsInfoPanel(this);
 		
-		lblSessionName = new JLabel("Session Name:");
-		sessionNameDisplay = new JLabel("");
-		lblSessionDescription = new JLabel("Session Description:");
+		lblReqName = new JLabel("Name:");
+		reqNameDisplay = new JLabel("");
+		lblReqDescription = new JLabel("Description:");
 		scrollPane = new JScrollPane();
-		lblEndDate = new JLabel("End Date:");
-		lblEndTime = new JLabel("End Time:");
-		lblDeck = new JLabel("Deck:");
-		endDateDisplay = new JLabel();
-		endTimeDisplay = new JLabel();
-		deckDisplay = new JLabel();
-		sessionCreatorDisplay = new JLabel("");
-		sessionDescriptionDisplay = new JTextArea();
+		lblMean = new JLabel("Mean:");
+		lblMedian = new JLabel("Median:");
+		lblStdDev = new JLabel("Std Dev:");
+		meanDisplay = new JLabel();
+		medianDisplay = new JLabel();
+		stdDevDisplay = new JLabel();
+		reqDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
 		
 
-		sessionCreatorDisplay.setHorizontalAlignment(SwingConstants.TRAILING);
-		sessionCreatorDisplay.setMaximumSize(new Dimension(250, 14));
 		setLayout(springLayout);
-		scrollPane.setViewportView(sessionDescriptionDisplay);
-		sessionDescriptionDisplay.setWrapStyleWord(true);
-		sessionDescriptionDisplay.setLineWrap(true);
-		sessionDescriptionDisplay.setEditable(false);
+		scrollPane.setViewportView(reqDescriptionDisplay);
+		reqDescriptionDisplay.setWrapStyleWord(true);
+		reqDescriptionDisplay.setLineWrap(true);
+		reqDescriptionDisplay.setEditable(false);
 		
 		setConstraints();
 		
-		add(lblSessionName);
-		add(sessionNameDisplay);
-		add(lblSessionDescription);
+		add(lblReqName);
+		add(reqNameDisplay);
+		add(lblReqDescription);
 		add(scrollPane);
-		add(lblEndDate);
-		add(lblEndTime);
-		add(lblDeck);
-		add(endDateDisplay);
-		add(endTimeDisplay);
-		add(deckDisplay);
-		add(sessionCreatorDisplay);
+		add(lblMean);
+		add(lblMedian);
+		add(lblStdDev);
+		add(meanDisplay);
+		add(medianDisplay);
+		add(stdDevDisplay);
 	}
 	
 	public void refresh(PlanningPokerSession session) {
 
 		// Change session name
-		sessionNameDisplay.setText(session.getName());
+		reqNameDisplay.setText(session.getName());
 		
 		// Change session description
-		sessionDescriptionDisplay.setText(session.getDescription());
+		reqDescriptionDisplay.setText(session.getDescription());
 		
-		// Change session creator
-		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
 
 		String endDate, endTime;
 		// Change end date
@@ -105,7 +98,7 @@ public class StatisticsInfoPanel extends JPanel {
 		} catch (NullPointerException ex) {
 			endDate = new String("No end date");
 		}
-		endDateDisplay.setText(endDate);		
+		meanDisplay.setText(endDate);		
 		
 		// Change end time
 		try {
@@ -118,15 +111,15 @@ public class StatisticsInfoPanel extends JPanel {
 		} catch (NullPointerException ex) {
 			endTime = new String("No end time");
 		}
-		endTimeDisplay.setText(endTime);
+		medianDisplay.setText(endTime);
 		
 		
 		// Change deck name
 		if (session.isUsingDeck()) {
-			deckDisplay.setText(session.getSessionDeck().getDeckName());
+			stdDevDisplay.setText(session.getSessionDeck().getDeckName());
 		}
 		else {
-			deckDisplay.setText("None");
+			stdDevDisplay.setText("None");
 		}
 	}
 	
@@ -165,54 +158,53 @@ public class StatisticsInfoPanel extends JPanel {
 	}
 	
 	private void setConstraints() {
-		springLayout.putConstraint(SpringLayout.WEST, deckDisplay, 0, SpringLayout.WEST, endDateDisplay);
-		springLayout.putConstraint(SpringLayout.EAST, deckDisplay, -122, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.WEST, endDateDisplay, 75, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, endTimeDisplay, 6, SpringLayout.EAST, lblEndTime);
-		springLayout.putConstraint(SpringLayout.EAST, lblSessionName, -6, SpringLayout.WEST, sessionNameDisplay);
-		springLayout.putConstraint(SpringLayout.WEST, sessionNameDisplay, 105, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblSessionDescription);
+		springLayout.putConstraint(SpringLayout.WEST, stdDevDisplay, 0, SpringLayout.WEST, meanDisplay);
+		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, -122, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, meanDisplay, 75, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, medianDisplay, 6, SpringLayout.EAST, lblMedian);
+		springLayout.putConstraint(SpringLayout.EAST, lblReqName, -6, SpringLayout.WEST, reqNameDisplay);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameDisplay, 105, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblReqDescription);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -16, SpringLayout.NORTH, lblEndDate);
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -16, SpringLayout.NORTH, lblMean);
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -67, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblSessionDescription, 138, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblReqDescription, 138, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, lblSessionName, 11, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblSessionName, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblReqName, 11, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblReqName, 10, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, sessionNameDisplay, 11, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, sessionNameDisplay, 25, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, sessionNameDisplay, 383, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, reqNameDisplay, 11, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqNameDisplay, 25, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, reqNameDisplay, 383, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, lblSessionDescription, 36, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblSessionDescription, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblReqDescription, 36, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblReqDescription, 10, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, lblEndDate, 137, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblEndDate, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblEndDate, 69, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblMean, 137, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblMean, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblMean, 69, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, lblEndTime, 155, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblEndTime, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblEndTime, 69, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblMedian, 155, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblMedian, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblMedian, 69, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, lblDeck, 173, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblDeck, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblDeck, 56, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblStdDev, 173, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblStdDev, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblStdDev, 56, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, endDateDisplay, 137, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, endDateDisplay, 151, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, endDateDisplay, 328, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, meanDisplay, 137, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, meanDisplay, 151, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, meanDisplay, 328, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, endTimeDisplay, 155, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, endTimeDisplay, 169, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, endTimeDisplay, 328, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, medianDisplay, 155, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, medianDisplay, 169, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, medianDisplay, 328, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, deckDisplay, 173, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, deckDisplay, 187, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, deckDisplay, 328, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, stdDevDisplay, 173, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, stdDevDisplay, 187, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, 328, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.SOUTH, sessionCreatorDisplay, 0, SpringLayout.SOUTH, lblSessionName);
-		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);		
+		
 	}
 
 
