@@ -50,7 +50,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
-		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		this.setDragEnabled(true);
 		this.setDropMode(DropMode.ON);
 		this.requirementsToDisplay = displayRequirementIDs;
@@ -78,6 +78,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 				}
 			}
 		});
+		
 	}
 
 	/**
@@ -96,6 +97,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 			Integer reqEstimate = finalEstimates.get(requirementID);
 
 			tableModel.addRow(new Object[]{
+					false,
 					reqName,
 					reqEstimate
 					});	
@@ -139,5 +141,14 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 */
 	public List<Integer> getSelectedRequirements(){
 		return new ArrayList<Integer>();	
+	}
+	
+	public Class getColumnClass(int column){
+		if (column == 0){
+			return boolean.class;
+		}
+		else {
+			return super.getColumnClass(column);
+		}
 	}
 }

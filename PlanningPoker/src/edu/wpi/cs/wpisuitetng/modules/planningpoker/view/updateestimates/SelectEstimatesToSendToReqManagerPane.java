@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,9 @@ import java.util.List;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -29,36 +32,50 @@ import javax.swing.JTable;
  */
 public class SelectEstimatesToSendToReqManagerPane extends JSplitPane {
 	private PlanningPokerSession currentSession;
-	private List<Integer> reqsWithExportedEstimates;
+	private ArrayList<Integer> reqsWithExportedEstimates;
 	private HashMap<Integer, Integer> finalEstimates;
 	private SpringLayout summaryLayout = new SpringLayout();
+	private SpringLayout selectionLayout = new SpringLayout();
+	//private SelectRequirementToUpdateTable selectToUpdateTable;
 	private JTable selectToUpdateTable;
-	private JList noFinalEstimateList;
-	private JTable alreadySentTable;
+	private JList<String> noFinalEstimateList = new JList<String>();
+	private JTable alreadySentTable = new JTable();
 	private JPanel summaryPanel = new JPanel();
-	private Object[][] data = {};
-	private String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
 	private LinkedList<Integer> selectableRequirementIDs;
+	private JPanel selectionPanel = new JPanel();
+	private JButton sendEstimatesButton = new JButton("Send Estimates");
+	private JButton cancelButton = new JButton("Cancel");
 	
 	public SelectEstimatesToSendToReqManagerPane(PlanningPokerSession currentSession){
+		setOrientation(JSplitPane.VERTICAL_SPLIT);
 		this.currentSession = currentSession;
 		reqsWithExportedEstimates = currentSession.getRequirementsWithExportedEstimates();
+		
+		Object[][] data = {};
+		String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
 		
 		// replace with actual final estimates 
 		finalEstimates = new HashMap<Integer, Integer>();
 		selectableRequirementIDs = determineSelectableRequirements();
 		
 		selectToUpdateTable = new SelectRequirementToUpdateTable(data, columnNames, selectableRequirementIDs, finalEstimates);
-
-		buildSummaryPanel();		
 		
-		summaryPanel.setMinimumSize(new Dimension(200, 200));
-		selectToUpdateTable.setMinimumSize(new Dimension(300, 350));
+		buildSummaryPanel();	
+		buildSelectionPanel();
 		
+		selectToUpdateTable.getColumnModel().getColumn(0).setMinWidth(75); 
+		selectToUpdateTable.getColumnModel().getColumn(1).setMinWidth(200); 
+		selectToUpdateTable.getColumnModel().getColumn(2).setMinWidth(150);
+		selectToUpdateTable.getColumnModel().getColumn(2).setMaxWidth(200);
+		summaryPanel.setMinimumSize(new Dimension(200, 100));
+		
+		//selectToUpdateTable.refresh();
 		setTopComponent(summaryPanel);
-		setBottomComponent(selectToUpdateTable);
+		setBottomComponent(selectionPanel);
 		
-		setDividerLocation(250);	
+		selectionPanel.setMinimumSize(new Dimension(100, 100));
+		
+		setDividerLocation(125);	
 	}
 
 	/**
@@ -82,6 +99,28 @@ public class SelectEstimatesToSendToReqManagerPane extends JSplitPane {
 		
 		summaryPanel.add(alreadySentTable);
 		summaryPanel.add(noFinalEstimateList);
+	}
+
+	/**
+	 * 
+	 */
+	private void buildSelectionPanel(){
+		selectionPanel.setLayout(selectionLayout);
+		
+		selectionLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesButton, -10, SpringLayout.SOUTH, selectionPanel);
+		selectionLayout.putConstraint(SpringLayout.EAST, sendEstimatesButton, -10, SpringLayout.EAST, selectionPanel);
+		
+		selectionLayout.putConstraint(SpringLayout.SOUTH, cancelButton, 0, SpringLayout.SOUTH, sendEstimatesButton);
+		selectionLayout.putConstraint(SpringLayout.EAST, cancelButton, -10, SpringLayout.WEST, sendEstimatesButton);
+		
+		selectionLayout.putConstraint(SpringLayout.SOUTH, selectToUpdateTable, -10, SpringLayout.NORTH, sendEstimatesButton);
+		selectionLayout.putConstraint(SpringLayout.NORTH, selectToUpdateTable, 10, SpringLayout.NORTH, selectionPanel);
+		selectionLayout.putConstraint(SpringLayout.WEST, selectToUpdateTable, 10, SpringLayout.WEST, selectionPanel);
+		selectionLayout.putConstraint(SpringLayout.EAST, selectToUpdateTable, -10, SpringLayout.EAST, selectionPanel);
+		
+		selectionPanel.add(sendEstimatesButton);
+		selectionPanel.add(cancelButton);
+		selectionPanel.add(selectToUpdateTable);
 	}
 	
 	

@@ -9,21 +9,30 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
-
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.awt.Dimension;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectRequirementToUpdateTable;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * This is the right half of the overview panel, and contains
@@ -35,9 +44,12 @@ public class OverviewDetailPanel extends JSplitPane {
 	static PlanningPokerSession currentSession;
 	OverviewDetailInfoPanel infoPanel;
 	OverviewReqTable reqTable;
+	SelectRequirementToUpdateTable selectToUpdateTable;
 	JScrollPane tablePanel;
+	boolean onSelectionTable;
 
 	public OverviewDetailPanel () {
+		onSelectionTable = false;
 
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
@@ -73,7 +85,7 @@ public class OverviewDetailPanel extends JSplitPane {
         // Why that's the method name I have no idea
         this.setEnabled(false);
 	}
-	
+
 	/**
 	 * Updates each part of this split panel
 	 * @param session The given session to update each panel with
@@ -96,10 +108,6 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 	
 	public PlanningPokerSession getCurrentSession() {
-<<<<<<< HEAD
-		return currentSession;
-=======
-		
 		return currentSession;
 	}
 
@@ -145,4 +153,101 @@ public class OverviewDetailPanel extends JSplitPane {
 	private static LinkedList<Requirement> getReqsWithExportedEstimatesList() {
 		return currentSession.getReqsWithExportedEstimatesList();
 	}
+	
+	public void makeSelectionTable(){
+		Object[][] data = {};
+		String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
+		HashMap<Integer, Integer> finalEstimates = new HashMap<Integer, Integer>();
+		
+		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements();
+		
+		selectToUpdateTable = new SelectRequirementToUpdateTable(data, columnNames, selectableRequirementIDs, finalEstimates);
+		//setBottomComponent(new JScrollPane(selectToUpdateTable));
+	}
+	
+	public void replaceTable(){
+		onSelectionTable = true;
+		int dividerLocation = getDividerLocation();
+		
+		JPanel selectionPanel = new JPanel();
+		SpringLayout selectionLayout = new SpringLayout();
+		selectionPanel.setLayout(selectionLayout);
+		JButton cancelButton = new JButton("Cancel");
+		JButton sendEstimatesButton = new JButton("Send Estimates");
+		
+		makeSelectionTable();
+		
+		JScrollPane updatePane = new JScrollPane(selectToUpdateTable);
+		
+		selectToUpdateTable.refresh();
+		
+		selectionLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesButton, -10, SpringLayout.SOUTH, selectionPanel);
+		selectionLayout.putConstraint(SpringLayout.EAST, sendEstimatesButton, -10, SpringLayout.EAST, selectionPanel);
+		
+		selectionLayout.putConstraint(SpringLayout.SOUTH, cancelButton, 0, SpringLayout.SOUTH, sendEstimatesButton);
+		selectionLayout.putConstraint(SpringLayout.EAST, cancelButton, -10, SpringLayout.WEST, sendEstimatesButton);
+		
+		selectionLayout.putConstraint(SpringLayout.SOUTH, updatePane, -10, SpringLayout.NORTH, sendEstimatesButton);
+		selectionLayout.putConstraint(SpringLayout.EAST, updatePane, -10, SpringLayout.EAST, selectionPanel);
+		selectionLayout.putConstraint(SpringLayout.WEST, updatePane, 10, SpringLayout.WEST, selectionPanel);
+		selectionLayout.putConstraint(SpringLayout.NORTH, updatePane, 10, SpringLayout.NORTH, selectionPanel);
+		
+		selectionPanel.add(sendEstimatesButton);
+		selectionPanel.add(cancelButton);
+		selectionPanel.add(updatePane);
+		
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				putReqTableBack();
+			}
+		});
+
+		setBottomComponent(selectionPanel);
+		setDividerLocation(dividerLocation);
+        Dimension d = new Dimension(200, 200);
+        selectionPanel.setMinimumSize(d);
+	}
+	
+	private LinkedList<Integer> determineSelectableRequirements(){
+		LinkedList<Requirement> reqsWithExportedEstimates = currentSession.getReqsWithExportedEstimatesList();
+		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
+		for (Integer reqID:currentSession.getRequirementIDs()){
+			if (!(reqsWithExportedEstimates.contains(reqID))){
+				//if (finalEstimates.containsKey(reqID)){
+					selectableRequirements.add(reqID);
+				//}
+			}
+		}
+		return selectableRequirements;
+	}
+	
+	public void putReqTableBack(){
+		onSelectionTable = false;
+		int dividerLocation = getDividerLocation();
+		String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
+		Object[][] data = {};
+		
+		reqTable = new OverviewReqTable(data, columnNames);
+		tablePanel = new JScrollPane(reqTable);
+		
+		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
+		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
+		reqTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
+		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
+		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
+
+		this.setBottomComponent(tablePanel);
+		this.setResizeWeight(0.5); 
+		
+		Dimension d = new Dimension(200, 200);
+	    tablePanel.setMinimumSize(d);	
+		setDividerLocation(dividerLocation);
+		
+		updateReqTable(currentSession);
+	}
+	public boolean isOnSelectionTable(){
+		return onSelectionTable; 
+	}
 }
+
+

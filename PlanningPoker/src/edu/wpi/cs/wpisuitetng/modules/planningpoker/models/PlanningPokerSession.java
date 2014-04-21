@@ -53,9 +53,14 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
+<<<<<<< HEAD
 
 	private List<Integer> requirementsWithExportedEstimatesIDs;
 	private HashMap<Requirement, Integer> finalEstimatesMap;
+=======
+	private HashMap<Requirement, Integer> finalEstimatesMap;
+	private ArrayList<Integer> requirementsWithExportedEstimatesIDs;
+>>>>>>> Add a table for selecting requirements to update in requirement manager that shows up on the bottom half of the overview detail panel when teh send estimates button is clicked
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -100,14 +105,14 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @return the requirementsWithExportedEstimates
 	 */
-	public List<Integer> getRequirementsWithExportedEstimates() {
+	public ArrayList<Integer> getRequirementsWithExportedEstimates() {
 		return requirementsWithExportedEstimatesIDs;
 	}
 	
 	/**
 	 * @param requirementsWithExportedEstimates the requirementsWithExportedEstimates to set
 	 */
-	public void setRequirementsWithExportedEstimates(List<Integer> requirementsWithExportedEstimates) {
+	public void setRequirementsWithExportedEstimates(ArrayList<Integer> requirementsWithExportedEstimates) {
 		this.requirementsWithExportedEstimatesIDs = requirementsWithExportedEstimates;
 	}
 	
