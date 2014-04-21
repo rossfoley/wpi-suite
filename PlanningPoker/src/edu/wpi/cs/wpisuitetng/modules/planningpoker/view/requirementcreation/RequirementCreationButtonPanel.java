@@ -67,17 +67,14 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 		buttonClear = new JButton("Clear");
 		
 
-	/**	try {
+		try {
 		    Image img = ImageIO.read(getClass().getResource("save-icon.png"));
 		    buttonOK.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
 		    buttonClear.setIcon(new ImageIcon(img));
-		    
-		    img = ImageIO.read(getClass().getResource("delete-icon.png"));
-		    buttonDelete.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {}
-		*/
+		
 		
 		this.add(buttonOK);
 		this.add(buttonClear);
