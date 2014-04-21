@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
+port edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -52,7 +52,6 @@ public class EmailAddressModel extends AbstractListModel {
 	}
 	
 	/**
-	 * Adds an email address to the email addresses of the project
 	 * @param emailAddress email address to add to the project
 	 */
 	public void addEmail(EmailAddress emailAddress){
