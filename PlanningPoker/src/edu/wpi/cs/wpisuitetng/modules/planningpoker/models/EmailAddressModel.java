@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -59,7 +60,7 @@ public class EmailAddressModel extends AbstractListModel {
 		emailAddresses.add(emailAddress);
 		try 
 		{
-			AddEmailController.getInstance().addEmailAddress(emailAddress);
+			AddEmailController.getInstance().addEmail(emailAddress);
 		}
 		catch(Exception e)
 		{
