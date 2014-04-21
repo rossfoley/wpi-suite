@@ -157,12 +157,16 @@ public class OverviewDetailPanel extends JSplitPane {
 	public void makeSelectionTable(){
 		Object[][] data = {};
 		String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
+		HashMap<Requirement, Integer> finalEstimatesByRequirement = currentSession.getFinalEstimates();
 		HashMap<Integer, Integer> finalEstimates = new HashMap<Integer, Integer>();
 		
-		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements();
+		for (Requirement r:finalEstimatesByRequirement.keySet()){
+			finalEstimates.put(r.getId(), finalEstimatesByRequirement.get(r));
+		}
+		
+		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements(finalEstimates);
 		
 		selectToUpdateTable = new SelectRequirementToUpdateTable(data, columnNames, selectableRequirementIDs, finalEstimates);
-		//setBottomComponent(new JScrollPane(selectToUpdateTable));
 	}
 	
 	public void replaceTable(){
@@ -176,6 +180,11 @@ public class OverviewDetailPanel extends JSplitPane {
 		JButton sendEstimatesButton = new JButton("Send Estimates");
 		
 		makeSelectionTable();
+
+		selectToUpdateTable.getColumnModel().getColumn(0).setMinWidth(125); 
+		selectToUpdateTable.getColumnModel().getColumn(0).setMaxWidth(125); 
+		selectToUpdateTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
+		selectToUpdateTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
 		JScrollPane updatePane = new JScrollPane(selectToUpdateTable);
 		
@@ -201,6 +210,16 @@ public class OverviewDetailPanel extends JSplitPane {
 				putReqTableBack();
 			}
 		});
+		
+		sendEstimatesButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Integer> selectedReqIDs = selectToUpdateTable.getSelectedReqs();
+				RequirementModel reqs = RequirementModel.getInstance();
+				for (Integer selectedReq:selectedReqIDs){
+					System.out.println(reqs.getRequirement(selectedReq).getName());
+				}
+			}
+		});
 
 		setBottomComponent(selectionPanel);
 		setDividerLocation(dividerLocation);
@@ -208,14 +227,14 @@ public class OverviewDetailPanel extends JSplitPane {
         selectionPanel.setMinimumSize(d);
 	}
 	
-	private LinkedList<Integer> determineSelectableRequirements(){
+	private LinkedList<Integer> determineSelectableRequirements(HashMap<Integer, Integer> finalEstimates){
 		LinkedList<Requirement> reqsWithExportedEstimates = currentSession.getReqsWithExportedEstimatesList();
 		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
 		for (Integer reqID:currentSession.getRequirementIDs()){
 			if (!(reqsWithExportedEstimates.contains(reqID))){
-				//if (finalEstimates.containsKey(reqID)){
+				if (finalEstimates.containsKey(reqID)){
 					selectableRequirements.add(reqID);
-				//}
+				}
 			}
 		}
 		return selectableRequirements;
@@ -245,6 +264,8 @@ public class OverviewDetailPanel extends JSplitPane {
 		
 		updateReqTable(currentSession);
 	}
+	
+	
 	public boolean isOnSelectionTable(){
 		return onSelectionTable; 
 	}
