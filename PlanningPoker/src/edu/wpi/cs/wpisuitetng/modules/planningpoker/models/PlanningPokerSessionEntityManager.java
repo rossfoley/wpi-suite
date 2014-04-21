@@ -175,9 +175,13 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 			case "update-estimate":
 				Estimate estimate = Estimate.fromJson(content);
 				PlanningPokerSession pokerSession = getEntity(s, estimate.getSessionID().toString())[0];
-				pokerSession.addEstimate(estimate);
-				update(s, pokerSession.toJSON());
-				addClientUpdate(pokerSession);
+				if (pokerSession.isOpen()) { 
+					pokerSession.addEstimate(estimate);
+					update(s, pokerSession.toJSON());
+					addClientUpdate(pokerSession);
+				} else {
+					return "Voting for this session has ended!";
+				}
 			default:
 				System.out.println(string);
 		}
