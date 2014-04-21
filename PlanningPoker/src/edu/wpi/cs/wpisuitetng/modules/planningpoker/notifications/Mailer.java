@@ -61,11 +61,14 @@ public class Mailer {
         
         //Information for the sending email
         properties.put("mail.smtp.auth", "true");
+        //Port
         properties.put("mail.smtp.port", "587");
+        //Host server
         properties.put("mail.smtp.host", "smtp.gmail.com");
+        //trust gmail
         properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        //switches to a ttls protected connection
         properties.put("mail.smtp.starttls.enable", "true");
-       // properties.put("mail.smtp.starttls.enable", "true"); 
 
         // Get the default Session object.
         //session = Session.getInstance(properties);
@@ -95,14 +98,12 @@ public class Mailer {
 			emailSender.validate();
 		} catch (AddressException e) {
 			isValidSender = false;
-			//e.printStackTrace();
 		}
 		try {
 			InternetAddress emailRecip = new InternetAddress(recipient);
 			emailRecip.validate();
 		} catch (AddressException e) {
 			isValidReciever = false;
-			//e.printStackTrace();
 		}
 		
 		
