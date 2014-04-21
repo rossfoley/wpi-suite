@@ -61,14 +61,14 @@ public class StatisticsDetailPanel extends JSplitPane {
 		ViewEventController.getInstance().setStatisticsReqTable(reqTable);
 		
 		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(200, 200);
+		Dimension d = new Dimension(100, 100);
         infoPanel.setMinimumSize(d);
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
         
         // Disable the split pane from being movable
         // Why that's the method name I have no idea
-        this.setEnabled(false);
+        //this.setEnabled(false);
 	}
 	
 	public void updatePanel(final PlanningPokerSession session)	{
