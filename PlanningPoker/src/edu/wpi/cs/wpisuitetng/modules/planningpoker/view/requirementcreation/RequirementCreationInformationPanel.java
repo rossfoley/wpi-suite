@@ -59,8 +59,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 public class RequirementCreationInformationPanel extends JScrollPane implements KeyListener,
 ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	private Requirement currentRequirement;
-	private ViewMode viewMode;
-	private RequirementCreationPanel parentPanel;
+	private final RequirementCreationPanel parentPanel;
 
 	private final Iteration storedIteration;
 	private RequirementStatus storedStatus;
@@ -97,17 +96,14 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	/**
 	 * Constructs the requirement information panel
 	 * @param parentPanel the panel this info panel reports to
-	 * @param mode the current view mode.
 	 * @param curr the requirement being edited/created.
 	 */
-	public RequirementCreationInformationPanel(RequirementCreationPanel parentPanel,
-			ViewMode mode, Requirement currRequirement) {
-		this.currentRequirement = currRequirement;
+	public RequirementCreationInformationPanel(RequirementCreationPanel parentPanel, Requirement curr) {
+		currentRequirement = curr;
 		this.parentPanel = parentPanel;
-		this.viewMode = mode;
 		storedIteration = IterationModel.getInstance().getIteration("Backlog");
 		
-		this.setMinimumSize(new Dimension(500,200));
+		this.setMinimumSize(new Dimension(500, 200));
 		this.buildLayout();
 
 		clearInfo();
@@ -116,9 +112,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	/**
 	 * Builds the layout panel.
 	 * 
-	
 	 */
-	@SuppressWarnings("rawtypes")
 	private void buildLayout() {
 		final ScrollablePanel contentPanel = new ScrollablePanel();
 		contentPanel.setLayout(new MigLayout("", "", "shrink"));
@@ -351,7 +345,6 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	 * Fills the fields of the edit requirement panel based on the current
 	 * settings of the edited requirement.
 	 */
-	@SuppressWarnings("unchecked")
 	private void fillFieldsForRequirement() {
 		fillingFieldsForRequirement = true;
 		boxName.setText(currentRequirement.getName());
@@ -510,7 +503,6 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 	{
 		boolean allDisabled = dropdownStatus.getSelectedItem() == RequirementStatus.DELETED;
 		allDisabled |= dropdownStatus.getSelectedItem() == RequirementStatus.COMPLETE;
-		//boolean inProgress = getDropdownStatus().getSelectedItem() == RequirementStatus.INPROGRESS;
 		
 		boolean allChildrenDeleted = true;
 		for(Requirement child : currentRequirement.getChildren())
@@ -750,7 +742,10 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		parentSelector.setVisible(false);
 		chooseParent.setVisible(true);
 	}
-	
+	/**
+	 * Resets the currentRequirement to the desired requirement
+	 * @param currRequirement The requirement to base the current requirement off of
+	 */
 	public void resetRequirement(Requirement currRequirement){
 		currentRequirement = currRequirement;
 		clearInfo();

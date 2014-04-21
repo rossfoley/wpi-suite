@@ -10,18 +10,14 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation;
 
 import java.awt.BorderLayout;
-//import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-//import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementButtonListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
@@ -35,11 +31,10 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 {
 	private final List<RequirementPanelListener> listeners = new LinkedList<RequirementPanelListener>();
 	private Requirement displayRequirement;
-	private final ViewMode viewMode = ViewMode.CREATING;
 	
 	private RequirementCreationInformationPanel infoPanel;
 	private RequirementCreationButtonPanel buttonPanel;
-	private final RequirementSelectionView parent;
+	private final RequirementSelectionView parentPanel;
 	
 	private boolean readyToClose = false;
 	private boolean readyToRemove = true;
@@ -54,7 +49,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	public RequirementCreationPanel(int parentID, RequirementSelectionView myParent)
 	{
 		
-		parent = myParent;
+		parentPanel = myParent;
 		
 		displayRequirement = new Requirement();
 		displayRequirement.setId(-2);
@@ -75,9 +70,9 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	 */
 	private void buildLayout()
 	{
-		buttonPanel = new RequirementCreationButtonPanel(this, viewMode, displayRequirement);
+		buttonPanel = new RequirementCreationButtonPanel(this, displayRequirement);
 		listeners.add(buttonPanel);
-		infoPanel = new RequirementCreationInformationPanel(this, viewMode, displayRequirement);
+		infoPanel = new RequirementCreationInformationPanel(this, displayRequirement);
 		listeners.add(infoPanel);
 		
 		this.setLayout(new BorderLayout());
@@ -92,7 +87,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	public void OKPressed() {
 		if (infoPanel.validateFields(true)) {
 			infoPanel.update();
-			parent.newRequirementCreated();
+			parentPanel.newRequirementCreated();
 			readyToClose = true;
 			displayRequirement = new Requirement();
 			infoPanel.resetRequirement(displayRequirement);
@@ -118,7 +113,7 @@ public class RequirementCreationPanel extends JPanel implements RequirementButto
 	{
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
-		parent.closeCreationPanel();
+		parentPanel.closeCreationPanel();
 	}
 	
 	/**

@@ -9,22 +9,15 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.FontMetrics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -54,7 +47,7 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 	 * @param mode viewmode for the panel
 	 * @param curr current requirement
 	 */
-	public RequirementCreationButtonPanel(RequirementCreationPanel parentPanel, ViewMode mode, Requirement curr)
+	public RequirementCreationButtonPanel(RequirementCreationPanel parentPanel, Requirement curr)
 	{
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		changes = false;
@@ -73,7 +66,10 @@ public class RequirementCreationButtonPanel extends JPanel implements Requiremen
 		    
 		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
 		    buttonClear.setIcon(new ImageIcon(img));
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.out.print("Unable to load image: ");
+			System.out.println(ex.getMessage());
+		}
 		
 		
 		this.add(buttonOK);
