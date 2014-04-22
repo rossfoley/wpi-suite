@@ -59,7 +59,7 @@ public class CreateDeck extends JPanel {
 	private JLabel lblDeckNameError = new JLabel("A deck name is required");
 	private JTextField txtCardValue;
 	private JButton btnAddCard;
-	private JLabel lblAddCardError = new JLabel("Card value must be a positive number");
+	private JLabel lblAddCardError = new JLabel("Value must be positive");
 	private JButton btnRemove;
 	private JButton btnRemoveAll;
 	private JButton btnCreate;

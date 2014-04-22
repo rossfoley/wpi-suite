@@ -158,7 +158,7 @@ public class PlanningPokerSessionTab extends JPanel {
 					closeCreateDeckPanel();
 				}
 				else {
-					newDeckCreated();
+					newDeckCreated(e.getDeck());
 				}
 			}
 		});
@@ -186,7 +186,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	/**
 	 * Close the right divider of the first panel after a new deck has been created
 	 */
-	private void newDeckCreated() {
+	private void newDeckCreated(Deck newDeck) {
 		createDeckPanel = new CreateDeck();
 		createDeckPanel.addDeckListener(new DeckListener() {
 			@Override
@@ -195,10 +195,18 @@ public class PlanningPokerSessionTab extends JPanel {
 					closeCreateDeckPanel();
 				}
 				else {
-					newDeckCreated();
+					newDeckCreated(e.getDeck());
 				}
 			}
 		});
+		// Update deck combo box
+		setDeckDropdown();
+		// Set the default deck name for the session
+		try {
+			comboDeck.setSelectedItem(newDeck.getDeckName());
+			parseDeckDropdowns();
+		} catch (NullPointerException ex) {}; // if the session is being created
+		
 		closeCreateDeckPanel();
 	}
 	
@@ -545,33 +553,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	}
 
 	/**
-	 * Makes the second screen the visible panel
+	 * Makes the input screen the visible panel
 	 */
-	private void displayPanel(JPanel newPanel) {
-		// Remove the old panel
-		this.remove(firstPanel);
-		this.remove(secondPanel);
-
-		// Position the new panel
-		layout.putConstraint(SpringLayout.NORTH, newPanel, 10, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, newPanel, 10, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, newPanel, -10, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, newPanel, -10, SpringLayout.EAST, this);
-
-		// Add the new panel
-		this.add(newPanel);
-
-		// Revalidate and repaint the panels
-		this.revalidate();
-		this.repaint();
-		newPanel.revalidate();
-		newPanel.repaint();
-	}
-	
-	/**
-	 * Makes the second screen the visible panel
-	 */
-	private void displayPanel(JSplitPane newPanel) {
+	private void displayPanel(JComponent newPanel) {
 		// Remove the old panel
 		this.remove(firstPanel);
 		this.remove(secondPanel);
