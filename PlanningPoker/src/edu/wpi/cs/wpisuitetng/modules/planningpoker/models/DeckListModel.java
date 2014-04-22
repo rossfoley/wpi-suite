@@ -32,19 +32,14 @@ public class DeckListModel extends AbstractListModel {
 	
 	private static DeckListModel instance; // static object to allow the decklistmodel 
 	
-	
-	
 	/**
 	 * Constructs an list of decks for the project that contains only the default deck
 	 */
 	private DeckListModel(){
 		existingDecks = new ArrayList<Deck>();
 		this.nextID = 0;
-		// add Default Deck
-		Deck defaultDeck = makeDefaultDeck();
-		addDeck(defaultDeck);
 	}
-	
+
 	/** 
 	 * if the decklistmodel has not yet been created, create it
 	 * @return the instance of the decklistmodel 
