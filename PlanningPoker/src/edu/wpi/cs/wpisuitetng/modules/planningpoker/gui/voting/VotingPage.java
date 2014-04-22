@@ -32,7 +32,7 @@ import java.awt.Dimension;
 
 public class VotingPage extends JSplitPane {
 	private JPanel voteOnReqPanel = new JPanel();
-	
+
 	private VotingManager reqsView;
 
 	private SpringLayout layout = new SpringLayout();
@@ -40,22 +40,22 @@ public class VotingPage extends JSplitPane {
 	private DeckVotingPanel votingPanel;
 
 	private PlanningPokerSession activeSession;
-	
+
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;
-		
+
 		// Disable the vote button in the planning poker module toolbar
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
 
-		
+
 		buildReqPanel(null);
 
-		
+
 		reqsView = new VotingManager(getSessionReqs(), activeSession, ConfigManager.getConfig().getUserName());
 		reqsView.addSelectionListener(new SelectionListener() {
 			@Override
@@ -64,20 +64,20 @@ public class VotingPage extends JSplitPane {
 				buildReqPanel(requirement);
 				JScrollPane tablePanel = new JScrollPane();
 				tablePanel.setViewportView(reqsView);
-				
+
 				tablePanel.setMinimumSize(new Dimension(200, 300));
 				voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
 				setLeftComponent(tablePanel);
 				setRightComponent(voteOnReqPanel);
-				
+
 				setDividerLocation(225);
 			}
-			
+
 		});
 		JScrollPane tablePanel = new JScrollPane();
 		tablePanel.setViewportView(reqsView);
-		
+
 		tablePanel.setMinimumSize(new Dimension(200, 300));
 		voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
@@ -95,7 +95,7 @@ public class VotingPage extends JSplitPane {
 	}
 
 	public JPanel makeReqDetailPanel(Requirement reqToVoteOn) {
-		
+
 		reqDetails = new JPanel();
 		SpringLayout sl_reqDetails = new SpringLayout();
 		reqDetails.setLayout(sl_reqDetails);
@@ -107,7 +107,7 @@ public class VotingPage extends JSplitPane {
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
 		nameField.setEditable(false);
-		
+
 		JTextField descriptionField = new JTextField("");
 		descriptionField.setBackground(Color.WHITE);
 		descriptionField.setPreferredSize(new Dimension(300, 300));
@@ -115,7 +115,7 @@ public class VotingPage extends JSplitPane {
 		descriptionField.setColumns(10);
 
 		boolean estimationComplete;
-		
+
 		if (reqToVoteOn != null) {		
 			nameField.setText(reqToVoteOn.getName());
 			descriptionField.setText(reqToVoteOn.getDescription());
@@ -124,25 +124,25 @@ public class VotingPage extends JSplitPane {
 		else{
 			estimationComplete = false;	
 		}
-				
+
 		boolean userIsModerator = ConfigManager.getConfig().getUserName().equals(activeSession.getSessionCreatorName());
-		
+
 		if (estimationComplete && userIsModerator) {
 			requirementEstimated.setVisible(true);
 
 			sl_reqDetails.putConstraint(SpringLayout.NORTH, requirementEstimated, 10, SpringLayout.NORTH, reqDetails);
 			sl_reqDetails.putConstraint(SpringLayout.HORIZONTAL_CENTER, requirementEstimated, 0, SpringLayout.HORIZONTAL_CENTER, reqDetails);
-	
+
 			sl_reqDetails.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, requirementEstimated);
 			sl_reqDetails.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);	
 		}
 		else{		
 			requirementEstimated.setVisible(false);
-			
+
 			sl_reqDetails.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, reqDetails);
 			sl_reqDetails.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, reqDetails);	
 		}
-		
+
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, nameField, 6, SpringLayout.SOUTH, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.WEST, nameField, 0, SpringLayout.WEST, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, nameField, -10, SpringLayout.EAST, reqDetails);
@@ -154,10 +154,10 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
-		
+
 		System.out.println("currently displayed description:" + descriptionField.getText());
 		System.out.println(descriptionField.getText());
-		
+
 		reqDetails.add(requirementEstimated);
 		reqDetails.add(nameLabel);
 		reqDetails.add(descriptionLabel);
@@ -218,8 +218,7 @@ public class VotingPage extends JSplitPane {
 				}
 			}
 		}
-		
-		
+
 		votingPanel = new DeckVotingPanel(activeSession.getSessionDeck(), estimateFillIn);
 		votingPanel.addEstimateListener(new EstimateListener() {
 			@Override
@@ -246,26 +245,26 @@ public class VotingPage extends JSplitPane {
 							buildReqPanel(requirement);
 							JScrollPane tablePanel = new JScrollPane();
 							tablePanel.setViewportView(reqsView);
-							
+
 							tablePanel.setMinimumSize(new Dimension(200, 300));
 							voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
 							setLeftComponent(tablePanel);
 							setRightComponent(voteOnReqPanel);
-							
+
 							setDividerLocation(225);
 						}
-						
+
 					});
 					JScrollPane tablePanel = new JScrollPane();
 					tablePanel.setViewportView(reqsView);
-					
+
 					tablePanel.setMinimumSize(new Dimension(200, 300));
 					voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
 
 					setLeftComponent(tablePanel);
 					setRightComponent(voteOnReqPanel);
-					
+
 					setDividerLocation(225);
 				}
 			}
@@ -282,9 +281,15 @@ public class VotingPage extends JSplitPane {
 		layout.putConstraint(SpringLayout.EAST, votingPanel, 0, SpringLayout.EAST, reqDetailPanel);
 
 		layout.putConstraint(SpringLayout.SOUTH, reqDetailPanel, -10, SpringLayout.NORTH, votingPanel);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, votingPanel, -250, SpringLayout.SOUTH, voteOnReqPanel);
 
+		if (reqToVoteOn == null) {
+			votingPanel.setVisible(false);
+		}
+		else {
+			votingPanel.setVisible(true);
+		}
 		voteOnReqPanel.add(reqDetailPanel);
 		voteOnReqPanel.add(votingPanel);
 	}

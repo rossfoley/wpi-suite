@@ -143,7 +143,7 @@ public class DeckVotingPanel extends JPanel
 		});
 		
 		// Set default values if this is the first vote
-		if (prevEstimate == null) {
+		if (prevEstimate.getVote() < 0) {
 			estimateField.setValue(new Double(0));
 			submitButton = new JButton("Submit Estimation");
 		}
@@ -211,7 +211,7 @@ public class DeckVotingPanel extends JPanel
 		estimateSubmittedMessage.setVisible(false);
 		
 		// Set default values if this is the first vote
-		if (prevEstimate == null) {
+		if (prevEstimate.getVote() < 0) {
 			submitButton = new JButton("Submit Estimation");
 			prevEstimateCards = new ArrayList<Integer>();
 		}
@@ -219,9 +219,7 @@ public class DeckVotingPanel extends JPanel
 			prevEstimateCards = cardsFromLastEstimate();
 			submitButton = new JButton("Resubmit Estimation");
 		}
-		for (int temp : prevEstimateCards) {
-			System.out.println("PrevCard: " + temp);
-		}
+
 		// Create submission button
 		submitButton.setAlignmentX(CENTER_ALIGNMENT);
 		submitButton.addActionListener(new ActionListener() {
@@ -229,6 +227,7 @@ public class DeckVotingPanel extends JPanel
 			public void actionPerformed(ActionEvent e) {
 				if (validateEstimate()){
 					fireEstimateEvent();
+					clearSelectedCards();
 				}
 			}
 		});
@@ -258,7 +257,12 @@ public class DeckVotingPanel extends JPanel
 		listOfCardButtons = new ArrayList<JButton>();
 		for (int i = 0; i < numbersInDeck.size(); i++) {
 			JButton cardButton;
-			cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
+			if (prevEstimateCards.contains(numbersInDeck.get(i))) {
+				cardButton = createCardButtons(numbersInDeck.get(i), origin, true);
+			}
+			else {
+				cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
+			}
 			layeredDeckPane.add(cardButton, new Integer(i));
 			listOfCardButtons.add(cardButton);
 			origin.x += cardOffset;
@@ -306,6 +310,8 @@ public class DeckVotingPanel extends JPanel
 		// Add the control and deck sub-panels to the overall panel
 		add(layeredDeckPane);
 		add(controlPanel);
+		
+		updateCardEstimateSum();
 	}
 
 	
@@ -367,8 +373,12 @@ public class DeckVotingPanel extends JPanel
 				userEstimate += Integer.parseInt(card.getName());
 			}
 			// If card was removed from estimate
-			else if (userEstimate >= 0) {
+			else {
 				userEstimate -= Integer.parseInt(card.getName());
+			}
+			// Make sure sum is non-negative
+			if (userEstimate < 0) {
+				userEstimate = 0;
 			}
 		}
 		else {	// If only one card can be selected
@@ -381,6 +391,19 @@ public class DeckVotingPanel extends JPanel
 			else {	// If it was set, don't set
 				clearSelectedCards();
 				userEstimate = 0;
+			}
+		}
+		estimateField.setValue(new Integer((int) userEstimate));
+	}
+	
+	/**
+	 * Updates the sum of selected cards
+	 */
+	private void updateCardEstimateSum() {
+		userEstimate = 0;
+		for (JButton card : listOfCardButtons) {
+			if (isCardSelected(card)) {
+				userEstimate += Integer.parseInt(card.getName());
 			}
 		}
 		estimateField.setValue(new Integer((int) userEstimate));
@@ -524,6 +547,12 @@ public class DeckVotingPanel extends JPanel
 		if (numbersInEstimate.size() > 1) {
 			numbersInEstimate.remove(new Integer(0));
 		}
+		// Some decks are ony allowed to select 1 card
+		if ((!votingDeck.getAllowMultipleSelections()) && (numbersInEstimate.size() > 1)) {
+			int highCard = numbersInEstimate.get(numbersInEstimate.size() - 1);
+			numbersInEstimate = new ArrayList<Integer>();
+			numbersInEstimate.add(highCard);
+		}
 		
 		return numbersInEstimate;
 	}
@@ -544,7 +573,6 @@ public class DeckVotingPanel extends JPanel
 	 */
 	public boolean validateEstimate() {
 		if (userEstimate < 0) {
-			System.out.println("invalid number entered");
 			estimateFieldErrorMessage.setText("Please enter a positive number");
 			estimateFieldErrorMessage.setVisible(true);
 			estimateFieldErrorMessage.revalidate();
@@ -553,7 +581,6 @@ public class DeckVotingPanel extends JPanel
 			repaint();
 			return false;
 		}
-		System.out.println("valid number entered");
 		estimateFieldErrorMessage.setText("");
 		estimateFieldErrorMessage.setVisible(false);
 		estimateFieldErrorMessage.revalidate();

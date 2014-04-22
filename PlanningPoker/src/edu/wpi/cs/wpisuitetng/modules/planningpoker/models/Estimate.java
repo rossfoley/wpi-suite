@@ -30,6 +30,7 @@ public class Estimate {
 	private UUID sessionID;
 	
 	public Estimate() {
+		this.vote = -1;	// Initialize as an invalid vote
 		
 	}
 	
