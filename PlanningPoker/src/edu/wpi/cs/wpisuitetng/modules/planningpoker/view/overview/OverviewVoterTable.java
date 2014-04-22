@@ -3,8 +3,10 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.List;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DropMode;
@@ -18,20 +20,25 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-public class OverviewVoterTable extends JTable{
+public class OverviewVoterTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	private OverviewReqTable newTable;
 	private JScrollPane tablePanel;
+	private PlanningPokerSession planningPokerSession;
 	
 	/**
 	 * Sets initial table view
@@ -39,6 +46,7 @@ public class OverviewVoterTable extends JTable{
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
 	public OverviewVoterTable(Object[][] data, String[] columnNames) {
+		this.planningPokerSession = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
@@ -51,45 +59,62 @@ public class OverviewVoterTable extends JTable{
 		setFillsViewportHeight(true);
 		initialized = false;
 
-		newTable = new OverviewReqTable(data, columnNames);
-		tablePanel = new JScrollPane(newTable);
-		
-		newTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		newTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote		
-		// Put the info panel and table panel into the split pane
-	
-		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(200, 200);
-        tablePanel.setMinimumSize(d);
-        //add(tablePanel, BorderLayout.EAST);
+	}
+	public List<String> getAllVoterNamesList() {
+		List<String> allVoters = new ArrayList<String>();
+		GetUserController.getInstance().retrieveUsers();
+		List<User> user = UserModel.getInstance().getUsers();
+		for(User u : user) {
+			try {
+				allVoters.add(u.getUsername());
+			} catch (Exception E) {
+				System.out.println("User is null");
+			}
+		}
+		return allVoters;
 	}
 	
-	public void populateVotePanel(PlanningPokerSession session) {
-		// TODO Implement Your Vote, Estimate columns
-		// Currently is 0 for every estimate
-		
-		Set<Integer> requirementIDs = session.getRequirementIDs();
-		RequirementModel reqs = RequirementModel.getInstance();
-		int vote = 0;
-		int estimate = 0;
-
-		// clear the table
-		tableModel.setRowCount(0);		
-
-		for (Integer requirementID : requirementIDs) {
-			Requirement req = reqs.getRequirement(requirementID);
-			String reqName = req.getName();
-			vote = 0;
-			for (Estimate e : session.getEstimates()) {
-				if (e.getRequirementID() == requirementID && e.getOwnerName().equals(ConfigManager.getConfig().getUserName())) {
-					vote = e.getVote();
+	public List<Requirement> getSessionReqs(){
+		Set<Integer> sessionReqIds = planningPokerSession.getRequirementIDs();
+		List<Requirement> sessionReqs = new LinkedList<Requirement>();
+		for (Integer id : sessionReqIds) {
+			Requirement current = RequirementModel.getInstance().getRequirement(id);
+			sessionReqs.add(current);			
+		}
+		return sessionReqs;
+	}
+	public void populateVotePanel() {
+		System.out.println("POPULATEVOTEDPANEL");
+		tableModel.setRowCount(0);	
+		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
+		RequirementModel reqs = RequirementModel.getInstance();	
+		List<String> allUserList = getAllVoterNamesList();
+		List<Requirement> ListOfRequirements =  getSessionReqs();
+		for (Requirement r : ListOfRequirements) {
+			int reqID = r.getId();
+			String reqName = r.getName();
+			boolean vote = false;
+			for (int i = 0; i < planningPokerSession.getEstimateVoterList().size(); i++) {
+				if(planningPokerSession.getEstimateVoterList().get(i).getRequirementID() == r.getId()) {
+					for (String s : allUserList) {
+						String username = s;
+						if(planningPokerSession.getEstimateVoterList().get(i).getVoterNameList().contains(s)) {
+							vote = true; //mean voted
+							tableModel.addRow(new Object[]{
+									reqID,
+									reqName,
+									username,
+									vote});	
+						} else {
+							tableModel.addRow(new Object[]{
+									reqID,
+									reqName,
+									username,
+									vote});	
+						}
+					}
 				}
 			}
-
-			tableModel.addRow(new Object[]{
-					reqName,
-					vote,
-					estimate});	
 		}
 	}
 	public void paintComponent(Graphics g)
