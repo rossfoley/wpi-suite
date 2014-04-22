@@ -235,6 +235,7 @@ public class DeckVotingPanel extends JPanel
 			public void actionPerformed(ActionEvent e) {
 				if (validateEstimate()){
 					fireEstimateEvent();
+					clearSelectedCards();
 				}
 			}
 		});
