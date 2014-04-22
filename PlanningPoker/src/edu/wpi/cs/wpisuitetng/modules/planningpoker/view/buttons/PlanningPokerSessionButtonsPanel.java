@@ -199,10 +199,10 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	}
 	
 	public void disableStatisticsButton() {
-		endVoteButton.setEnabled(false);
+		statisticsButton.setEnabled(false);
 	}
 	
 	public void enableStatisticsButton() {
-		endVoteButton.setEnabled(true);
+		statisticsButton.setEnabled(true);
 	}
 }
