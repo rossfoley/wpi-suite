@@ -48,7 +48,7 @@ public class StatisticsReqTable extends JTable {
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	
+	public HashMap<Integer, Integer> tableRows;
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill StatisticsReqTable
@@ -101,6 +101,7 @@ public class StatisticsReqTable extends JTable {
 		int vote = 0;
 		String estimate;
 		List<Estimate> estimates = session.getEstimates();
+		
 				
 		// clear the table
 		tableModel.setRowCount(0);		
@@ -108,6 +109,7 @@ public class StatisticsReqTable extends JTable {
 		for (Integer requirementID : requirementIDs) {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
+			int rowID = tableModel.getRowCount() + 1;
 			vote = 0;
 			for (Estimate e : estimates) {
 				if (e.getRequirementID() == requirementID && e.getOwnerName().equals(ConfigManager.getConfig().getUserName())) {
@@ -121,6 +123,8 @@ public class StatisticsReqTable extends JTable {
 					reqName,
 					vote,
 					estimate});	
+			
+			tableRows.put(rowID, requirementID);
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
