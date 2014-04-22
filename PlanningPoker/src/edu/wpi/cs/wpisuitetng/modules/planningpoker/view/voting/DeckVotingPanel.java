@@ -143,7 +143,6 @@ public class DeckVotingPanel extends JPanel
 		});
 		
 		// Set default values if this is the first vote
-		System.out.println("Voting Prev estimate: " + prevEstimate.getVote());
 		if (prevEstimate.getVote() < 0) {
 			estimateField.setValue(new Double(0));
 			submitButton = new JButton("Submit Estimation");
@@ -212,7 +211,6 @@ public class DeckVotingPanel extends JPanel
 		estimateSubmittedMessage.setVisible(false);
 		
 		// Set default values if this is the first vote
-		System.out.println("Voting Prev estimate: " + prevEstimate.getVote());
 		if (prevEstimate.getVote() < 0) {
 			submitButton = new JButton("Submit Estimation");
 			prevEstimateCards = new ArrayList<Integer>();
@@ -221,9 +219,7 @@ public class DeckVotingPanel extends JPanel
 			prevEstimateCards = cardsFromLastEstimate();
 			submitButton = new JButton("Resubmit Estimation");
 		}
-		for (int temp : prevEstimateCards) {
-			System.out.println("PrevCard: " + temp);
-		}
+
 		// Create submission button
 		submitButton.setAlignmentX(CENTER_ALIGNMENT);
 		submitButton.addActionListener(new ActionListener() {
@@ -261,7 +257,12 @@ public class DeckVotingPanel extends JPanel
 		listOfCardButtons = new ArrayList<JButton>();
 		for (int i = 0; i < numbersInDeck.size(); i++) {
 			JButton cardButton;
-			cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
+			if (prevEstimateCards.contains(numbersInDeck.get(i))) {
+				cardButton = createCardButtons(numbersInDeck.get(i), origin, true);
+			}
+			else {
+				cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
+			}
 			layeredDeckPane.add(cardButton, new Integer(i));
 			listOfCardButtons.add(cardButton);
 			origin.x += cardOffset;
@@ -526,6 +527,12 @@ public class DeckVotingPanel extends JPanel
 		// If estimate was not 0, remove the 0 card
 		if (numbersInEstimate.size() > 1) {
 			numbersInEstimate.remove(new Integer(0));
+		}
+		// Some decks are ony allowed to select 1 card
+		if ((!votingDeck.getAllowMultipleSelections()) && (numbersInEstimate.size() > 1)) {
+			int highCard = numbersInEstimate.get(numbersInEstimate.size() - 1);
+			numbersInEstimate = new ArrayList<Integer>();
+			numbersInEstimate.add(highCard);
 		}
 		
 		return numbersInEstimate;
