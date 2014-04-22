@@ -25,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionM
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.ProjectModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -36,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.database.*;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -58,6 +60,10 @@ public class VotingPage extends JSplitPane {
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
+
+	private OverviewVoterTable thetable;
+
+	private JScrollPane thetablePanel;
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;
@@ -108,21 +114,25 @@ public class VotingPage extends JSplitPane {
 		reqDetails = new JPanel();
 		SpringLayout sl_reqDetails = new SpringLayout();
 		reqDetails.setLayout(sl_reqDetails);
-		JScrollPane tablePanel2;
-		OverviewReqTable newTable2;
-
 		JLabel nameLabel = new JLabel("Requirement Name:");
 		JLabel descriptionLabel = new JLabel("Requirement Description:");
 		JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
 		
-		String[] columnNames = {"User that have voted"};
-		Object[][] data = {};
-
-		newTable2 = new OverviewReqTable(data, columnNames);
-		tablePanel2 = new JScrollPane(newTable2);
-
-		newTable2.getColumnModel().getColumn(0).setMinWidth(100); // Users who have voted
 		
+		//
+		String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
+		Object[][] data = {};
+		thetable = new OverviewVoterTable(data, columnNames);
+		thetablePanel = new JScrollPane(thetable);
+		thetable.getColumnModel().getColumn(0).setMinWidth(20); // Requirement ID
+		thetable.getColumnModel().getColumn(1).setMinWidth(150); // Requirement Name	
+		thetable.getColumnModel().getColumn(2).setMinWidth(100); // Username
+		thetable.getColumnModel().getColumn(3).setMinWidth(50); // Votes
+		Dimension d = new Dimension(200, 200);
+        thetablePanel.setMinimumSize(d);
+        thetable.populateVotePanel();
+        
+		//
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
 		nameField.setEditable(false);
@@ -175,12 +185,9 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
 		
-		sl_reqDetails.putConstraint(SpringLayout.WEST, tablePanel2, 10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
-		sl_reqDetails.putConstraint(SpringLayout.EAST, tablePanel2, -10, SpringLayout.EAST, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.WEST, thetablePanel, 10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.EAST, thetablePanel, -10, SpringLayout.EAST, reqDetails);
 		
-		Dimension d = new Dimension(100, 100);
-		tablePanel2.setMinimumSize(d);
-		//add(tablePanel2, sl_reqDetails.EAST);
 		
 		System.out.println("currently displayed description:" + descriptionField.getText());
 		System.out.println(descriptionField.getText());
@@ -190,7 +197,7 @@ public class VotingPage extends JSplitPane {
 		reqDetails.add(descriptionLabel);
 		reqDetails.add(nameField);
 		reqDetails.add(descriptionField);
-		reqDetails.add(tablePanel2);
+		reqDetails.add(thetablePanel);
 
 		return reqDetails; 
 	}

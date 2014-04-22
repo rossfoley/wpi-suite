@@ -198,33 +198,7 @@ public class DeckVotingPanel extends JPanel
 		subPanel.add(submitButton);
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
-
-		//
-		String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
-		Object[][] data = {};
-		thetable = new OverviewVoterTable(data, columnNames);
-		thetablePanel = new JScrollPane(thetable);
-		thetable.getColumnModel().getColumn(0).setMinWidth(20); // Requirement ID
-		thetable.getColumnModel().getColumn(1).setMinWidth(150); // Requirement Name	
-		thetable.getColumnModel().getColumn(2).setMinWidth(100); // Username
-		thetable.getColumnModel().getColumn(3).setMinWidth(50); // Votes
-
-		
-		newTable = new OverviewReqTable(data, columnNames);
-		tablePanel = new JScrollPane(newTable);
-		
-
-		// Put the info panel and table panel into the split pane
-	
-		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(200, 200);
-        tablePanel.setMinimumSize(d);
-        thetablePanel.setMinimumSize(d);
-        thetable.populateVotePanel();
-        add(thetablePanel, BorderLayout.EAST);
-//        add(tablePanel, BorderLayout.EAST);
-
-		add(subPanel, BorderLayout.WEST);				
+		add(subPanel, BorderLayout.CENTER);				
 	}
 	
 
