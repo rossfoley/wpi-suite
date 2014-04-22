@@ -838,8 +838,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		// If fields were changed, confirm with user that they want the tab removed.
 		else {
 			int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			
-			return (result == 0);
+			if (result == 0) {
+				restoreInformation();
+				return true;
+			}
+			return false;
 		}
 		
 	}
@@ -913,5 +916,13 @@ public class PlanningPokerSessionTab extends JPanel {
 	//closes this panel
 	public void closePanel() {
 		ViewEventController.getInstance().removeTab(this);
+	}
+	
+	/**
+	 * restores the original session 
+	 * used for if edits have been made, but cancel has been hit
+	 */
+	public void restoreInformation(){
+		pokerSession.copyFrom(unmodifiedSession);
 	}
 }
