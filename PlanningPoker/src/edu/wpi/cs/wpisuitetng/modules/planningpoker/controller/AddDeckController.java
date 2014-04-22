@@ -58,20 +58,15 @@ public class AddDeckController {
 	 * @param defaultDeck the default deck for this project
 	 */
 	public void addDefaultDeck() {
-		System.out.println("Starting the network request for default deck");
 		final Deck defaultDeck = DeckListModel.getInstance().makeDefaultDeck();
 		final Request request = Network.getInstance()
 				.makeRequest("Advanced/planningpoker/deck/add-default-deck", HttpMethod.POST);
-		request.setBody(defaultDeck.toJSON()); // put the new session in the body of the request
+		request.setBody(defaultDeck.toJSON());
 		request.addObserver(new RequestObserver() {
 			
 			@Override
 			public void responseSuccess(IRequest iReq) {
-				System.out.println("Response success for default deck");
-				if (iReq.getResponse().getBody().equals("true")) {
-					System.out.println("The response was true for default deck");
-					GetDeckController.getInstance().retrieveDecks();
-				}
+				GetDeckController.getInstance().retrieveDecks();
 			}
 			
 			@Override
