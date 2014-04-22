@@ -135,7 +135,10 @@ public class VotingPage extends JSplitPane {
 		thetable.getColumnModel().getColumn(3).setMinWidth(50); // Votes
 		Dimension d = new Dimension(200, 200);
         thetablePanel.setMinimumSize(d);
-        thetable.populateVotePanel();
+        /////
+        /////
+        
+        thetable.populateVotePanelWithEstimateVotersList();
         
 		//
 		JTextField nameField = new JTextField();
@@ -257,6 +260,18 @@ public class VotingPage extends JSplitPane {
 		} else {
 			activeSession.getVoterNameList().add(username);
 			System.out.println(username + " has voted and is added to the list");
+		}
+		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
+	}
+
+	public void addVoterNameToEstimateVotersList(EstimateVoters ev) {
+		System.out.println("addVoterNameToEstimateVotersList");
+		if (activeSession.getEstimateVoterList().contains(ev.getVoterUsername())) {
+			System.out.println("Username exist");
+		} else {
+			activeSession.getEstimateVoterList().add(ev);
+			System.out.println(ev.getVoterUsername() + " has voted and is added to the list");
 		}
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
@@ -420,10 +435,12 @@ public class VotingPage extends JSplitPane {
 					estimateVoter.setRequirementID(requirement.getId());
 					estimateVoter.setSessionID(activeSession.getID());
 					estimateVoter.setVote((int)e.getEstimate());
+					estimateVoter.setVoterUsername(getVoterName());
 					//writng here
 					//addVoterNameToList(ConfigManager.getConfig().getUserName());
 					//getVoterName();
 					//getAllVoterNames();
+					addVoterNameToEstimateVotersList(estimateVoter);
 					addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
 					displayAllEstimateVotersList();
 					//displayVoters();

@@ -23,6 +23,7 @@ public class EstimateVoters extends AbstractModel {
 	public List<String> VoterNameList = new ArrayList<String>();
 	
 	public EstimateVoters() {
+		voterUsername = new String();
 	}
 	
 	public List<String> getVoterNameList() {
@@ -127,5 +128,19 @@ public class EstimateVoters extends AbstractModel {
 	public Boolean identify(Object o) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @return the voterUsername
+	 */
+	public String getVoterUsername() {
+		return voterUsername;
+	}
+
+	/**
+	 * @param voterUsername the voterUsername to set
+	 */
+	public void setVoterUsername(String voterUsername) {
+		this.voterUsername = voterUsername;
 	}
 }
