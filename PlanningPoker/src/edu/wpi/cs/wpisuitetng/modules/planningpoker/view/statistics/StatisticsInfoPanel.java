@@ -45,6 +45,7 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel medianDisplay;
 	JLabel stdDevDisplay;
 	SpringLayout springLayout;
+	int currentReqID;
 	
 	public StatisticsInfoPanel(PlanningPokerSession session) {
 
@@ -62,7 +63,7 @@ public class StatisticsInfoPanel extends JPanel {
 		stdDevDisplay = new JLabel();
 		reqDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
-		
+
 
 		setLayout(springLayout);
 		scrollPane.setViewportView(reqDescriptionDisplay);
@@ -85,73 +86,31 @@ public class StatisticsInfoPanel extends JPanel {
 	}
 	
 	public void refresh(PlanningPokerSession session) {
-
-		// temporary empty requirement to make the build work
-		//Requirement req = new Requirement();
-		//System.out.println("This print means that the refresh function in StatisticsInfoPannel needs fixing");
-		
-		// Change session name
-<<<<<<< HEAD
-		//reqNameDisplay.setText(session.getName());
-		
-		//meanDisplay.setText(this.formatMean(sesssion.getR));
-=======
-		reqNameDisplay.setText(req.getName());
->>>>>>> Refresh function for StatisticsInfoPannel modified to show requirement information but still needs work. PlanningPokerSession now has a HashMap which holds statistics and estimates for requirements for which estimation is complete
 		
 		// Change session description
 		reqDescriptionDisplay.setText(session.getDescription());
 		
 		
 		//RequirementEstimateStats reqStats = new RequirementEstimateStats();
-		String strMean, strMedian;
-		// Change mean (not fully implemented yet)
-		strMean = "mean value not avalible";
-		meanDisplay.setText(strMean);
-		
-		// Change median (not fully implemented yet)
-		strMedian = "median value not avalible";
-		medianDisplay.setText(strMedian);
-	}
-	
-	public String formatMinute(GregorianCalendar date){
-		String minute = "";
-		if(date.get(GregorianCalendar.MINUTE) == 0){
-			minute = Integer.toString(date.get(GregorianCalendar.MINUTE)) + "0";
-		}
-		else{
-			minute = Integer.toString(date.get(GregorianCalendar.MINUTE));
-		}
-		return minute;
-	}
-	
-	public String formatHour(GregorianCalendar date){
-		String hour = "";
-		if(date.get(GregorianCalendar.HOUR) == 0){
-			hour = "12";
-		}
-		else{
-			hour = Integer.toString(date.get(GregorianCalendar.HOUR));
-		}
-		return hour;	
+
 	}
 
-	public String formatAM_PM(GregorianCalendar date){
-		String AM_PM = "";
-		if(date.get(GregorianCalendar.AM_PM) == 0){
-			AM_PM = "AM";
-		}
-		else{
-			AM_PM = "PM";
-		}
-		return AM_PM;
-	}
 	
+	//format estimate mean to a string
 	public String formatMean(RequirementEstimateStats stats){
 		String mean = "";
 		mean = Double.toString(stats.getMean());
 		return mean;
 	}
+	//format estimate median to a string
+	public String formatMedian(RequirementEstimateStats stats){
+		String median = "";
+		median = Double.toString(stats.getMedian());
+		return median;
+	}
+	
+	
+	
 	private void setConstraints() {
 		springLayout.putConstraint(SpringLayout.WEST, stdDevDisplay, 0, SpringLayout.WEST, meanDisplay);
 		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, -122, SpringLayout.EAST, this);
