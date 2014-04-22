@@ -914,4 +914,12 @@ public class PlanningPokerSessionTab extends JPanel {
 	public void closePanel() {
 		ViewEventController.getInstance().removeTab(this);
 	}
+	
+	/**
+	 * restores the original session 
+	 * used for if edits have been made, but cancel has been hit
+	 */
+	public void restoreInformation(){
+		pokerSession.copyFrom(unmodifiedSession);
+	}
 }
