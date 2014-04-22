@@ -41,20 +41,16 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 		createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		// Add image icon for the create planning poker session button
 		try {
-			Image img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/new_req.png"));
+			Image img = ImageIO.read(getClass().getResource("new_req.png"));
 			createButton.setIcon(new ImageIcon(img));
 
-			img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/edit.png"));
+			img = ImageIO.read(getClass().getResource("edit.png"));
 			editButton.setIcon(new ImageIcon(img));
 			
-			img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/voting-icon.png"));
+			img = ImageIO.read(getClass().getResource("voting-icon.png"));
 			voteButton.setIcon(new ImageIcon(img));
 			
-			img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/end-icon.png"));
+			img = ImageIO.read(getClass().getResource("end-icon.png"));
 			endVoteButton.setIcon(new ImageIcon(img));
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
