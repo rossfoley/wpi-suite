@@ -147,12 +147,10 @@ public class DeckVotingPanel extends JPanel
 		if (prevEstimate.getVote() < 0) {
 			estimateField.setValue(new Double(0));
 			submitButton = new JButton("Submit Estimation");
-			System.out.println("First vote");
 		}
 		else {	// set default values if this is a re-vote
 			submitButton = new JButton("Resubmit Estimation");
 			estimateField.setValue(new Double(prevEstimate.getVote()));
-			System.out.println("Second vote");
 		}
 		submitButton.setPreferredSize(new Dimension(50, 26));
 		submitButton.addActionListener(new ActionListener() {
@@ -218,12 +216,10 @@ public class DeckVotingPanel extends JPanel
 		if (prevEstimate.getVote() < 0) {
 			submitButton = new JButton("Submit Estimation");
 			prevEstimateCards = new ArrayList<Integer>();
-			System.out.println("First estimate");
 		}
 		else {	// Set the default values if this is a re-vote
 			prevEstimateCards = cardsFromLastEstimate();
 			submitButton = new JButton("Resubmit Estimation");
-			System.out.println("Second estimate");
 		}
 		for (int temp : prevEstimateCards) {
 			System.out.println("PrevCard: " + temp);
@@ -551,7 +547,6 @@ public class DeckVotingPanel extends JPanel
 	 */
 	public boolean validateEstimate() {
 		if (userEstimate < 0) {
-			System.out.println("invalid number entered");
 			estimateFieldErrorMessage.setText("Please enter a positive number");
 			estimateFieldErrorMessage.setVisible(true);
 			estimateFieldErrorMessage.revalidate();
@@ -560,7 +555,6 @@ public class DeckVotingPanel extends JPanel
 			repaint();
 			return false;
 		}
-		System.out.println("valid number entered");
 		estimateFieldErrorMessage.setText("");
 		estimateFieldErrorMessage.setVisible(false);
 		estimateFieldErrorMessage.revalidate();
