@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -77,7 +78,7 @@ public class DeckVotingPanel extends JPanel
 	private transient Vector<EstimateListener> listeners;
 	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
 
-	
+
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
 	 * @param votingDeck the deck to use when voting 
@@ -191,13 +192,12 @@ public class DeckVotingPanel extends JPanel
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		thisLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		
+	
 		add(estimateSubmittedMessage);
 		add(estimateFieldErrorMessage);
 		add(submitButton);
 		add(estimateLabel);
 		add(estimateField);
-
 
 	}
 	
@@ -213,7 +213,7 @@ public class DeckVotingPanel extends JPanel
 		
 		estimateSubmittedMessage.setForeground(Color.BLUE);
 		estimateSubmittedMessage.setVisible(false);
-		
+
 		// Set default values if this is the first vote
 		if (prevEstimate.getVote() < 0) {
 			submitButton = new JButton("Submit Estimation");
