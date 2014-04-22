@@ -56,9 +56,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		initialized = false;
 		// Disable all toolbar buttons on initialization
 		try {
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
 		} catch (NullPointerException ex) {} // Do nothing if the toolbar has not been instantiated yet
 	}
 	
@@ -164,6 +165,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 					// If session is open, allow voting
 					if (session.isOpen()) {
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
+					}
+					
+					// If the session is ended or closed, allow the user to view statistics
+					if (session.isEnded() || session.isClosed()) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
 					}
 					
 					displaySession(session);
