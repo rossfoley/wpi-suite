@@ -68,6 +68,8 @@ public class StatisticsDetailPanel extends JSplitPane {
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
         
+        this.updatePanel();
+        
 	}
 	
 	public void updatePanel()	{
@@ -87,6 +89,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 
 	private void updateReqTable(PlanningPokerSession session) {
 		reqTable.refresh(session);
+		
 	}
 
 	private void setButtonVisibility(PlanningPokerSession session) {
