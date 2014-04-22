@@ -87,8 +87,8 @@ public class StatisticsInfoPanel extends JPanel {
 	public void refresh(PlanningPokerSession session) {
 
 		// temporary empty requirement to make the build work
-		Requirement req = new Requirement();
-		System.out.println("This print means that the refresh function in StatisticsInfoPannel needs fixing");
+		//Requirement req = new Requirement();
+		//System.out.println("This print means that the refresh function in StatisticsInfoPannel needs fixing");
 		
 		// Change session name
 <<<<<<< HEAD
@@ -100,7 +100,7 @@ public class StatisticsInfoPanel extends JPanel {
 >>>>>>> Refresh function for StatisticsInfoPannel modified to show requirement information but still needs work. PlanningPokerSession now has a HashMap which holds statistics and estimates for requirements for which estimation is complete
 		
 		// Change session description
-		reqDescriptionDisplay.setText(req.getDescription());
+		reqDescriptionDisplay.setText(session.getDescription());
 		
 		
 		//RequirementEstimateStats reqStats = new RequirementEstimateStats();
