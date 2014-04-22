@@ -197,4 +197,12 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	public void enableEndVoteButton() {
 		endVoteButton.setEnabled(true);
 	}
+	
+	public void disableStatisticsButton() {
+		endVoteButton.setEnabled(false);
+	}
+	
+	public void enableStatisticsButton() {
+		endVoteButton.setEnabled(true);
+	}
 }

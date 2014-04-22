@@ -34,8 +34,9 @@ public class StatisticsDetailPanel extends JSplitPane {
 	StatisticsInfoPanel infoPanel;
 	JScrollPane tablePanel;
 
-	public StatisticsDetailPanel () {
+	public StatisticsDetailPanel (PlanningPokerSession session) {
 
+		this.currentSession = session;
 		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
 		String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
@@ -67,21 +68,17 @@ public class StatisticsDetailPanel extends JSplitPane {
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
         
-        // Disable the split pane from being movable
-        // Why that's the method name I have no idea
-        //this.setEnabled(false);
 	}
 	
-	public void updatePanel(final PlanningPokerSession session)	{
+	public void updatePanel()	{
 
-		this.currentSession = session;
 		
 		// update each part of the split panel
-		updateInfoPanel(session);
-		updateReqTable(session);
+		updateInfoPanel(currentSession);
+		updateReqTable(currentSession);
 		
 		// change the visibility of the top buttons
-		setButtonVisibility(session);
+		setButtonVisibility(currentSession);
 	}	
 	
 	private void updateInfoPanel(PlanningPokerSession session) {
@@ -107,4 +104,6 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		return this.currentSession;
 	}
+	
+	
 }
