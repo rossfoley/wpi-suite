@@ -50,7 +50,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	private List<String> VoterNameList;
+	public List<String> VoterNameList;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -469,6 +469,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
+		this.VoterNameList = toCopyFrom.VoterNameList;
 	}
 
 	/**

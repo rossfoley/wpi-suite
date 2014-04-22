@@ -221,12 +221,15 @@ public class VotingPage extends JSplitPane {
 	 * @param id
 	 */
 	public void addVoterNameToList(String username) {
+		System.out.println(activeSession.getVoterNameList().size() + " is the size");
 		if (activeSession.getVoterNameList().contains(username)) {
 			System.out.println("Username exist");
 		} else {
 			activeSession.getVoterNameList().add(username);
-			System.out.println(username + "has voted and is annded to the list");
+			System.out.println(username + " has voted and is added to the list");
 		}
+		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
 
 	/**
@@ -359,7 +362,7 @@ public class VotingPage extends JSplitPane {
 					setRightComponent(voteOnReqPanel);
 
 					setDividerLocation(225);
-					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
+					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 				}
 			}
 		});
