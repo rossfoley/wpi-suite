@@ -87,8 +87,8 @@ public class StatisticsInfoPanel extends JPanel {
 	public void refresh(PlanningPokerSession session) {
 
 		// temporary empty requirement to make the build work
-		Requirement req = new Requirement();
-		System.out.println("This print means that the refresh function in StatisticsInfoPannel needs fixing");
+		//Requirement req = new Requirement();
+		//System.out.println("This print means that the refresh function in StatisticsInfoPannel needs fixing");
 		
 		// Change session name
 		//reqNameDisplay.setText(session.getName());
@@ -96,7 +96,7 @@ public class StatisticsInfoPanel extends JPanel {
 		//meanDisplay.setText(this.formatMean(sesssion.getR));
 		
 		// Change session description
-		reqDescriptionDisplay.setText(req.getDescription());
+		reqDescriptionDisplay.setText(session.getDescription());
 		
 		
 		//RequirementEstimateStats reqStats = new RequirementEstimateStats();
