@@ -16,6 +16,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class EstimateVoters extends AbstractModel {
 	private int requirementID;
 	private int vote;
+	private String voterUsername;
 	private String ownerName;
 	private UUID uuid = UUID.randomUUID();
 	private UUID sessionID;
