@@ -53,6 +53,9 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
+	
+	private HashMap<Requirement, Integer> finalEstimatesMap;
+	
 	private HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private HashMap<Requirement, Integer> reqsWithSubmittedEstimates; 
 	/**
@@ -67,6 +70,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
 		this.reqsWithSubmittedEstimates = new HashMap<Requirement, Integer>(); 
 		this.defaultSessionName = new String(this.name.toString());
+		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
 	}
 	
 	/**
@@ -532,6 +536,16 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
+		this.finalEstimatesMap = toCopyFrom.getFinalEstimates();
+	}
+	
+	/** 
+	 * Returns an array of all of the final estimation values for a finished planning poker session.
+	 * 
+	 * @return Hashmap of requirements to final estimate 
+	 */
+	public HashMap<Requirement, Integer> getFinalEstimates() { 
+		return finalEstimatesMap;
 	}
 	
 }
