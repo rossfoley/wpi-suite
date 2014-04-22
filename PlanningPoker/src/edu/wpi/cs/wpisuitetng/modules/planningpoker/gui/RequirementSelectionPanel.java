@@ -293,12 +293,6 @@ public class RequirementSelectionPanel extends JPanel{
 	 * backlog
 	 */
 	private void populateRequirements() {
-		//System.out.println("In Populate Requirements");
-		
-				// Get singleton instance of Requirements Controller
-				GetRequirementsController requirementsController = GetRequirementsController.getInstance();
-				// Manually force a population of the list of requirements in the requirement model
-				requirementsController.retrieveRequirements();
 				// Get the singleton instance of the requirement model to steal it's list of requirements.
 				RequirementModel requirementModel = RequirementModel.getInstance();
 				try {
@@ -616,9 +610,8 @@ public class RequirementSelectionPanel extends JPanel{
 		for (Integer id : selectedRequirements) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
 			int pos = this.requirements.indexOf(current);
-			if (pos >= 0) {
-				this.selection.remove(pos);
-				this.selection.add(pos, true);
+			if (pos > -1) {
+				this.selection.set(pos, true);
 				numRequirementsAdded += 1;
 			}
 		}
