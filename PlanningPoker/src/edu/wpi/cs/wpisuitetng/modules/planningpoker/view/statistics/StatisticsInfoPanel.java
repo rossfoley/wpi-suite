@@ -87,7 +87,7 @@ public class StatisticsInfoPanel extends JPanel {
 		// Change session name
 		//reqNameDisplay.setText(session.getName());
 		
-		meanDisplay.setText(this.formatMean(sesssion.getR));
+		//meanDisplay.setText(this.formatMean(sesssion.getR));
 		
 		// Change session description
 		reqDescriptionDisplay.setText(session.getDescription());
