@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -73,6 +74,7 @@ public class CreateDeck extends JPanel {
 	private void buildPanel() {
 		springLayout = new SpringLayout();
 		setLayout(springLayout);
+		setPreferredSize(new Dimension(420, 330));
 
 		JLabel lblDeckName = new JLabel("Deck Name:* ");
 		lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -135,6 +137,7 @@ public class CreateDeck extends JPanel {
 			}
 		});
 		txtCardValue.setText("0");
+		txtCardValue.setHorizontalAlignment(SwingConstants.CENTER);
 
 		buildCardTable();
 
