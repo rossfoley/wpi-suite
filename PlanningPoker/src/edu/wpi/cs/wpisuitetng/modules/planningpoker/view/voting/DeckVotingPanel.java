@@ -310,6 +310,8 @@ public class DeckVotingPanel extends JPanel
 		// Add the control and deck sub-panels to the overall panel
 		add(layeredDeckPane);
 		add(controlPanel);
+		
+		updateCardEstimateSum();
 	}
 
 	
@@ -371,8 +373,12 @@ public class DeckVotingPanel extends JPanel
 				userEstimate += Integer.parseInt(card.getName());
 			}
 			// If card was removed from estimate
-			else if (userEstimate >= 0) {
+			else {
 				userEstimate -= Integer.parseInt(card.getName());
+			}
+			// Make sure sum is non-negative
+			if (userEstimate < 0) {
+				userEstimate = 0;
 			}
 		}
 		else {	// If only one card can be selected
@@ -385,6 +391,19 @@ public class DeckVotingPanel extends JPanel
 			else {	// If it was set, don't set
 				clearSelectedCards();
 				userEstimate = 0;
+			}
+		}
+		estimateField.setValue(new Integer((int) userEstimate));
+	}
+	
+	/**
+	 * Updates the sum of selected cards
+	 */
+	private void updateCardEstimateSum() {
+		userEstimate = 0;
+		for (JButton card : listOfCardButtons) {
+			if (isCardSelected(card)) {
+				userEstimate += Integer.parseInt(card.getName());
 			}
 		}
 		estimateField.setValue(new Integer((int) userEstimate));
