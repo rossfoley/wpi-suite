@@ -108,7 +108,8 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 	
 	/**
-	 * @return the session currently being displayed
+	 * 
+	 * @return PlanningPokerSession the session currently being accessed.
 	 */
 	public PlanningPokerSession getCurrentSession() {
 		return currentSession;
@@ -135,7 +136,6 @@ public class OverviewDetailPanel extends JSplitPane {
 			}	
 			// otherwise, do nothing and go to the next element.
 		}
->>>>>>> Send new requirements' final estimation values to the requirement manager to overwrite the old estimation values. Brian Flynn
 	}
 	
 	/**
@@ -153,9 +153,12 @@ public class OverviewDetailPanel extends JSplitPane {
 		// otherwise, do nothing.
 	}
 
+
 	/**
-	 * gets the 
-	 * @return
+	 * This function is called within sendSingleEstimate() and sendAllEstimates, and grabs the
+	 * LinkedList of Requirement that is created from converting the list of IDs of requirements,
+	 * inside of that particular planning poker session, that have had their estimates
+	 * sent to the requirement manager already.
 	 */
 	private static LinkedList<Requirement> getReqsWithExportedEstimatesList() {
 		return currentSession.getReqsWithExportedEstimatesList();
