@@ -44,7 +44,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		// Create the info panel and table panel
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
-		infoPanel = new StatisticsInfoPanel();
+		infoPanel = new StatisticsInfoPanel(currentSession);
 		tablePanel = new JScrollPane(reqTable);
 		
 		

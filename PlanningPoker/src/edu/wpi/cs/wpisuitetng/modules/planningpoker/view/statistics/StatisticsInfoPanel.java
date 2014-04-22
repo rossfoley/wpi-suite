@@ -44,7 +44,7 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel stdDevDisplay;
 	SpringLayout springLayout;
 	
-	public StatisticsInfoPanel() {
+	public StatisticsInfoPanel(PlanningPokerSession session) {
 
 		ViewEventController.getInstance().setStatisticsInfoPanel(this);
 		
@@ -85,7 +85,9 @@ public class StatisticsInfoPanel extends JPanel {
 	public void refresh(PlanningPokerSession session) {
 
 		// Change session name
-		reqNameDisplay.setText(session.getName());
+		//reqNameDisplay.setText(session.getName());
+		
+		meanDisplay.setText(this.formatMean(sesssion.getR));
 		
 		// Change session description
 		reqDescriptionDisplay.setText(session.getDescription());
@@ -154,9 +156,13 @@ public class StatisticsInfoPanel extends JPanel {
 			AM_PM = "PM";
 		}
 		return AM_PM;
-
 	}
 	
+	public String formatMean(RequirementEstimateStats stats){
+		String mean = "";
+		mean = Double.toString(stats.getMean());
+		return mean;
+	}
 	private void setConstraints() {
 		springLayout.putConstraint(SpringLayout.WEST, stdDevDisplay, 0, SpringLayout.WEST, meanDisplay);
 		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, -122, SpringLayout.EAST, this);
