@@ -9,17 +9,13 @@ import javax.swing.JComponent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting.VotingPage;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-<<<<<<< HEAD
-=======
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Voters;
->>>>>>> stores the list of usernames in a list if they voted
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 
 
 /**
@@ -39,6 +35,7 @@ public class ViewEventController {
 	private ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
 	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
+	private OverviewVoterTable overviewVoterTable = null;
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -69,6 +66,9 @@ public class ViewEventController {
 	
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
 		this.overviewReqTable = overviewReqTable;
+	}
+	public void setOverviewVoterTable(OverviewVoterTable overviewVoterTable) {
+		this.overviewVoterTable  = overviewVoterTable;
 	}	
 	
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {

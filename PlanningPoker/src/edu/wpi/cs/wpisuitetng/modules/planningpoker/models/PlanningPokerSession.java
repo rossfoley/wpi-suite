@@ -53,6 +53,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private HashMap<Requirement, Integer> finalEstimatesMap;
 
 	private List<String> VoterNameList;
+	public List<EstimateVoters> estimateVoterList;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -66,6 +67,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.defaultSessionName = new String(this.name.toString());
 		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
 		this.setVoterNameList(new ArrayList<String>());
+		this.estimateVoterList = new ArrayList<EstimateVoters>();
 	}
 
 	/**
@@ -93,6 +95,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setUsingDeck(boolean isUsingDeck) {
 		this.isUsingDeck = isUsingDeck;
 	}
+
 
 	/**
 	 * @return uuid
@@ -474,6 +477,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.sessionDeck = toCopyFrom.sessionDeck;
 		this.finalEstimatesMap = toCopyFrom.getFinalEstimates();
 		this.VoterNameList = toCopyFrom.VoterNameList;
+		this.estimateVoterList = toCopyFrom.estimateVoterList;
 	}
 
 	/** 
@@ -496,6 +500,15 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setVoterNameList(List<String> VoterNameList) {
 		this.VoterNameList = VoterNameList;
+	}
+	public List<EstimateVoters> getEstimateVoterList() {
+		return estimateVoterList;
+	}
+	/**
+	 * @param VoterNameList the VoterNameList to set
+	 */
+	public void setEstimateVoterList(List<EstimateVoters> EstimateVoterList) {
+		this.estimateVoterList = EstimateVoterList;
 	}
 	
 }
