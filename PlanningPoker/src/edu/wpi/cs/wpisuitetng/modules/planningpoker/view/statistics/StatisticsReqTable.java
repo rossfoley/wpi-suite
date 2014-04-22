@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -98,7 +99,7 @@ public class StatisticsReqTable extends JTable {
 		Set<Integer> requirementIDs = session.getRequirementIDs();
 		RequirementModel reqs = RequirementModel.getInstance();
 		int vote = 0;
-		int estimate = 0;
+		String estimate;
 		List<Estimate> estimates = session.getEstimates();
 				
 		// clear the table
@@ -113,6 +114,8 @@ public class StatisticsReqTable extends JTable {
 					vote = e.getVote();
 				}
 			}
+			
+			estimate = getFinalEstimate(req, session);
 
 			tableModel.addRow(new Object[]{
 					reqName,
@@ -180,5 +183,13 @@ public class StatisticsReqTable extends JTable {
 	@Override
 	public boolean isCellEditable(int row, int col)	{
 		return false;
+	}
+	
+	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
+		HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
+		if (finalEstimates.containsKey(reqToFind)){
+			return finalEstimates.get(reqToFind).toString();
+		}
+		return "-";		
 	}
 }
