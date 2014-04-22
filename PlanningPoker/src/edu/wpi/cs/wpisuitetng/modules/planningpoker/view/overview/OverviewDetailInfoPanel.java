@@ -27,6 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -128,7 +129,13 @@ public class OverviewDetailInfoPanel extends JPanel {
 		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
 
 		if ((session.getGameState()==SessionState.CLOSED)||(session.getGameState()==SessionState.VOTINGENDED)){
-			sendEstimatesBtn.setVisible(true);
+			// restrict exportation to moderator
+			if (ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())){
+				sendEstimatesBtn.setVisible(true);
+			}
+			else {
+				sendEstimatesBtn.setVisible(false);
+			}
 		}
 		else {
 			sendEstimatesBtn.setVisible(false);
@@ -141,7 +148,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		else {
 			sendEstimatesBtn.setEnabled(true);
 			
-		} 
+		}
 		
 		
 		String endDate, endTime;

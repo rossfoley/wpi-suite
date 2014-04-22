@@ -22,6 +22,7 @@ import java.util.Set;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
@@ -175,10 +176,9 @@ public class OverviewDetailPanel extends JSplitPane {
 		HashMap<Requirement, Integer> finalEstimatesByRequirement = currentSession.getFinalEstimates();
 		HashMap<Integer, Integer> finalEstimates = new HashMap<Integer, Integer>();
 		
-		/*for (Requirement r:finalEstimatesByRequirement.keySet()){
+		for (Requirement r:finalEstimatesByRequirement.keySet()){
 			finalEstimates.put(r.getId(), finalEstimatesByRequirement.get(r));
 		}
-		*/
 		
 		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements(finalEstimates);
 		
@@ -198,6 +198,9 @@ public class OverviewDetailPanel extends JSplitPane {
 		selectionPanel.setLayout(selectionLayout);
 		JButton cancelButton = new JButton("Cancel");
 		JButton sendEstimatesButton = new JButton("Send Estimates");
+		final JLabel sendErrorMessage = new JLabel("Please select requirements");
+		sendErrorMessage.setForeground(Color.RED);
+		sendErrorMessage.setVisible(false);
 		
 		makeSelectionTable();
 
@@ -221,9 +224,14 @@ public class OverviewDetailPanel extends JSplitPane {
 		selectionLayout.putConstraint(SpringLayout.WEST, updatePane, 10, SpringLayout.WEST, selectionPanel);
 		selectionLayout.putConstraint(SpringLayout.NORTH, updatePane, 10, SpringLayout.NORTH, selectionPanel);
 		
+		selectionLayout.putConstraint(SpringLayout.VERTICAL_CENTER, sendErrorMessage, 0, SpringLayout.VERTICAL_CENTER, sendEstimatesButton);
+		selectionLayout.putConstraint(SpringLayout.EAST, sendErrorMessage, -10, SpringLayout.WEST, cancelButton);
+		
+		
 		selectionPanel.add(sendEstimatesButton);
 		selectionPanel.add(cancelButton);
 		selectionPanel.add(updatePane);
+		selectionPanel.add(sendErrorMessage);
 		
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,9 +246,17 @@ public class OverviewDetailPanel extends JSplitPane {
 				for (Integer selectedReq:selectedReqIDs){
 					System.out.println(reqs.getRequirement(selectedReq).getName());
 				}
+				if (selectedReqIDs.size()==0){
+					sendErrorMessage.setVisible(true);
+				}
+				else {
+					sendErrorMessage.setVisible(false);
+					// send messages
+				}
 			}
 		});
 
+		
 		setBottomComponent(selectionPanel);
 		setDividerLocation(dividerLocation);
         Dimension d = new Dimension(200, 200);
