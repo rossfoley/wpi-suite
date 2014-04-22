@@ -208,6 +208,12 @@ public class VotingPage extends JSplitPane {
 	 * @param reqToVoteOn requirement to have details about in the panel
 	 */
 	public void buildReqPanel(Requirement reqToVoteOn){
+		// Remove panels before recreating to refresh them correctly
+		try {
+			voteOnReqPanel.remove(reqDetailPanel);
+			voteOnReqPanel.remove(votingPanel);
+		} catch (NullPointerException ex) {}
+		
 		reqDetailPanel = makeReqDetailPanel(reqToVoteOn);
 
 		Estimate estimateFillIn = new Estimate();
