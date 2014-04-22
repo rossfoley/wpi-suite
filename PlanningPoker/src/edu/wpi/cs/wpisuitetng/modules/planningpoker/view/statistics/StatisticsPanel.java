@@ -63,7 +63,7 @@ public class StatisticsPanel extends JSplitPane {
 		Object[][] userData = {};
 
 		// Create the user table panel and detail panel
-		detailPanel = new StatisticsDetailPanel();
+		detailPanel = new StatisticsDetailPanel(activeSession);
 		userTable = new StatisticsUserTable(userData, userColumnNames);
 		tablePanel = new JScrollPane(userTable);
 		
