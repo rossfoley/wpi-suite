@@ -11,6 +11,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DropMode;
@@ -61,11 +63,13 @@ public class CreateDeck extends JPanel {
 	private JButton btnRemove;
 	private JButton btnRemoveAll;
 	private JButton btnCreate;
+	private JButton btnCancel;
 	private JLabel lblNoCardsError = new JLabel("Please add cards to the deck");
 	private JTable cardTable;
 	private DefaultTableModel cardTableModel;
 	private SpringLayout springLayout;
-	
+	private transient Vector<DeckListener> listeners;
+
 
 	public CreateDeck() {
 		buildPanel();
@@ -117,7 +121,7 @@ public class CreateDeck extends JPanel {
 		});
 		lblAddCardError.setVisible(false);
 		lblAddCardError.setForeground(Color.RED);
-		
+
 
 		txtCardValue = new JTextField();
 		txtCardValue.setPreferredSize(new Dimension(26, 26));
@@ -171,8 +175,16 @@ public class CreateDeck extends JPanel {
 		btnCreate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				createDeck();
-				btnCreate.setEnabled(false);
+				fireDeckEvent(createDeck());
+			}
+		});
+
+		// Create cancel button
+		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fireDeckEvent(null);
 			}
 		});
 
@@ -184,7 +196,7 @@ public class CreateDeck extends JPanel {
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txtDeckName, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
 		springLayout.putConstraint(SpringLayout.WEST, lblDeckNameError, 10, SpringLayout.EAST, txtDeckName);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblDeckNameError, 0, SpringLayout.VERTICAL_CENTER, txtDeckName);
-		
+
 		springLayout.putConstraint(SpringLayout.WEST, modeSelectionPanel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, modeSelectionPanel, 10, SpringLayout.SOUTH, txtDeckName);
 
@@ -198,7 +210,7 @@ public class CreateDeck extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 10, SpringLayout.EAST, txtCardValue);		
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, btnAddCard);
 		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, btnAddCard);
-		
+
 		springLayout.putConstraint(SpringLayout.EAST, cardScrollPane, 0, SpringLayout.EAST, txtCardValue);
 		springLayout.putConstraint(SpringLayout.NORTH, cardScrollPane, 10, SpringLayout.SOUTH, txtCardValue);
 		springLayout.putConstraint(SpringLayout.SOUTH, cardScrollPane, 150, SpringLayout.NORTH, cardScrollPane);
@@ -209,10 +221,14 @@ public class CreateDeck extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnRemove, 0, SpringLayout.WEST, btnRemoveAll);
 		springLayout.putConstraint(SpringLayout.NORTH, btnRemove, 5, SpringLayout.SOUTH, btnRemoveAll);
 
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnCreate, 0, SpringLayout.EAST, cardScrollPane);
-		springLayout.putConstraint(SpringLayout.NORTH, btnCreate, 10, SpringLayout.SOUTH, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 10, SpringLayout.SOUTH, cardScrollPane);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnCreate, 10, SpringLayout.EAST, btnCancel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnCreate, 00, SpringLayout.VERTICAL_CENTER, btnCancel);
 		springLayout.putConstraint(SpringLayout.WEST, lblNoCardsError, 10, SpringLayout.EAST, btnCreate);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblNoCardsError, 0, SpringLayout.VERTICAL_CENTER, btnCreate);
+		
 
 		// Add all components to the JPanel
 		add(modeSelectionPanel);
@@ -227,6 +243,7 @@ public class CreateDeck extends JPanel {
 		add(btnRemove);
 		add(btnRemoveAll);
 		add(btnCreate);
+		add(btnCancel);
 		add(lblNoCardsError);
 
 		refresh();
@@ -305,7 +322,7 @@ public class CreateDeck extends JPanel {
 		else {
 			lblDeckNameError.setVisible(false);
 		}
-		
+
 		// Display single card remove button if an element in the table has been selected
 		if (cardTable.getSelectedRow() >= 0) {
 			btnRemove.setEnabled(true);
@@ -313,7 +330,7 @@ public class CreateDeck extends JPanel {
 		else {
 			btnRemove.setEnabled(false);
 		}
-		
+
 		// Disable add card button if no text entered
 		warnCardValue();
 	}
@@ -331,11 +348,13 @@ public class CreateDeck extends JPanel {
 		validateButtons();
 	}
 
-	public void createDeck() {
+	public Deck createDeck() {
 		Deck newDeck = new Deck(listOfCards, multiSelectionMode);
 		newDeck.setDeckName(txtDeckName.getText());
 
 		DeckListModel.getInstance().addDeck(newDeck);
+
+		return newDeck;
 	}
 
 	/**
@@ -375,7 +394,7 @@ public class CreateDeck extends JPanel {
 
 		return modePanel;
 	}
-	
+
 	private void warnCardValue() {
 		// Disable adding card if nothing is input
 		if (txtCardValue.getText().equals("")) {
@@ -392,10 +411,58 @@ public class CreateDeck extends JPanel {
 					btnAddCard.setEnabled(false);
 					lblAddCardError.setVisible(true);					
 				}
-			// Disable and warn if it is not a number
+				// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {
 				btnAddCard.setEnabled(false);
 				lblAddCardError.setVisible(true);
+			}
+		}
+	}
+
+
+	/**
+	 * Register a listener for DeckEvents
+	 */
+	synchronized public void addDeckListener(DeckListener l) {
+		if (listeners == null) {
+			listeners = new Vector<DeckListener>();
+		}
+		listeners.addElement(l);
+	}  
+
+	/**
+	 * Remove a listener for DeckEvents
+	 */
+	synchronized public void removeDeckListener(DeckListener l) {
+		if (listeners == null) {
+			listeners = new Vector<DeckListener>();
+		}
+		else {
+			listeners.removeElement(l);
+		}
+	}
+
+	/**
+	 * Fire a DeckeEvent to all registered listeners
+	 */
+	protected void fireDeckEvent(Deck newDeck) {
+		// Do nothing if we have no listeners
+		if (listeners != null && !listeners.isEmpty()) {
+			// Create the event object to send
+			DeckEvent event = 
+					new DeckEvent(this, newDeck);
+
+			// Make a copy of the listener list in case anyone adds/removes listeners
+			Vector<DeckListener> targets;
+			synchronized (this) {
+				targets = (Vector<DeckListener>) listeners.clone();
+			}
+
+			// Walk through the listener list and call the estimateSubmitted method in each
+			Enumeration<DeckListener> e = targets.elements();
+			while (e.hasMoreElements()) {
+				DeckListener l = (DeckListener) e.nextElement();
+				l.deckSubmitted(event);
 			}
 		}
 	}

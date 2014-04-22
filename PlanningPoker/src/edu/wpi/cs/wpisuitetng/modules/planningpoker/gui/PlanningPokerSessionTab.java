@@ -52,6 +52,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotificati
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
@@ -88,6 +90,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
 	private JPanel disabledDatePicker;
+	JButton btnCreateDeck;
 
 	private boolean dateHasBeenSet;
 	private boolean haveEndDate;
@@ -147,7 +150,18 @@ public class PlanningPokerSessionTab extends JPanel {
 	private void buildFirstPanel() {
 		buildSessionDetailPanel();
 		
-		createDeckPanel = new CreateDeck(); 
+		createDeckPanel = new CreateDeck();
+		createDeckPanel.addDeckListener(new DeckListener() {
+			@Override
+			public void deckSubmitted(DeckEvent e) {
+				if (e.getDeck() == null) {
+					closeCreateDeckPanel();
+				}
+				else {
+					newDeckCreated();
+				}
+			}
+		});
 		
 		firstPanel.setLeftComponent(sessionDetailPanel);
 		firstPanel.setRightComponent(null);
@@ -165,6 +179,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		int dividerLocation = firstPanel.getSize().width - 
 				firstPanel.getInsets().right - firstPanel.getDividerSize() - createDeckPanel.getPreferredSize().width;
 		firstPanel.setDividerLocation(dividerLocation);
+		
+		btnCreateDeck.setEnabled(false);
 	}
 	
 	/**
@@ -177,6 +193,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	
 	public void closeCreateDeckPanel() {
 		firstPanel.setRightComponent(null);
+		btnCreateDeck.setEnabled(true);
 	}
 	
 	/**
@@ -229,12 +246,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		requirementPanel.setSelectedRequirements(this.pokerSession.getRequirementIDs());
 		
 		// Button to create a deck
-		final JButton btnCreateDeck = new JButton("Create New Deck");
+		btnCreateDeck = new JButton("Create New Deck");
 		btnCreateDeck.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				openCreateDeckPanel();
-				btnCreateDeck.setEnabled(false);
 			}
 		});
 
@@ -254,7 +270,7 @@ public class PlanningPokerSessionTab extends JPanel {
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, textFieldDescription, 6, SpringLayout.SOUTH, lblSessionDescription);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, textFieldDescription, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -225, SpringLayout.SOUTH, sessionDetailPanel);
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -250, SpringLayout.SOUTH, sessionDetailPanel);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldDescription, -10, SpringLayout.EAST, sessionDetailPanel);					
 
 		firstPanelLayout.putConstraint(SpringLayout.WEST, endDateCheckBox, 0, SpringLayout.WEST, lblSessionName);
