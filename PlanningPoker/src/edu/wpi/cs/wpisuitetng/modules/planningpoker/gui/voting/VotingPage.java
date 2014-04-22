@@ -406,6 +406,7 @@ public class VotingPage extends JSplitPane {
 					addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
 					displayAllEstimateVotersList();
 					//displayVoters();
+					
 					test();
 					
 					
