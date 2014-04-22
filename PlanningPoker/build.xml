@@ -90,4 +90,8 @@
 		<copy file="${janeway-jar-dest}" todir="${dist}/janeway/modules" overwrite="true"/>
 	</target>
 
+	<copy todir="build">
+	    <fileset dir="src" includes="**/*.png" />
+	</copy>
+	
 </project>

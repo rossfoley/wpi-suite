@@ -50,6 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionM
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
@@ -77,8 +78,8 @@ public class PlanningPokerSessionTab extends JPanel {
 	private JLabel dateErrorMessage = new JLabel("");
 	private JLabel nameErrorMessage = new JLabel("");
 	private JLabel descriptionErrorMessage = new JLabel("");
-	private JLabel numbers = new JLabel("Users input non-negative integers");
-	private final SelectFromListPanel requirementPanel = new SelectFromListPanel();
+	private JLabel numbers = new JLabel("Users input non-negative intergers");
+	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
 	private JDatePicker datePicker;
 	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
