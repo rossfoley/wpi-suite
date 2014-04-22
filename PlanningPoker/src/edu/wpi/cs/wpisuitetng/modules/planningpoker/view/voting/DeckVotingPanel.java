@@ -36,11 +36,14 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
@@ -74,6 +77,8 @@ public class DeckVotingPanel extends JPanel
 	private Integer lastCard = -1;
 	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
+	JScrollPane tablePanel;
+	OverviewReqTable newTable;
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -182,6 +187,23 @@ public class DeckVotingPanel extends JPanel
 		subPanel.add(submitButton);
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
+		//
+		String[] columnNames = {"User Names", "Your Vote", "Final Estimate"};
+		Object[][] data = {};
+
+		newTable = new OverviewReqTable(data, columnNames);
+		tablePanel = new JScrollPane(newTable);
+		
+		newTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
+		newTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
+		newTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
+		
+		// Put the info panel and table panel into the split pane
+	
+		// Makes the split pane divide 50/50 for each portion
+		Dimension d = new Dimension(200, 200);
+        tablePanel.setMinimumSize(d);
+        add(tablePanel, BorderLayout.EAST);
 
 		add(subPanel, BorderLayout.CENTER);				
 	}
