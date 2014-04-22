@@ -19,6 +19,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetProjectControl
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateVoters;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -231,7 +232,66 @@ public class VotingPage extends JSplitPane {
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
-
+	/**
+	 * 
+	 * @param username
+	 */
+	public void addVoterNameToEstimateVotersList(String username, int requirementID, EstimateVoters NewEstimateVoter) {
+		System.out.println(activeSession.getEstimateVoterList().size() + " is the size");
+		for (int i = 0; i < activeSession.getEstimateVoterList().size(); i++) {
+			System.out.println(activeSession.getEstimateVoterList().get(i).getRequirementID());
+			if(activeSession.getEstimateVoterList().get(i).getRequirementID() == requirementID) {
+				if(activeSession.getEstimateVoterList().get(i).getVoterNameList().contains(username)) {
+					System.out.println("Username exist");
+					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
+					return;
+				} else {
+					activeSession.getEstimateVoterList().get(i).getVoterNameList().add(username);
+					System.out.println(username + " has voted ON REQ " + requirementID + " and is added to the list");
+					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
+					return;
+				}
+			}
+		}
+		NewEstimateVoter.getVoterNameList().add(username);
+		activeSession.getEstimateVoterList().add(NewEstimateVoter);
+		System.out.println("New estimation is created and added to the list " + username);
+		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+		UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
+	}
+	/**
+	 * 
+	 */
+	public void displayAllEstimateVotersList() {
+		List<String> allUserList = getAllVoterNamesList();
+		List<Requirement> ListOfRequirements =  getSessionReqs();
+		for (Requirement r : ListOfRequirements) {
+			System.out.println(r.getId());
+		}
+		for (Requirement r : ListOfRequirements) {
+			for (int i = 0; i < activeSession.getEstimateVoterList().size(); i++) {
+				if(activeSession.getEstimateVoterList().get(i).getRequirementID() == r.getId()) {
+					System.out.println(activeSession.getEstimateVoterList().get(i).getRequirementID() + " requirement ID");
+					for (String s : allUserList) {
+						if(activeSession.getEstimateVoterList().get(i).getVoterNameList().contains(s)) {
+							System.out.println(s + " has voted on req " + r.getId());
+						} else {
+							System.out.println(s + " has NOT voted on req " + r.getId());
+						}
+					}
+				}
+			}
+		}
+	}
+	public void test () {
+		for (EstimateVoters e : activeSession.getEstimateVoterList()) {
+			for (String S : e.getVoterNameList()) {
+				System.out.println(S + " in test");
+			}
+		}
+	}
 	/**
 	 * returns the list of users in a project
 	 */
@@ -284,6 +344,7 @@ public class VotingPage extends JSplitPane {
 			}
 		}
 	}
+
 	/**
 	 * build the part of the panel that is specific to the selected requirement
 	 * displays the requirement name, description, and allows the user to vote on it
@@ -314,6 +375,8 @@ public class VotingPage extends JSplitPane {
 				System.out.println("Estimate submitted: " + e.getEstimate());
 				if (requirement != null) {
 					Estimate estimate = new Estimate();
+					// tracking line
+					EstimateVoters estimateVoter = new EstimateVoters();
 					for (Estimate e2: estimates) {
 						if (e2.getRequirementID() == requirement.getId()) {
 							estimate = e2;
@@ -323,12 +386,19 @@ public class VotingPage extends JSplitPane {
 					estimate.setRequirementID(requirement.getId());
 					estimate.setSessionID(activeSession.getID());
 					estimate.setVote((int)e.getEstimate());
+					
+					estimateVoter.setOwnerName(ConfigManager.getConfig().getUserName());
+					estimateVoter.setRequirementID(requirement.getId());
+					estimateVoter.setSessionID(activeSession.getID());
+					estimateVoter.setVote((int)e.getEstimate());
 					//writng here
-					addVoterNameToList(ConfigManager.getConfig().getUserName());
+					//addVoterNameToList(ConfigManager.getConfig().getUserName());
 					//getVoterName();
 					//getAllVoterNames();
-					displayVoters();
-					
+					addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
+					displayAllEstimateVotersList();
+					//displayVoters();
+					test();
 					
 					
 					estimates.add(estimate);

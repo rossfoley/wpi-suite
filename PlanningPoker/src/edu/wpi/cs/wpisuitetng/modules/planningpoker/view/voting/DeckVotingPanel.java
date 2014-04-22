@@ -44,10 +44,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 
 
 /**
@@ -61,6 +63,7 @@ public class DeckVotingPanel extends JPanel
 							 implements PropertyChangeListener,
 							 			MouseMotionListener,
 							 			Serializable {
+	private DefaultTableModel tableModel = null;
 	private Deck votingDeck;
 	private Estimate prevEstimate;
 	private JFormattedTextField estimateField;
@@ -76,6 +79,8 @@ public class DeckVotingPanel extends JPanel
 
 	JScrollPane tablePanel;
 	OverviewReqTable newTable;
+	OverviewVoterTable thetable;
+	private JScrollPane thetablePanel;
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -188,7 +193,6 @@ public class DeckVotingPanel extends JPanel
 		
 		thisLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		
 		thisLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		
@@ -198,7 +202,9 @@ public class DeckVotingPanel extends JPanel
 		add(estimateLabel);
 		add(estimateField);
 
+
 	}
+	
 
 
 	/**
