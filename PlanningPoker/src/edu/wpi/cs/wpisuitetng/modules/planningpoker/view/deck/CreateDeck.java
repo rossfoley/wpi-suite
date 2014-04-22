@@ -362,20 +362,20 @@ public class CreateDeck extends JPanel {
 	 * @return	The created panel
 	 */
 	private JPanel createModeSelectionPanel() {
-		JRadioButton rbtnSingle = new JRadioButton("Single Selection");
+		final JRadioButton rbtnSingle = new JRadioButton("Single Selection");
 		rbtnSingle.setSelected(true);
 		rbtnSingle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				multiSelectionMode = false;
+				multiSelectionMode = !rbtnSingle.isSelected();
 			}
 		});
 
-		JRadioButton rbtnMulti = new JRadioButton("Multiple Selection");
+		final JRadioButton rbtnMulti = new JRadioButton("Multiple Selection");
 		rbtnMulti.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				multiSelectionMode = true;
+				multiSelectionMode = rbtnMulti.isSelected();
 			}
 		});
 

@@ -188,6 +188,17 @@ public class PlanningPokerSessionTab extends JPanel {
 	 */
 	private void newDeckCreated() {
 		createDeckPanel = new CreateDeck();
+		createDeckPanel.addDeckListener(new DeckListener() {
+			@Override
+			public void deckSubmitted(DeckEvent e) {
+				if (e.getDeck() == null) {
+					closeCreateDeckPanel();
+				}
+				else {
+					newDeckCreated();
+				}
+			}
+		});
 		closeCreateDeckPanel();
 	}
 	
