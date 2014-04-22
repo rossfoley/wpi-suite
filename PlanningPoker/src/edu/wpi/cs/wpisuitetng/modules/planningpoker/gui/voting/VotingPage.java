@@ -17,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetProjectController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
@@ -219,7 +220,7 @@ public class VotingPage extends JSplitPane {
 			System.out.println("Username exist");
 		} else {
 			activeSession.getVoterNameList().add(username);
-			System.out.println(username + "HAHAHA");
+			System.out.println(username + "has voted and is annded to the list");
 		}
 	}
 
@@ -227,8 +228,9 @@ public class VotingPage extends JSplitPane {
 	 * returns the list of users in a project
 	 */
 	public String getVoterName() {
-		String name = ConfigManager.getInstance().getConfig().getProjectName();
-		System.out.println(name);
+		String name = ConfigManager.getInstance().getConfig().getUserName();
+		System.out.println(name + " is the current voter");
+		name.toLowerCase();
 		return name;
 	}
 	public List<String> getAllVoterNamesList() {
@@ -238,8 +240,8 @@ public class VotingPage extends JSplitPane {
 		System.out.println(user.size() + "IS THE SIZE user");
 		for(User u : user) {
 			try {
-				allVoters.add(u.getName());
-				System.out.println(u.getName());
+				allVoters.add(u.getUsername());
+				System.out.println(u.getUsername() + " is added to the list");
 			} catch (Exception E) {
 				System.out.println("User is null");
 			}
@@ -253,7 +255,7 @@ public class VotingPage extends JSplitPane {
 		System.out.println(user.size() + "IS THE SIZE user");
 		for(User u : user) {
 			try {
-				System.out.println(u.getName());
+				System.out.println(u.getUsername());
 			} catch (Exception E) {
 				System.out.println("User is null");
 			}
@@ -268,7 +270,8 @@ public class VotingPage extends JSplitPane {
 		for (String s : allVoters) {
 			if (activeSession.getVoterNameList().contains(s)) {
 				System.out.println(s + " has voted ");
-			} else {
+			} 
+			else {
 				System.out.println(s + " has not voted ");
 			}
 		}
@@ -309,8 +312,8 @@ public class VotingPage extends JSplitPane {
 					estimate.setVote((int)e.getEstimate());
 					//writng here
 					addVoterNameToList(ConfigManager.getConfig().getUserName());
-					getVoterName();
-					getAllVoterNames();
+					//getVoterName();
+					//getAllVoterNames();
 					displayVoters();
 					
 					
@@ -346,6 +349,7 @@ public class VotingPage extends JSplitPane {
 					setRightComponent(voteOnReqPanel);
 					
 					setDividerLocation(225);
+					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 				}
 			}
 		});
