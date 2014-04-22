@@ -562,8 +562,8 @@ public class RequirementSelectionPanel extends JPanel{
 		populateBooleans();
 		int pos = this.requirements.indexOf(newReq);
 		this.selection.set(pos, true);
-		update();
 		numRequirementsAdded += 1; //Should probably be integrated better
+		update();
 	}
 	
 	synchronized public void addRequirementsSelectedListener(RequirementsSelectedListener l) {
