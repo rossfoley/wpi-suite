@@ -36,10 +36,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
+<<<<<<< HEAD
  * This is the right half of the overview panel, and contains
  * the OverviewDetailInfoPanel and the OverviewReqTable
  * @author Randy Acheson
  * @version 4/18/14
+=======
+ * Sets up the Overview Detail Panel within the Planning Poker module.
+ * 
+ * @author Randy Acheson, Cassie Hamlin, Amanda Adkins, Brian Flynn 
+>>>>>>> Send selected Planning Poker Sessions' requirements' final estimation values to the requirement manager via the Overview Detail Panel. Brian Flynn, Amanda Adkins.
  */
 public class OverviewDetailPanel extends JSplitPane {
 	static PlanningPokerSession currentSession;
@@ -109,6 +115,7 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 	
 	/**
+	 * Returns the current planning poker session.
 	 * 
 	 * @return PlanningPokerSession the session currently being accessed.
 	 */
@@ -117,7 +124,7 @@ public class OverviewDetailPanel extends JSplitPane {
 	}
 
 	/** 
-	 * Sends all of the requirements' new estimation values to the requirement manager. 
+	 * Sends all of the requirements' final estimation values to the requirement manager. 
 	 */
 	public static void sendAllEstimates() {
 		LinkedList<Requirement> sessionRequirementList = new LinkedList<Requirement>();
@@ -157,7 +164,7 @@ public class OverviewDetailPanel extends JSplitPane {
 
 	/**
 	 * This function is called within sendSingleEstimate() and sendAllEstimates, and grabs the
-	 * LinkedList of Requirement that is created from converting the list of IDs of requirements,
+	 * LinkedList of <Requirement> that is created from converting the list of IDs of requirements,
 	 * inside of that particular planning poker session, that have had their estimates
 	 * sent to the requirement manager already.
 	 */
@@ -244,6 +251,7 @@ public class OverviewDetailPanel extends JSplitPane {
 				ArrayList<Integer> selectedReqIDs = selectToUpdateTable.getSelectedReqs();
 				RequirementModel reqs = RequirementModel.getInstance();
 				for (Integer selectedReq:selectedReqIDs){
+					sendSingleEstimate(RequirementModel.getInstance().getRequirement(selectedReq));
 					System.out.println(reqs.getRequirement(selectedReq).getName());
 				}
 				if (selectedReqIDs.size()==0){
