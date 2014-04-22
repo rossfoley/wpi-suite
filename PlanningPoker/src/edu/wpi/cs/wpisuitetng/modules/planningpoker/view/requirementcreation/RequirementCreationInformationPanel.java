@@ -248,7 +248,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		noParentInfoPanel.add(parentSelector);
 		noParentInfoPanel.add(chooseParent);
 		parentInfoPanel.add(noParentInfoPanel);
-		chooseParent.setVisible(true);
+		chooseParent.setVisible(false); //doesn't work in requirement manager, doesn't work here.
 		parentSelector.setVisible(false);
 		//setup the top.
 
@@ -314,6 +314,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 			editParent.setVisible(false);
 			removeFromParent.setVisible(false);
 			noParentInfoPanel.setVisible(true);
+			currentParent.setVisible(false); //doesn't work in Requirement manager, doesn't work here
 		}
 	}
 
