@@ -29,8 +29,21 @@ public class Estimate implements Comparable<Estimate> {
 	private UUID uuid = UUID.randomUUID();
 	private UUID sessionID;
 	
-	public Estimate() {
-		
+	/**
+	 * default constructor
+	 */
+	public Estimate() {}
+	
+	/**
+	 * detailed constructor (for testing purposes)
+	 * @param reqID
+	 * @param newVote
+	 * @param sessionUUID
+	 */
+	public Estimate(int reqID, int newVote, UUID sessionUUID) {
+		requirementID = reqID; 
+		vote = newVote; 
+		sessionID = sessionUUID; 
 	}
 	
 	/**

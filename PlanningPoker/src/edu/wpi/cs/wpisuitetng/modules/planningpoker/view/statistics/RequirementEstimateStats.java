@@ -39,7 +39,7 @@ public class RequirementEstimateStats {
 	 * @return the mean value of the estimates 
 	 */
 	double calculateMean() {
-		int sum = 0;
+		double sum = 0;
 		for (Estimate e : estimates) {
 			sum += e.getVote();
 		}
