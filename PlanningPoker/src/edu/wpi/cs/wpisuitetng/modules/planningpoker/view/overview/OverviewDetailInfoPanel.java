@@ -10,6 +10,12 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Dimension;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -22,6 +28,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 import java.awt.Dimension;
@@ -53,6 +60,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 	JLabel deckDisplay;
 	JLabel sessionCreatorDisplay;
 	SpringLayout springLayout;
+	JButton sendEstimatesBtn = new JButton("Send Final Estimates To Requirement Manager");
 	
 	public OverviewDetailInfoPanel() {
 
@@ -80,6 +88,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		sessionDescriptionDisplay.setWrapStyleWord(true);
 		sessionDescriptionDisplay.setLineWrap(true);
 		sessionDescriptionDisplay.setEditable(false);
+		sendEstimatesBtn.setVisible(false);
 		
 		createConstraints();
 		
@@ -94,19 +103,11 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(endTimeDisplay);
 		add(deckDisplay);
 		add(sessionCreatorDisplay);
-		
-		Button sendEstimatesBtn = new Button("Send Estimates");
-		sendEstimatesBtn.setForeground(Color.BLUE);
-		sendEstimatesBtn.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 14));
-		sendEstimatesBtn.setBackground(Color.LIGHT_GRAY);
-		springLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesBtn, 0, SpringLayout.SOUTH, lblEndTime);
-		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesBtn, 0, SpringLayout.EAST, sessionCreatorDisplay);
 		add(sendEstimatesBtn);
+		
 		sendEstimatesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//OverviewDetailPanel.replaceTable();
 				ViewEventController.getInstance().sendEstimatesFromSession();
-				//ViewEventController.getInstance().sendEstimates(OverviewDetailPanel.currentSession);
 			}
 		});
 	}
@@ -126,6 +127,23 @@ public class OverviewDetailInfoPanel extends JPanel {
 		// Change session creator
 		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
 
+		if ((session.getGameState()==SessionState.CLOSED)||(session.getGameState()==SessionState.VOTINGENDED)){
+			sendEstimatesBtn.setVisible(true);
+		}
+		else {
+			sendEstimatesBtn.setVisible(false);
+		}
+		
+		if (session.getFinalEstimates().size()==0){
+			sendEstimatesBtn.setEnabled(false);
+			System.out.println("No estimates");
+		}
+		else {
+			sendEstimatesBtn.setEnabled(true);
+			
+		} 
+		
+		
 		String endDate, endTime;
 		// Change end date
 		try {
@@ -260,5 +278,9 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.SOUTH, sessionCreatorDisplay, 0, SpringLayout.SOUTH, lblSessionName);
 		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesBtn, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesBtn, -10, SpringLayout.EAST, this);
+
 	}
 }

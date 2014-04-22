@@ -107,6 +107,9 @@ public class OverviewDetailPanel extends JSplitPane {
 		reqTable.refresh(session);
 	}
 	
+	/**
+	 * @return the session currently being displayed
+	 */
 	public PlanningPokerSession getCurrentSession() {
 		return currentSession;
 	}
@@ -150,25 +153,39 @@ public class OverviewDetailPanel extends JSplitPane {
 		// otherwise, do nothing.
 	}
 
+	/**
+	 * gets the 
+	 * @return
+	 */
 	private static LinkedList<Requirement> getReqsWithExportedEstimatesList() {
 		return currentSession.getReqsWithExportedEstimatesList();
 	}
 	
+	
+	/**
+	 * makes the table used for selecting which requirements to update 
+	 * in requirement manager
+	 */
 	public void makeSelectionTable(){
 		Object[][] data = {};
 		String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
 		HashMap<Requirement, Integer> finalEstimatesByRequirement = currentSession.getFinalEstimates();
 		HashMap<Integer, Integer> finalEstimates = new HashMap<Integer, Integer>();
 		
-		for (Requirement r:finalEstimatesByRequirement.keySet()){
+		/*for (Requirement r:finalEstimatesByRequirement.keySet()){
 			finalEstimates.put(r.getId(), finalEstimatesByRequirement.get(r));
 		}
+		*/
 		
 		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements(finalEstimates);
 		
 		selectToUpdateTable = new SelectRequirementToUpdateTable(data, columnNames, selectableRequirementIDs, finalEstimates);
 	}
 	
+	/**
+	 * replaces the requirement overview table with a panel that allows the user to select
+	 * which requirements to update in requirement manager 
+	 */
 	public void replaceTable(){
 		onSelectionTable = true;
 		int dividerLocation = getDividerLocation();
@@ -227,6 +244,10 @@ public class OverviewDetailPanel extends JSplitPane {
         selectionPanel.setMinimumSize(d);
 	}
 	
+	/**
+	 * @param finalEstimates hashmap of requirement ids and final estimates corresponding to those
+	 * @return linked list of ids corresponding to the requirements that the user can select
+	 */
 	private LinkedList<Integer> determineSelectableRequirements(HashMap<Integer, Integer> finalEstimates){
 		LinkedList<Requirement> reqsWithExportedEstimates = currentSession.getReqsWithExportedEstimatesList();
 		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
@@ -240,6 +261,9 @@ public class OverviewDetailPanel extends JSplitPane {
 		return selectableRequirements;
 	}
 	
+	/**
+	 * puts the requirement overview table back 
+	 */
 	public void putReqTableBack(){
 		onSelectionTable = false;
 		int dividerLocation = getDividerLocation();
@@ -265,7 +289,9 @@ public class OverviewDetailPanel extends JSplitPane {
 		updateReqTable(currentSession);
 	}
 	
-	
+	/**
+	 * @return if the selection table for updating requirements is displayed
+	 */
 	public boolean isOnSelectionTable(){
 		return onSelectionTable; 
 	}
