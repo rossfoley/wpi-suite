@@ -31,6 +31,8 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.Dimension;
 import java.awt.Button;
@@ -143,13 +145,19 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		if (session.getFinalEstimates().size()==0){
 			sendEstimatesBtn.setEnabled(false);
+			
 			System.out.println("No estimates");
 		}
 		else {
-			sendEstimatesBtn.setEnabled(true);
-			
+			if (areAllEstimatesSent(session)){
+				sendEstimatesBtn.setEnabled(false);
+			}
+			else {
+				sendEstimatesBtn.setEnabled(true);
+			}
 		}
 		
+	
 		
 		String endDate, endTime;
 		// Change end date
@@ -290,4 +298,21 @@ public class OverviewDetailInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesBtn, -10, SpringLayout.EAST, this);
 
 	}
+	
+	public boolean areAllEstimatesSent(PlanningPokerSession session){
+		boolean allMatched = true;
+		RequirementModel reqs = RequirementModel.getInstance();
+		
+		for (Requirement req:session.getFinalEstimates().keySet()){
+			boolean foundThisOne = false;
+			for (Integer reqID:session.getRequirementsWithExportedEstimates()){
+				if (req.equals(reqs.getRequirement(reqID))){
+					foundThisOne = true;
+				}
+			}
+			allMatched = foundThisOne;
+		}
+		return allMatched;
+	}
+	
 }
