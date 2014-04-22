@@ -53,19 +53,14 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-<<<<<<< HEAD
 
-	private List<Integer> requirementsWithExportedEstimatesIDs;
-	private HashMap<Requirement, Integer> finalEstimatesMap;
-=======
 	private HashMap<Requirement, Integer> finalEstimatesMap;
 	private ArrayList<Integer> requirementsWithExportedEstimatesIDs;
->>>>>>> Add a table for selecting requirements to update in requirement manager that shows up on the bottom half of the overview detail panel when teh send estimates button is clicked
 	
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
-	public PlanningPokerSession () {
+	public PlanningPokerSession() {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.gameState = PlanningPokerSession.SessionState.PENDING;
 		this.requirementIDs = new HashSet<Integer>();
@@ -73,6 +68,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
 		this.requirementsWithExportedEstimatesIDs = new ArrayList<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
+		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
 	}
 	//private int[] finalEstimates;
 
@@ -101,6 +97,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setUsingDeck(boolean isUsingDeck) {
 		this.isUsingDeck = isUsingDeck;
 	}
+
 	
 	/**
 	 * @return the requirementsWithExportedEstimates
