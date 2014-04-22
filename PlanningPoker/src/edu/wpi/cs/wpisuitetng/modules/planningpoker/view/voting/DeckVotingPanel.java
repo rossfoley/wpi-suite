@@ -77,11 +77,7 @@ public class DeckVotingPanel extends JPanel
 	private transient Vector<EstimateListener> listeners;
 	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
 
-	JScrollPane tablePanel;
-	OverviewReqTable newTable;
-	OverviewVoterTable thetable;
-	private JScrollPane thetablePanel;
-
+	
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
 	 * @param votingDeck the deck to use when voting 
@@ -205,7 +201,6 @@ public class DeckVotingPanel extends JPanel
 
 	}
 	
-
 
 	/**
 	 * Builds a deck based voting panel 
