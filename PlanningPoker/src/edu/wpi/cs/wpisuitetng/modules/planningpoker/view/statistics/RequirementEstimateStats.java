@@ -10,8 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
@@ -23,11 +23,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
  * @author Rick Wight (fmwight)
  */
 public class RequirementEstimateStats {
-	private LinkedList<Estimate> estimates;
+	private int ID; 
+	private ArrayList<Estimate> estimates;
 	private double mean;
 	private double median;
 	
-	RequirementEstimateStats(LinkedList<Estimate> givenEstimates) {
+	public RequirementEstimateStats(int reqID, ArrayList<Estimate> givenEstimates) {
 		setEstimates(givenEstimates);
 		sortEstimatesByVote();
 		setMean();
@@ -109,7 +110,7 @@ public class RequirementEstimateStats {
 	 * sets the list of estimates equal to the given list 
 	 * @param givenEstimates
 	 */
-	void setEstimates(LinkedList<Estimate> givenEstimates) {
+	void setEstimates(ArrayList<Estimate> givenEstimates) {
 		estimates = givenEstimates;
 	}
 	
@@ -117,7 +118,23 @@ public class RequirementEstimateStats {
 	 * returns the list of estimates 
 	 * @return estimates
 	 */
-	LinkedList<Estimate> getEstimates() {
+	ArrayList<Estimate> getEstimates() {
 		return estimates;
+	}
+
+	/**
+	 * get the ID number of the requirement
+	 * @return ID
+	 */
+	public int getID() {
+		return ID;
+	}
+
+	/**
+	 * set the ID number to the ID of the requirement
+	 * @param ID
+	 */
+	public void setID(int iD) {
+		ID = iD;
 	}
 }
