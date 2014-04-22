@@ -24,6 +24,7 @@ import javax.swing.event.TableModelListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.PreferencesPanel;
 
 /**
  * This class sets the main view when user goes to the PlanningPoker tab
@@ -52,7 +53,7 @@ public class MainView extends JTabbedPane {
 	public MainView() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		this.addTab("Current Sessions", overviewPanel);
-
+		this.addTab("Preferences", new PreferencesPanel());
 		
 		closeAll.addActionListener(new ActionListener()
 		{

@@ -37,7 +37,7 @@ public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 	@Override
 	public EmailAddress[] getEntity(Session s, String email) throws NotFoundException, WPISuiteException {
 		try {
-			return db.retrieve(EmailAddress.class, "emailAddress", email, s.getProject()).toArray(new EmailAddress[0]);
+			return db.retrieve(EmailAddress.class, "email", email, s.getProject()).toArray(new EmailAddress[0]);
 		} catch (WPISuiteException e) {
 			throw new NotFoundException(email);
 		}
@@ -70,7 +70,7 @@ public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 		 * We have to get the original defect from db4o, copy properties from updatedSession,
 		 * then save the original EmailAddress again.
 		 */
-		List<Model> oldEmails = db.retrieve(EmailAddress.class, "emailAddress", updatedEmail.getEmail(), session.getProject());
+		List<Model> oldEmails = db.retrieve(EmailAddress.class, "email", updatedEmail.getEmail(), session.getProject());
 		if(oldEmails.size() < 1 || oldEmails.get(0) == null) {
 			System.out.println("Problem with finding by the emailAddress");
 			throw new BadRequestException("EmailAddress with email address does not exist.");
