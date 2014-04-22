@@ -86,8 +86,8 @@ public class StatisticsInfoPanel extends JPanel {
 	
 	public void refresh(PlanningPokerSession session) {
 
-		// temporary empty requirement to make the build work 
-		Requirement req = new Requirement(); 
+		// temporary empty requirement to make the build work
+		Requirement req = new Requirement();
 		System.out.println("This print means that the refresh function in StatisticsInfoPannel needs fixing");
 		
 		// Change session name
@@ -99,14 +99,14 @@ public class StatisticsInfoPanel extends JPanel {
 		reqDescriptionDisplay.setText(req.getDescription());
 		
 		
-		//RequirementEstimateStats reqStats = new RequirementEstimateStats(); 
+		//RequirementEstimateStats reqStats = new RequirementEstimateStats();
 		String strMean, strMedian;
 		// Change mean (not fully implemented yet)
-		strMean = "mean value not avalible"; 
-		meanDisplay.setText(strMean);		
+		strMean = "mean value not avalible";
+		meanDisplay.setText(strMean);
 		
 		// Change median (not fully implemented yet)
-		strMedian = "median value not avalible"; 
+		strMedian = "median value not avalible";
 		medianDisplay.setText(strMedian);
 	}
 	
