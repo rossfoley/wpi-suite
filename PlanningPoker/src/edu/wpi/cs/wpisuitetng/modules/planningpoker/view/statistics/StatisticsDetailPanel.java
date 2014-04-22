@@ -44,7 +44,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		// Create the info panel and table panel
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
-		infoPanel = new StatisticsInfoPanel();
+		infoPanel = new StatisticsInfoPanel(currentSession);
 		tablePanel = new JScrollPane(reqTable);
 		
 		
@@ -68,6 +68,8 @@ public class StatisticsDetailPanel extends JSplitPane {
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
         
+        this.updatePanel();
+        
 	}
 	
 	public void updatePanel()	{
@@ -87,6 +89,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 
 	private void updateReqTable(PlanningPokerSession session) {
 		reqTable.refresh(session);
+		
 	}
 
 	private void setButtonVisibility(PlanningPokerSession session) {
