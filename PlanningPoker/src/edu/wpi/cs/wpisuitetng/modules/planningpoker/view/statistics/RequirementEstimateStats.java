@@ -44,7 +44,10 @@ public class RequirementEstimateStats {
 		for (Estimate e : estimates) {
 			sum += e.getVote();
 		}
-		double theMean = sum/estimates.size();
+		double theMean = 0; 
+		if (estimates.size() != 0) {
+			theMean = sum/estimates.size();
+		}
 		return theMean;
 	}
 	
@@ -55,7 +58,10 @@ public class RequirementEstimateStats {
 	 */
 	double calculateMedian() {
 		int size = estimates.size();
-		if (size % 2 == 0) {
+		if (size == 0) {
+			return 0; 
+		}
+		else if (size % 2 == 0) {
 			int mid1 = size/2;
 			int mid2 = size/2 - 1;
 			int val1 = estimates.get(mid1).getVote();
