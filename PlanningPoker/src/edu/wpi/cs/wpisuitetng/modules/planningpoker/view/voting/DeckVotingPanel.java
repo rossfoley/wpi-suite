@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -42,14 +43,20 @@ import javax.swing.SpringLayout;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.Font;
 import java.awt.BorderLayout;
@@ -66,6 +73,7 @@ public class DeckVotingPanel extends JPanel
 							 implements PropertyChangeListener,
 							 			MouseMotionListener,
 							 			Serializable {
+	private DefaultTableModel tableModel = null;
 	private Deck votingDeck;
 	private Estimate prevEstimate;
 	private JFormattedTextField estimateField;
@@ -79,6 +87,8 @@ public class DeckVotingPanel extends JPanel
 	private transient Vector<EstimateListener> listeners;
 	JScrollPane tablePanel;
 	OverviewReqTable newTable;
+	OverviewVoterTable thetable;
+	private JScrollPane thetablePanel;
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -188,25 +198,30 @@ public class DeckVotingPanel extends JPanel
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
 		//
-		String[] columnNames = {"User Names", "Your Vote", "Final Estimate"};
+		String[] columnNames = {"User Names", "Votes"};
 		Object[][] data = {};
-
+		thetable = new OverviewVoterTable(data, columnNames);
+		thetablePanel = new JScrollPane(thetable);
+		thetable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
+		thetable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote	
+		
 		newTable = new OverviewReqTable(data, columnNames);
 		tablePanel = new JScrollPane(newTable);
 		
 		newTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		newTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
-		newTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
-		
+		newTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote		
 		// Put the info panel and table panel into the split pane
 	
 		// Makes the split pane divide 50/50 for each portion
 		Dimension d = new Dimension(200, 200);
         tablePanel.setMinimumSize(d);
-        add(tablePanel, BorderLayout.EAST);
+        thetablePanel.setMinimumSize(d);
+        add(thetablePanel, BorderLayout.EAST);
+//        add(tablePanel, BorderLayout.EAST);
 
-		add(subPanel, BorderLayout.CENTER);				
+		add(subPanel, BorderLayout.WEST);				
 	}
+	
 
 
 	/**
