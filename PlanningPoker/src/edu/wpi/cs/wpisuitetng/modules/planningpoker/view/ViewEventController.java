@@ -139,7 +139,6 @@ public class ViewEventController {
 			// Only remove if it is ready to remove
 			if(!((PlanningPokerSessionTab)comp).readyToRemove())
 				return;
-			((PlanningPokerSessionTab) comp).restoreInformation();
 			this.listOfEditingPanels.remove(comp);
 		}
 		// Check if the tab is a voteOnSession tab
