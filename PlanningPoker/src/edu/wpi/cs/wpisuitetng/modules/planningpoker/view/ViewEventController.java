@@ -83,9 +83,6 @@ public class ViewEventController {
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		this.planningPokerSessionButtonsPanel = buttonsPanel;
 	}
-	public void setOverviewEndVotePanel(OverviewEndVotePanel overviewEndVotePanel) {
-		this.overviewEndVotePanel = overviewEndVotePanel;
-	}
 	
 	//Statistics package set functions
 	
