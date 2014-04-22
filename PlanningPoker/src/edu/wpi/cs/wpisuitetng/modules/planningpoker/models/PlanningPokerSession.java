@@ -473,6 +473,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
 		this.finalEstimatesMap = toCopyFrom.getFinalEstimates();
+		this.VoterNameList = toCopyFrom.VoterNameList;
 	}
 
 	/** 
