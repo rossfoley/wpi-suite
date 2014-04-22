@@ -31,7 +31,18 @@ public class Estimate implements Comparable<Estimate> {
 	
 	public Estimate() {
 		this.vote = -1;	// Initialize as an invalid vote
-		
+	}
+	
+	/**
+	 * detailed constructor (for testing purposes)
+	 * @param reqID
+	 * @param newVote
+	 * @param sessionUUID
+	 */
+	public Estimate(int reqID, int newVote, UUID sessionUUID) {
+		requirementID = reqID; 
+		vote = newVote; 
+		sessionID = sessionUUID; 
 	}
 	
 	/**
