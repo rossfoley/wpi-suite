@@ -259,6 +259,7 @@ public class OverviewDetailPanel extends JSplitPane {
 						sendSingleEstimate(RequirementModel.getInstance().getRequirement(selectedReq));
 					}
 					putReqTableBack();
+					updateInfoPanel(currentSession);
 				}
 			}
 		});
