@@ -42,10 +42,19 @@ public class RequirementSelectionView extends JSplitPane{
 		setRightComponent(null);
 	}
 	
+	/**
+	 * Gets the list of selected requirements from the 
+	 * RequirementSelectionPanel.
+	 * @return List<Requirements>
+	 */
 	public List<Requirement> getSelected(){
 		return reqPanel.getSelected();
 	}
 	
+	/**
+	 * Pass the selected Requirements into the requirementSelectionPanel
+	 * @param selectedRequirements
+	 */
 	public void setSelectedRequirements(Set<Integer> selectedRequirements){
 		reqPanel.setSelectedRequirements(selectedRequirements);
 	}
