@@ -485,6 +485,17 @@ public class PlanningPokerSession extends AbstractModel {
 		reqEstimateStats.put(reqID, new RequirementEstimateStats(reqID, forThisReq));
 	}
 	
+	public RequirementEstimateStats getStatsByID(int reqID) {
+		if (reqEstimateStats.containsKey(reqID)) {
+			return reqEstimateStats.get(reqID);
+		}
+		else {
+			System.err.println("Could not find a value corresponding to key '" + reqID + "'"
+					+ ", returning empty RequirementEstimateStats object");
+			return new RequirementEstimateStats(reqID, new ArrayList<Estimate>());
+		}
+	}
+	
 	/**
 	 * @return true if the session is allowed to be edited
 	 */
