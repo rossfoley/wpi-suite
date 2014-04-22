@@ -326,9 +326,8 @@ public class DeckVotingPanel extends JPanel
 		final JButton card = new JButton();
 		// Try to load the corresponding playing card
 		try {
-			String fileName = new String("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/voting/cards/" + 
-					Integer.toString(cardValue) + "-of-Diamonds.png");
-			Image img = ImageIO.read(new File(fileName));
+			String fileName = new String("cards/" + Integer.toString(cardValue) + "-of-Diamonds.png");
+			Image img = ImageIO.read(getClass().getResource(fileName));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			card.setIcon(new ImageIcon(img.getScaledInstance(112, 140, 0)));
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
