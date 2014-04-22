@@ -40,9 +40,9 @@ public class Estimate implements Comparable<Estimate> {
 	 * @param sessionUUID
 	 */
 	public Estimate(int reqID, int newVote, UUID sessionUUID) {
-		requirementID = reqID; 
-		vote = newVote; 
-		sessionID = sessionUUID; 
+		requirementID = reqID;
+		vote = newVote;
+		sessionID = sessionUUID;
 	}
 	
 	/**
@@ -51,13 +51,13 @@ public class Estimate implements Comparable<Estimate> {
 	 */
 	public int compareTo(Estimate e) {
 		if (vote < e.vote) {
-			return -1; 
+			return -1;
 		}
 		else if (vote > e.vote) {
-			return 1; 
+			return 1;
 		}
 		else {
-			return 0; 
+			return 0;
 		}
 	}
 	

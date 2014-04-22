@@ -28,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.RequirementEstimateStats;
 
 /**
  * @author rossfoley
@@ -52,7 +53,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
 	private HashMap<Requirement, Integer> finalEstimatesMap;
-
+	private HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
 	public List<EstimateVoters> estimateVoterList;
 	
@@ -65,6 +66,8 @@ public class PlanningPokerSession extends AbstractModel {
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
+		this.reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
+		this.finalEstimatesMap = new HashMap<Requirement, Integer>(); 
 		this.defaultSessionName = new String(this.name.toString());
 		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
 		this.setVoterNameList(new ArrayList<String>());
@@ -424,6 +427,7 @@ public class PlanningPokerSession extends AbstractModel {
 
 		if (estimationComplete) {
 			reqsWithCompleteEstimates.add(reqID);
+			addReqEstimateStats(reqID); 
 		}
 	}
 
@@ -453,6 +457,38 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setFinalEstimatesMap(HashMap<Requirement, Integer> reqsWithSubmissions) {
 		finalEstimatesMap = reqsWithSubmissions; 
+	}
+	
+	/**
+	 * @return the reqEstimateStats
+	 */
+	public HashMap<Integer, RequirementEstimateStats> getReqEstimateStats() {
+		return reqEstimateStats;
+	}
+	
+	/**
+	 * clears all existing RequirementEstimateStats from reqEstimateStats and replaces them 
+	 * with the contents of the given HashMap
+	 * @param newReqStats
+	 */
+	public void setReqEstimateStats(HashMap<Integer, RequirementEstimateStats> newReqStats) {
+		reqEstimateStats.clear();
+		reqEstimateStats.putAll(newReqStats);
+	}
+	
+	/**
+	 * creates a RequirementEstimateStats object for the requirement with the given ID 
+	 * and adds it to the reqEstimateStats HashMap using the ID as they key value 
+	 * @param reqID
+	 */
+	public void addReqEstimateStats(int reqID) {
+		ArrayList<Estimate> forThisReq = new ArrayList<Estimate>();
+		for (Estimate e : estimates) {
+			if (e.getRequirementID() == reqID) {
+				forThisReq.add(e);
+			}
+		}
+		reqEstimateStats.put(reqID, new RequirementEstimateStats(reqID, forThisReq));
 	}
 	
 	/**

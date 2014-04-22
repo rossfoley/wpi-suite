@@ -22,6 +22,8 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
 import java.awt.Dimension;
 
 /**
@@ -84,45 +86,32 @@ public class StatisticsInfoPanel extends JPanel {
 	
 	public void refresh(PlanningPokerSession session) {
 
+		// temporary empty requirement to make the build work 
+		Requirement req = new Requirement(); 
+		System.out.println("This print means that the refresh function in StatisticsInfoPannel needs fixing");
+		
 		// Change session name
+<<<<<<< HEAD
 		//reqNameDisplay.setText(session.getName());
 		
 		//meanDisplay.setText(this.formatMean(sesssion.getR));
+=======
+		reqNameDisplay.setText(req.getName());
+>>>>>>> Refresh function for StatisticsInfoPannel modified to show requirement information but still needs work. PlanningPokerSession now has a HashMap which holds statistics and estimates for requirements for which estimation is complete
 		
 		// Change session description
-		reqDescriptionDisplay.setText(session.getDescription());
-		
-
-		String endDate, endTime;
-		// Change end date
-		try {
-			endDate = DateFormat.getDateInstance(DateFormat.FULL).format(session.getEndDate().getTime());
-		} catch (NullPointerException ex) {
-			endDate = new String("No end date");
-		}
-		meanDisplay.setText(endDate);		
-		
-		// Change end time
-		try {
-			GregorianCalendar sessionDate = session.getEndDate();
-			String hour = formatHour(sessionDate);
-			String minute = formatMinute(sessionDate);
-			String am_pm = formatAM_PM(sessionDate);
-			endTime = hour + ":" + minute + am_pm;
-			
-		} catch (NullPointerException ex) {
-			endTime = new String("No end time");
-		}
-		medianDisplay.setText(endTime);
+		reqDescriptionDisplay.setText(req.getDescription());
 		
 		
-		// Change deck name
-		if (session.isUsingDeck()) {
-			stdDevDisplay.setText(session.getSessionDeck().getDeckName());
-		}
-		else {
-			stdDevDisplay.setText("None");
-		}
+		//RequirementEstimateStats reqStats = new RequirementEstimateStats(); 
+		String strMean, strMedian;
+		// Change mean (not fully implemented yet)
+		strMean = "mean value not avalible"; 
+		meanDisplay.setText(strMean);		
+		
+		// Change median (not fully implemented yet)
+		strMedian = "median value not avalible"; 
+		medianDisplay.setText(strMedian);
 	}
 	
 	public String formatMinute(GregorianCalendar date){
