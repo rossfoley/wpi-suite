@@ -121,11 +121,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	}
 	
 	/**
-	 * Method mouseClicked.
+	 * Method mousePressed.
 	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent) */
+	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent) */
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		final int x = e.getX();
 		final int y = e.getY();
 
@@ -182,11 +182,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	
 	
 	/**
-	 * Method mousePressed.
+	 * Method mouseClicked.
 	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent) */
+	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent) */
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 	}
 
 	/**
