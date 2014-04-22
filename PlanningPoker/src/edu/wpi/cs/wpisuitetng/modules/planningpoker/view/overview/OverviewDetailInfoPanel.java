@@ -299,6 +299,11 @@ public class OverviewDetailInfoPanel extends JPanel {
 
 	}
 	
+	/**
+	 * checks to see if all of the final estimates have been used to update requirement manager
+	 * @param session - session to compare against
+	 * @return true if all of the final estimates have been sent
+	 */
 	public boolean areAllEstimatesSent(PlanningPokerSession session){
 		boolean allMatched = true;
 		RequirementModel reqs = RequirementModel.getInstance();
