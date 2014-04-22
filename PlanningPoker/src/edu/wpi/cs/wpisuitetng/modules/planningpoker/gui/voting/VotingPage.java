@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.ProjectModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -57,8 +58,6 @@ public class VotingPage extends JSplitPane {
 	private Requirement requirement;
 	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
-
-	
 
 	public VotingPage(PlanningPokerSession votingSession){
 		this.activeSession = votingSession;
@@ -109,11 +108,21 @@ public class VotingPage extends JSplitPane {
 		reqDetails = new JPanel();
 		SpringLayout sl_reqDetails = new SpringLayout();
 		reqDetails.setLayout(sl_reqDetails);
+		JScrollPane tablePanel2;
+		OverviewReqTable newTable2;
 
 		JLabel nameLabel = new JLabel("Requirement Name:");
 		JLabel descriptionLabel = new JLabel("Requirement Description:");
 		JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
+		
+		String[] columnNames = {"User that have voted"};
+		Object[][] data = {};
 
+		newTable2 = new OverviewReqTable(data, columnNames);
+		tablePanel2 = new JScrollPane(newTable2);
+
+		newTable2.getColumnModel().getColumn(0).setMinWidth(100); // Users who have voted
+		
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
 		nameField.setEditable(false);
@@ -123,6 +132,7 @@ public class VotingPage extends JSplitPane {
 		descriptionField.setPreferredSize(new Dimension(300, 300));
 		descriptionField.setEditable(false);
 		descriptionField.setColumns(10);
+		
 
 		boolean estimationComplete;
 		
@@ -155,7 +165,7 @@ public class VotingPage extends JSplitPane {
 		
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, nameField, 6, SpringLayout.SOUTH, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.WEST, nameField, 0, SpringLayout.WEST, nameLabel);
-		sl_reqDetails.putConstraint(SpringLayout.EAST, nameField, -10, SpringLayout.EAST, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.EAST, nameField, -10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
 
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, descriptionLabel, 6, SpringLayout.SOUTH, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
@@ -165,6 +175,13 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
 		
+		sl_reqDetails.putConstraint(SpringLayout.WEST, tablePanel2, 10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.EAST, tablePanel2, -10, SpringLayout.EAST, reqDetails);
+		
+		Dimension d = new Dimension(100, 100);
+		tablePanel2.setMinimumSize(d);
+		//add(tablePanel2, sl_reqDetails.EAST);
+		
 		System.out.println("currently displayed description:" + descriptionField.getText());
 		System.out.println(descriptionField.getText());
 		
@@ -173,6 +190,7 @@ public class VotingPage extends JSplitPane {
 		reqDetails.add(descriptionLabel);
 		reqDetails.add(nameField);
 		reqDetails.add(descriptionField);
+		reqDetails.add(tablePanel2);
 
 		return reqDetails; 
 	}

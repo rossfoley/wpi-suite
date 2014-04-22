@@ -85,11 +85,7 @@ public class DeckVotingPanel extends JPanel
 	private Integer lastCard = -1;
 	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
-	JScrollPane tablePanel;
-	OverviewReqTable newTable;
-	OverviewVoterTable thetable;
-	private JScrollPane thetablePanel;
-
+	
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
 	 * @param votingDeck the deck to use when voting 
@@ -197,32 +193,11 @@ public class DeckVotingPanel extends JPanel
 		subPanel.add(submitButton);
 		subPanel.add(estimateLabel);
 		subPanel.add(estimateField);
-		//
-		String[] columnNames = {"User Names", "Votes"};
-		Object[][] data = {};
-		thetable = new OverviewVoterTable(data, columnNames);
-		thetablePanel = new JScrollPane(thetable);
-		thetable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		thetable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote	
 		
-		newTable = new OverviewReqTable(data, columnNames);
-		tablePanel = new JScrollPane(newTable);
-		
-		newTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		newTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote		
-		// Put the info panel and table panel into the split pane
-	
-		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(200, 200);
-        tablePanel.setMinimumSize(d);
-        thetablePanel.setMinimumSize(d);
-        add(thetablePanel, BorderLayout.EAST);
-//        add(tablePanel, BorderLayout.EAST);
 
 		add(subPanel, BorderLayout.WEST);				
 	}
 	
-
 
 	/**
 	 * Builds a deck based voting panel 
