@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateVoters;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
@@ -111,6 +112,43 @@ public class OverviewVoterTable extends JTable {
 									reqName,
 									username,
 									vote});	
+						}
+					}
+				}
+			}
+		}
+	}
+	public void populateVotePanelWithEstimateVotersList() {
+		System.out.println("POPULATEVOTEDPANEL");
+		tableModel.setRowCount(0);	
+		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
+		RequirementModel reqs = RequirementModel.getInstance();	
+		List<String> allUserList = getAllVoterNamesList();
+		List<Requirement> ListOfRequirements =  getSessionReqs();
+		for (Requirement r : ListOfRequirements) {
+			int reqID = r.getId();
+			String reqName = r.getName();
+			int vote = -1;
+			for (EstimateVoters ev : planningPokerSession.getEstimateVoterList()) {
+				if (ev.getRequirementID() == reqID) {
+					for (String s : allUserList) {
+						String username = s;
+						for (EstimateVoters evs : planningPokerSession.getEstimateVoterList()) {
+							if (evs.getVoterUsername().equals(s)) {
+								vote = evs.getVote();
+								tableModel.addRow(new Object[]{
+										reqID,
+										reqName,
+										username,
+										vote});	
+							} else {
+								vote = -1;
+								tableModel.addRow(new Object[]{
+										reqID,
+										reqName,
+										username,
+										vote});	
+							}
 						}
 					}
 				}
