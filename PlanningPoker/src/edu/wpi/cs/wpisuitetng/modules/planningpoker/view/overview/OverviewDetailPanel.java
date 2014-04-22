@@ -250,16 +250,15 @@ public class OverviewDetailPanel extends JSplitPane {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Integer> selectedReqIDs = selectToUpdateTable.getSelectedReqs();
 				RequirementModel reqs = RequirementModel.getInstance();
-				for (Integer selectedReq:selectedReqIDs){
-					sendSingleEstimate(RequirementModel.getInstance().getRequirement(selectedReq));
-					System.out.println(reqs.getRequirement(selectedReq).getName());
-				}
 				if (selectedReqIDs.size()==0){
 					sendErrorMessage.setVisible(true);
 				}
 				else {
 					sendErrorMessage.setVisible(false);
-					// send messages
+					for (Integer selectedReq:selectedReqIDs){
+						sendSingleEstimate(RequirementModel.getInstance().getRequirement(selectedReq));
+					}
+					putReqTableBack();
 				}
 			}
 		});
