@@ -13,7 +13,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
  *
  */
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -28,12 +32,12 @@ public class Deck extends AbstractModel {
 	
 	/** constructor for Decks that takes in a list to use as the deck
 	 * 
-	 * @param numbersInDeck numbers to use in the new deck
+	 * @param listOfCards numbers to use in the new deck
 	 */
-	public Deck(ArrayList<Integer> numbersInDeck, boolean allowMultipleSelections) {
-		this.numbersInDeck = numbersInDeck;
+	public Deck(ArrayList<Integer> listOfCards, boolean allowMultipleSelections) {
+		this.numbersInDeck = listOfCards;
 		this.allowMultipleSelections = allowMultipleSelections;
-		this.deckName = "";
+		this.deckName = autoName();
 	}
 	/**
 	 * constructor for decks that does not have a list given at initialization
@@ -41,7 +45,7 @@ public class Deck extends AbstractModel {
 	 * deckName is set to "" as a default
 	 */
 	public Deck(){
-		this.deckName = "";
+		this.deckName = autoName();
 		this.allowMultipleSelections = false;
 	}
 	
@@ -196,7 +200,6 @@ public class Deck extends AbstractModel {
 	public String autoName(){
 		String newDeckName = "Deck " + Integer.toString(this.id);
 		return newDeckName;
-	}
-	
+	}	
 
 }
