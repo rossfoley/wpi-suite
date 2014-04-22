@@ -9,8 +9,10 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -20,7 +22,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.NumberFormat;
@@ -32,26 +33,21 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import java.awt.Font;
-import java.awt.BorderLayout;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 
 
 /**
@@ -77,6 +73,9 @@ public class DeckVotingPanel extends JPanel
 	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
 	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
+
+	JScrollPane tablePanel;
+	OverviewReqTable newTable;
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -198,6 +197,7 @@ public class DeckVotingPanel extends JPanel
 		add(submitButton);
 		add(estimateLabel);
 		add(estimateField);
+
 	}
 
 
