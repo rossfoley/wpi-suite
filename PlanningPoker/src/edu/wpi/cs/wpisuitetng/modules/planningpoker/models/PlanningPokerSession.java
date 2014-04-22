@@ -109,6 +109,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setUsingDeck(boolean isUsingDeck) {
 		this.isUsingDeck = isUsingDeck;
 	}
+
 	
 	/**
 	 * @return the requirementsWithExportedEstimates
