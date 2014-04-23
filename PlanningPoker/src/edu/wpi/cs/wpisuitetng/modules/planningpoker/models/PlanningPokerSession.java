@@ -60,7 +60,6 @@ public class PlanningPokerSession extends AbstractModel {
 
 	private List<Integer> requirementsWithExportedEstimatesIDs;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
-	private HashMap<Requirement, Integer> finalEstimatesMap;
 	private List<String> VoterNameList;
 	private List<EstimateVoters> estimateVoterList;
 	
@@ -114,7 +113,7 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @return the requirementsWithExportedEstimates
 	 */
-	public ArrayList<Integer> getRequirementsWithExportedEstimates() {
+	public List<Integer> getRequirementsWithExportedEstimates() {
 		return requirementsWithExportedEstimatesIDs;
 	}
 	
