@@ -314,7 +314,6 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 			editParent.setVisible(false);
 			removeFromParent.setVisible(false);
 			noParentInfoPanel.setVisible(true);
-			currentParent.setVisible(false); //doesn't work in Requirement manager, doesn't work here
 		}
 	}
 
