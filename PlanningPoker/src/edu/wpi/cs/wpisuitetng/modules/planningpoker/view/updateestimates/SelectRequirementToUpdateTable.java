@@ -166,10 +166,8 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 */
 	public ArrayList<Integer> getSelectedReqs(){
 		ArrayList<Integer> selectedReqs = new ArrayList<Integer>();
-		System.out.println(tableModel.getRowCount());
 		for (int i = 0; i < tableModel.getRowCount(); i++){
 			if ((boolean) tableModel.getValueAt(i, 0)){
-				System.out.println(i);
 				selectedReqs.add(requirementRowRelation.get(i));
 			}
 		}
