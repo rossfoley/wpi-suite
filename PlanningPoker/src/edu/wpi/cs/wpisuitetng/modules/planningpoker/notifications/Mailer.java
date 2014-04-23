@@ -9,25 +9,22 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications;
 
-
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
-import javax.mail.PasswordAuthentication;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.Authenticator;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-//import javax.mail.internet.*;
-
 
 /**
  * 
@@ -35,13 +32,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
  * Handles the mailing to users about events
  */
 public class Mailer {
-
-	private String to;
-	private String from;
-	private String host;
-	private Properties properties;
-	private Session session;
-	private String port;
+	private final Properties properties;
+	private final Session session;
 
 	private final String username = "theteam8s@gmail.com";
 	private final String password = "TheTeam8";
@@ -112,7 +104,7 @@ public class Mailer {
 
 
 
-		if(isValidSender == true && isValidReciever == true){
+		if(isValidSender && isValidReciever){
 			try{
 				// Create a default MimeMessage object.
 				MimeMessage message = new MimeMessage(session);
@@ -132,20 +124,20 @@ public class Mailer {
 
 				// Send message
 				Transport.send(message);
-				//System.out.println("Sent message successfully");
 			}catch (MessagingException mex) {
 				mex.printStackTrace();
 			}
 		}
-		if (isValidSender == false){
+		if (!isValidSender){
 			System.out.println(username + " is not a valid email address");	
 		}
-		if (isValidReciever == false){
+		if (!isValidReciever){
 			System.out.println(recipient + " is not a valid email address");
 		}
 
 		return isValidSender && isValidReciever;
 	}
+	
 	/**
 	 * Mails the people in the List of recipients with the subject and body of the message as specified
 	 * @param recipients List of email addresses formated as a string to send the given message to
@@ -154,10 +146,10 @@ public class Mailer {
 	 * @return A list of people who could not be messaged because they did not have a properly formatted e-mail address.
 	 */
 	public List<String> mailToGroup(List<String> recipients, String subject, String body) {		
-		List<String> didNotSendTo = null;
+		final List<String> didNotSendTo = new ArrayList<String>();
 
 		if (recipients == null || subject == null || body == null) {
-			return didNotSendTo;
+			return null;
 		}
 
 		boolean thisValid;
@@ -178,10 +170,10 @@ public class Mailer {
 	 * @return A list of people who could not be messaged because they did not have a properly formatted e-mail address.
 	 */
 	public List<String> notifyOfPlanningPokerSessionStart(List<String> recipients, PlanningPokerSession planningPokerSession) {
-		List<String> didNotSendTo = null;
+		final List<String> didNotSendTo = new ArrayList<String>();
 
 		if (recipients == null || planningPokerSession == null) {
-			return didNotSendTo;
+			return null;
 		}
 
 		boolean thisValid;
@@ -189,32 +181,33 @@ public class Mailer {
 			int day = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().DAY_OF_MONTH);
 			int month = (1 + planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().MONTH));
 			int year = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().YEAR);
-			String hour = formatHour(planningPokerSession.getEndDate());
-			String minute = formatMinute(planningPokerSession.getEndDate());
-			String am_pm = formatAM_PM(planningPokerSession.getEndDate());
-			String endTime = month + "/" + day + "/" + year + " at " + hour + ":" + minute + am_pm;
+			final String hour = formatHour(planningPokerSession.getEndDate());
+			final String minute = formatMinute(planningPokerSession.getEndDate());
+			final String am_pm = formatAM_PM(planningPokerSession.getEndDate());
+			final String endTime = month + "/" + day + "/" + year + " at " + hour + ":" + minute + am_pm;
 
-			for (int i = 0; i < recipients.size(); i++) {
-				thisValid = mailTo(recipients.get(i), "Planning Poker Session: " + planningPokerSession.getName() + 
+			for (String recipient : recipients) {
+				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
 						" has been started. Its end date is: " + endTime + ".  \n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
-					didNotSendTo.add(recipients.get(i));
+					didNotSendTo.add(recipient);
 				}
 			}
 		}
 		else {
-			for (int i = 0; i < recipients.size(); i++) {
-				thisValid = mailTo(recipients.get(i), "Planning Poker Session: " + planningPokerSession.getName() + 
+			for (String recipient : recipients) {
+				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
 						" has been started. The session doesn't currently have an end date. \n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
-					didNotSendTo.add(recipients.get(i));
+					didNotSendTo.add(recipient);
 				}
 			}
 		}
 		return didNotSendTo;
 	}
+	
 	/**
 	 * Sends an email to the given list of recipients notifying them that a given Planning Poker Session has ended
 	 * @param recipients List of email addresses to notify of the start of a Planning Poker Session
@@ -222,10 +215,10 @@ public class Mailer {
 	 * @return A list of people who could not be messaged because they did not have a properly formatted e-mail address.
 	 */
 	public List<String> notifyOfPlanningPokerSessionClose(List<String> recipients, PlanningPokerSession planningPokerSession) {
-		List<String> didNotSendTo = null;
+		final List<String> didNotSendTo = new ArrayList<String>();
 
 		if (recipients == null || planningPokerSession == null) {
-			return didNotSendTo;
+			return null;
 		}
 
 		boolean thisValid;
@@ -246,11 +239,11 @@ public class Mailer {
 	 */
 	private String formatMinute(GregorianCalendar date){
 		String minute = "";
-		if(date.get(GregorianCalendar.MINUTE) == 0){
-			minute = Integer.toString(date.get(GregorianCalendar.MINUTE)) + "0";
+		if(date.get(Calendar.MINUTE) == 0){
+			minute = Integer.toString(date.get(Calendar.MINUTE)) + "0";
 		}
 		else{
-			minute = Integer.toString(date.get(GregorianCalendar.MINUTE));
+			minute = Integer.toString(date.get(Calendar.MINUTE));
 		}
 		return minute;
 	}
@@ -261,11 +254,11 @@ public class Mailer {
 	 */
 	private String formatHour(GregorianCalendar date){
 		String hour = "";
-		if(date.get(GregorianCalendar.HOUR) == 0){
+		if(date.get(Calendar.HOUR) == 0){
 			hour = "12";
 		}
 		else{
-			hour = Integer.toString(date.get(GregorianCalendar.HOUR));
+			hour = Integer.toString(date.get(Calendar.HOUR));
 		}
 		return hour;	
 	}
@@ -276,7 +269,7 @@ public class Mailer {
 	 */
 	private String formatAM_PM(GregorianCalendar date){
 		String AM_PM = "";
-		if(date.get(GregorianCalendar.AM_PM) == 0){
+		if(date.get(Calendar.AM_PM) == 0){
 			AM_PM = "AM";
 		}
 		else{
