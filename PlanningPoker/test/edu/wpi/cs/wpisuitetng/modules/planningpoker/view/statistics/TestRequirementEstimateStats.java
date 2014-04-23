@@ -31,7 +31,7 @@ public class TestRequirementEstimateStats {
 	@Test
 	public void testCalculateMean() {
 		assertEquals(4.2, testStats.calculateMean(), 0.01);
-		boolean pointlessVariable13 = testEstimates.add(new Estimate(13, 13, UUID.randomUUID()));
+		final boolean pointlessVariable13 = testEstimates.add(new Estimate(13, 13, UUID.randomUUID()));
 		assertEquals(5.66, testStats.calculateMean(), 0.01);
 		testStats.setEstimates(new ArrayList<Estimate>());
 		assertEquals(0, testStats.calculateMean(), 0.1); 
@@ -41,7 +41,7 @@ public class TestRequirementEstimateStats {
 	public void testCalculateMedian() {
 		testStats.sortEstimatesByVote();
 		assertEquals(3, testStats.calculateMedian(), 0.1);
-		boolean pointlessVariable13 = testEstimates.add(new Estimate(13, 13, UUID.randomUUID()));
+		final boolean pointlessVariable13 = testEstimates.add(new Estimate(13, 13, UUID.randomUUID()));
 		testStats.sortEstimatesByVote(); 
 		assertEquals(5, testStats.calculateMedian(), 0.1); 
 		testStats.setEstimates(new ArrayList<Estimate>());

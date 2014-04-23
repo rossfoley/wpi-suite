@@ -47,7 +47,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 		switch (string) {
 		case "add-default-deck":
 			try {
-				int deckCount = db.retrieveAll(new Deck(), s.getProject()).size();
+				final int deckCount = db.retrieveAll(new Deck(), s.getProject()).size();
 				if (deckCount == 0) {
 					makeEntity(s, content);
 					return "true";
@@ -176,18 +176,18 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	@Override
 	public Deck update(Session s, String content) throws WPISuiteException {
 		
-		Deck updatedDeck = Deck.fromJson(content);
+		final Deck updatedDeck = Deck.fromJson(content);
 		/*
 		 * Because of the disconnected objects problem in db4o, we can't just save Requirements.
 		 * We have to get the original defect from db4o, copy properties from updatedRequirement,
 		 * then save the original Requirement again.
 		 */
-		List<Model> oldDecks = db.retrieve(Deck.class, "id", updatedDeck.getId(), s.getProject());
+		final List<Model> oldDecks = db.retrieve(Deck.class, "id", updatedDeck.getId(), s.getProject());
 		if(oldDecks.size() < 1 || oldDecks.get(0) == null) {
 			throw new BadRequestException("Deck with ID does not exist.");
 		}
 				
-		Deck existingDeck = (Deck) oldDecks.get(0);		
+		final Deck existingDeck = (Deck) oldDecks.get(0);		
 
 		// copy values to old requirement and fill in our changeset appropriately
 		existingDeck.copyFrom(updatedDeck);

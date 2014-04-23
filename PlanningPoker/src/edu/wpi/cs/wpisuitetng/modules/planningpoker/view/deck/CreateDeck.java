@@ -80,9 +80,9 @@ public class CreateDeck extends JPanel {
 		setLayout(springLayout);
 		setPreferredSize(new Dimension(420, 330));
 
-		JLabel lblDeckName = new JLabel("Deck Name:* ");
+		final JLabel lblDeckName = new JLabel("Deck Name:* ");
 		lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
-		Deck tempDeck = new Deck();
+		final Deck tempDeck = new Deck();
 		txtDeckName.setText(tempDeck.getDeckName());
 		txtDeckName.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
@@ -101,18 +101,18 @@ public class CreateDeck extends JPanel {
 		lblDeckNameError.setVisible(false);
 		lblDeckNameError.setForeground(Color.RED);
 
-		JLabel lblCard = new JLabel("New Card Value: ");
+		final JLabel lblCard = new JLabel("New Card Value: ");
 		lblCard.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		// Radio button group for multiple vs. single selection mode
-		JPanel modeSelectionPanel = createModeSelectionPanel();
+		final JPanel modeSelectionPanel = createModeSelectionPanel();
 
 		btnAddCard = new JButton("Add Card:");
 		btnAddCard.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					int value = Integer.parseInt(txtCardValue.getText());
+					final int value = Integer.parseInt(txtCardValue.getText());
 					addCard(value);
 					txtCardValue.setText("");
 					refresh();
@@ -149,7 +149,7 @@ public class CreateDeck extends JPanel {
 		btnRemove = new JButton("Remove card");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int [] toRemove = cardTable.getSelectedRows();
+				final int [] toRemove = cardTable.getSelectedRows();
 
 				for (int index : toRemove) {
 					removeCard((int) cardTable.getValueAt(index, 0));
@@ -170,7 +170,7 @@ public class CreateDeck extends JPanel {
 		});
 
 		// Put JTable into a scroll pane to allow for scrolling and column headers
-		JScrollPane cardScrollPane = new JScrollPane(cardTable);
+		final JScrollPane cardScrollPane = new JScrollPane(cardTable);
 
 		// Create deck button
 		btnCreate = new JButton("Create Deck");
@@ -266,7 +266,7 @@ public class CreateDeck extends JPanel {
 		cardTable.setFillsViewportHeight(true);
 
 		// Center align the data 
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		final DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		cardTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 
@@ -351,7 +351,7 @@ public class CreateDeck extends JPanel {
 	}
 
 	public Deck createDeck() {
-		Deck newDeck = new Deck(listOfCards, multiSelectionMode);
+		final Deck newDeck = new Deck(listOfCards, multiSelectionMode);
 		newDeck.setDeckName(txtDeckName.getText());
 
 		DeckListModel.getInstance().addDeck(newDeck);
@@ -381,16 +381,16 @@ public class CreateDeck extends JPanel {
 			}
 		});
 
-		ButtonGroup rGroup = new ButtonGroup();
+		final ButtonGroup rGroup = new ButtonGroup();
 		rGroup.add(rbtnSingle);
 		rGroup.add(rbtnMulti);
 
-		JPanel modeBtnPanel = new JPanel(new GridLayout(0, 1));
+		final JPanel modeBtnPanel = new JPanel(new GridLayout(0, 1));
 		modeBtnPanel.add(rbtnSingle);
 		modeBtnPanel.add(rbtnMulti);
 
-		JPanel modePanel = new JPanel(new BorderLayout());
-		JLabel lblMode = new JLabel("Card Selection Mode: ");
+		final JPanel modePanel = new JPanel(new BorderLayout());
+		final JLabel lblMode = new JLabel("Card Selection Mode: ");
 		modePanel.add(lblMode, BorderLayout.LINE_START);
 		modePanel.add(modeBtnPanel, BorderLayout.CENTER);
 
@@ -451,17 +451,17 @@ public class CreateDeck extends JPanel {
 		// Do nothing if we have no listeners
 		if (listeners != null && !listeners.isEmpty()) {
 			// Create the event object to send
-			DeckEvent event = 
+			final DeckEvent event = 
 					new DeckEvent(this, newDeck);
 
 			// Make a copy of the listener list in case anyone adds/removes listeners
-			Vector<DeckListener> targets;
+			final Vector<DeckListener> targets;
 			synchronized (this) {
 				targets = (Vector<DeckListener>) listeners.clone();
 			}
 
 			// Walk through the listener list and call the estimateSubmitted method in each
-			Enumeration<DeckListener> e = targets.elements();
+			final Enumeration<DeckListener> e = targets.elements();
 			while (e.hasMoreElements()) {
 				DeckListener l = (DeckListener) e.nextElement();
 				l.deckSubmitted(event);

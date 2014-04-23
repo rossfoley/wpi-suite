@@ -242,8 +242,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return the initial ID
 	 */
 	public String makeDefaultName() {
-		Date date = new Date();
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		final Date date = new Date();
+		final DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		return dateFormat.format(date);
 	}
 
@@ -283,8 +283,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * which correspond to the possible errors with the different fields
 	 */
 	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet) {
-		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
-		GregorianCalendar currentDate = new GregorianCalendar();
+		final ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
+		final GregorianCalendar currentDate = new GregorianCalendar();
 
 		if (haveEndDate) {
 			if (dateHasBeenSet) {
@@ -403,7 +403,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void checkReqEstimationComplete(Integer reqID){
 		// get all estimates for this reqID
-		ArrayList<Estimate> estimatesForReq = new ArrayList<Estimate>();
+		final ArrayList<Estimate> estimatesForReq = new ArrayList<Estimate>();
 		for (Estimate e: estimates){
 			if (e.getRequirementID() == reqID){
 				estimatesForReq.add(e);
@@ -461,8 +461,8 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	
 	public void addFinalEstimate(int ID, int estimate){
-		RequirementModel reqs = RequirementModel.getInstance();
-		Requirement req = reqs.getRequirement(ID);
+		final RequirementModel reqs = RequirementModel.getInstance();
+		final Requirement req = reqs.getRequirement(ID);
 		finalEstimatesMap.put(req, estimate);
 	}
 	
@@ -489,7 +489,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param reqID
 	 */
 	public void addReqEstimateStats(int reqID) {
-		ArrayList<Estimate> forThisReq = new ArrayList<Estimate>();
+		final ArrayList<Estimate> forThisReq = new ArrayList<Estimate>();
 		for (Estimate e : estimates) {
 			if (e.getRequirementID() == reqID) {
 				forThisReq.add(e);

@@ -12,7 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 import java.util.EventObject;
 
 public class RequirementsSelectedEvent extends EventObject {
-	private boolean areRequirementsSelected;
+	private final boolean areRequirementsSelected;
 	
 	public RequirementsSelectedEvent(Object source, boolean areRequirementsSelected) {
 		super(source);

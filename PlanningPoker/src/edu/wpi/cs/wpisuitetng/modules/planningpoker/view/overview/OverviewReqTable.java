@@ -193,7 +193,7 @@ public class OverviewReqTable extends JTable {
 	 * @return a string representing the final estimate 
 	 */
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
-		HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
+		final HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
 		if (finalEstimates.containsKey(reqToFind)){
 			return finalEstimates.get(reqToFind).toString();
 		}

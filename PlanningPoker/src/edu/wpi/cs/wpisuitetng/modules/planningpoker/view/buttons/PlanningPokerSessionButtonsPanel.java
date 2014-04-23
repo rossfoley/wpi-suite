@@ -91,7 +91,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().editSession(session);
 			}
 		});		
@@ -100,7 +100,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		voteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().voteOnSession(session);
 			}
 		});	
@@ -117,10 +117,10 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				final List<String> recipients = new LinkedList<String>();
 				List<EmailAddress> emailRecipients = null;
 				
-				GetEmailController getEmailController = GetEmailController.getInstance();
+				final GetEmailController getEmailController = GetEmailController.getInstance();
 				getEmailController.retrieveEmails();
 				
-				EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+				final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 				try {
 					emailRecipients = emailAddressModel.getEmailAddresses();
 				}
@@ -133,11 +133,11 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				}
 				
 				
-				Thread t = new Thread(new Runnable() {
+				final Thread t = new Thread(new Runnable() {
 					
 					@Override
 					public void run() {
-						Mailer mailer = new Mailer();
+						final Mailer mailer = new Mailer();
 						mailer.notifyOfPlanningPokerSessionClose(recipients, session);
 					}
 				});
@@ -153,7 +153,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			@Override
 			
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().openStatisticsTab(session);
 				}
 			});

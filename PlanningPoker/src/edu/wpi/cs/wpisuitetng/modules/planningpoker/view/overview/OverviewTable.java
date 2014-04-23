@@ -74,9 +74,9 @@ public class OverviewTable extends JTable
 				
 				if(getRowCount() > 0)
 				{
-					int mouseY = e.getY();
-					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
-					int lastRowY = lastRow.y + lastRow.height;
+					final int mouseY = e.getY();
+					final Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
+					final int lastRowY = lastRow.y + lastRow.height;
 
 					if(mouseY > lastRowY) 
 					{
@@ -112,8 +112,8 @@ public class OverviewTable extends JTable
 	 */
 
 	public List<PlanningPokerSession> getOpenSessions() {
-		List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
-		List<PlanningPokerSession> openSessions = new ArrayList<PlanningPokerSession>();
+		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
+		final List<PlanningPokerSession> openSessions = new ArrayList<PlanningPokerSession>();
 		for (PlanningPokerSession session : sessions) {
 			if (session.isOpen()){
 				openSessions.add(session);
@@ -128,7 +128,7 @@ public class OverviewTable extends JTable
 	 */
 	public void refresh() {
 				
-		List<PlanningPokerSession> pokerSessions = getSessions();
+		final List<PlanningPokerSession> pokerSessions = getSessions();
 				
 		// clear the table
 		tableModel.setRowCount(0);		
@@ -216,7 +216,7 @@ public class OverviewTable extends JTable
 	 */
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component comp = super.prepareRenderer(renderer, row, column);
+        final Component comp = super.prepareRenderer(renderer, row, column);
 
         if (JComponent.class.isInstance(comp)){
             ((JComponent)comp).setBorder(paddingBorder);
