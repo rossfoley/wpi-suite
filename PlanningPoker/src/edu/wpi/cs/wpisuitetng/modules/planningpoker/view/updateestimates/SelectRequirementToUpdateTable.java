@@ -21,25 +21,24 @@ import javax.swing.DropMode;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * @author amandaadkins
- * this class is the table for displaying and selecting which final estimates from a planning poker session should be sent to requirement manager
+ * this class is the table for displaying and selecting which final estimates 
+ * a planning poker session should be sent to requirement manager
+ * @version $Revision: 1.0 $
  */
 public class SelectRequirementToUpdateTable extends JTable {
-	//private AbstractTableModel tableModel = null;
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
-	private List<Integer> requirementsToDisplay;
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
+	private final List<Integer> requirementsToDisplay;
 	private HashMap<Integer, Integer> finalEstimates;
 	private HashMap<Integer, Integer> requirementRowRelation = new HashMap<Integer, Integer>();
 
@@ -47,17 +46,19 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 * Sets initial table view
 	 * @param data	Initial data to fill OverviewTable
 	 * @param columnNames	Column headers of OverviewTable
+
+	 * @param displayRequirementIDs List<Integer> ids of requirements to display
+	 * @param finalEstimates HashMap<Integer,Integer>
 	 */
-	public SelectRequirementToUpdateTable(Object[][] data, String[] columnNames, List<Integer> displayRequirementIDs, 
-			HashMap<Integer, Integer> finalEstimates)	{
-		//this.tableModel = new SelectRequirementToUpdateTableModel(data, columnNames);
-		this.tableModel = new DefaultTableModel(data, columnNames);
+	public SelectRequirementToUpdateTable(Object[][] data, String[] columnNames, 
+			List<Integer> displayRequirementIDs, HashMap<Integer, Integer> finalEstimates) {
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		this.setDragEnabled(true);
 		this.setDropMode(DropMode.ON);
-		this.requirementsToDisplay = displayRequirementIDs;
+		requirementsToDisplay = displayRequirementIDs;
 		this.finalEstimates = finalEstimates;
 
 		this.getTableHeader().setReorderingAllowed(false);
@@ -82,19 +83,19 @@ public class SelectRequirementToUpdateTable extends JTable {
 				}
 			}
 		});
-		
+
 	}
 
 	/**
 	 * refresh the table containing the requirements that can be selected
-	 * @param session
+
 	 */
 	public void refresh() {
-		RequirementModel reqs = RequirementModel.getInstance();
+		final RequirementModel reqs = RequirementModel.getInstance();
 		// clear the table
-		tableModel.setRowCount(0);		
+		tableModel.setRowCount(0);
 		int rowCount = 0;
-		
+
 		requirementRowRelation.clear();
 
 		for (Integer requirementID : requirementsToDisplay) {
@@ -109,15 +110,15 @@ public class SelectRequirementToUpdateTable extends JTable {
 					false,
 					reqName,
 					reqEstimate
-					});	
-			
+			});
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
 	}
 
 	/**
-	 * @return the changedByRefresh 
+
+	 * @return the changedByRefresh  
 	 */
 	public boolean wasChangedByRefresh() {
 		return changedByRefresh;
@@ -136,23 +137,21 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 * @param col	column of OverviewReqTable cell is located
 	 * @return boolean */
 	@Override
-	public boolean isCellEditable(int row, int col)	{
+	public boolean isCellEditable(int row, int col) {
 		if (col == 0){
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
-	
+
 	/**
 	 * @return returns a list of the ids of the requirements 
 	 * that have been selected to update in requirement manager
 	 */
 	public List<Integer> getSelectedRequirements(){
-		return new ArrayList<Integer>();	
+		return new ArrayList<Integer>();
 	}
-	
+
 	@Override
 	public Class getColumnClass(int column){
 		if (column == 0){
@@ -162,8 +161,8 @@ public class SelectRequirementToUpdateTable extends JTable {
 			return super.getColumnClass(column);
 		}
 	}
-	
-	
+
+
 	/**
 	 * gets the list of requirementIDs that corresponds to the selected requirements in the table
 	 * @return an array list of the ids of the requirements that have been selected
@@ -171,7 +170,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 	public ArrayList<Integer> getSelectedReqs(){
 		ArrayList<Integer> selectedReqs = new ArrayList<Integer>();
 		System.out.println(tableModel.getRowCount());
-		for (int i = 0; i<tableModel.getRowCount(); i++){
+		for (int i = 0; i < tableModel.getRowCount(); i++){
 			if ((boolean) tableModel.getValueAt(i, 0)){
 				System.out.println(i);
 				selectedReqs.add(requirementRowRelation.get(i));
