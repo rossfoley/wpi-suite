@@ -138,11 +138,14 @@ public class VotingPage extends JSplitPane {
 		nameField.setBackground(Color.WHITE);
 		nameField.setEditable(false);
 
-		JTextField descriptionField = new JTextField("");
+		final JScrollPane descrScroll = new JScrollPane();
+		JTextArea descriptionField = new JTextArea("");
 		descriptionField.setBackground(Color.WHITE);
-		descriptionField.setPreferredSize(new Dimension(300, 300));
+		descrScroll.setPreferredSize(new Dimension(300, 300));
 		descriptionField.setEditable(false);
-		descriptionField.setColumns(10);		
+		descrScroll.setViewportView(descriptionField);
+		descriptionField.setLineWrap(true);
+
 
 		boolean estimationComplete;
 
@@ -180,10 +183,10 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, descriptionLabel, 6, SpringLayout.SOUTH, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
 
-		sl_reqDetails.putConstraint(SpringLayout.NORTH, descriptionField, 6, SpringLayout.SOUTH, descriptionLabel);
-		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
-		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
-		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.NORTH, descrScroll, 6, SpringLayout.SOUTH, descriptionLabel);
+		sl_reqDetails.putConstraint(SpringLayout.WEST, descrScroll, 0, SpringLayout.WEST, nameLabel);
+		sl_reqDetails.putConstraint(SpringLayout.EAST, descrScroll, 0, SpringLayout.EAST, nameField);
+		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descrScroll, -10, SpringLayout.SOUTH, reqDetails);
 
 		
 		sl_reqDetails.putConstraint(SpringLayout.WEST, thetablePanel, 10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
@@ -196,8 +199,8 @@ public class VotingPage extends JSplitPane {
 		reqDetails.add(nameLabel);
 		reqDetails.add(descriptionLabel);
 		reqDetails.add(nameField);
-		reqDetails.add(descriptionField);
 		reqDetails.add(thetablePanel);
+		reqDetails.add(descrScroll);
 
 		return reqDetails; 
 	}
