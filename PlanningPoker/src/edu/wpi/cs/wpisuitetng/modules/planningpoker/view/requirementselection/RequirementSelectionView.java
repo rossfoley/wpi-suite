@@ -1,6 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 
-import java.awt.Frame;
 import java.util.List;
 import java.util.Set;
 
@@ -8,17 +16,23 @@ import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementSelectionPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementsSelectedListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationInformationPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementInformationPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
+/**
+ * This class is used for the requirement selection screen.
+ * @author theteam8s
+ * @version 1.0
+ */
 public class RequirementSelectionView extends JSplitPane{
 	
-	private RequirementSelectionPanel reqPanel;
-	private RequirementCreationPanel createPanel;
+	private final RequirementSelectionPanel reqPanel;
+	private final RequirementCreationPanel createPanel;
 	
+	/**
+	 * Constructor is used to create the JSplitPane for the requirement
+	 * selection screen.
+	 */
 	public RequirementSelectionView(){
 		reqPanel = new RequirementSelectionPanel(this);
 		createPanel = new RequirementCreationPanel(-1, this);
@@ -29,15 +43,25 @@ public class RequirementSelectionView extends JSplitPane{
 		setResizeWeight(1.0);
 	}
 	
+	/**
+	 * Opens the requirement creation tab
+	 */
 	public void openCreationPanel(){
 		setRightComponent(createPanel);
 	}
 	
+	/**
+	 * Adds the new requirement to the RequirementSelectionPanel
+	 * and closes the requirement creation tab.
+	 */
 	public void newRequirementCreated(){
 		reqPanel.newRequirementAdded(createPanel.getDisplayRequirement());
 		closeCreationPanel();
 	}
 	
+	/**
+	 * Closes the requirement creation tab.
+	 */
 	public void closeCreationPanel(){
 		setRightComponent(null);
 	}
@@ -60,7 +84,11 @@ public class RequirementSelectionView extends JSplitPane{
 	}
 	
 	//This is a Hack - Perry
-	synchronized public void addRequirementsSelectedListener(RequirementsSelectedListener l){
+	/**
+	 * Adds a requirement selected listener to the requirement panel.
+	 * @param l
+	 */
+	public synchronized void addRequirementsSelectedListener(RequirementsSelectedListener l){
 		reqPanel.addRequirementsSelectedListener(l);
 	}
 	
