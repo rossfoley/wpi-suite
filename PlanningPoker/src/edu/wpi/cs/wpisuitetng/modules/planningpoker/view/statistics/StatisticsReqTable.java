@@ -81,10 +81,13 @@ public class StatisticsReqTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 				rowNumber = rowAtPoint(getMousePosition());
 				//infoPanel.currentReqID = tableRows.get(rowNumber);
-				infoPanel.setCurrentReqID(tableRows.get(rowNumber));
-					}
-		}); 
+				try {
+					infoPanel.setCurrentReqID(tableRows.get(rowNumber));
 				}
+				catch (NullPointerException ex){}
+			}
+		}); 
+	}
 	
 	/**
 	 * updates StatistcsReqTable with the contents of the requirement model
