@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -43,11 +44,15 @@ import net.sourceforge.jdatepicker.JDateComponentFactory;
 import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
@@ -502,8 +507,37 @@ public class PlanningPokerSessionTab extends JPanel {
 					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
 
-					MockNotification mock = new MockNotification();
-					mock.sessionStartedNotification();
+					final List<String> recipients = new LinkedList<String>();
+					List<EmailAddress> emailRecipients = null;
+					
+					GetEmailController getEmailController = GetEmailController.getInstance();
+					getEmailController.retrieveEmails();
+					
+					EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+					try {
+						emailRecipients = emailAddressModel.getEmailAddresses();
+					}
+					catch (Exception E) {
+						
+					}
+					
+					for (int i = 0; i < emailRecipients.size(); i++) {
+						recipients.add(emailRecipients.get(i).getEmail());
+					}
+					
+					Thread t = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							Mailer mailer = new Mailer();
+							mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
+						}
+					});
+					t.setDaemon(true);
+					t.run();
+					
+					//MockNotification mock = new MockNotification();
+					//mock.sessionStartedNotification();
 				}
 			}
 		});
