@@ -81,7 +81,8 @@ public class StatisticsReqTable extends JTable {
 				rowNumber = rowAtPoint(getMousePosition());
 				infoPanel.currentReqID = tableRows.get(rowNumber);
 			}
-		}); 
+		});
+
 	}
 	
 	/**
