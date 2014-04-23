@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -13,8 +14,8 @@ public class InfoPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField name;
-	private JTextField description;
+	private JTextArea name;
+	private JTextArea description;
 	public InfoPanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
@@ -24,10 +25,12 @@ public class InfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementname, 10, SpringLayout.WEST, this);
 		add(lblRequirementname);
 		
-		name = new JTextField();
+		name = new JTextArea();
 		springLayout.putConstraint(SpringLayout.NORTH, name, 6, SpringLayout.SOUTH, lblRequirementname);
 		springLayout.putConstraint(SpringLayout.WEST, name, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, name, -10, SpringLayout.EAST, this);
+		name.setEditable(false);
+		name.setBorder((new JTextField()).getBorder());
 		add(name);
 		name.setColumns(10);
 		
@@ -36,12 +39,17 @@ public class InfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementDescription, 0, SpringLayout.WEST, lblRequirementname);
 		add(lblRequirementDescription);
 		
-		description = new JTextField();
-		springLayout.putConstraint(SpringLayout.NORTH, description, 6, SpringLayout.SOUTH, lblRequirementDescription);
-		springLayout.putConstraint(SpringLayout.WEST, description, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, description, 66, SpringLayout.SOUTH, lblRequirementDescription);
-		springLayout.putConstraint(SpringLayout.EAST, description, -10, SpringLayout.EAST, this);
-		add(description);
+		final JScrollPane descrScroll = new JScrollPane();
+		add(descrScroll);
+		springLayout.putConstraint(SpringLayout.NORTH, descrScroll, 6, SpringLayout.SOUTH, lblRequirementDescription);
+		springLayout.putConstraint(SpringLayout.WEST, descrScroll, 0, SpringLayout.WEST, lblRequirementname);
+		springLayout.putConstraint(SpringLayout.SOUTH, descrScroll, 56, SpringLayout.SOUTH, lblRequirementDescription);
+		springLayout.putConstraint(SpringLayout.EAST, descrScroll, 0, SpringLayout.EAST, name);
+		description = new JTextArea();
+		descrScroll.setViewportView(description);
+		description.setEditable(false);
+		description.setLineWrap(true);
+		description.setBorder((new JTextField()).getBorder());
 	}
 	
 	public void setRequirement(Requirement requirement){
