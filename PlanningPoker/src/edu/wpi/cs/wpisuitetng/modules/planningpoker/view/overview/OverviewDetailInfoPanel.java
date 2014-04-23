@@ -24,6 +24,14 @@ import javax.swing.SwingConstants;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+
+import java.awt.Dimension;
+
+import javax.swing.JButton;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 /**
  * The general information (name, description etc) for a given session
  * that's being displayed in the overview detail panel
@@ -87,6 +95,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(endTimeDisplay);
 		add(deckDisplay);
 		add(sessionCreatorDisplay);
+
 	}
 	
 	/**

@@ -33,6 +33,8 @@ public class GetDeckController implements ActionListener {
 	 */
 	private GetDeckController() {
 		observer = new GetDeckRequestObserver(this);
+		GetUserController.getInstance().retrieveUsers();
+
 	}
 	
 	

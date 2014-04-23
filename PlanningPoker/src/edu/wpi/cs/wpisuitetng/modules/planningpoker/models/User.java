@@ -1,21 +1,12 @@
-/*******************************************************************************
- * Copyright (c) 2012 -- WPI Suite
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    twack
- *    mpdelladonna
- *******************************************************************************/
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-package edu.wpi.cs.wpisuitetng.modules.core.models;
 
 import com.google.gson.*;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
+import edu.wpi.cs.wpisuitetng.modules.core.models.UserDeserializer;
+import edu.wpi.cs.wpisuitetng.modules.core.models.UserSerializer;
 /**
  * The Data Model representation of a User. Implements
  * 	database interaction and serializing.
@@ -234,7 +225,7 @@ public class User extends AbstractModel
 		this.role = r;
 	}
 
-
+	
 	public static User fromJSON(String json) {
 		// build the custom serializer/deserializer
 		Gson gson;
@@ -242,22 +233,11 @@ public class User extends AbstractModel
 		builder.registerTypeAdapter(User.class, new UserDeserializer());
 
 		gson = builder.create();
-
+		
 		return gson.fromJson(json, User.class);
 	}
-
 	public static User[] fromJsonArray(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, User[].class);
-	}
-
-	@Override
-	public Project getProject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setProject(Project aProject){
-		//Users are not currently Associated with projects directly 
 	}
 }
