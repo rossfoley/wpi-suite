@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import static org.junit.Assert.*;
@@ -10,7 +19,6 @@ import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
 public class TestRequirementEstimateStats {
-	
 	ArrayList<Estimate> testEstimates = new ArrayList<Estimate>();
 	boolean pointlessVariable1 = testEstimates.add(new Estimate(1, 1, UUID.randomUUID()));
 	boolean pointlessVariable2 = testEstimates.add(new Estimate(2, 2, UUID.randomUUID()));
