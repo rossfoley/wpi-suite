@@ -46,8 +46,8 @@ public class OverviewVoterTable extends JTable {
 	 * @param data	Initial data to fill OverviewReqTable
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
-	public OverviewVoterTable(Object[][] data, String[] columnNames) {
-		this.planningPokerSession = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+	public OverviewVoterTable(Object[][] data, String[] columnNames, PlanningPokerSession pps) {
+		this.planningPokerSession = pps;
 		this.tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
@@ -61,6 +61,10 @@ public class OverviewVoterTable extends JTable {
 		initialized = false;
 
 	}
+	/**
+	 * 
+	 * @return
+	 */
 	public List<String> getAllVoterNamesList() {
 		List<String> allVoters = new ArrayList<String>();
 		GetUserController.getInstance().retrieveUsers();
@@ -74,7 +78,10 @@ public class OverviewVoterTable extends JTable {
 		}
 		return allVoters;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Requirement> getSessionReqs(){
 		Set<Integer> sessionReqIds = planningPokerSession.getRequirementIDs();
 		List<Requirement> sessionReqs = new LinkedList<Requirement>();
@@ -84,42 +91,12 @@ public class OverviewVoterTable extends JTable {
 		}
 		return sessionReqs;
 	}
+	/**
+	 *  populates the panel
+	 *  
+	 */
 	public void populateVotePanel() {
-		System.out.println("POPULATEVOTEDPANEL");
-		tableModel.setRowCount(0);	
-		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
-		RequirementModel reqs = RequirementModel.getInstance();	
-		List<String> allUserList = getAllVoterNamesList();
-		List<Requirement> ListOfRequirements =  getSessionReqs();
-		for (Requirement r : ListOfRequirements) {
-			int reqID = r.getId();
-			String reqName = r.getName();
-			boolean vote = false;
-			for (int i = 0; i < planningPokerSession.getEstimateVoterList().size(); i++) {
-				if(planningPokerSession.getEstimateVoterList().get(i).getRequirementID() == r.getId()) {
-					for (String s : allUserList) {
-						String username = s;
-						if(planningPokerSession.getEstimateVoterList().get(i).getVoterNameList().contains(s)) {
-							vote = true; //mean voted
-							tableModel.addRow(new Object[]{
-									reqID,
-									reqName,
-									username,
-									vote});	
-						} else {
-							tableModel.addRow(new Object[]{
-									reqID,
-									reqName,
-									username,
-									vote});	
-						}
-					}
-				}
-			}
-		}
-	}
-	public void populateVotePanelWithEstimateVotersList() {
-		System.out.println("POPULATEVOTEDPANEL");
+		System.out.println("POPULATEVOTEDPANEL2");
 		tableModel.setRowCount(0);	
 		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
 		RequirementModel reqs = RequirementModel.getInstance();	
@@ -129,12 +106,12 @@ public class OverviewVoterTable extends JTable {
 			int reqID = r.getId();
 			String reqName = r.getName();
 			int vote = -1;
-			for (EstimateVoters ev : planningPokerSession.getEstimateVoterList()) {
+			for (Estimate ev : planningPokerSession.getEstimates()) {
 				if (ev.getRequirementID() == reqID) {
 					for (String s : allUserList) {
 						String username = s;
-						for (EstimateVoters evs : planningPokerSession.getEstimateVoterList()) {
-							if (evs.getVoterUsername().equals(s)) {
+						for (Estimate evs : planningPokerSession.getEstimates()) {
+							if (evs.getOwnerName().equals(s)) {
 								vote = evs.getVote();
 								System.out.println(vote);
 								tableModel.addRow(new Object[]{
