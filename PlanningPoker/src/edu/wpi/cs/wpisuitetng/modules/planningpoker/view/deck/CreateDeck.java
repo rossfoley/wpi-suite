@@ -247,7 +247,8 @@ public class CreateDeck extends JPanel {
 		add(btnCreate);
 		add(btnCancel);
 		add(lblNoCardsError);
-
+		
+		refresh();
 	}
 
 	private void buildCardTable() {
