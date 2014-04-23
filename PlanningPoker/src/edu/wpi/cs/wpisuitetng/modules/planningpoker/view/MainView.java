@@ -187,7 +187,7 @@ public class MainView extends JTabbedPane {
 	public void insertTab(String title, Icon icon, Component component,
 			String tip, int index) {
 		super.insertTab(title, icon, component, tip, index);
-		if (!(component instanceof OverviewPanel)) {
+		if (!(component instanceof OverviewPanel || component instanceof PreferencesPanel)) {
 			setTabComponentAt(index, new ClosableTabComponent(this));
 		}
 	}
