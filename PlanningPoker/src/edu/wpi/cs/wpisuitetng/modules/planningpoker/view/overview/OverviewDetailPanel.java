@@ -29,9 +29,10 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectRequirementToUpdateTable;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -152,8 +153,9 @@ public class OverviewDetailPanel extends JSplitPane {
 	public static void sendSingleEstimate(Requirement reqToSendFinalEstimate) {
 		// if the requirement's estimate has not yet been sent
 		if (!getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate)) { 
-			reqToSendFinalEstimate.setEstimate(currentSession.getFinalEstimates().get(reqToSendFinalEstimate));
-			currentSession.addRequirementToExportedList((int) reqToSendFinalEstimate.getId());
+			reqToSendFinalEstimate.setEstimate(currentSession.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
+			currentSession.addRequirementToExportedList(reqToSendFinalEstimate.getId());			//RequirementModel.getInstance().
+			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
 		}
 		// otherwise, do nothing.
 	}
@@ -232,6 +234,11 @@ public class OverviewDetailPanel extends JSplitPane {
 		selectionPanel.add(updatePane);
 		selectionPanel.add(sendErrorMessage);
 		
+		RequirementModel reqs = RequirementModel.getInstance();
+		for (int exported:currentSession.getRequirementsWithExportedEstimates()){
+			System.out.println(reqs.getRequirement(exported).getName());
+		}
+		
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				putReqTableBack();
@@ -250,6 +257,7 @@ public class OverviewDetailPanel extends JSplitPane {
 					for (Integer selectedReq:selectedReqIDs){
 						sendSingleEstimate(RequirementModel.getInstance().getRequirement(selectedReq));
 					}
+					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
 					putReqTableBack();
 					updateInfoPanel(currentSession);
 				}
@@ -268,10 +276,12 @@ public class OverviewDetailPanel extends JSplitPane {
 	 * @return linked list of ids corresponding to the requirements that the user can select
 	 */
 	private LinkedList<Integer> determineSelectableRequirements(HashMap<Integer, Integer> finalEstimates){
-		LinkedList<Requirement> reqsWithExportedEstimates = currentSession.getReqsWithExportedEstimatesList();
+		ArrayList<Integer> reqsWithExportedEstimates = currentSession.getRequirementsWithExportedEstimates();
 		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
+		System.out.println("displaying non-exported requirement ids");
 		for (Integer reqID:currentSession.getRequirementIDs()){
 			if (!(reqsWithExportedEstimates.contains(reqID))){
+				System.out.println(reqID);
 				if (finalEstimates.containsKey(reqID)){
 					selectableRequirements.add(reqID);
 				}

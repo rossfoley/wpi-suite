@@ -137,6 +137,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 			}
 			else {
 				sendEstimatesBtn.setVisible(false);
+				System.out.println("Send Button not visible because not moderator");
 			}
 		}
 		else {
@@ -151,6 +152,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		else {
 			if (areAllEstimatesSent(session)){
 				sendEstimatesBtn.setEnabled(false);
+				System.out.println("All final estimates have been sent to requirement manager");
 			}
 			else {
 				sendEstimatesBtn.setEnabled(true);
@@ -309,13 +311,16 @@ public class OverviewDetailInfoPanel extends JPanel {
 		RequirementModel reqs = RequirementModel.getInstance();
 		
 		for (Integer finalEstimateID:session.getFinalEstimates().keySet()){
+			System.out.println("Final estimate stored for" + finalEstimateID);
 			boolean foundThisOne = false;
 			for (Integer reqID:session.getRequirementsWithExportedEstimates()){
 				if (finalEstimateID==reqID){
 					foundThisOne = true;
+					System.out.println("Found " + reqID + " in exported requirements");
 				}
+				System.out.println("Already sent: "+reqID);
 			}
-			allMatched = foundThisOne;
+			allMatched &= foundThisOne;
 		}
 		return allMatched;
 	}

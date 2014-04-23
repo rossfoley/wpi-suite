@@ -632,6 +632,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void addRequirementToExportedList(int reqIDToAdd) {
 		requirementsWithExportedEstimatesIDs.add(reqIDToAdd);
+		System.out.println("adding "+reqIDToAdd+" to the list of exported requirements");
 	}
 	
 }
