@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Set;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
@@ -19,14 +17,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateVoters;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -35,10 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class OverviewVoterTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
-	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	private OverviewReqTable newTable;
-	private JScrollPane tablePanel;
 	private PlanningPokerSession planningPokerSession;
 	
 	/**
@@ -72,9 +64,7 @@ public class OverviewVoterTable extends JTable {
 		for(User u : user) {
 			try {
 				allVoters.add(u.getUsername());
-			} catch (Exception E) {
-				System.out.println("User is null");
-			}
+			} catch (Exception E) {}
 		}
 		return allVoters;
 	}
@@ -94,10 +84,9 @@ public class OverviewVoterTable extends JTable {
 	
 
 	public void populateVotePanel() {
-		System.out.println("POPULATEVOTEDPANEL");
 		tableModel.setRowCount(0);	
 		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
-		RequirementModel reqs = RequirementModel.getInstance();	
+		
 		List<String> allUserList = getAllVoterNamesList();
 		List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (Requirement r : ListOfRequirements) {
@@ -133,10 +122,9 @@ public class OverviewVoterTable extends JTable {
 	 *  
 	 */
 	public void populateVotePanelNOTCOMPLETE() {
-		System.out.println("POPULATEVOTEDPANEL2");
 		tableModel.setRowCount(0);	
 		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
-		RequirementModel reqs = RequirementModel.getInstance();	
+		
 		List<String> allUserList = getAllVoterNamesList();
 		List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (Requirement r : ListOfRequirements) {
@@ -150,7 +138,6 @@ public class OverviewVoterTable extends JTable {
 						for (Estimate evs : planningPokerSession.getEstimates()) {
 							if (evs.getOwnerName().equals(s)) {
 								vote = evs.getVote();
-								System.out.println(vote);
 								tableModel.addRow(new Object[]{
 										reqID,
 										reqName,

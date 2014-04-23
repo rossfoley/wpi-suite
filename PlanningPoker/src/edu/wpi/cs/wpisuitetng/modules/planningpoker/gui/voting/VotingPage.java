@@ -191,7 +191,6 @@ public class VotingPage extends JSplitPane {
 		
 		
 		System.out.println("currently displayed description:" + descriptionField.getText());
-		System.out.println(descriptionField.getText());
 
 		reqDetails.add(requirementEstimated);
 		reqDetails.add(nameLabel);
@@ -243,19 +242,13 @@ public class VotingPage extends JSplitPane {
 	 * @param id
 	 */
 	public void addVoterNameToList(String username) {
-		System.out.println(activeSession.getVoterNameList().size() + " is the size");
-		if (activeSession.getVoterNameList().contains(username)) {
-			System.out.println("Username exist");
-		} else {
+		if (!activeSession.getVoterNameList().contains(username)) {
 			activeSession.getVoterNameList().add(username);
-			System.out.println(username + " has voted and is added to the list");
 		}
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
 
 	public void addVoterNameToEstimateVotersList(EstimateVoters ev) {
-		System.out.println("addVoterNameToEstimateVotersList");
 		for (EstimateVoters e :activeSession.getEstimateVoterList()) {
 			if( e.getRequirementID() == ev.getRequirementID() && e.getVoterUsername().equals(ev.getVoterUsername())) {
 				e.setOwnerName(ev.getOwnerName());
@@ -263,46 +256,37 @@ public class VotingPage extends JSplitPane {
 				e.setRequirementID(ev.getRequirementID());
 				e.setVoterUsername(ev.getVoterUsername());
 				e.setVote(ev.getVote());
-				System.out.println("Username exist replacing with a new vote" + ev.getVote() + " " + e.getVote());
 				return ;
 			}
 		}
 		activeSession.getEstimateVoterList().add(ev);
-		System.out.println(ev.getVoterUsername() + " has voted and is added to the list");
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
+	
 	public void addVoterNameToEstimatesList(Estimate ev) {
-		System.out.println("newTest");
 		for (Estimate e :activeSession.getEstimates()) {
 			if( e.getRequirementID() == ev.getRequirementID() && e.getOwnerName().equals(ev.getOwnerName())) {
 				e.setVote(ev.getVote());
-				System.out.println("Username exist replacing with a new vote" + ev.getVote() + " " + e.getVote());
 				return ;
 			}
 		}
 		activeSession.getEstimates().add(ev);
-		System.out.println(ev.getOwnerName() + " has voted and is added to the list");
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
+	
 	/**
 	 * 
 	 * @param username
 	 */
 	public void addVoterNameToEstimateVotersList(String username, int requirementID, EstimateVoters NewEstimateVoter) {
-		System.out.println(activeSession.getEstimateVoterList().size() + " is the size");
 		for (int i = 0; i < activeSession.getEstimateVoterList().size(); i++) {
-			System.out.println(activeSession.getEstimateVoterList().get(i).getRequirementID());
 			if(activeSession.getEstimateVoterList().get(i).getRequirementID() == requirementID) {
 				if(activeSession.getEstimateVoterList().get(i).getVoterNameList().contains(username)) {
-					System.out.println("Username exist");
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 					return;
 				} else {
 					activeSession.getEstimateVoterList().get(i).getVoterNameList().add(username);
-					System.out.println(username + " has voted ON REQ " + requirementID + " and is added to the list");
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 					return;
@@ -311,92 +295,31 @@ public class VotingPage extends JSplitPane {
 		}
 		NewEstimateVoter.getVoterNameList().add(username);
 		activeSession.getEstimateVoterList().add(NewEstimateVoter);
-		System.out.println("New estimation is created and added to the list " + username);
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 		UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
-	/**
-	 * 
-	 */
-	public void displayAllEstimateVotersList() {
-		List<String> allUserList = getAllVoterNamesList();
-		List<Requirement> ListOfRequirements =  getSessionReqs();
-		for (Requirement r : ListOfRequirements) {
-			System.out.println(r.getId());
-		}
-		for (Requirement r : ListOfRequirements) {
-			for (int i = 0; i < activeSession.getEstimateVoterList().size(); i++) {
-				if(activeSession.getEstimateVoterList().get(i).getRequirementID() == r.getId()) {
-					System.out.println(activeSession.getEstimateVoterList().get(i).getRequirementID() + " requirement ID");
-					for (String s : allUserList) {
-						if(activeSession.getEstimateVoterList().get(i).getVoterNameList().contains(s)) {
-							System.out.println(s + " has voted on req " + r.getId());
-						} else {
-							System.out.println(s + " has NOT voted on req " + r.getId());
-						}
-					}
-				}
-			}
-		}
-	}
-	public void test () {
-		for (EstimateVoters e : activeSession.getEstimateVoterList()) {
-			for (String S : e.getVoterNameList()) {
-				System.out.println(S + " in test");
-			}
-		}
-	}
+	
+
 	/**
 	 * returns the list of users in a project
 	 */
 	public String getVoterName() {
 		String name = ConfigManager.getInstance().getConfig().getUserName();
-		System.out.println(name + " is the current voter");
 		name.toLowerCase();
 		return name;
 	}
+	
 	public List<String> getAllVoterNamesList() {
 		List<String> allVoters = new ArrayList<String>();
 		GetUserController.getInstance().retrieveUsers();
 		List<User> user = UserModel.getInstance().getUsers();
-		System.out.println(user.size() + "IS THE SIZE user");
+		
 		for(User u : user) {
 			try {
 				allVoters.add(u.getUsername());
-				System.out.println(u.getUsername() + " is added to the list");
-			} catch (Exception E) {
-				System.out.println("User is null");
-			}
+			} catch (Exception E) {}
 		}
 		return allVoters;
-	}
-	
-	public void getAllVoterNames() {
-		GetUserController.getInstance().retrieveUsers();
-		List<User> user = UserModel.getInstance().getUsers();
-		System.out.println(user.size() + "IS THE SIZE user");
-		for(User u : user) {
-			try {
-				System.out.println(u.getUsername());
-			} catch (Exception E) {
-				System.out.println("User is null");
-			}
-		}
-		
-	}
-	public void displayVoters() {
-		System.out.println("Displaying voters");
-		List<String> allVoters = getAllVoterNamesList();
-		String currentVoter = getVoterName();
-		addVoterNameToList(currentVoter);
-		for (String s : allVoters) {
-			if (activeSession.getVoterNameList().contains(s)) {
-				System.out.println(s + " has voted ");
-			} 
-			else {
-				System.out.println(s + " has not voted ");
-			}
-		}
 	}
 
 	/**

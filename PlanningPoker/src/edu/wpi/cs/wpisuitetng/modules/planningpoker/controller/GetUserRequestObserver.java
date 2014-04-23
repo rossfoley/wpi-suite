@@ -36,7 +36,6 @@ public class GetUserRequestObserver implements RequestObserver {
 		// Convert the JSON array of decks to a Deck object array
 		UserModel.getInstance().emptyModel();
 		User[] user= User.fromJsonArray(iReq.getResponse().getBody());
-		System.out.println(user.length);
 		for (int i = 0; i < user.length; i++) {
 			controller.receivedUser(user[i]);
 		}
@@ -61,9 +60,6 @@ public class GetUserRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.out.println("Failed requst for getting User");
-		System.out.println("Failed requst for getting User");
-		System.out.println("Failed requst for getting User");
 		System.out.println("Failed requst for getting User");
 	}
 	
