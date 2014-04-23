@@ -5,7 +5,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
