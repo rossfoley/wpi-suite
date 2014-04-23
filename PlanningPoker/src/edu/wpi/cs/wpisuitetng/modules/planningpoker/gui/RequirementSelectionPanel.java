@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.InfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -56,6 +57,10 @@ public class RequirementSelectionPanel extends JPanel{
 	JButton btnNewReq;
 	private transient Vector<RequirementsSelectedListener> listeners;
 	private int numRequirementsAdded = 0;
+	private InfoPanel infoPanel;
+	private int[] unselectedIndicesOld = {};
+	private int[] selectedIndicesOld = {};
+	private Requirement visibleRequirement;
 
 	
 	/**
@@ -71,11 +76,18 @@ public class RequirementSelectionPanel extends JPanel{
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
+		infoPanel = new InfoPanel();
+		springLayout.putConstraint(SpringLayout.NORTH, infoPanel, -150, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, infoPanel, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, infoPanel,0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, infoPanel, 0, SpringLayout.EAST, this);
+		add(infoPanel);
+		
 		Box horizontalBox = Box.createHorizontalBox();
-		springLayout.putConstraint(SpringLayout.NORTH, horizontalBox, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, horizontalBox, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, horizontalBox, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, horizontalBox, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, horizontalBox, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, horizontalBox, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, horizontalBox, 0, SpringLayout.NORTH, infoPanel);
+		springLayout.putConstraint(SpringLayout.EAST, horizontalBox, 0, SpringLayout.EAST, this);
 		add(horizontalBox);
 		
 		JPanel unselectedPanel = new JPanel();
@@ -95,6 +107,7 @@ public class RequirementSelectionPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				validButtons();
+				viewUnselectedRequirement();
 			}
 		});
 		unselectedScrollPane.setViewportView(unselectedListGui);
@@ -112,7 +125,7 @@ public class RequirementSelectionPanel extends JPanel{
 		btnPanel.add(verticalBox);
 		
 		JPanel panelSpace = new JPanel();
-		verticalBox.add(panelSpace);
+		//verticalBox.add(panelSpace);
 		panelSpace.setLayout(new SpringLayout());
 		
 		JPanel panelAddAll = new JPanel();
@@ -213,7 +226,7 @@ public class RequirementSelectionPanel extends JPanel{
 		panelNewReq.add(btnNewReq);
 		
 		JPanel panelSpace2 = new JPanel();
-		verticalBox.add(panelSpace2);
+		//verticalBox.add(panelSpace2);
 		panelSpace2.setLayout(new SpringLayout());
 		btnNewReq.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,9 +251,12 @@ public class RequirementSelectionPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				validButtons();
+				viewSelectedRequirement();
 			}
 		});
 		selectedScrollPane.setViewportView(selectedListGui);
+		
+		
 		
 		
 		update();
@@ -506,6 +522,49 @@ public class RequirementSelectionPanel extends JPanel{
 		}
 		
 		return any;
+	}
+	
+	private void viewUnselectedRequirement(){
+		int[] unselectedIndicesCurrent = unselectedListGui.getSelectedIndices();
+		for (int n : unselectedIndicesCurrent){
+			boolean contains = false;
+			for (int i : unselectedIndicesOld){
+				if (i == n){
+					contains = true;
+				}
+			}
+			if (!contains){
+				int pos = getUnselectedPos().get(n);
+				visibleRequirement = requirements.get(pos);
+				
+			}
+		}
+		
+		infoPanel.setRequirement(visibleRequirement);
+		unselectedIndicesOld = unselectedIndicesCurrent;
+		//remove(infoPanel);
+		//add(infoPanel);
+	}
+	
+	private void viewSelectedRequirement(){
+		int[] selectedIndicesCurrent = selectedListGui.getSelectedIndices();
+		for (int n : selectedIndicesCurrent){
+			boolean contains = false;
+			for (int i : selectedIndicesOld){
+				if (i == n){
+					contains = true;
+				}
+			}
+			if (!contains){
+				int pos = getSelectedPos().get(n);
+				visibleRequirement = requirements.get(pos);
+			}
+		}
+		
+		infoPanel.setRequirement(visibleRequirement);
+		selectedIndicesOld = selectedIndicesCurrent;
+		//remove(infoPanel);
+		//add(infoPanel);
 	}
 	
 	/**
