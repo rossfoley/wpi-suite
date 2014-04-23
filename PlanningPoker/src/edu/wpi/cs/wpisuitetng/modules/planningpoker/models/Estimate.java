@@ -30,7 +30,7 @@ public class Estimate implements Comparable<Estimate> {
 	private UUID sessionID;
 	
 	public Estimate() {
-		this.vote = -1;	// Initialize as an invalid vote
+		vote = -1;	// Initialize as an invalid vote
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class Estimate implements Comparable<Estimate> {
 	 * @return the requirement ID to be estimated
 	 */
 	public int getRequirementID(){
-		return this.requirementID;
+		return requirementID;
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class Estimate implements Comparable<Estimate> {
 	 * @return returns the ID of the estimate
 	 */
 	public UUID getID(){
-		return this.uuid;
+		return uuid;
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class Estimate implements Comparable<Estimate> {
 	 * @return the value to vote for
 	 */
 	public int getVote(){
-		return this.vote;
+		return vote;
 	}
 	
 	/**
@@ -91,7 +91,7 @@ public class Estimate implements Comparable<Estimate> {
 	 * @return the name of the creator
 	 */
 	public String getOwnerName(){
-		return this.ownerName;
+		return ownerName;
 	}
 	//---------------Sets
 	/**
@@ -106,7 +106,7 @@ public class Estimate implements Comparable<Estimate> {
 	 * @param ID
 	 */
 	public void setID(UUID ID){
-		this.uuid = ID;
+		uuid = ID;
 	}
 	/**
 	 * sets the vote
@@ -151,10 +151,10 @@ public class Estimate implements Comparable<Estimate> {
 	}
 
 	public UUID getSessionID() {
-		return this.sessionID;
+		return sessionID;
 	}
 	public void setSessionID(UUID id) {
-		this.sessionID = id;
+		sessionID = id;
 	}
 	
 	

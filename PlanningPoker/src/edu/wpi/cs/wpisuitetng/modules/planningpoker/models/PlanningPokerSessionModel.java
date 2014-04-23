@@ -111,7 +111,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	{
 		PlanningPokerSession temp = null;
 		// iterate through list of planningPokerSessions until id is found
-		for (int i=0; i < this.planningPokerSessions.size(); i++){
+		for (int i=0; i < planningPokerSessions.size(); i++){
 			temp = planningPokerSessions.get(i);
 			if (temp.getID().equals(id)){
 				break;
@@ -123,7 +123,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	public PlanningPokerSession getPlanningPokerSession(String sessionName) {
 		PlanningPokerSession temp = null;
 		// iterate through list of planningPokerSessions until id is found
-		for (int i=0; i < this.planningPokerSessions.size(); i++){
+		for (int i=0; i < planningPokerSessions.size(); i++){
 			temp = planningPokerSessions.get(i);
 			if (temp.getName().equals(sessionName)) {
 				return temp;
@@ -138,7 +138,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 */
 	public void removePlanningPokerSession(UUID removeId){
 		// iterate through list of PlanningPokerSessions until id of project is found
-		for (int i=0; i < this.planningPokerSessions.size(); i++){
+		for (int i=0; i < planningPokerSessions.size(); i++){
 			if (planningPokerSessions.get(i).getID().equals(removeId)) {
 				// remove the id
 				planningPokerSessions.remove(i);
@@ -207,7 +207,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 */
 	public void addPlanningPokerSessions(PlanningPokerSession[] sessions) {
 		for (int i = 0; i < sessions.length; i++) {
-			this.planningPokerSessions.add(sessions[i]);
+			planningPokerSessions.add(sessions[i]);
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 		ViewEventController.getInstance().refreshTable();

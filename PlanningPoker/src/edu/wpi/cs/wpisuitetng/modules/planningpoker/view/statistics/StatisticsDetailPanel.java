@@ -43,7 +43,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 
 	public StatisticsDetailPanel (PlanningPokerSession session) {
 
-		this.currentSession = session;
+		currentSession = session;
 		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
 		String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
@@ -131,7 +131,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 	
 	public PlanningPokerSession getCurrentSession() {
 		
-		return this.currentSession;
+		return currentSession;
 	}
 	
 	public void setRequirementID(int ID) {

@@ -35,9 +35,9 @@ public class Deck extends AbstractModel {
 	 * @param listOfCards numbers to use in the new deck
 	 */
 	public Deck(ArrayList<Integer> listOfCards, boolean allowMultipleSelections) {
-		this.numbersInDeck = listOfCards;
+		numbersInDeck = listOfCards;
 		this.allowMultipleSelections = allowMultipleSelections;
-		this.deckName = autoName();
+		deckName = autoName();
 	}
 	/**
 	 * constructor for decks that does not have a list given at initialization
@@ -45,8 +45,8 @@ public class Deck extends AbstractModel {
 	 * deckName is set to "" as a default
 	 */
 	public Deck(){
-		this.deckName = autoName();
-		this.allowMultipleSelections = false;
+		deckName = autoName();
+		allowMultipleSelections = false;
 	}
 	
 	
@@ -160,7 +160,7 @@ public class Deck extends AbstractModel {
 	 * @return	If multiple cards can be selected when voting
 	 */
 	public boolean getAllowMultipleSelections() {
-		return this.allowMultipleSelections;
+		return allowMultipleSelections;
 	}
 	
 
@@ -186,10 +186,10 @@ public class Deck extends AbstractModel {
 	 * @param toCopyFrom deck to copy attributes from
 	 */
 	public void copyFrom(Deck toCopyFrom) {
-		this.id = toCopyFrom.getId();
-		this.numbersInDeck = toCopyFrom.getNumbersInDeck();
-		this.allowMultipleSelections = toCopyFrom.getAllowMultipleSelections();
-		this.deckName = toCopyFrom.getDeckName();
+		id = toCopyFrom.getId();
+		numbersInDeck = toCopyFrom.getNumbersInDeck();
+		allowMultipleSelections = toCopyFrom.getAllowMultipleSelections();
+		deckName = toCopyFrom.getDeckName();
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public class Deck extends AbstractModel {
 	 * @return string containing the default name for a deck
 	 */
 	public String autoName(){
-		String newDeckName = "Deck " + Integer.toString(this.id);
+		String newDeckName = "Deck " + Integer.toString(id);
 		return newDeckName;
 	}	
 	

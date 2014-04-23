@@ -15,12 +15,12 @@ public class EstimateListener implements EventListener {
 	 *  EstimateEvent source object 
 	 */
 	public void estimateSubmitted(EstimateEvent e) {
-		this.estimate = e.getEstimate();
+		estimate = e.getEstimate();
 	}
 	
 
 	public double getEstimate() {
-		return this.estimate;
+		return estimate;
 	}
 	
 }

@@ -106,7 +106,7 @@ public class EmailAddressModel extends AbstractListModel {
 	public void addEmailAddresses(EmailAddress[] emails) {
 		for (int i = 0; i < emails.length; i++) {
 			this.emailAddresses.add(emails[i]);
-		};
+		}
 	}
 	
 	/**

@@ -54,7 +54,7 @@ public class StatisticsUserTable extends JTable {
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
 	public StatisticsUserTable(Object[][] data, String[] columnNames) {
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

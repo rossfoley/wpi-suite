@@ -280,7 +280,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	private void populateBooleans() {
 		if (selection == null){
-			this.selection = new LinkedList<Boolean>();
+			selection = new LinkedList<Boolean>();
 		}
 		
 		while (requirements.size() > selection.size()){
@@ -304,7 +304,7 @@ public class RequirementSelectionPanel extends JPanel{
 							reqsInBacklog.add(r);
 						}
 					} 
-					this.requirements = (LinkedList<Requirement>)reqsInBacklog;
+					requirements = (LinkedList<Requirement>)reqsInBacklog;
 				
 				}
 				catch (Exception e) {}
@@ -314,15 +314,15 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function is used to update the lists and the state of 
 	 * the buttons
 	 */
-	private void update(){
-		LinkedList<String> unselectedRequirements = new LinkedList<String>();
-		LinkedList<String> selectedRequirements = new LinkedList<String>();
-		for (Requirement rqt : this.requirements){
-			int pos = this.requirements.indexOf(rqt);
-			if (this.selection.get(pos) == true){
+	private void update() {
+		final LinkedList<String> unselectedRequirements = new LinkedList<String>();
+		final LinkedList<String> selectedRequirements = new LinkedList<String>();
+		for (Requirement rqt : requirements) {
+			int pos = requirements.indexOf(rqt);
+			if (selection.get(pos)) {
 				selectedRequirements.add(rqt.getName());
 			}
-			else{
+			else {
 				unselectedRequirements.add(rqt.getName());
 			}
 		}
@@ -343,12 +343,12 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	// update the data displayed in the unselected list
 	private void updateUnselectedList(){
-		this.unSelectedListModel = new AbstractListModel(){
+		unSelectedListModel = new AbstractListModel(){
 			String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		this.unselectedListGui.setModel(unSelectedListModel);
+		unselectedListGui.setModel(unSelectedListModel);
 	}
 	
 	/**
@@ -356,12 +356,12 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	// update the data displayed by the selected list
 	private void updateSelectedList(){
-		this.selectedListModel = new AbstractListModel(){
+		selectedListModel = new AbstractListModel(){
 			String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		this.selectedListGui.setModel(selectedListModel);
+		selectedListGui.setModel(selectedListModel);
 	}
 	
 	/**
@@ -371,9 +371,9 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	private LinkedList<Integer> getUnselectedPos(){
 		LinkedList<Integer> positions = new LinkedList<Integer>();
-		for (Requirement rqt : this.requirements){
-			int pos = this.requirements.indexOf(rqt);
-			if (!this.selection.get(pos)){
+		for (Requirement rqt : requirements){
+			int pos = requirements.indexOf(rqt);
+			if (!selection.get(pos)){
 				positions.add(pos);
 			}
 		}
@@ -387,9 +387,9 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	private LinkedList<Integer> getSelectedPos(){
 		LinkedList<Integer> positions = new LinkedList<Integer>();
-		for (Requirement rqt : this.requirements){
-			int pos = this.requirements.indexOf(rqt);
-			if (this.selection.get(pos)){
+		for (Requirement rqt : requirements){
+			int pos = requirements.indexOf(rqt);
+			if (selection.get(pos)){
 				positions.add(pos);
 			}
 		}
@@ -405,8 +405,8 @@ public class RequirementSelectionPanel extends JPanel{
 		int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
-			this.selection.remove(position);
-			this.selection.add(position, true);
+			selection.remove(position);
+			selection.add(position, true);
 		}
 		numRequirementsAdded += 1;
 		update();
@@ -421,8 +421,8 @@ public class RequirementSelectionPanel extends JPanel{
 		int selected[] = selectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
-			this.selection.remove(position);
-			this.selection.add(position, false);
+			selection.remove(position);
+			selection.add(position, false);
 		}
 		numRequirementsAdded -= 1;
 		update();
@@ -436,8 +436,8 @@ public class RequirementSelectionPanel extends JPanel{
 		LinkedList<Integer> pos = getUnselectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
-			this.selection.remove(n);
-			this.selection.add(n, true);
+			selection.remove(n);
+			selection.add(n, true);
 		}
 		numRequirementsAdded = selection.size();
 		update();
@@ -451,8 +451,8 @@ public class RequirementSelectionPanel extends JPanel{
 		LinkedList<Integer> pos = getSelectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
-			this.selection.remove(n);
-			this.selection.add(n, false);
+			selection.remove(n);
+			selection.add(n, false);
 		}
 		numRequirementsAdded = 0;
 		update();
@@ -471,35 +471,35 @@ public class RequirementSelectionPanel extends JPanel{
 		boolean allSelected = fullList(true);
 		if(allUnselected){
 			if(debug){System.out.println("Disableing removeAll");}
-			this.btnRemoveAll.setEnabled(false);
+			btnRemoveAll.setEnabled(false);
 		}
 		else{
 			if(debug){System.out.println("Enableing removeAll");}
-			this.btnRemoveAll.setEnabled(true);
+			btnRemoveAll.setEnabled(true);
 		}
 		if(allSelected){
 			if(debug){System.out.println("Disableing addAll");}
-			this.btnAddAll.setEnabled(false);
+			btnAddAll.setEnabled(false);
 		}
 		else{
 			if(debug){System.out.println("Enableing addAll");}
-			this.btnAddAll.setEnabled(true);
+			btnAddAll.setEnabled(true);
 		}
 		
 		// checks to see any requirements are selected for moving
-		boolean pickedUnselected = anySelected(this.unselectedListGui.getSelectedIndices());
-		boolean pickedSelected = anySelected(this.selectedListGui.getSelectedIndices());
+		boolean pickedUnselected = anySelected(unselectedListGui.getSelectedIndices());
+		boolean pickedSelected = anySelected(selectedListGui.getSelectedIndices());
 		if(pickedUnselected){
-			this.btnAdd.setEnabled(true);
+			btnAdd.setEnabled(true);
 		}
 		else{
-			this.btnAdd.setEnabled(false);
+			btnAdd.setEnabled(false);
 		}
 		if(pickedSelected){
-			this.btnRemove.setEnabled(true);
+			btnRemove.setEnabled(true);
 		}
 		else{
-			this.btnRemove.setEnabled(false);
+			btnRemove.setEnabled(false);
 		}
 		
 		
@@ -509,7 +509,7 @@ public class RequirementSelectionPanel extends JPanel{
 	private boolean fullList(boolean aBool){
 		boolean full = true;
 		
-		for(boolean bool : this.selection){
+		for(boolean bool : selection){
 			if(bool != aBool){
 				full = false;
 			}
@@ -578,8 +578,8 @@ public class RequirementSelectionPanel extends JPanel{
 	 * @param requirement the requirement to be added
 	 */
 	public void addRequirement(Requirement requirement){
-		this.selection.addLast(true);
-		this.requirements.addLast(requirement);
+		selection.addLast(true);
+		requirements.addLast(requirement);
 		update();
 	}
 	
@@ -590,8 +590,8 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	public List<Requirement> getSelected(){
 		List<Requirement> selection = new LinkedList<Requirement>();
-		for(Requirement rqt : this.requirements){
-			if (this.selection.get(this.requirements.indexOf(rqt))){
+		for(Requirement rqt : requirements){
+			if (this.selection.get(requirements.indexOf(rqt))){
 				selection.add(rqt);
 			}
 		}
@@ -609,9 +609,9 @@ public class RequirementSelectionPanel extends JPanel{
 		numRequirementsAdded = 0;
 		for (Integer id : selectedRequirements) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
-			int pos = this.requirements.indexOf(current);
+			int pos = requirements.indexOf(current);
 			if (pos > -1) {
-				this.selection.set(pos, true);
+				selection.set(pos, true);
 				numRequirementsAdded += 1;
 			}
 		}
@@ -625,8 +625,8 @@ public class RequirementSelectionPanel extends JPanel{
 	public void newRequirementAdded(Requirement newReq){
 		populateRequirements();
 		populateBooleans();
-		int pos = this.requirements.indexOf(newReq);
-		this.selection.set(pos, true);
+		int pos = requirements.indexOf(newReq);
+		selection.set(pos, true);
 		numRequirementsAdded += 1; //Should probably be integrated better
 		update();
 	}

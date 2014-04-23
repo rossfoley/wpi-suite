@@ -11,7 +11,7 @@ public class SelectionListener implements EventListener{
 	private Requirement requirement;
 	
 	public void selectionMade(SelectionEvent e){
-		this.requirement = e.getRequirement();
+		requirement = e.getRequirement();
 	}
 
 	/*@Override

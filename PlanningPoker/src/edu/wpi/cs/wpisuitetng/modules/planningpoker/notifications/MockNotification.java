@@ -9,37 +9,20 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications;
 
-
-import java.awt.Component;
-
 import javax.swing.JOptionPane;
 
 /**
- * 
+ * @version 1.0
  * @author Kevin Barry
  * Used for requirement 7 where we need to notify the user that there has been a session created.
  * Might be added to later for more notifications
  */
 public class MockNotification {
-	
-	/**
-	 * This is a mock notification where we use it to call methods that call up pop-ups.
-	 */
-	
-	
-	//Component cake;
-	
-	
-	public MockNotification(){
-	}
-	
 	/**
 	 * Creates a pop-up that says that a session has been created.
 	 */
-	public void sessionStartedNotification(){
+	public void sessionStartedNotification() {
 		JOptionPane.showMessageDialog(null, "You have notified the team of a session!");
 	}
-	
-	
 }
 

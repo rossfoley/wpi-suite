@@ -68,7 +68,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			this.statisticsButton.setIcon(new ImageIcon(img));
 			
 
-		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
+		} catch (IOException | NullPointerException | IllegalArgumentException ex) {} 
 
 		// the action listener for the Create Planning Poker Session Button
 		createButton.addActionListener(new ActionListener() {

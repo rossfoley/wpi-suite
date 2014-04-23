@@ -340,7 +340,7 @@ public class DeckVotingPanel extends JPanel
 			card.setIcon(new ImageIcon(img.getScaledInstance(112, 140, 0)));
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
 			card.setText("\t  " + Integer.toString(cardValue));
-		};
+		}
 		card.setName(String.valueOf(cardValue));
 		card.setVerticalAlignment(JLabel.CENTER);
 		card.setHorizontalAlignment(JLabel.LEFT);

@@ -12,7 +12,7 @@ public class RequirementsSelectedEvent extends EventObject {
 	}
 	
 	public boolean areRequirementsSelected() {
-		return this.areRequirementsSelected;
+		return areRequirementsSelected;
 	}
 
 }

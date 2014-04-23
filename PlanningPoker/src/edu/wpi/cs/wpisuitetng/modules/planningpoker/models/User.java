@@ -35,32 +35,32 @@ public class User extends AbstractModel
 		this.username = username;
 		this.password = password;
 		this.idNum = idNum;
-		this.role = Role.USER;
+		role = Role.USER;
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if(other instanceof User)
 		{
-			if( ((User)other).idNum == this.idNum)
+			if( ((User)other).idNum == idNum)
 			{
 				//things that can be null
-				if(this.name != null && !this.name.equals(((User)other).name))
+				if(name != null && !name.equals(((User)other).name))
 				{
 					return false;
 				}
 				
-				if(this.username != null && !this.username.equals(((User)other).username))
+				if(username != null && !username.equals(((User)other).username))
 				{
 					return false;
 				}
 				
-				if(this.password != null && !this.password.equals(((User)other).password))
+				if(password != null && !password.equals(((User)other).password))
 				{
 					return false;
 				}
 				
-				if(this.role != null && !this.role.equals(((User)other).role))
+				if(role != null && !role.equals(((User)other).role))
 				{
 					return false;
 				}
@@ -79,7 +79,7 @@ public class User extends AbstractModel
 	 */
 	public boolean matchPassword(String pass)
 	{
-		return (this.password == null) ? false : password.equals(pass);
+		return (password == null) ? false : password.equals(pass);
 	}
 	
 	/**
@@ -88,12 +88,12 @@ public class User extends AbstractModel
 	 */
 	public void setPassword(String pass)
 	{
-		this.password = pass;
+		password = pass;
 	}
 	
 	public String getPassword()
 	{
-		return this.password;
+		return password;
 	}
 	
 	/* Accessors */
@@ -179,11 +179,11 @@ public class User extends AbstractModel
 		Boolean b  = false;
 		
 		if(o instanceof User)
-			if(((User) o).username.equalsIgnoreCase(this.username))
+			if(((User) o).username.equalsIgnoreCase(username))
 				b = true;
 		
 		if(o instanceof String)
-			if(((String) o).equalsIgnoreCase(this.username))
+			if(((String) o).equalsIgnoreCase(username))
 				b = true;
 		return b;
 	}
@@ -194,35 +194,35 @@ public class User extends AbstractModel
 	 * @return true if this and anotherUser are equal
 	 */
 	public boolean equals(User anotherUser){
-		return this.name.equalsIgnoreCase(anotherUser.getName()) &&
-				this.username.equalsIgnoreCase(anotherUser.getUsername()) &&
-				this.idNum == anotherUser.getIdNum();
+		return name.equalsIgnoreCase(anotherUser.getName()) &&
+				username.equalsIgnoreCase(anotherUser.getUsername()) &&
+				idNum == anotherUser.getIdNum();
 	}
 	
 	public User setName(String newName){
-		this.name = newName;
+		name = newName;
 		return this;
 	}
 	
 	public User setUserName(String newUserName){
-		this.username = newUserName;
+		username = newUserName;
 		return this;
 	}
 	
 	public User setIdNum(int newidNum){
-		this.idNum = newidNum;
+		idNum = newidNum;
 		return this;
 	}
 	
 	
 	public Role getRole()
 	{
-		return this.role;
+		return role;
 	}
 	
 	public void setRole(Role r)
 	{
-		this.role = r;
+		role = r;
 	}
 
 	

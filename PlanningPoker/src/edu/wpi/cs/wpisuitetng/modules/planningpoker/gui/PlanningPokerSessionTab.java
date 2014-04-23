@@ -117,7 +117,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Constructor for creating a planning poker session
 	 */
 	public PlanningPokerSessionTab() {
-		this.pokerSession = new PlanningPokerSession();
+		pokerSession = new PlanningPokerSession();
 		viewMode = (ViewMode.CREATING);
 		dateHasBeenSet = false;
 		this.buildLayouts();
@@ -128,11 +128,11 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Constructor for editing an existing planning poker session
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
-		this.pokerSession = existingSession;
-		this.viewMode = (ViewMode.EDITING);
+		pokerSession = existingSession;
+		viewMode = (ViewMode.EDITING);
 		// Set the end date checkbox and update fields.
-		this.dateHasBeenSet = (existingSession.getEndDate() != null);
-		this.endDateCheckBox.setSelected(dateHasBeenSet);
+		dateHasBeenSet = (existingSession.getEndDate() != null);
+		endDateCheckBox.setSelected(dateHasBeenSet);
 		// Update the fields current deck being used
 		this.isUsingDeck = existingSession.isUsingDeck();
 		this.sessionDeck = existingSession.getSessionDeck();
@@ -212,7 +212,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		try {
 			comboDeck.setSelectedItem(newDeck.getDeckName());
 			parseDeckDropdowns();
-		} catch (NullPointerException ex) {}; // if the session is being created
+		} catch (NullPointerException ex) {} // if the session is being created
 		
 		closeCreateDeckPanel();
 	}
@@ -354,7 +354,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			parseDeckDropdowns();
 		}
 		// if the session is being created or the default deck is used
-		catch (NullPointerException ex) {};
+		catch (NullPointerException ex) {}
 
 		haveEndDate = handleCheckBox();
 		if ((viewMode == ViewMode.EDITING) && (pokerSession.hasEndDate())) {

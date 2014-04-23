@@ -36,7 +36,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return the requirement ID to be estimated
 	 */
 	public int getRequirementID(){
-		return this.requirementID;
+		return requirementID;
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return returns the ID of the estimate
 	 */
 	public UUID getID(){
-		return this.uuid;
+		return uuid;
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return the value to vote for
 	 */
 	public int getVote(){
-		return this.vote;
+		return vote;
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return the name of the creator
 	 */
 	public String getOwnerName(){
-		return this.ownerName;
+		return ownerName;
 	}
 	//---------------Sets
 	/**
@@ -75,7 +75,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @param ID
 	 */
 	public void setID(UUID ID){
-		this.uuid = ID;
+		uuid = ID;
 	}
 	/**
 	 * sets the vote
@@ -94,10 +94,10 @@ public class EstimateVoters extends AbstractModel {
 
 
 	public UUID getSessionID() {
-		return this.sessionID;
+		return sessionID;
 	}
 	public void setSessionID(UUID id) {
-		this.sessionID = id;
+		sessionID = id;
 	}
 	/**
 	 * @param VoterNameList the VoterNameList to set

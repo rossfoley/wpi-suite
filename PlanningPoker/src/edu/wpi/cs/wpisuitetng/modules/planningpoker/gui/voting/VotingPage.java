@@ -64,7 +64,7 @@ public class VotingPage extends JSplitPane {
 	private JScrollPane thetablePanel;
 
 	public VotingPage(PlanningPokerSession votingSession){
-		this.activeSession = votingSession;
+		activeSession = votingSession;
 
 		// Disable the vote button in the planning poker module toolbar
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
@@ -109,7 +109,7 @@ public class VotingPage extends JSplitPane {
 	 * @return the session being voted on in this panel
 	 */
 	public PlanningPokerSession getDisplaySession(){
-		return this.activeSession;
+		return activeSession;
 	}
 
 	public JPanel makeReqDetailPanel(Requirement reqToVoteOn) {
