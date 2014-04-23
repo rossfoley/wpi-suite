@@ -29,7 +29,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDe
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectEstimatesToSendToReqManagerPane;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
@@ -57,7 +56,6 @@ public class ViewEventController {
 	private StatisticsReqTable statisticsReqTable;
 	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
 	private final List<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
-	private ArrayList<SelectEstimatesToSendToReqManagerPane> listOfUpdateRequirementPages = new ArrayList<SelectEstimatesToSendToReqManagerPane>();
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -376,37 +374,5 @@ public class ViewEventController {
 		} else {
 			main.setSelectedComponent(exists);
 		}
-	}
-
-	/**
-	 * this opens the pane used for sending estimates from the given planning poker session to requirement manager
-	 * @param sendEstimatesFrom planning poker session to take the final estimates from
-	 */
-public void sendEstimates(PlanningPokerSession sendEstimatesFrom){
-		SelectEstimatesToSendToReqManagerPane exists = null;
-		
-		for(SelectEstimatesToSendToReqManagerPane page : listOfUpdateRequirementPages){
-			if(page.getDisplaySession() == sendEstimatesFrom){
-				exists = page;
-				break;
-			}
-		}
-		if (exists == null)	{
-			SelectEstimatesToSendToReqManagerPane sendPane = new SelectEstimatesToSendToReqManagerPane(sendEstimatesFrom);
-			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = sendEstimatesFrom.getName().length() > 6 ? 7 : sendEstimatesFrom.getName().length();
-			tabName.append(sendEstimatesFrom.getName().substring(0,subStringLength));
-			if(sendEstimatesFrom.getName().length() > 6) tabName.append("..");
-			
-			main.addTab(tabName.toString(), null, sendPane, sendEstimatesFrom.getName());
-			this.listOfUpdateRequirementPages.add(sendPane);
-			main.invalidate();
-			main.repaint();
-			main.setSelectedComponent(sendPane);
-		}
-		else {
-			main.setSelectedComponent(exists);
-		}	
 	}
 }

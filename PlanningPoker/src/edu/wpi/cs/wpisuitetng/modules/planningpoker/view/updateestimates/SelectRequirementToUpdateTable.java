@@ -36,12 +36,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class SelectRequirementToUpdateTable extends JTable {
 	//private AbstractTableModel tableModel = null;
 	private DefaultTableModel tableModel = null;
-	private boolean initialized;
+	private final boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
-	private List<Integer> requirementsToDisplay;
-	private HashMap<Integer, Integer> finalEstimates;
-	private HashMap<Integer, Integer> requirementRowRelation = new HashMap<Integer, Integer>();
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
+	private final List<Integer> requirementsToDisplay;
+	private final HashMap<Integer, Integer> finalEstimates;
+	private final HashMap<Integer, Integer> requirementRowRelation = new HashMap<Integer, Integer>();
 
 	/**
 	 * Sets initial table view
@@ -71,9 +71,9 @@ public class SelectRequirementToUpdateTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 
 				if(getRowCount() > 0) {
-					int mouseY = e.getY();
-					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
-					int lastRowY = lastRow.y + lastRow.height;
+					final int mouseY = e.getY();
+					final Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
+					final int lastRowY = lastRow.y + lastRow.height;
 
 					if(mouseY > lastRowY) {
 						getSelectionModel().clearSelection();
@@ -90,7 +90,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 * @param session
 	 */
 	public void refresh() {
-		RequirementModel reqs = RequirementModel.getInstance();
+		final RequirementModel reqs = RequirementModel.getInstance();
 		// clear the table
 		tableModel.setRowCount(0);		
 		int rowCount = 0;
@@ -137,12 +137,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 * @return boolean */
 	@Override
 	public boolean isCellEditable(int row, int col)	{
-		if (col == 0){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return col == 0;
 	}
 	
 	/**
@@ -169,7 +164,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 * @return an array list of the ids of the requirements that have been selected
 	 */
 	public ArrayList<Integer> getSelectedReqs(){
-		ArrayList<Integer> selectedReqs = new ArrayList<Integer>();
+		final ArrayList<Integer> selectedReqs = new ArrayList<Integer>();
 		System.out.println(tableModel.getRowCount());
 		for (int i = 0; i<tableModel.getRowCount(); i++){
 			if ((boolean) tableModel.getValueAt(i, 0)){

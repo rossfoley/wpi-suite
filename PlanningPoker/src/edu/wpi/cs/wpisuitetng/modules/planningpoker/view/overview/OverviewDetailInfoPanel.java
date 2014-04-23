@@ -306,7 +306,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 	 */
 	public boolean areAllEstimatesSent(PlanningPokerSession session){
 		boolean allMatched = true;
-		RequirementModel reqs = RequirementModel.getInstance();
+		final RequirementModel reqs = RequirementModel.getInstance();
 		
 		for (Requirement req:session.getFinalEstimates().keySet()){
 			boolean foundThisOne = false;

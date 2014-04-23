@@ -50,7 +50,7 @@ public class StatisticsReqTable extends JTable {
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	private HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
+	private final HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
 	private int rowNumber = 0;
 	private StatisticsDetailPanel detailPanel;
 	private StatisticsInfoPanel infoPanel;
