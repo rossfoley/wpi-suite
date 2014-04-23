@@ -277,6 +277,9 @@ public class OverviewDetailPanel extends JSplitPane {
 	 */
 	private LinkedList<Integer> determineSelectableRequirements(HashMap<Integer, Integer> finalEstimates){
 		ArrayList<Integer> reqsWithExportedEstimates = currentSession.getRequirementsWithExportedEstimates();
+		for (Integer reqId:reqsWithExportedEstimates){
+			System.out.println("Requirements that have been exported already " + reqId);
+		}
 		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
 		System.out.println("displaying non-exported requirement ids");
 		for (Integer reqID:currentSession.getRequirementIDs()){
