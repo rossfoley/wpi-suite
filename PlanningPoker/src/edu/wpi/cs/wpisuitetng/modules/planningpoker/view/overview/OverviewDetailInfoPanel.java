@@ -308,10 +308,10 @@ public class OverviewDetailInfoPanel extends JPanel {
 		boolean allMatched = true;
 		RequirementModel reqs = RequirementModel.getInstance();
 		
-		for (Requirement req:session.getFinalEstimates().keySet()){
+		for (Integer finalEstimateID:session.getFinalEstimates().keySet()){
 			boolean foundThisOne = false;
 			for (Integer reqID:session.getRequirementsWithExportedEstimates()){
-				if (req.equals(reqs.getRequirement(reqID))){
+				if (finalEstimateID==reqID){
 					foundThisOne = true;
 				}
 			}

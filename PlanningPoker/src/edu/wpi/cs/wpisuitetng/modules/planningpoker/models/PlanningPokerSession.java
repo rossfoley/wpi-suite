@@ -54,7 +54,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	private HashMap<Requirement, Integer> finalEstimatesMap;
+	private HashMap<Integer, Integer> finalEstimatesMap;
 	private HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
 	public List<EstimateVoters> estimateVoterList;
@@ -71,7 +71,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
 		this.requirementsWithExportedEstimatesIDs = new ArrayList<Integer>();
 		this.reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
-		this.finalEstimatesMap = new HashMap<Requirement, Integer>(); 
+		this.finalEstimatesMap = new HashMap<Integer, Integer>(); 
 		this.defaultSessionName = new String(this.name.toString());
 
 		this.setVoterNameList(new ArrayList<String>());
@@ -471,23 +471,23 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	
 	/**
-	 * @return the reqsWithSubmittedEstimates
+	 * @return the reqsWithfinalEstimates
 	 */
-	public HashMap<Requirement, Integer> getFinalEstimatesMap() {
+	public HashMap<Integer, Integer> getFinalEstimatesMap() {
 		return finalEstimatesMap; 
 	}
 	
 	/**
 	 * @param sets reqsWithSubmittedEstimates to the input HashMap 
 	 */
-	public void setFinalEstimatesMap(HashMap<Requirement, Integer> reqsWithSubmissions) {
+	public void setFinalEstimatesMap(HashMap<Integer, Integer> reqsWithSubmissions) {
 		finalEstimatesMap = reqsWithSubmissions; 
 	}
 	
 	public void addFinalEstimate(int ID, int estimate){
 		RequirementModel reqs = RequirementModel.getInstance();
 		Requirement req = reqs.getRequirement(ID);
-		finalEstimatesMap.put(req, estimate);
+		finalEstimatesMap.put(ID, estimate);
 	}
 	
 	/**
@@ -581,7 +581,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * 
 	 * @return Hashmap relating requirement to final estimate for that requirement
 	 */
-	public HashMap<Requirement, Integer> getFinalEstimates() { 
+	public HashMap<Integer, Integer> getFinalEstimates() { 
 		return finalEstimatesMap;
 	}
 

@@ -36,16 +36,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
-<<<<<<< HEAD
  * This is the right half of the overview panel, and contains
  * the OverviewDetailInfoPanel and the OverviewReqTable
  * @author Randy Acheson
  * @version 4/18/14
-=======
  * Sets up the Overview Detail Panel within the Planning Poker module.
  * 
  * @author Randy Acheson, Cassie Hamlin, Amanda Adkins, Brian Flynn 
->>>>>>> Send selected Planning Poker Sessions' requirements' final estimation values to the requirement manager via the Overview Detail Panel. Brian Flynn, Amanda Adkins.
  */
 public class OverviewDetailPanel extends JSplitPane {
 	static PlanningPokerSession currentSession;
@@ -180,12 +177,7 @@ public class OverviewDetailPanel extends JSplitPane {
 	public void makeSelectionTable(){
 		Object[][] data = {};
 		String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
-		HashMap<Requirement, Integer> finalEstimatesByRequirement = currentSession.getFinalEstimates();
-		HashMap<Integer, Integer> finalEstimates = new HashMap<Integer, Integer>();
-		
-		for (Requirement r:finalEstimatesByRequirement.keySet()){
-			finalEstimates.put(r.getId(), finalEstimatesByRequirement.get(r));
-		}
+		HashMap<Integer, Integer> finalEstimates = currentSession.getFinalEstimates();
 		
 		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements(finalEstimates);
 		
