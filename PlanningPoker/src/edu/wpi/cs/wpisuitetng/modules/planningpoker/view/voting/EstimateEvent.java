@@ -12,7 +12,7 @@ public class EstimateEvent extends EventObject {
 	}
 	
 	public double getEstimate() {
-		return this.estimate;
+		return estimate;
 	}
 
 }

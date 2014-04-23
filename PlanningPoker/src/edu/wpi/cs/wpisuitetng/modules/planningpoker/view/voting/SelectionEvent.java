@@ -15,7 +15,7 @@ public class SelectionEvent extends EventObject{
 	}
 	
 	public Requirement getRequirement(){
-		return this.requirement;
+		return requirement;
 	}
 
 }

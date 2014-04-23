@@ -62,17 +62,17 @@ public class PlanningPokerSession extends AbstractModel {
 	 * Constructor for PlanningPokerSession
 	 */
 	public PlanningPokerSession () {
-		this.name = "Planning Poker " + this.makeDefaultName();
-		this.gameState = PlanningPokerSession.SessionState.PENDING;
-		this.requirementIDs = new HashSet<Integer>();
-		this.estimates = new ArrayList<Estimate>();
-		this.reqsWithCompleteEstimates = new HashSet<Integer>();
-		this.reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
-		this.finalEstimatesMap = new HashMap<Requirement, Integer>(); 
-		this.defaultSessionName = new String(this.name.toString());
-		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
+		name = "Planning Poker " + this.makeDefaultName();
+		gameState = PlanningPokerSession.SessionState.PENDING;
+		requirementIDs = new HashSet<Integer>();
+		estimates = new ArrayList<Estimate>();
+		reqsWithCompleteEstimates = new HashSet<Integer>();
+		reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
+		finalEstimatesMap = new HashMap<Requirement, Integer>(); 
+		defaultSessionName = new String(name.toString());
+		finalEstimatesMap = new HashMap<Requirement, Integer>();
 		this.setVoterNameList(new ArrayList<String>());
-		this.estimateVoterList = new ArrayList<EstimateVoters>();
+		estimateVoterList = new ArrayList<EstimateVoters>();
 	}
 
 	/**
@@ -288,7 +288,7 @@ public class PlanningPokerSession extends AbstractModel {
 
 		if (haveEndDate) {
 			if (dateHasBeenSet) {
-				if (this.endDate.before(currentDate)) {
+				if (endDate.before(currentDate)) {
 					errors.add(CreatePokerSessionErrors.EndDateTooEarly);
 				}
 			}
@@ -298,12 +298,12 @@ public class PlanningPokerSession extends AbstractModel {
 		}
 
 		// Description validation
-		if (this.description.equals("")){
+		if (description.equals("")){
 			errors.add(CreatePokerSessionErrors.NoDescription);
 		}
 
 		// Name validation
-		if (this.name.equals("")){
+		if (name.equals("")){
 			errors.add(CreatePokerSessionErrors.NoName);
 		}
 
@@ -365,9 +365,9 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param selected the list of requirements to add to the session
 	 */
 	public void setRequirements(List<Requirement> selected) {
-		this.requirementIDs = new HashSet<Integer>();
+		requirementIDs = new HashSet<Integer>();
 		for (Requirement requirement : selected) {
-			this.requirementIDs.add(requirement.getId());
+			requirementIDs.add(requirement.getId());
 		}
 	}
 	/**
@@ -389,11 +389,11 @@ public class PlanningPokerSession extends AbstractModel {
 	public void addEstimate(Estimate estimate) {
 		for (Estimate e : estimates) {
 			if (e.getOwnerName().equals(estimate.getOwnerName()) && e.getRequirementID() == estimate.getRequirementID()) {
-				this.estimates.remove(e);
+				estimates.remove(e);
 				break;
 			}
 		}
-		this.estimates.add(estimate);
+		estimates.add(estimate);
 		//checkReqEstimationComplete(estimate.getRequirementID());
 	}
 
@@ -535,19 +535,19 @@ public class PlanningPokerSession extends AbstractModel {
 	 *            the planning poker session to copy from.
 	 */
 	public void copyFrom(PlanningPokerSession toCopyFrom) {
-		this.description = toCopyFrom.description;
-		this.name = toCopyFrom.name;
-		this.endDate = toCopyFrom.endDate;
-		this.requirementIDs = toCopyFrom.requirementIDs;
-		this.gameState = toCopyFrom.gameState;
-		this.requirementIDs = toCopyFrom.requirementIDs;
-		this.estimates = toCopyFrom.estimates;
-		this.isUsingDeck = toCopyFrom.isUsingDeck;
-		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
-		this.sessionDeck = toCopyFrom.sessionDeck;
-		this.finalEstimatesMap = toCopyFrom.getFinalEstimates();
-		this.VoterNameList = toCopyFrom.VoterNameList;
-		this.estimateVoterList = toCopyFrom.estimateVoterList;
+		description = toCopyFrom.description;
+		name = toCopyFrom.name;
+		endDate = toCopyFrom.endDate;
+		requirementIDs = toCopyFrom.requirementIDs;
+		gameState = toCopyFrom.gameState;
+		requirementIDs = toCopyFrom.requirementIDs;
+		estimates = toCopyFrom.estimates;
+		isUsingDeck = toCopyFrom.isUsingDeck;
+		sessionCreatorName = toCopyFrom.sessionCreatorName;
+		sessionDeck = toCopyFrom.sessionDeck;
+		finalEstimatesMap = toCopyFrom.getFinalEstimates();
+		VoterNameList = toCopyFrom.VoterNameList;
+		estimateVoterList = toCopyFrom.estimateVoterList;
 	}
 
 	/** 
@@ -578,7 +578,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param VoterNameList the VoterNameList to set
 	 */
 	public void setEstimateVoterList(List<EstimateVoters> EstimateVoterList) {
-		this.estimateVoterList = EstimateVoterList;
+		estimateVoterList = EstimateVoterList;
 	}
 	
 }

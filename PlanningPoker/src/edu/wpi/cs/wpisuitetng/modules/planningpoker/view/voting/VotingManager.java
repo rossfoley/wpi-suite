@@ -45,7 +45,7 @@ public class VotingManager extends JPanel {
 	
 	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName) {		
 		setName("Voting Manager");
-		this.estimates = pokerSession.getEstimates();
+		estimates = pokerSession.getEstimates();
 		this.requirements = requirements;
 		this.ownerName = ownerName;
 		
@@ -110,7 +110,7 @@ public class VotingManager extends JPanel {
 		TreeNode node = (TreeNode)tree.getLastSelectedPathComponent();
 		if (node != null){
 			String selected = node.toString();
-			for (Requirement requirement : this.requirements){
+			for (Requirement requirement : requirements){
 				if (requirement.getName() == selected){
 					return requirement;
 				}
@@ -128,7 +128,7 @@ public class VotingManager extends JPanel {
 		votedList = new LinkedList<Requirement>();
 		
 		
-		for (Requirement rqt : this.requirements){
+		for (Requirement rqt : requirements){
 			if (hasEstimate(rqt)){
 				votedList.add(rqt);
 			}
@@ -155,9 +155,9 @@ public class VotingManager extends JPanel {
 
 	private boolean hasEstimate(Requirement rqt) {
 		int id = rqt.getId();
-		for (Estimate es : this.estimates) {
+		for (Estimate es : estimates) {
 
-			if (es.getRequirementID() == id && es.getOwnerName().equals(this.ownerName)) {
+			if (es.getRequirementID() == id && es.getOwnerName().equals(ownerName)) {
 				return true;
 			}
 		}
@@ -167,25 +167,25 @@ public class VotingManager extends JPanel {
 	
 
 	synchronized public void addSelectionListener(SelectionListener l) {
-		if (this.selectionListeners == null) {
-			this.selectionListeners = new Vector<SelectionListener>();
+		if (selectionListeners == null) {
+			selectionListeners = new Vector<SelectionListener>();
 		}
-		this.selectionListeners.addElement(l);
+		selectionListeners.addElement(l);
 	}  
 
 	/** Remove a listener for EstimateEvents */
 	synchronized public void removeSelectionListener(SelectionListener l) {
-		if (this.selectionListeners == null) {
-			this.selectionListeners = new Vector<SelectionListener>();
+		if (selectionListeners == null) {
+			selectionListeners = new Vector<SelectionListener>();
 		}
 		else {
-			this.selectionListeners.removeElement(l);
+			selectionListeners.removeElement(l);
 		}
 	}
 	
 	protected void fireSelectionEvent(Requirement rqt) {
 		// if we have no listeners, do nothing...
-		if (this.selectionListeners != null && !this.selectionListeners.isEmpty()) {
+		if (selectionListeners != null && !selectionListeners.isEmpty()) {
 			// create the event object to send
 			SelectionEvent event = 
 					new SelectionEvent(this, rqt);
@@ -194,7 +194,7 @@ public class VotingManager extends JPanel {
 			//   anyone adds/removes listeners
 			Vector<SelectionListener> targets;
 			synchronized (this) {
-				targets = (Vector<SelectionListener>) this.selectionListeners.clone();
+				targets = (Vector<SelectionListener>) selectionListeners.clone();
 			}
 
 			// walk through the listener list and
@@ -209,19 +209,19 @@ public class VotingManager extends JPanel {
 	
 	/** Register a listener for EstimateEvents */
 	synchronized public void addEstimateListener(EstimateListener l) {
-		if (this.estimateListeners == null) {
-			this.estimateListeners = new Vector<EstimateListener>();
+		if (estimateListeners == null) {
+			estimateListeners = new Vector<EstimateListener>();
 		}
-		this.estimateListeners.addElement(l);
+		estimateListeners.addElement(l);
 	}  
 
 	/** Remove a listener for EstimateEvents */
 	synchronized public void removeEstimateListener(EstimateListener l) {
-		if (this.estimateListeners == null) {
-			this.estimateListeners = new Vector<EstimateListener>();
+		if (estimateListeners == null) {
+			estimateListeners = new Vector<EstimateListener>();
 		}
 		else {
-			this.estimateListeners.removeElement(l);
+			estimateListeners.removeElement(l);
 		}
 	}
 

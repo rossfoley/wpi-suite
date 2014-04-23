@@ -54,7 +54,7 @@ public class OverviewTable extends JTable
 	 */
 	public OverviewTable(Object[][] data, String[] columnNames)
 	{
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -240,7 +240,7 @@ public class OverviewTable extends JTable
 	}
 	
 	public OverviewDetailPanel getDetailPanel() {
-		return this.detailPanel;
+		return detailPanel;
 	}
 }
 

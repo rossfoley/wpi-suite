@@ -37,7 +37,7 @@ public class DeckListModel extends AbstractListModel {
 	 */
 	private DeckListModel(){
 		existingDecks = new ArrayList<Deck>();
-		this.nextID = 0;
+		nextID = 0;
 	}
 
 	/** 
@@ -91,7 +91,7 @@ public class DeckListModel extends AbstractListModel {
 	}
 	
 	public int getNextID(){
-		return this.nextID++;
+		return nextID++;
 	}
 	
 	/**
@@ -101,7 +101,7 @@ public class DeckListModel extends AbstractListModel {
 	 */
 	public void addDecks(Deck[] decks) {
 		for (int i = 0; i < decks.length; i++) {
-			this.existingDecks.add(decks[i]);
+			existingDecks.add(decks[i]);
 		}
 	}
 	

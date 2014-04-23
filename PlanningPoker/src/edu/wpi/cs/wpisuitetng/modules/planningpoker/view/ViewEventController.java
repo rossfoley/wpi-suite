@@ -70,7 +70,7 @@ public class ViewEventController {
 	}
 	
 	public void setOverviewDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
-		this.overviewDetailInfoPanel = infoPanel;
+		overviewDetailInfoPanel = infoPanel;
 	}
 	
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
@@ -81,22 +81,22 @@ public class ViewEventController {
 	}	
 	
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
-		this.planningPokerSessionButtonsPanel = buttonsPanel;
+		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
 	
 	//Statistics package set functions
 	
 	public void setStatisticsUserTable(StatisticsUserTable userTable) {
-		this.statisticsUserTable = userTable;
+		statisticsUserTable = userTable;
 	}
 	public void setStatisticsDetailPanel(StatisticsDetailPanel detailPanel) {
-		this.statisticsDetailPanel = detailPanel;
+		statisticsDetailPanel = detailPanel;
 	}
 	public void setStatisticsReqTable(StatisticsReqTable reqTable) {
-		this.statisticsReqTable = reqTable;
+		statisticsReqTable = reqTable;
 	}
 	public void setStatisticsInfoPanel(StatisticsInfoPanel infoPanel) {
-		this.statisticsInfoPanel = infoPanel;		
+		statisticsInfoPanel = infoPanel;		
 	}
 	/**
 	 * Sets the main view to the given view.
@@ -140,14 +140,14 @@ public class ViewEventController {
 	 * @return OverviewTreePanel
 	 */
 	public OverviewTreePanel getOverviewTreePanel() {
-		return this.overviewTreePanel;
+		return overviewTreePanel;
 	}
 	
 	/**
 	 * @return OverviewDetailPanel
 	 */
 	public OverviewDetailPanel getOverviewDetailPanel() {
-		return this.overviewDetailPanel;
+		return overviewDetailPanel;
 	}
 	/**
 	 * 
@@ -169,11 +169,11 @@ public class ViewEventController {
 			// Only remove if it is ready to remove
 			if(!((PlanningPokerSessionTab)comp).readyToRemove())
 				return;
-			this.listOfEditingPanels.remove(comp);
+			listOfEditingPanels.remove(comp);
 		}
 		// Check if the tab is a voteOnSession tab
 		if (comp instanceof VotingPage) {
-			this.listOfVotingPanels.remove(comp);
+			listOfVotingPanels.remove(comp);
 			planningPokerSessionButtonsPanel.enableVoteButton();
 			planningPokerSessionButtonsPanel.enableEndVoteButton();
 		}		
@@ -185,7 +185,7 @@ public class ViewEventController {
 	 * 
 	 */
 	public void refreshTable() {
-		this.overviewTreePanel.refresh();
+		overviewTreePanel.refresh();
 	}
 	
 	/**
@@ -272,7 +272,7 @@ public class ViewEventController {
 			if(toEdit.getName().length() > 6) tabName.append("..");
 			
 			main.addTab(tabName.toString(), null, editPanel, toEdit.getName());
-			this.listOfEditingPanels.add(editPanel);
+			listOfEditingPanels.add(editPanel);
 			main.invalidate();
 			main.repaint();
 			main.setSelectedComponent(editPanel);
@@ -311,7 +311,7 @@ public class ViewEventController {
 			if(toVoteOn.getName().length() > 6) tabName.append("..");
 			
 			main.addTab(tabName.toString(), null, votingPanel, toVoteOn.getName());
-			this.listOfVotingPanels.add(votingPanel);
+			listOfVotingPanels.add(votingPanel);
 			main.invalidate();
 			main.repaint();
 			main.setSelectedComponent(votingPanel);

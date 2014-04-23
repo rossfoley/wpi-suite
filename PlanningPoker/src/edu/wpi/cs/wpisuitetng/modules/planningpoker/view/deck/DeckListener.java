@@ -15,11 +15,11 @@ public class DeckListener implements EventListener {
 	 *  DeckEvent source object 
 	 */
 	public void deckSubmitted(DeckEvent e) {
-		this.newDeck= e.getDeck();
+		newDeck= e.getDeck();
 	}
 
 	public Deck getDeck() {
-		return this.newDeck;
+		return newDeck;
 	}
 
 }

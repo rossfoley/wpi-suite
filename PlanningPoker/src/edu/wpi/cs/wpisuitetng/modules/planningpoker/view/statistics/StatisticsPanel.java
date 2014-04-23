@@ -56,7 +56,7 @@ public class StatisticsPanel extends JSplitPane {
 	
 	public StatisticsPanel(PlanningPokerSession statisticsSession)
 	{
-		this.activeSession = statisticsSession;
+		activeSession = statisticsSession;
 		
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		String[] userColumnNames = {"User", "Estimate"};
@@ -112,7 +112,7 @@ public class StatisticsPanel extends JSplitPane {
 		this.userTable = userTable;
 	}
 	public PlanningPokerSession getDisplaySession() {
-		return this.activeSession;
+		return activeSession;
 	}
 
 /*

@@ -13,11 +13,11 @@ public class RequirementsSelectedListener implements EventListener {
 	 *  RequirementSelected source object 
 	 */
 	public void setRequirementsSelected(RequirementsSelectedEvent e) {
-		this.areRequirementsSelected = e.areRequirementsSelected();
+		areRequirementsSelected = e.areRequirementsSelected();
 	}
 	
 	public boolean areRequirementsSelected() {
-		return this.areRequirementsSelected;
+		return areRequirementsSelected;
 	}
 
 }

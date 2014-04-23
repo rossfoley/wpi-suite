@@ -39,8 +39,8 @@ public class OverviewVoterTable extends JTable {
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
 	public OverviewVoterTable(Object[][] data, String[] columnNames, PlanningPokerSession pps) {
-		this.planningPokerSession = pps;
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		planningPokerSession = pps;
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

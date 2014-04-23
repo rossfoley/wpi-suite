@@ -14,7 +14,7 @@ public class DeckEvent extends EventObject {
 	}
 	
 	public Deck getDeck() {
-		return this.newDeck;
+		return newDeck;
 	}
 
 }
