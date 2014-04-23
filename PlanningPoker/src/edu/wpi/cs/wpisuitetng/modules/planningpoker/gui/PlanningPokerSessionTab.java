@@ -507,7 +507,7 @@ public class PlanningPokerSessionTab extends JPanel {
 					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
 
-					List<String> recipients = new LinkedList<String>();
+					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
 					
 					GetEmailController getEmailController = GetEmailController.getInstance();
@@ -525,9 +525,16 @@ public class PlanningPokerSessionTab extends JPanel {
 						recipients.add(emailRecipients.get(i).getEmail());
 					}
 					
-					
-					Mailer mailer = new Mailer();
-					mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
+					Thread t = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							Mailer mailer = new Mailer();
+							mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
+						}
+					});
+					t.setDaemon(true);
+					t.run();
 					
 					//MockNotification mock = new MockNotification();
 					//mock.sessionStartedNotification();
