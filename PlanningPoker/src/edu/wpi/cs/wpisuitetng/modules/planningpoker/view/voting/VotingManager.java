@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.IterationIcon;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.RequirementIcon;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -18,14 +17,10 @@ import javax.swing.Icon;
 import javax.swing.SpringLayout;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -111,7 +106,7 @@ public class VotingManager extends JPanel {
 		if (node != null){
 			String selected = node.toString();
 			for (Requirement requirement : this.requirements){
-				if (requirement.getName() == selected){
+				if (requirement.getName().equals(selected)){
 					return requirement;
 				}
 			}
