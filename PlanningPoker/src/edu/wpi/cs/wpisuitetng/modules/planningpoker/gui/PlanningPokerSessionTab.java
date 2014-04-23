@@ -26,10 +26,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -39,6 +39,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import net.sourceforge.jdatepicker.JDateComponentFactory;
 import net.sourceforge.jdatepicker.JDatePicker;
@@ -53,24 +55,18 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
-import javax.swing.JCheckBox;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
+/**
+ * The GUI for creating and updating Planning Poker Sessions
+ * @author rossfoley and jdorich
+ */
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
 	private final PlanningPokerSession unmodifiedSession = new PlanningPokerSession();
@@ -108,7 +104,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private Deck sessionDeck;
 	private JLabel lblSessionEndTime;
 	private JLabel lblEndDate;
-	private String[] availableTimes = new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
+	private final String[] availableTimes = new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
 			"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
 			"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" };
 
@@ -126,6 +122,7 @@ public class PlanningPokerSessionTab extends JPanel {
 
 	/**
 	 * Constructor for editing an existing planning poker session
+	 * @param existingSession the session that you want to edit
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		pokerSession = existingSession;
@@ -134,8 +131,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		dateHasBeenSet = (existingSession.getEndDate() != null);
 		endDateCheckBox.setSelected(dateHasBeenSet);
 		// Update the fields current deck being used
-		this.isUsingDeck = existingSession.isUsingDeck();
-		this.sessionDeck = existingSession.getSessionDeck();
+		isUsingDeck = existingSession.isUsingDeck();
+		sessionDeck = existingSession.getSessionDeck();
 		
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
@@ -172,7 +169,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		firstPanel.setLeftComponent(sessionDetailPanel);
 		firstPanel.setRightComponent(null);
-		int dividerLocation = firstPanel.getSize().width - 
+		final int dividerLocation = firstPanel.getSize().width - 
 				firstPanel.getInsets().right - firstPanel.getDividerSize() - createDeckPanel.getPreferredSize().width;
 		firstPanel.setDividerLocation(dividerLocation);
 		firstPanel.setResizeWeight(1.0);
@@ -183,7 +180,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	 */
 	private void openCreateDeckPanel() {
 		firstPanel.setRightComponent(createDeckPanel);
-		int dividerLocation = firstPanel.getSize().width - 
+		final int dividerLocation = firstPanel.getSize().width - 
 				firstPanel.getInsets().right - firstPanel.getDividerSize() - createDeckPanel.getPreferredSize().width;
 		firstPanel.setDividerLocation(dividerLocation);
 		
@@ -217,6 +214,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		closeCreateDeckPanel();
 	}
 	
+	/**
+	 * Closes the create deck panel
+	 */
 	public void closeCreateDeckPanel() {
 		firstPanel.setRightComponent(null);
 		btnCreateDeck.setEnabled(true);
@@ -241,13 +241,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		if (viewMode == ViewMode.CREATING) {
 			btnNext.setEnabled(false);
 		}
-		JButton btnCancel = new JButton("Cancel");
+		final JButton btnCancel = new JButton("Cancel");
 		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 
 		// Create disabled datePicker placeholder 
 		disabledDatePicker = new JPanel(new BorderLayout());
-		JButton disabledButton = new JButton("...");
-		JTextField disabledDateText = new JTextField("No End Date Allowed");
+		final JButton disabledButton = new JButton("...");
+		final JTextField disabledDateText = new JTextField("No End Date Allowed");
 		disabledDateText.setEnabled(false);
 		disabledDateText.setPreferredSize(new Dimension(130, 26));
 		disabledDateText.setBackground(Color.LIGHT_GRAY);
@@ -258,8 +258,8 @@ public class PlanningPokerSessionTab extends JPanel {
 
 		// Setup colors and initial values for the panel elements
 		textFieldDescription.setToolTipText("");
-		textFieldDescription.setText(this.pokerSession.getDescription());
-		textFieldSessionField.setText(this.pokerSession.getName());
+		textFieldDescription.setText(pokerSession.getDescription());
+		textFieldSessionField.setText(pokerSession.getName());
 		textFieldSessionField.setColumns(10);
 		textFieldDescription.setColumns(10);
 		comboTime.setBackground(Color.WHITE);
@@ -271,7 +271,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
-		requirementPanel.setSelectedRequirements(this.pokerSession.getRequirementIDs());
+		requirementPanel.setSelectedRequirements(pokerSession.getRequirementIDs());
 		
 		// Button to create a deck
 		btnCreateDeck = new JButton("Create New Deck");
@@ -593,19 +593,15 @@ public class PlanningPokerSessionTab extends JPanel {
 						recipients.add(emailRecipients.get(i).getEmail());
 					}
 					
-					Thread t = new Thread(new Runnable() {
-						
+					final Thread t = new Thread(new Runnable() {
 						@Override
 						public void run() {
-							Mailer mailer = new Mailer();
+							final Mailer mailer = new Mailer();
 							mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
 						}
 					});
 					t.setDaemon(true);
-					t.run();
-					
-					//MockNotification mock = new MockNotification();
-					//mock.sessionStartedNotification();
+					t.start();
 				}
 			}
 		});
