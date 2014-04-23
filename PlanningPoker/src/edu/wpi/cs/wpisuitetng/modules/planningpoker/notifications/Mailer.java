@@ -27,7 +27,6 @@ import javax.mail.internet.MimeMessage;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
 /**
- * 
  * @author Kevin Barry & Andrew Leonard
  * Handles the mailing to users about events
  */

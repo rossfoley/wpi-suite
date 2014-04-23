@@ -110,14 +110,14 @@ public class SelectFromListPanel extends JPanel {
 		
 		//initializes the default unselected list data
 		unSelectedListModel = new javax.swing.AbstractListModel(){
-			String[] strings = unSelectedListData;
+			private String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
 		
 		// initializes the default selected list data
 		selectedListModel = new javax.swing.AbstractListModel(){
-			String[] strings = selectedListData;
+			private String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
@@ -356,7 +356,7 @@ public class SelectFromListPanel extends JPanel {
 	// update the data displayed in the unselected list
 	private void updateUnselectedList(){
 		unSelectedListModel = new AbstractListModel(){
-			String[] strings = unSelectedListData;
+			private String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
@@ -366,7 +366,7 @@ public class SelectFromListPanel extends JPanel {
 	// update the data displayed by the selected list
 	private void updateSelectedList(){
 		selectedListModel = new AbstractListModel(){
-			String[] strings = selectedListData;
+			private String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};

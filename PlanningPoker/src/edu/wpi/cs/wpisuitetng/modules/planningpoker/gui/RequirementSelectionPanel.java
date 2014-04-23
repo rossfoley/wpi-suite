@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012-2014 -- WPI Suite
- *
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 /**
@@ -344,7 +345,7 @@ public class RequirementSelectionPanel extends JPanel{
 	// update the data displayed in the unselected list
 	private void updateUnselectedList(){
 		unSelectedListModel = new AbstractListModel(){
-			String[] strings = unSelectedListData;
+			private String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
@@ -357,7 +358,7 @@ public class RequirementSelectionPanel extends JPanel{
 	// update the data displayed by the selected list
 	private void updateSelectedList(){
 		selectedListModel = new AbstractListModel(){
-			String[] strings = selectedListData;
+			private String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
