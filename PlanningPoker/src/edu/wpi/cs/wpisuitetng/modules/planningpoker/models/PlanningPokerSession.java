@@ -534,19 +534,11 @@ public class PlanningPokerSession extends AbstractModel {
 		this.sessionDeck = toCopyFrom.sessionDeck;
 		this.finalEstimatesMap = toCopyFrom.getFinalEstimates();
 	}
-<<<<<<< HEAD
 
 	/** 
 	 * Returns an array of all of the final estimation values for a finished planning poker session.
 	 * 
 	 * @return Hashmap relating requirement to final estimate for that requirement
-=======
-	
-	/** 
-	 * Returns an array of all of the final estimation values for a finished planning poker session.
-	 * 
-	 * @return Hashmap of requirements to final estimate 
->>>>>>> Add final estimates field and add displaying of final estimates to the statistics panel
 	 */
 	public HashMap<Requirement, Integer> getFinalEstimates() { 
 		return finalEstimatesMap;
