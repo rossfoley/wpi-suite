@@ -590,6 +590,9 @@ public class DeckVotingPanel extends JPanel
 			estimateFieldErrorMessage.setVisible(true);
 			estimateFieldErrorMessage.revalidate();
 			estimateFieldErrorMessage.repaint();
+			try {
+				submitButton.setEnabled(false);
+			} catch (NullPointerException ex) {}
 			revalidate();
 			repaint();
 			return false;
@@ -598,6 +601,9 @@ public class DeckVotingPanel extends JPanel
 		estimateFieldErrorMessage.setVisible(false);
 		estimateFieldErrorMessage.revalidate();
 		estimateFieldErrorMessage.repaint();
+		try {
+			submitButton.setEnabled(true);
+		} catch (NullPointerException ex) {}
 		revalidate();
 		repaint();
 		return true;
