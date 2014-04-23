@@ -11,9 +11,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import javax.swing.JSplitPane;
 
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**

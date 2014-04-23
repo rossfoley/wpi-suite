@@ -9,11 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -34,23 +31,16 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -60,8 +50,6 @@ import javax.swing.event.DocumentListener;
 
 import java.awt.Font;
 import java.awt.BorderLayout;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 
 
 /**
@@ -74,7 +62,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterT
 public class DeckVotingPanel extends JPanel
 							 implements MouseMotionListener,
 							 			Serializable {
-	private DefaultTableModel tableModel = null;
 	private Deck votingDeck;
 	private Estimate prevEstimate;
 	private JTextField estimateField;
@@ -87,7 +74,6 @@ public class DeckVotingPanel extends JPanel
 	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
 	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
-
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -182,7 +168,6 @@ public class DeckVotingPanel extends JPanel
 			public void actionPerformed(ActionEvent e) {
 				if (validateEstimate()){
 					fireEstimateEvent();
-
 				}
 			}
 		});
@@ -212,17 +197,17 @@ public class DeckVotingPanel extends JPanel
 		
 		thisLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		
 		thisLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
-	
+		
 		add(estimateSubmittedMessage);
 		add(estimateFieldErrorMessage);
 		add(submitButton);
 		add(estimateLabel);
 		add(estimateField);
-
 	}
-	
+
 
 	/**
 	 * Builds a deck based voting panel 
@@ -235,7 +220,7 @@ public class DeckVotingPanel extends JPanel
 		
 		estimateSubmittedMessage.setForeground(Color.BLUE);
 		estimateSubmittedMessage.setVisible(false);
-
+		
 		// Set default values if this is the first vote
 		if (prevEstimate.getVote() < 0) {
 			submitButton = new JButton("Submit Estimation");

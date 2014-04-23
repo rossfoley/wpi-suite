@@ -441,7 +441,6 @@ public class SelectFromListPanel extends JPanel {
 		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
 		// Manually force a population of the list of requirements in the requirement model
 		requirementsController.retrieveRequirements();
-//		GetProjectController.getInstance().retrieveProjects();
 		GetUserController.getInstance().retrieveUsers();
 		// Get the singleton instance of the requirement model to steal it's list of requirements.
 		RequirementModel requirementModel = RequirementModel.getInstance();

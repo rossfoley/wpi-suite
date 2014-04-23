@@ -121,8 +121,6 @@ public class VotingPage extends JSplitPane {
 		JLabel descriptionLabel = new JLabel("Requirement Description:");
 		JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
 		
-		
-		//
 		String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
 		Object[][] data = {};
 		thetable = new OverviewVoterTable(data, columnNames, activeSession);
@@ -133,12 +131,9 @@ public class VotingPage extends JSplitPane {
 		thetable.getColumnModel().getColumn(3).setMinWidth(15); // Votes
 		Dimension d = new Dimension(150, 80);
         thetablePanel.setMinimumSize(d);
-        /////
-        /////
         
         thetable.populateVotePanel();
         
-		//
 		JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
 		nameField.setEditable(false);
@@ -147,8 +142,7 @@ public class VotingPage extends JSplitPane {
 		descriptionField.setBackground(Color.WHITE);
 		descriptionField.setPreferredSize(new Dimension(300, 300));
 		descriptionField.setEditable(false);
-		descriptionField.setColumns(10);
-		
+		descriptionField.setColumns(10);		
 
 		boolean estimationComplete;
 
