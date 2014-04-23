@@ -18,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 public class UserModel extends AbstractListModel {
 	
-	private List<User> existingUser;	
+	private final List<User> existingUser;	
 	private static UserModel instance; // static object to allow the decklistmodel 
 	
 

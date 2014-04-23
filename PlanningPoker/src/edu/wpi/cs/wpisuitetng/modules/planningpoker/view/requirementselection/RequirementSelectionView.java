@@ -21,8 +21,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class RequirementSelectionView extends JSplitPane{
 	
-	private RequirementSelectionPanel reqPanel;
-	private RequirementCreationPanel createPanel;
+	private final RequirementSelectionPanel reqPanel;
+	private final RequirementCreationPanel createPanel;
 	
 	public RequirementSelectionView(){
 		reqPanel = new RequirementSelectionPanel(this);

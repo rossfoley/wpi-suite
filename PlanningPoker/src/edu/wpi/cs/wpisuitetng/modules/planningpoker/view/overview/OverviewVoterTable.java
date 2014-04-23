@@ -39,8 +39,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class OverviewVoterTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	private PlanningPokerSession planningPokerSession;
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+	private final PlanningPokerSession planningPokerSession;
 	
 	/**
 	 * Sets initial table view

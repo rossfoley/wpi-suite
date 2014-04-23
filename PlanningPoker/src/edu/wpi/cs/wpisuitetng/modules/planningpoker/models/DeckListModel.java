@@ -27,7 +27,7 @@ public class DeckListModel extends AbstractListModel {
 	/** 
 	 * the list in which all the decks for a project are contained
 	 */
-	private List<Deck> existingDecks;
+	private final List<Deck> existingDecks;
 	private int nextID; // the next available id for a deck
 	
 	private static DeckListModel instance; // static object to allow the decklistmodel 
@@ -110,7 +110,7 @@ public class DeckListModel extends AbstractListModel {
 	 * @return defaultDeck deck containing the default numbers
 	 */
 	public Deck makeDefaultDeck(){
-		ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
+		final ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
 		defaultDeckNums.add(0);
 		defaultDeckNums.add(1);
 		defaultDeckNums.add(1);
@@ -119,7 +119,7 @@ public class DeckListModel extends AbstractListModel {
 		defaultDeckNums.add(5);
 		defaultDeckNums.add(8);
 		defaultDeckNums.add(13);
-		Deck defaultDeck = new Deck(defaultDeckNums, true);
+		final Deck defaultDeck = new Deck(defaultDeckNums, true);
 		defaultDeck.setDeckName("Default"); 
 		return defaultDeck;
 	}

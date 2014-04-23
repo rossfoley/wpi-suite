@@ -28,7 +28,7 @@ import java.util.List;
  *
  */
 public class PreferencesPanel extends JPanel {
-	private JTextField txtEnterEmailHere;
+	private final JTextField txtEnterEmailHere;
 	private boolean emailError = false;
 	JLabel lblEmailErrorText;
 

@@ -43,16 +43,16 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTreePanel overviewTreePanel = null;
 	private OverviewDetailPanel overviewDetailPanel = null;
-	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
+	private final ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	private OverviewDetailInfoPanel overviewDetailInfoPanel;
-	private ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
+	private final ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
 	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private StatisticsUserTable statisticsUserTable;
 	private StatisticsDetailPanel statisticsDetailPanel;
 	private StatisticsReqTable statisticsReqTable;
 	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
-	private ArrayList<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
+	private final ArrayList<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -129,7 +129,7 @@ public class ViewEventController {
 	 */
 	public void createPlanningPokerSession() {
 		//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-		PlanningPokerSessionTab panel = new PlanningPokerSessionTab();
+		final PlanningPokerSessionTab panel = new PlanningPokerSessionTab();
 		main.addTab("New Session.", null, panel, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
@@ -207,7 +207,7 @@ public class ViewEventController {
 	 * Closes all of the tabs besides the overview tab in the main view.
 	 */
 	public void closeAllTabs() {
-		int tabCount = main.getTabCount();
+		final int tabCount = main.getTabCount();
 
 		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
@@ -223,8 +223,8 @@ public class ViewEventController {
 	 * 
 	 */
 	public void closeOthers() {
-		int tabCount = main.getTabCount();
-		Component selected = main.getSelectedComponent();
+		final int tabCount = main.getTabCount();
+		final Component selected = main.getSelectedComponent();
 
 		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
@@ -272,10 +272,10 @@ public class ViewEventController {
 		if (exists == null)
 		{
 			// eventually want to add session to edit as an argument
-			PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
+			final PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
 			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
+			final StringBuilder tabName = new StringBuilder();
+			final int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
 			tabName.append(toEdit.getName().substring(0,subStringLength));
 			if(toEdit.getName().length() > 6) tabName.append("..");
 			
@@ -311,10 +311,10 @@ public class ViewEventController {
 		
 		if (exists == null)
 		{
-			VotingPage votingPanel = new VotingPage(toVoteOn);
+			final VotingPage votingPanel = new VotingPage(toVoteOn);
 			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = toVoteOn.getName().length() > 6 ? 7 : toVoteOn.getName().length();
+			final StringBuilder tabName = new StringBuilder();
+			final int subStringLength = toVoteOn.getName().length() > 6 ? 7 : toVoteOn.getName().length();
 			tabName.append(toVoteOn.getName().substring(0,subStringLength));
 			if(toVoteOn.getName().length() > 6) tabName.append("..");
 			
@@ -348,10 +348,10 @@ public class ViewEventController {
 		
 		if (exists == null)
 		{
-			StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
+			final StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
 			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
+			final StringBuilder tabName = new StringBuilder();
+			final int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
 			tabName.append(viewStats.getName().substring(0,subStringLength));
 			if(viewStats.getName().length() > 6) tabName.append("..");
 			

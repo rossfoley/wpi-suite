@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class SelectionEvent extends EventObject{
 
-	private Requirement requirement;
+	private final Requirement requirement;
 	
 	public SelectionEvent(Object source, Requirement req) {
 		super(source);

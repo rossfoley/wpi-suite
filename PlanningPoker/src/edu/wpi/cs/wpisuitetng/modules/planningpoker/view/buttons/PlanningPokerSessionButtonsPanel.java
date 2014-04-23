@@ -39,11 +39,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  *
  */
 public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
-	private JButton createButton = new JButton("<html>Create <br /> Session</html>");
-	private JButton editButton = new JButton("<html>Edit <br /> Session</html>");
-	private JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
-	private JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
-	private JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
+	private final JButton createButton = new JButton("<html>Create <br /> Session</html>");
+	private final JButton editButton = new JButton("<html>Edit <br /> Session</html>");
+	private final JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
+	private final JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
+	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
 	private final JPanel contentPanel = new JPanel();
 
 	public PlanningPokerSessionButtonsPanel(){
@@ -69,12 +69,12 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			img = ImageIO.read(getClass().getResource("end-icon.png"));
 			endVoteButton.setIcon(new ImageIcon(img));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.endVoteButton.setIcon(new ImageIcon(img));
+			endVoteButton.setIcon(new ImageIcon(img));
 			
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.statisticsButton.setIcon(new ImageIcon(img));
+			statisticsButton.setIcon(new ImageIcon(img));
 			
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {} 
@@ -173,14 +173,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	 * Method getCreateButton.
 	 * @return JButton */
 	public JButton getCreateButton() {
-		return this.createButton;
+		return createButton;
 	}
 
 	/**
 	 * Method geteditButton
 	 * @return JButton */
 	public JButton getCreateIterationButton() {
-		return this.editButton;
+		return editButton;
 	}
 
 	public void disableEditButton() {

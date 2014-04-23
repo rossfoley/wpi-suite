@@ -14,7 +14,7 @@ import java.util.EventObject;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
 public class DeckEvent extends EventObject {
-	private Deck newDeck;
+	private final Deck newDeck;
 
 	public DeckEvent(Object source, Deck deck) {
 		super(source);
