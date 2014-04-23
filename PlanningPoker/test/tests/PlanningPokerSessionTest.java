@@ -19,9 +19,13 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
 /**
@@ -150,5 +154,47 @@ public class PlanningPokerSessionTest {
 		
 		errors = session.validateFields(true, false);
 		assertTrue(errors.contains(CreatePokerSessionErrors.NoDateSelected));
+	}
+	
+	@Test
+	public void testAddingEstimates() {
+		PlanningPokerSession session = new PlanningPokerSession();
+		ArrayList<Estimate> estimates = new ArrayList<Estimate>();
+		Estimate estimate = new Estimate();
+		
+		estimate.setOwnerName("owner");
+		estimate.setRequirementID(0);
+		estimates.add(estimate);
+		session.setEstimates(estimates);
+		assertEquals(session.getEstimates().size(), 1);
+		
+		session.addEstimate(new Estimate());
+		assertEquals(session.getEstimates().size(), 2);
+		
+		session.addEstimate(estimate);
+		assertEquals(session.getEstimates().size(), 2);
+	}
+	
+	@Test
+	public void testFromJSONArray() {
+		PlanningPokerSession[] sessions = {new PlanningPokerSession(), new PlanningPokerSession()};
+		final Gson parser = new Gson();
+		String json = parser.toJson(sessions, PlanningPokerSession[].class);
+		
+		assertEquals(PlanningPokerSession.fromJsonArray(json).length, 2);
+	}
+	
+	@Test
+	public void testSetRequirements() {
+		ArrayList<Requirement> requirements = new ArrayList<Requirement>();
+		Requirement r1 = new Requirement(), r2 = new Requirement();
+		r1.setId(0);
+		r2.setId(1);
+		requirements.add(r1);
+		requirements.add(r2);
+		testSession.setRequirements(requirements);
+		
+		assertTrue(testSession.getRequirementIDs().contains(0));
+		assertTrue(testSession.getRequirementIDs().contains(1));
 	}
 }
