@@ -118,7 +118,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         
         ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
 
-        System.out.println("finished refreshing the tree");
+        //System.out.println("finished refreshing the tree");
 	}
 	
 	/**
