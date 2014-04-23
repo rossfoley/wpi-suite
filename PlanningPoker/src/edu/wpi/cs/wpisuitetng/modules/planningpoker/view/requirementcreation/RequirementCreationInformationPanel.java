@@ -248,7 +248,7 @@ ItemListener, RequirementPanelListener, RequirementSelectorListener {
 		noParentInfoPanel.add(parentSelector);
 		noParentInfoPanel.add(chooseParent);
 		parentInfoPanel.add(noParentInfoPanel);
-		chooseParent.setVisible(false); //doesn't work in requirement manager, doesn't work here.
+		chooseParent.setVisible(true);
 		parentSelector.setVisible(false);
 		//setup the top.
 
