@@ -74,6 +74,7 @@ public class DeckVotingPanel extends JPanel
 	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
 	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
+	private Color selectedColor = new Color(247, 247, 247);
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -352,7 +353,7 @@ public class DeckVotingPanel extends JPanel
 		// If the card should be selected, set the border to green
 		if (selected) {
 			card.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
-			card.setBackground(Color.GREEN);	
+			card.setBackground(selectedColor);	
 		}
 		else {
 			card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -513,12 +514,13 @@ public class DeckVotingPanel extends JPanel
 	private void setCardSelected(JButton card, boolean cardSelected) {
 		// Set the card to selected
 		if (cardSelected) {
-			card.setBackground(Color.GREEN);	// card is part of estimate
+			card.setBackground(selectedColor);	// card is part of estimate
 			card.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));	
 		}
 		else {	// Set the card to not selected
 			card.setBackground(Color.WHITE); // card is not part of estimate
 			card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			card.getBorder().equals(BorderFactory.createLineBorder(Color.GREEN, 4));
 		}	
 	}
 	
@@ -527,7 +529,7 @@ public class DeckVotingPanel extends JPanel
 	 */
 	private boolean isCardSelected(JButton card) {
 		// Card is selected
-		if (card.getBackground() == Color.GREEN) {
+		if (card.getBackground() == selectedColor) {
 			return true;
 		}
 		// Card is not selected (background == Color.WHITE)
