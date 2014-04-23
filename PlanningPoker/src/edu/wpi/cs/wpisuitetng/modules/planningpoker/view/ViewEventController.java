@@ -73,6 +73,10 @@ public class ViewEventController {
 		this.overviewDetailInfoPanel = infoPanel;
 	}
 	
+	public OverviewReqTable getOverviewReqTable(){
+		return overviewReqTable;
+	}
+	
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
 		this.overviewReqTable = overviewReqTable;
 	}
@@ -240,7 +244,15 @@ public class ViewEventController {
 	 */
 	public void displayDetailedSession(PlanningPokerSession displaySession)
 	{
+		if (overviewDetailPanel.isOnSelectionTable()){
+			overviewDetailPanel.putReqTableBack();
+		}
+		
 		overviewDetailPanel.updatePanel(displaySession);
+	}
+	
+	public void sendEstimatesFromSession(){
+		overviewDetailPanel.replaceTable();
 	}
 
 	/**
@@ -300,7 +312,6 @@ public class ViewEventController {
 				break;
 			}
 		}
-		
 		if (exists == null)
 		{
 			VotingPage votingPanel = new VotingPage(toVoteOn);

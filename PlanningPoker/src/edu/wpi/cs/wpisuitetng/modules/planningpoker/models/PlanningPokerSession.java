@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Set<Integer> requirementIDs;
 	private UUID uuid = UUID.randomUUID();
 	public enum SessionState {
-		OPEN, PENDING, VOTINGENDED, CLOSED, 
+	    OPEN, PENDING, VOTINGENDED, CLOSED, 
 	}
 	private SessionState gameState;
 	private List<Estimate> estimates;
@@ -53,28 +54,30 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	private HashMap<Requirement, Integer> finalEstimatesMap;
+	private HashMap<Integer, Integer> finalEstimatesMap;
 	private HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
 	public List<EstimateVoters> estimateVoterList;
+	private ArrayList<Integer> requirementsWithExportedEstimatesIDs;
 	
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
-	public PlanningPokerSession () {
+	public PlanningPokerSession() {
 		this.name = "Planning Poker " + this.makeDefaultName();
 		this.gameState = PlanningPokerSession.SessionState.PENDING;
 		this.requirementIDs = new HashSet<Integer>();
 		this.estimates = new ArrayList<Estimate>();
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
+		this.requirementsWithExportedEstimatesIDs = new ArrayList<Integer>();
 		this.reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
-		this.finalEstimatesMap = new HashMap<Requirement, Integer>(); 
+		this.finalEstimatesMap = new HashMap<Integer, Integer>(); 
 		this.defaultSessionName = new String(this.name.toString());
-		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
+
 		this.setVoterNameList(new ArrayList<String>());
 		this.estimateVoterList = new ArrayList<EstimateVoters>();
 	}
-
+	
 	/**
 	 * @return the sessionCreatorID
 	 */
@@ -102,6 +105,27 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 
 
+	/**
+	 * @return the requirementsWithExportedEstimates
+	 */
+	public ArrayList<Integer> getRequirementsWithExportedEstimates() {
+		return requirementsWithExportedEstimatesIDs;
+	}
+	
+	/**
+	 * @param requirementsWithExportedEstimates the requirementsWithExportedEstimates to set
+	 */
+	public void setRequirementsWithExportedEstimates(ArrayList<Integer> requirementsWithExportedEstimates) {
+		this.requirementsWithExportedEstimatesIDs = requirementsWithExportedEstimates;
+	}
+	
+	/**
+	 * @param idToAdd idOfTheRequirementToAddToExportedEstimates
+	 */
+	public void addIDToSetRequirementsWithExportedEstimates(int idToAdd){
+		requirementsWithExportedEstimatesIDs.add(idToAdd);
+	}
+	
 	/**
 	 * @return uuid
 	 */
@@ -180,13 +204,13 @@ public class PlanningPokerSession extends AbstractModel {
 		return defaultSessionName;
 	}
 
-	/* (non-Javadoc)
+	 /* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString(){
-		return name;
-	}
+     public String toString(){
+          return name;
+     }
 
 	/**
 	 * @return the requirementIDs
@@ -447,23 +471,23 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 	
 	/**
-	 * @return the reqsWithSubmittedEstimates
+	 * @return the reqsWithfinalEstimates
 	 */
-	public HashMap<Requirement, Integer> getFinalEstimatesMap() {
+	public HashMap<Integer, Integer> getFinalEstimatesMap() {
 		return finalEstimatesMap; 
 	}
 	
 	/**
 	 * @param sets reqsWithSubmittedEstimates to the input HashMap 
 	 */
-	public void setFinalEstimatesMap(HashMap<Requirement, Integer> reqsWithSubmissions) {
+	public void setFinalEstimatesMap(HashMap<Integer, Integer> reqsWithSubmissions) {
 		finalEstimatesMap = reqsWithSubmissions; 
 	}
 	
 	public void addFinalEstimate(int ID, int estimate){
 		RequirementModel reqs = RequirementModel.getInstance();
 		Requirement req = reqs.getRequirement(ID);
-		finalEstimatesMap.put(req, estimate);
+		finalEstimatesMap.put(ID, estimate);
 	}
 	
 	/**
@@ -545,6 +569,8 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
+		this.reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
+		this.requirementsWithExportedEstimatesIDs = toCopyFrom.requirementsWithExportedEstimatesIDs;
 		this.finalEstimatesMap = toCopyFrom.getFinalEstimates();
 		this.VoterNameList = toCopyFrom.VoterNameList;
 		this.estimateVoterList = toCopyFrom.estimateVoterList;
@@ -555,7 +581,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * 
 	 * @return Hashmap relating requirement to final estimate for that requirement
 	 */
-	public HashMap<Requirement, Integer> getFinalEstimates() { 
+	public HashMap<Integer, Integer> getFinalEstimates() { 
 		return finalEstimatesMap;
 	}
 
@@ -579,6 +605,34 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setEstimateVoterList(List<EstimateVoters> EstimateVoterList) {
 		this.estimateVoterList = EstimateVoterList;
+	}
+	
+	/** 
+	 * Returns a list or Requirement of those requirements which have had their final estimates sent to
+	 * the requirement manager. 
+	 * 
+	 * @return LinkedList<Requirement> of all requirements that have had their final estimates sent to
+	 * the requirement manager.
+	 */
+	public LinkedList<Requirement> getReqsWithExportedEstimatesList() {
+		LinkedList<Requirement> requirementsWithExportedEstimatesList = new LinkedList<Requirement>();
+		int i;
+		for (i = 0; i < requirementsWithExportedEstimatesIDs.size(); i++) {
+			requirementsWithExportedEstimatesList.add(RequirementModel.getInstance().getRequirement(requirementsWithExportedEstimatesIDs.get(i)));
+		}
+		return requirementsWithExportedEstimatesList;		
+	}
+	
+	/**
+	 * Adds a requirement ID to the list of requirement IDs representing the requirements that have
+	 * had their final estimates sent to the requirement manager.
+	 * 
+	 * @param reqIDToAdd the requirement ID of the requirement which has had its final estimate sent to the
+	 * requirement manager.
+	 */
+	public void addRequirementToExportedList(int reqIDToAdd) {
+		requirementsWithExportedEstimatesIDs.add(reqIDToAdd);
+		System.out.println("adding "+reqIDToAdd+" to the list of exported requirements");
 	}
 	
 }

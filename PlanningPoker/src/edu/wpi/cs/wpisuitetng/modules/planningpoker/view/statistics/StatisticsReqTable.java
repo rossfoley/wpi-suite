@@ -196,9 +196,11 @@ public class StatisticsReqTable extends JTable {
 	
 	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
-		HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
-		if (finalEstimates.containsKey(reqToFind)){
-			return finalEstimates.get(reqToFind).toString();
+		HashMap<Integer, Integer> finalEstimates = session.getFinalEstimates();
+		int reqID = reqToFind.getId();
+		if (finalEstimates.containsKey(reqID)){
+			Integer est = finalEstimates.get(reqID);
+			return est.toString();
 		}
 		return "-";		
 	}
