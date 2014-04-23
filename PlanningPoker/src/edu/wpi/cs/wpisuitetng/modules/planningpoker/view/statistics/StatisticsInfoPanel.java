@@ -45,7 +45,7 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel medianDisplay;
 	JLabel stdDevDisplay;
 	SpringLayout springLayout;
-	int currentReqID;
+	public int currentReqID;
 	
 	public StatisticsInfoPanel(PlanningPokerSession session) {
 
@@ -108,7 +108,10 @@ public class StatisticsInfoPanel extends JPanel {
 		median = Double.toString(stats.getMedian());
 		return median;
 	}
-	
+	//set selected requirement ID
+	public void setRequirementID(int ID) {
+		reqNameDisplay.setText(Integer.toString(ID));
+	}
 	
 	
 	private void setConstraints() {
