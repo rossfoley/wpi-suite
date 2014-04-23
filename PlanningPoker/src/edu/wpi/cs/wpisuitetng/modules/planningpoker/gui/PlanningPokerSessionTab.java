@@ -63,6 +63,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Itera
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
 import javax.swing.JCheckBox;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
@@ -83,7 +85,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private JTextArea textFieldDescription = new JTextArea();
 	private JLabel dateErrorMessage = new JLabel("");
 	private JLabel nameErrorMessage = new JLabel("");
-	private JLabel descriptionErrorMessage = new JLabel("");
+	private JLabel descriptionErrorMessage = new JLabel("Please enter a description");
 	private JLabel numbers = new JLabel("Users input non-negative intergers");
 	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
 	private JDatePicker datePicker;
@@ -231,6 +233,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JLabel lblDeck = new JLabel("Deck:");
 
 		final JButton btnNext = new JButton("Next >");
+		if (viewMode == ViewMode.CREATING) {
+			btnNext.setEnabled(false);
+		}
 		JButton btnCancel = new JButton("Cancel");
 		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 
@@ -259,7 +264,6 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboDeck.setBackground(Color.WHITE);
 		lblSessionEndTime.setForeground(Color.BLACK);
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
-		descriptionErrorMessage.setForeground(Color.RED);
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
 		requirementPanel.setSelectedRequirements(this.pokerSession.getRequirementIDs());
@@ -351,6 +355,70 @@ public class PlanningPokerSessionTab extends JPanel {
 		if ((viewMode == ViewMode.EDITING) && (pokerSession.hasEndDate())) {
 			setTimeDropdown();
 		}
+		
+		// Handle changes in session name field
+		textFieldSessionField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+		});
+		// Handle changes in description field
+		textFieldDescription.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+					descriptionErrorMessage.setForeground(Color.RED);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!validateFields()) {
+					btnNext.setEnabled(false);
+					descriptionErrorMessage.setForeground(Color.RED);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+					descriptionErrorMessage.setForeground(Color.RED);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+		});
 
 		// Time dropdown event handler
 		comboTime.addActionListener(new ActionListener(){
