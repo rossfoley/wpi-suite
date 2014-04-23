@@ -15,11 +15,13 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.List;
 import java.util.Set;
-
 import java.awt.Dimension;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
@@ -33,8 +35,14 @@ public class StatisticsDetailPanel extends JSplitPane {
 	StatisticsReqTable reqTable;
 	StatisticsInfoPanel infoPanel;
 	JScrollPane tablePanel;
+<<<<<<< HEAD
 	int selectedReqID;
 	
+=======
+	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
+	JPanel reqOverviewTablePanel = new JPanel();
+	SpringLayout reqOverviewLayout = new SpringLayout();
+>>>>>>> add a button for submitting final estimates
 
 	public StatisticsDetailPanel (PlanningPokerSession session) {
 
@@ -56,8 +64,27 @@ public class StatisticsDetailPanel extends JSplitPane {
 		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
+		reqOverviewTablePanel.setLayout(reqOverviewLayout);
+		
+		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.EAST, submitFinalEstimatesBtn, -10, SpringLayout.EAST, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
+		reqOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
+		
+		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				reqTable.updateFinalEstimates();
+			}
+		});
+		
+		
+		reqOverviewTablePanel.add(tablePanel);
+		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
+	
 		// Put the info panel and table panel into the split pane
-		this.setLeftComponent(tablePanel);
+		this.setLeftComponent(reqOverviewTablePanel);
 		this.setRightComponent(infoPanel);
 		this.setResizeWeight(0.5); 
 
