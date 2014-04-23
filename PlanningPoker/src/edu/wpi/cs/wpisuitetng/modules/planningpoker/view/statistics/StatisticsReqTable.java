@@ -48,7 +48,7 @@ public class StatisticsReqTable extends JTable {
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	public HashMap<Integer, Integer> tableRows;
+	public HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill StatisticsReqTable
@@ -72,7 +72,7 @@ public class StatisticsReqTable extends JTable {
 		initialized = false;
 
 		/* Create double-click event listener */
-		this.addMouseListener(new MouseAdapter() {
+		/*this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(getRowCount() > 0) {
@@ -86,7 +86,7 @@ public class StatisticsReqTable extends JTable {
 					}
 				}
 			}
-		});
+		});*/
 	}
 	
 	/**
@@ -128,6 +128,11 @@ public class StatisticsReqTable extends JTable {
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
+		for(Integer i: tableRows.keySet()){
+			String key = i.toString();
+			String value = tableRows.get(i).toString();
+			System.out.println(key + ":" + value);
+		}
 	}
 	
 	/**
