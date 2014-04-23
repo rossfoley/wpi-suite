@@ -20,7 +20,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.NumberFormat;
@@ -33,7 +32,6 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -47,6 +45,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import java.awt.Font;
 import java.awt.BorderLayout;
@@ -60,13 +60,12 @@ import java.awt.BorderLayout;
  * @version $Revision: 1.0 $
  */
 public class DeckVotingPanel extends JPanel
-							 implements PropertyChangeListener,
-							 			MouseMotionListener,
+							 implements MouseMotionListener,
 							 			Serializable {
 	private Deck votingDeck;
 	private Estimate prevEstimate;
-	private JFormattedTextField estimateField;
-	private double userEstimate;
+	private JTextField estimateField;
+	private int userEstimate;
 	private JLayeredPane layeredDeckPane;
 	private JButton submitButton;
 	private int cardOffset = 40; //This is the offset for computing the origin for the next label.
@@ -126,12 +125,24 @@ public class DeckVotingPanel extends JPanel
 		estimateSubmittedMessage.setVisible(false);
 
 		// Create the text field for the estimation number
-		NumberFormat estimateFormat = NumberFormat.getNumberInstance();
-		estimateField = new JFormattedTextField(estimateFormat);
+		estimateField = new JTextField();
 		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
 		estimateField.setToolTipText("Enter Estimation Here");
-		estimateField.addPropertyChangeListener("value", this);
+		estimateField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				estimateValueChange();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				estimateValueChange();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				estimateValueChange();
+			}
+		});
 
 		estimateField.setPreferredSize(new Dimension(200, 100));
 		
@@ -144,12 +155,12 @@ public class DeckVotingPanel extends JPanel
 		
 		// Set default values if this is the first vote
 		if (prevEstimate.getVote() < 0) {
-			estimateField.setValue(new Double(0));
+			estimateField.setText("0");
 			submitButton = new JButton("Submit Estimation");
 		}
 		else {	// set default values if this is a re-vote
 			submitButton = new JButton("Resubmit Estimation");
-			estimateField.setValue(new Double(prevEstimate.getVote()));
+			estimateField.setText(String.valueOf(prevEstimate.getVote()));
 		}
 		submitButton.setPreferredSize(new Dimension(50, 26));
 		submitButton.addActionListener(new ActionListener() {
@@ -294,11 +305,11 @@ public class DeckVotingPanel extends JPanel
 		JLabel estimateLabel = new JLabel("Sum of Cards: ");
 		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
-		estimateField = new JFormattedTextField();
+		estimateField = new JTextField();
 		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateField.setEditable(false);
 		estimateField.setBackground(Color.WHITE);
-		estimateField.setValue(new Integer(0));
+		estimateField.setText("0");
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
 		estimateField.setHorizontalAlignment(JTextField.CENTER);
 		estimateField.setPreferredSize(new Dimension(112, 112));
@@ -392,7 +403,7 @@ public class DeckVotingPanel extends JPanel
 				userEstimate = 0;
 			}
 		}
-		estimateField.setValue(new Integer((int) userEstimate));
+		estimateField.setText(String.valueOf(userEstimate));
 	}
 	
 	/**
@@ -405,7 +416,7 @@ public class DeckVotingPanel extends JPanel
 				userEstimate += Integer.parseInt(card.getName());
 			}
 		}
-		estimateField.setValue(new Integer((int) userEstimate));
+		estimateField.setText(String.valueOf(userEstimate));
 	}
 
 	/**
@@ -417,7 +428,7 @@ public class DeckVotingPanel extends JPanel
 			setCardSelected(card, false);
 		}
 		userEstimate = 0;
-		estimateField.setValue(new Integer(0));
+		estimateField.setText("0");
 	}
 
 	public void mouseMoved(MouseEvent e) {
@@ -563,7 +574,7 @@ public class DeckVotingPanel extends JPanel
 	/**
 	 * @return the user's selected/entered estimate
 	 */
-	public double getEstimate() {
+	public int getEstimate() {
 		return this.userEstimate;
 	}
 
@@ -572,7 +583,7 @@ public class DeckVotingPanel extends JPanel
 	 */
 	public boolean validateEstimate() {
 		if (userEstimate < 0) {
-			estimateFieldErrorMessage.setText("Please enter a positive number");
+			estimateFieldErrorMessage.setText("Please enter a positive integer");
 			estimateFieldErrorMessage.setVisible(true);
 			estimateFieldErrorMessage.revalidate();
 			estimateFieldErrorMessage.repaint();
@@ -590,14 +601,15 @@ public class DeckVotingPanel extends JPanel
 	}
 
 	/**
-	 * Listens for changes in the button properties and handles these events
+	 * Listens for changes in the text field value and handles these events
 	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		Object source = evt.getSource();
-		if (source == estimateField) {
-			estimateSubmittedMessage.setVisible(false);
-			userEstimate = ((Number) estimateField.getValue()).doubleValue();
+	public void estimateValueChange() {
+		System.out.println("Field value changed");
+		try {
+			userEstimate = Integer.parseInt(estimateField.getText());
+			validateEstimate();
+		} catch (NumberFormatException ex) {
+			userEstimate = -1;
 			validateEstimate();
 		}
 	}
