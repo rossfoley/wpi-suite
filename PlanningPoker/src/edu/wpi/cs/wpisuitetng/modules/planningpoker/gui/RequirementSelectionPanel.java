@@ -465,41 +465,36 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	// checks for whether any of the buttons can be used and disables the ones that can't
 	private void validButtons(){
-		final boolean debug = false; // quick disable for console messages
-		
 		//checks for full lists and disables trying to move from empty lists
 		final boolean allUnselected = fullList(false);
 		final boolean allSelected = fullList(true);
-		if(allUnselected){
-			if(debug){System.out.println("Disableing removeAll");}
+		if (allUnselected) {
 			btnRemoveAll.setEnabled(false);
 		}
-		else{
-			if(debug){System.out.println("Enableing removeAll");}
+		else {
 			btnRemoveAll.setEnabled(true);
 		}
-		if(allSelected){
-			if(debug){System.out.println("Disableing addAll");}
+		
+		if (allSelected) {
 			btnAddAll.setEnabled(false);
 		}
-		else{
-			if(debug){System.out.println("Enableing addAll");}
+		else {
 			btnAddAll.setEnabled(true);
 		}
 		
 		// checks to see any requirements are selected for moving
 		final boolean pickedUnselected = anySelected(unselectedListGui.getSelectedIndices());
 		final boolean pickedSelected = anySelected(selectedListGui.getSelectedIndices());
-		if(pickedUnselected){
+		if (pickedUnselected) {
 			btnAdd.setEnabled(true);
 		}
-		else{
+		else {
 			btnAdd.setEnabled(false);
 		}
-		if(pickedSelected){
+		if (pickedSelected) {
 			btnRemove.setEnabled(true);
 		}
-		else{
+		else {
 			btnRemove.setEnabled(false);
 		}
 		
@@ -521,13 +516,7 @@ public class RequirementSelectionPanel extends JPanel{
 	
 	// checks for any selections from the given array
 	private boolean anySelected(int selected[]){
-		boolean any = false;
-		
-		for(int n : selected){
-			any = true;
-		}
-		
-		return any;
+		return selected != null && selected.length > 0;
 	}
 	
 	private void viewUnselectedRequirement(){
@@ -548,8 +537,6 @@ public class RequirementSelectionPanel extends JPanel{
 		
 		infoPanel.setRequirement(visibleRequirement);
 		unselectedIndicesOld = unselectedIndicesCurrent;
-		//remove(infoPanel);
-		//add(infoPanel);
 	}
 	
 	private void viewSelectedRequirement(){
@@ -670,7 +657,7 @@ public class RequirementSelectionPanel extends JPanel{
 			// Walk through the listener list and call the estimateSubmitted method in each
 			final Enumeration<RequirementsSelectedListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				RequirementsSelectedListener l = (RequirementsSelectedListener) e.nextElement();
+				RequirementsSelectedListener l = e.nextElement();
 				l.setRequirementsSelected(event);
 			}
 		}

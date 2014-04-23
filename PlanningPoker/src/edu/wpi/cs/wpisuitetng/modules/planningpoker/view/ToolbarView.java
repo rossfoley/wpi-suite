@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSe
  */
 public class ToolbarView  extends DefaultToolbarView {
 
-	public PlanningPokerSessionButtonsPanel sessionButton = new PlanningPokerSessionButtonsPanel();
+	private PlanningPokerSessionButtonsPanel sessionButton = new PlanningPokerSessionButtonsPanel();
 	
 	/**
 	 * Creates and positions option buttons in upper toolbar

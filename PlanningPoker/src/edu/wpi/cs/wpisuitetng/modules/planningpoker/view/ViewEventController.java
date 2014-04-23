@@ -175,10 +175,12 @@ public class ViewEventController {
 		// Check if the tab is a planningPokerSession tab
 		if (comp instanceof PlanningPokerSessionTab) {
 			// Only remove if it is ready to remove
-			if(!((PlanningPokerSessionTab)comp).readyToRemove())
+			if(!((PlanningPokerSessionTab)comp).readyToRemove()) {
 				return;
+			}
 			listOfEditingPanels.remove(comp);
 		}
+		
 		// Check if the tab is a voteOnSession tab
 		if (comp instanceof VotingPage) {
 			listOfVotingPanels.remove(comp);

@@ -57,7 +57,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Map<Requirement, Integer> finalEstimatesMap;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
-	public List<EstimateVoters> estimateVoterList;
+	private List<EstimateVoters> estimateVoterList;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -470,7 +470,7 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @return the reqEstimateStats
 	 */
-	public HashMap<Integer, RequirementEstimateStats> getReqEstimateStats() {
+	public Map<Integer, RequirementEstimateStats> getReqEstimateStats() {
 		return reqEstimateStats;
 	}
 	

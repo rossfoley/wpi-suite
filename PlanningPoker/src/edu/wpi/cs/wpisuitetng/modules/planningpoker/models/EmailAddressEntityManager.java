@@ -44,7 +44,7 @@ public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 	}
 
 	@Override
-	public EmailAddress[] getEntity(Session s, String email) throws NotFoundException, WPISuiteException {
+	public EmailAddress[] getEntity(Session s, String email) throws NotFoundException {
 		try {
 			return db.retrieve(EmailAddress.class, "email", email, s.getProject()).toArray(new EmailAddress[0]);
 		} catch (WPISuiteException e) {
@@ -58,7 +58,7 @@ public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 	 * @return array of all of the emailAddresses involved in the current session
 	 */
 	@Override
-	public EmailAddress[] getAll(Session s) throws WPISuiteException {
+	public EmailAddress[] getAll(Session s) {
 		final EmailAddress [] allEmails = db.retrieveAll(new EmailAddress(), s.getProject()).toArray(new EmailAddress[0]);
 		return allEmails;
 	}
@@ -100,7 +100,7 @@ public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, EmailAddress model) throws WPISuiteException {
+	public void save(Session s, EmailAddress model) {
 		db.save(model);
 	}
 
@@ -110,30 +110,28 @@ public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 	}
 
 	@Override
-	public void deleteAll(Session s) throws WPISuiteException {
+	public void deleteAll(Session s) {
 		db.deleteAll(new EmailAddress(), s.getProject());
 	}
 
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		return db.retrieveAll(new EmailAddress()).size();
 	}
 
 	@Override
-	public String advancedGet(Session s, String[] args) throws WPISuiteException {
+	public String advancedGet(Session s, String[] args) {
 		return null;
 	}
 
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content) {
 		return null;
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content) {
 		return null;
 	}
 }

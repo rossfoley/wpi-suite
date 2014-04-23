@@ -51,7 +51,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 				}
 			});
 			t.setDaemon(true);
-			t.run();
+			t.start();
 		}
 	}
 

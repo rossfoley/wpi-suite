@@ -558,7 +558,7 @@ public class SelectFromListPanel extends JPanel {
 			// Walk through the listener list and call the estimateSubmitted method in each
 			final Enumeration<RequirementsSelectedListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				RequirementsSelectedListener l = (RequirementsSelectedListener) e.nextElement();
+				RequirementsSelectedListener l = e.nextElement();
 				l.setRequirementsSelected(event);
 			}
 		}

@@ -52,7 +52,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 
 	@Override
-	public PlanningPokerSession[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
+	public PlanningPokerSession[] getEntity(Session s, String id) throws NotFoundException {
 		try {
 			return db.retrieve(PlanningPokerSession.class, "uuid", UUID.fromString(id), s.getProject()).toArray(new PlanningPokerSession[0]);
 		} catch (WPISuiteException e) {
@@ -66,7 +66,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 * @return array of all of the current user's Planning Poker sessions
 	 */
 	@Override
-	public PlanningPokerSession[] getAll(Session s) throws WPISuiteException {
+	public PlanningPokerSession[] getAll(Session s) {
 		final PlanningPokerSession [] allSessions = db.retrieveAll(new PlanningPokerSession(), s.getProject()).toArray(new PlanningPokerSession[0]);
 		return allSessions;
 	}
@@ -109,7 +109,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, PlanningPokerSession model) throws WPISuiteException {
+	public void save(Session s, PlanningPokerSession model) {
 		addClientUpdate(model, s);
 		db.save(model);
 	}
@@ -120,17 +120,17 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 	
 	@Override
-	public void deleteAll(Session s) throws WPISuiteException {
+	public void deleteAll(Session s) {
 		db.deleteAll(new PlanningPokerSession(), s.getProject());
 	}
 
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		return db.retrieveAll(new PlanningPokerSession()).size();
 	}
 	
 	@Override
-	public String advancedGet(Session s, String[] args) throws WPISuiteException {
+	public String advancedGet(Session s, String[] args) {
 		// Remove the Advanced/PlanningPokerSession part of the args
 		args = Arrays.copyOfRange(args, 2, args.length);
 		switch (args[0]) {
@@ -174,8 +174,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -139,21 +139,21 @@ public class OverviewTable extends JTable
 			try {
 				endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(pokerSession.getEndDate().getTime());
 			} catch (NullPointerException ex) {
-				endDate = new String("No end date");
+				endDate = "No end date";
 			}
 			
 			// Handle if there was no owner
 			try {
 				createrName = pokerSession.getSessionCreatorName();
 			} catch (NullPointerException ex) {
-				createrName = new String("Creater not set");
+				createrName = "Creater not set";
 			}
 			
 			// Handle if there was no deck set
 			try {
 				deckName = pokerSession.getSessionDeck().getDeckName();
 			} catch (NullPointerException ex) {
-				deckName = new String("None");
+				deckName = "None";
 			}
 
 			tableModel.addRow(new Object[]{
