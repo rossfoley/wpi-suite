@@ -455,6 +455,7 @@ public class VotingPage extends JSplitPane {
 					estimateVoter.setVote((int)e.getEstimate());
 					estimateVoter.setVoterUsername(getVoterName());
 					//
+					addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
 					addVoterNameToEstimatesList(estimate);
 
 					

@@ -91,11 +91,48 @@ public class OverviewVoterTable extends JTable {
 		}
 		return sessionReqs;
 	}
-	/**
+	
+
+	public void populateVotePanel() {
+		System.out.println("POPULATEVOTEDPANEL");
+		tableModel.setRowCount(0);	
+		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
+		RequirementModel reqs = RequirementModel.getInstance();	
+		List<String> allUserList = getAllVoterNamesList();
+		List<Requirement> ListOfRequirements =  getSessionReqs();
+		for (Requirement r : ListOfRequirements) {
+			int reqID = r.getId();
+			String reqName = r.getName();
+			boolean vote = false;
+			for (int i = 0; i < planningPokerSession.getEstimateVoterList().size(); i++) {
+				if(planningPokerSession.getEstimateVoterList().get(i).getRequirementID() == r.getId()) {
+					for (String s : allUserList) {
+						vote = false;
+						String username = s;
+						if(planningPokerSession.getEstimateVoterList().get(i).getVoterNameList().contains(s)) {
+							vote = true; //mean voted
+							tableModel.addRow(new Object[]{
+									reqID,
+									reqName,
+									username,
+									vote});	
+						} else {
+							tableModel.addRow(new Object[]{
+									reqID,
+									reqName,
+									username,
+									vote});	
+						}
+					}
+				}
+			}
+		}
+	}
+	/**DOESNT WORK CARE
 	 *  populates the panel
 	 *  
 	 */
-	public void populateVotePanel() {
+	public void populateVotePanelNOTCOMPLETE() {
 		System.out.println("POPULATEVOTEDPANEL2");
 		tableModel.setRowCount(0);	
 		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
