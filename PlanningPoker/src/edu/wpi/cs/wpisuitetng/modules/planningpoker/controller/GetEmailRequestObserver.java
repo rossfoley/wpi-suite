@@ -20,7 +20,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  */
 public class GetEmailRequestObserver implements RequestObserver {
 	
-	private GetEmailController controller;
+	private final GetEmailController controller;
 	
 	
 	/**
@@ -39,7 +39,7 @@ public class GetEmailRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of decks to an email object array
-		EmailAddress[] emailAddresses = EmailAddress.fromJsonArray(iReq.getResponse().getBody());
+		final EmailAddress[] emailAddresses = EmailAddress.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these email addresses to the controller
 		controller.receivedEmailAddresses(emailAddresses);

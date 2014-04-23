@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  */
 public class GetSessionRequestObserver implements RequestObserver {
 	
-	private GetSessionController controller;
+	private final GetSessionController controller;
 	
 	/**
 	 * Constructs the observer given a GetRequirementsController
@@ -39,7 +39,7 @@ public class GetSessionRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of requirements to a Requirement object array
-		PlanningPokerSession [] sessions = PlanningPokerSession.fromJsonArray(iReq.getResponse().getBody());
+		final PlanningPokerSession [] sessions = PlanningPokerSession.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these Requirements to the controller
 		controller.receivedSessions(sessions);

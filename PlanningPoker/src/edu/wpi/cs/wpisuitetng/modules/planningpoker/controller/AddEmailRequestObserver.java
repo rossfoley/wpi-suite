@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  *
  */
 public class AddEmailRequestObserver implements RequestObserver {
-	private AddEmailController controller;
+	private final AddEmailController controller;
 	
 	public AddEmailRequestObserver(AddEmailController controller) {
 		this.controller = controller;

@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class GetUserRequestObserver implements RequestObserver {
-	private GetUserController controller;
+	private final GetUserController controller;
 	
 	/**
 	 * Constructs the observer given a GetDckController
@@ -34,7 +34,7 @@ public class GetUserRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of decks to a Deck object array
 		UserModel.getInstance().emptyModel();
-		User[] user= User.fromJsonArray(iReq.getResponse().getBody());
+		final User[] user= User.fromJsonArray(iReq.getResponse().getBody());
 		for (int i = 0; i < user.length; i++) {
 			controller.receivedUser(user[i]);
 		}
