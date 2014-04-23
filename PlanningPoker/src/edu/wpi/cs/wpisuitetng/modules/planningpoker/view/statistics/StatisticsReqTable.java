@@ -199,10 +199,30 @@ public class StatisticsReqTable extends JTable {
 		}
 		return "-";		
 	}
+
 	public int getSelectedReq() {
 		return tableRows.get(rowNumber);
 	}
 	public void setInfoPanel(StatisticsInfoPanel panel) {
 		infoPanel = panel;
+	}
+	public void updateFinalEstimates(){
+		for (int i = 0; i<tableModel.getRowCount(); i++){
+			String estimate = (String) tableModel.getValueAt(i, 2);
+			boolean isInteger = true;
+			int numberEst = -1;
+			try {
+				numberEst = Integer.parseInt(estimate);
+			}
+			catch (NumberFormatException e) {
+				isInteger = false;
+			}
+			if (isInteger){
+				if (numberEst >= 0){
+					int reqID = tableRows.get(i);
+					// 
+				}
+			}
+		}
 	}
 }
