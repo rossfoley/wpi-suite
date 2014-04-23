@@ -546,9 +546,11 @@ public class RequirementSelectionPanel extends JPanel{
 		for (Integer id : selectedRequirements) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
 			int pos = this.requirements.indexOf(current);
-			this.selection.remove(pos);
-			this.selection.add(pos, true);
-			numRequirementsAdded += 1;
+			if (pos >= 0) {
+				this.selection.remove(pos);
+				this.selection.add(pos, true);
+				numRequirementsAdded += 1;
+			}
 		}
 		update();
 	}
