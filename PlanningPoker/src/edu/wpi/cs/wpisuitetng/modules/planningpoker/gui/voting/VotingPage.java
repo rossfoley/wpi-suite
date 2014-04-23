@@ -127,18 +127,18 @@ public class VotingPage extends JSplitPane {
 		//
 		String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
 		Object[][] data = {};
-		thetable = new OverviewVoterTable(data, columnNames);
+		thetable = new OverviewVoterTable(data, columnNames, activeSession);
 		thetablePanel = new JScrollPane(thetable);
-		thetable.getColumnModel().getColumn(0).setMinWidth(20); // Requirement ID
-		thetable.getColumnModel().getColumn(1).setMinWidth(150); // Requirement Name	
-		thetable.getColumnModel().getColumn(2).setMinWidth(100); // Username
-		thetable.getColumnModel().getColumn(3).setMinWidth(50); // Votes
+		thetable.getColumnModel().getColumn(0).setMinWidth(5); // Requirement ID
+		thetable.getColumnModel().getColumn(1).setMinWidth(100); // Requirement Name	
+		thetable.getColumnModel().getColumn(2).setMinWidth(55); // Username
+		thetable.getColumnModel().getColumn(3).setMinWidth(15); // Votes
 		Dimension d = new Dimension(150, 80);
         thetablePanel.setMinimumSize(d);
         /////
         /////
         
-        thetable.populateVotePanelWithEstimateVotersList();
+        thetable.populateVotePanel();
         
 		//
 		JTextField nameField = new JTextField();
@@ -192,15 +192,12 @@ public class VotingPage extends JSplitPane {
 		sl_reqDetails.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, descriptionField, 0, SpringLayout.EAST, nameField);
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, descriptionField, -10, SpringLayout.SOUTH, reqDetails);
-<<<<<<< HEAD
 
-=======
 		
 		sl_reqDetails.putConstraint(SpringLayout.WEST, thetablePanel, 10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, thetablePanel, -10, SpringLayout.EAST, reqDetails);
 		
 		
->>>>>>> User can now see a list of users that have voted on a selected requirement when voting
 		System.out.println("currently displayed description:" + descriptionField.getText());
 		System.out.println(descriptionField.getText());
 
@@ -280,6 +277,20 @@ public class VotingPage extends JSplitPane {
 		}
 		activeSession.getEstimateVoterList().add(ev);
 		System.out.println(ev.getVoterUsername() + " has voted and is added to the list");
+		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
+	}
+	public void addVoterNameToEstimatesList(Estimate ev) {
+		System.out.println("newTest");
+		for (Estimate e :activeSession.getEstimates()) {
+			if( e.getRequirementID() == ev.getRequirementID() && e.getOwnerName().equals(ev.getOwnerName())) {
+				e.setVote(ev.getVote());
+				System.out.println("Username exist replacing with a new vote" + ev.getVote() + " " + e.getVote());
+				return ;
+			}
+		}
+		activeSession.getEstimates().add(ev);
+		System.out.println(ev.getOwnerName() + " has voted and is added to the list");
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 		//UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
@@ -443,16 +454,9 @@ public class VotingPage extends JSplitPane {
 					estimateVoter.setSessionID(activeSession.getID());
 					estimateVoter.setVote((int)e.getEstimate());
 					estimateVoter.setVoterUsername(getVoterName());
-					//writng here
-					//addVoterNameToList(ConfigManager.getConfig().getUserName());
-					//getVoterName();
-					//getAllVoterNames();
-					addVoterNameToEstimateVotersList(estimateVoter);
-					//addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
-					//displayAllEstimateVotersList();
-					//displayVoters();
-					
-					//test();
+					//
+					addVoterNameToEstimatesList(estimate);
+
 					
 					
 					estimates.add(estimate);
@@ -487,7 +491,6 @@ public class VotingPage extends JSplitPane {
 
 					setDividerLocation(225);
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-					thetable.populateVotePanelWithEstimateVotersList();
 				}
 			}
 		});
