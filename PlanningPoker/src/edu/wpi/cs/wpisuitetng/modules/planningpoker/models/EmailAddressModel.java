@@ -6,11 +6,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
-<<<<<<< HEAD
-port edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
-=======
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
->>>>>>> In EmailAddressModel adds the import for addEmailController as welll as changes the addEmailAddress line to addEmail
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
