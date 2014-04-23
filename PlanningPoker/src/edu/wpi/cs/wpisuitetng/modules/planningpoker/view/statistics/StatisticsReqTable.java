@@ -72,7 +72,7 @@ public class StatisticsReqTable extends JTable {
 		initialized = false;
 
 		/* Create double-click event listener */
-		/*this.addMouseListener(new MouseAdapter() {
+		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(getRowCount() > 0) {
@@ -86,7 +86,7 @@ public class StatisticsReqTable extends JTable {
 					}
 				}
 			}
-		});*/
+		}); // */
 	}
 	
 	/**
