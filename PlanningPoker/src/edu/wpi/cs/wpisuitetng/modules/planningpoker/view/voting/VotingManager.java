@@ -10,15 +10,21 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.IterationIcon;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.RequirementIcon;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
+import javax.swing.Icon;
 import javax.swing.SpringLayout;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -31,7 +37,7 @@ public class VotingManager extends JPanel {
 	private transient Vector<SelectionListener> selectionListeners;
 	private transient Vector<EstimateListener> estimateListeners;
 	
-	private JTree tree = new JTree();;
+	private JTree tree = new JTree();
 	private DefaultMutableTreeNode rootNode;
 	
 	private LinkedList<Requirement> notVotedList;
@@ -40,8 +46,6 @@ public class VotingManager extends JPanel {
 	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName) {		
 		setName("Voting Manager");
 		this.estimates = pokerSession.getEstimates();
-		System.out.println("Voting manager says that there are " + this.estimates.size() + " estimates");
-		System.out.println("Model says that there are " + PlanningPokerSessionModel.getInstance().getPlanningPokerSession(pokerSession.getID()).getEstimates().size() + " estimates");
 		this.requirements = requirements;
 		this.ownerName = ownerName;
 		
@@ -53,23 +57,44 @@ public class VotingManager extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, tree, 0, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, tree, 0, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, tree, 0, SpringLayout.EAST, this);
+		
+		tree.setCellRenderer(new DefaultTreeCellRenderer() {
+			
+			@Override
+			public Component getTreeCellRendererComponent(JTree tree, Object value,
+					boolean sel, boolean expanded, boolean leaf, int row,
+					boolean hasFocus) {
+				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
+						row, hasFocus);
+				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+				final Icon requirementIcon = new RequirementIcon();
+				final Icon iterationIcon = new IterationIcon();
+				String name = (String) node.getUserObject();
+
+				setIcon(requirementIcon);
+				if (name != null) {
+					if (name.equals("Requirements") || name.equals("Need Estimation") || name.equals("Estimated")) {
+						setIcon(iterationIcon);
+					}
+				}
+
+				return this; 
+			}
+		});
 		add(tree);
-		
-		
 	}
 	
-	private void update(){
-		
+	private void update() {
 		TreeNode rootNode = createNodes();
 		
 		tree = new JTree(rootNode);
-		for (int i = 0; i < tree.getRowCount(); i++){
+		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
+		
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//pushSelection();
 				Requirement selected = getSelected();
 				if (selected != null){
 					System.out.println(selected.getId() + ":" + selected.getName());
@@ -78,9 +103,6 @@ public class VotingManager extends JPanel {
 			}
 		});
 	}
-	
-	
-	
 
 	private Requirement getSelected(){
 		Requirement rqt = new Requirement();
