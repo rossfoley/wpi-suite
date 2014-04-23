@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.RequirementEstimateStats;
 
@@ -457,6 +458,12 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void setFinalEstimatesMap(HashMap<Requirement, Integer> reqsWithSubmissions) {
 		finalEstimatesMap = reqsWithSubmissions; 
+	}
+	
+	public void addFinalEstimate(int ID, int estimate){
+		RequirementModel reqs = RequirementModel.getInstance();
+		Requirement req = reqs.getRequirement(ID);
+		finalEstimatesMap.put(req, estimate);
 	}
 	
 	/**
