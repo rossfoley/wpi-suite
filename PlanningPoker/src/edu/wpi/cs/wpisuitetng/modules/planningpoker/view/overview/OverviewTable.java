@@ -44,7 +44,7 @@ public class OverviewTable extends JTable
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
 	private OverviewDetailPanel detailPanel;
 	
 	/**

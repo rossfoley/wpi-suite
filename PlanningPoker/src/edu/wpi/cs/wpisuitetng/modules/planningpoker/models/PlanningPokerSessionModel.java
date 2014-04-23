@@ -20,7 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class PlanningPokerSessionModel extends AbstractListModel {
 
-	private List<PlanningPokerSession> planningPokerSessions;
+	private final List<PlanningPokerSession> planningPokerSessions;
 	private static PlanningPokerSessionModel instance;
 	private boolean updateStarted = false;
 

@@ -59,7 +59,7 @@ import java.awt.BorderLayout;
 public class DeckVotingPanel extends JPanel
 							 implements MouseMotionListener,
 							 			Serializable {
-	private Deck votingDeck;
+	private final Deck votingDeck;
 	private Estimate prevEstimate;
 	private JTextField estimateField;
 	private int userEstimate;
@@ -68,10 +68,10 @@ public class DeckVotingPanel extends JPanel
 	private int cardOffset = 40; //This is the offset for computing the origin for the next label.
 	private List<JButton> listOfCardButtons;
 	private Integer lastCard = -1;
-	private JLabel estimateFieldErrorMessage = new JLabel("");
+	private final JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
-	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
-	private Color selectedColor = new Color(247, 247, 247);
+	private final JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
+	private final Color selectedColor = new Color(247, 247, 247);
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -95,7 +95,7 @@ public class DeckVotingPanel extends JPanel
 	public DeckVotingPanel(Deck votingDeck, Estimate estimate) {
 		this.votingDeck = votingDeck;
 		// Check if a previous estimate was input
-		this.prevEstimate = estimate;
+		prevEstimate = estimate;
 		// Make sure a deck was input
 		if (votingDeck == null) {
 			buildDefaultVotingPanel();
@@ -573,7 +573,7 @@ public class DeckVotingPanel extends JPanel
 	 * @return the user's selected/entered estimate
 	 */
 	public int getEstimate() {
-		return this.userEstimate;
+		return userEstimate;
 	}
 
 	/**

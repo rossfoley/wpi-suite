@@ -53,18 +53,18 @@ import java.awt.Dimension;
  */
 
 public class VotingPage extends JSplitPane {
-	private JPanel voteOnReqPanel = new JPanel();
+	private final JPanel voteOnReqPanel = new JPanel();
 
 	private VotingManager reqsView;
 
-	private SpringLayout layout = new SpringLayout();
+	private final SpringLayout layout = new SpringLayout();
 	private JPanel reqDetailPanel;
 	private DeckVotingPanel votingPanel;
 
 	private PlanningPokerSession activeSession;
 
 	private Requirement requirement;
-	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+	private final LinkedList<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 
 	private OverviewVoterTable thetable;

@@ -51,10 +51,10 @@ public class PlanningPokerSession extends AbstractModel {
 	private String description;
 	private String sessionCreatorName;
 	private Deck sessionDeck;
-	private String defaultSessionName;
+	private final String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
 	private HashMap<Requirement, Integer> finalEstimatesMap;
-	private HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
+	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
 	public List<EstimateVoters> estimateVoterList;
 	

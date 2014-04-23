@@ -350,7 +350,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		setDeckDropdown();
 		// Set the default deck name for the session
 		try {
-			comboDeck.setSelectedItem(this.sessionDeck.getDeckName());
+			comboDeck.setSelectedItem(sessionDeck.getDeckName());
 			parseDeckDropdowns();
 		}
 		// if the session is being created or the default deck is used

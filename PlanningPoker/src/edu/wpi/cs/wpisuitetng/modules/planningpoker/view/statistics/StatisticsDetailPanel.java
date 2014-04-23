@@ -46,8 +46,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 		currentSession = session;
 		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
-		String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
-		Object[][] reqData = {};
+		final String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
+		final Object[][] reqData = {};
 		
 		// Create the info panel and table panel
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
@@ -89,7 +89,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 		ViewEventController.getInstance().setStatisticsReqTable(reqTable);
 		
 		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(100, 100);
+		final Dimension d = new Dimension(100, 100);
         infoPanel.setMinimumSize(d);
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);

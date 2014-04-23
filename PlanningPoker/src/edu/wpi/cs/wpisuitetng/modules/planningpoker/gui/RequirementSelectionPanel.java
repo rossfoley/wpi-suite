@@ -43,11 +43,11 @@ import javax.swing.JLabel;
 
 public class RequirementSelectionPanel extends JPanel{
 	
-	private RequirementSelectionView parent;
+	private final RequirementSelectionView parent;
 	private LinkedList<Requirement> requirements;
 	private LinkedList<Boolean> selection;
-	private JList selectedListGui;
-	private JList unselectedListGui;
+	private final JList selectedListGui;
+	private final JList unselectedListGui;
 	private AbstractListModel unSelectedListModel;
 	private AbstractListModel selectedListModel;
 	protected String[] unSelectedListData;
@@ -59,7 +59,7 @@ public class RequirementSelectionPanel extends JPanel{
 	JButton btnNewReq;
 	private transient Vector<RequirementsSelectedListener> listeners;
 	private int numRequirementsAdded = 0;
-	private InfoPanel infoPanel;
+	private final InfoPanel infoPanel;
 	private int[] unselectedIndicesOld = {};
 	private int[] selectedIndicesOld = {};
 	private Requirement visibleRequirement;
@@ -345,7 +345,7 @@ public class RequirementSelectionPanel extends JPanel{
 	// update the data displayed in the unselected list
 	private void updateUnselectedList(){
 		unSelectedListModel = new AbstractListModel(){
-			private String[] strings = unSelectedListData;
+			private final String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
@@ -358,7 +358,7 @@ public class RequirementSelectionPanel extends JPanel{
 	// update the data displayed by the selected list
 	private void updateSelectedList(){
 		selectedListModel = new AbstractListModel(){
-			private String[] strings = selectedListData;
+			private final String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};

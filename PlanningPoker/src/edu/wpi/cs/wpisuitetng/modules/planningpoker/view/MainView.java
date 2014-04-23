@@ -48,11 +48,11 @@ public class MainView extends JTabbedPane {
 	private Image tabImage = null;
 	private Point currentMouseLocation = null;
 	private int draggedTabIndex = 0;
-	private OverviewPanel overviewPanel = new OverviewPanel();
+	private final OverviewPanel overviewPanel = new OverviewPanel();
 	private Component lastTab = null;
 	private final JPopupMenu popup = new JPopupMenu();
-	private JMenuItem closeAll = new JMenuItem("Close All Tabs");
-	private JMenuItem closeOthers = new JMenuItem("Close Others");
+	private final JMenuItem closeAll = new JMenuItem("Close All Tabs");
+	private final JMenuItem closeOthers = new JMenuItem("Close Others");
 
 	OverviewDetailPanel detailPanel;
 

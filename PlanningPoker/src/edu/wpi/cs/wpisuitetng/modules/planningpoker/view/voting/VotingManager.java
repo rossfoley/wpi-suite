@@ -33,9 +33,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class VotingManager extends JPanel {
 	
-	private List<Requirement> requirements;
-	private List<Estimate> estimates;
-	private String ownerName;
+	private final List<Requirement> requirements;
+	private final List<Estimate> estimates;
+	private final String ownerName;
 	private transient Vector<SelectionListener> selectionListeners;
 	private transient Vector<EstimateListener> estimateListeners;
 	

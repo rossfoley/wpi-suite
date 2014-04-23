@@ -57,19 +57,19 @@ public class RequirementEstimateStats {
 	 * @return the median value of the estimates 
 	 */
 	double calculateMedian() {
-		int size = estimates.size();
+		final int size = estimates.size();
 		if (size == 0) {
 			return 0; 
 		}
 		else if (size % 2 == 0) {
-			int mid1 = size/2;
-			int mid2 = size/2 - 1;
-			int val1 = estimates.get(mid1).getVote();
-			int val2 = estimates.get(mid2).getVote();
+			final int mid1 = size/2;
+			final int mid2 = size/2 - 1;
+			final int val1 = estimates.get(mid1).getVote();
+			final int val2 = estimates.get(mid2).getVote();
 			return (val1+val2)/2;
 		}
 		else {
-			int mid = size/2;
+			final int mid = size/2;
 			return estimates.get(mid).getVote();
 		}
 	}

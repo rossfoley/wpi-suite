@@ -185,15 +185,15 @@ public class User extends AbstractModel
 	@Override
 	public Boolean identify(Object o)
 	{
-		Boolean b  = false;
+		Boolean b = false;
 		
-		if(o instanceof User)
-			if(((User) o).username.equalsIgnoreCase(username))
-				b = true;
+		if(o instanceof User && ((User) o).username.equalsIgnoreCase(username)) {
+			b = true;
+		}
 		
-		if(o instanceof String)
-			if(((String) o).equalsIgnoreCase(username))
-				b = true;
+		if(o instanceof String && ((String) o).equalsIgnoreCase(username)) {
+			b = true;
+		}
 		return b;
 	}
 	

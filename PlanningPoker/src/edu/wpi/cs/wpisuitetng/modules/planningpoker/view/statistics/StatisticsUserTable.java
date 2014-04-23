@@ -46,7 +46,7 @@ public class StatisticsUserTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	
 	/**
 	 * Sets initial table view
@@ -75,9 +75,9 @@ public class StatisticsUserTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(getRowCount() > 0) {
-					int mouseY = e.getY();
-					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
-					int lastRowY = lastRow.y + lastRow.height;
+					final int mouseY = e.getY();
+					final Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
+					final int lastRowY = lastRow.y + lastRow.height;
 
 					if(mouseY > lastRowY) {
 						getSelectionModel().clearSelection();
@@ -95,11 +95,11 @@ public class StatisticsUserTable extends JTable {
 		// TODO Implement Your Vote, Estimate columns
 		// Currently is 0 for every estimate
 		
-		Set<Integer> requirementIDs = session.getRequirementIDs();
-		RequirementModel reqs = RequirementModel.getInstance();
+		final Set<Integer> requirementIDs = session.getRequirementIDs();
+		final RequirementModel reqs = RequirementModel.getInstance();
 		int vote = 0;
-		int estimate = 0;
-		List<Estimate> estimates = session.getEstimates();
+		final int estimate = 0;
+		final List<Estimate> estimates = session.getEstimates();
 				
 		// clear the table
 		tableModel.setRowCount(0);		
@@ -163,7 +163,7 @@ public class StatisticsUserTable extends JTable {
 	 */
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component comp = super.prepareRenderer(renderer, row, column);
+        final Component comp = super.prepareRenderer(renderer, row, column);
 
         if (JComponent.class.isInstance(comp)) {
             ((JComponent)comp).setBorder(paddingBorder);
