@@ -35,15 +35,13 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	}
 	
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content) {
 		switch (string) {
 		case "add-default-deck":
 			try {
@@ -61,14 +59,13 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		return db.retrieveAll(new Deck()).size();
 	}
 
@@ -77,7 +74,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * 
 	 * @param s session corresponding to the current project
 	 */
-	public void deleteAll(Session s) throws WPISuiteException {
+	public void deleteAll(Session s) {
 		// don't know if we should restrict deleting decks to admins
 		// 		ensureRole(s, Role.ADMIN);
 		db.deleteAll(new Deck(), s.getProject());
@@ -105,7 +102,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * @return array of decks from the database that were assosciated with the given project
 	 */
 	@Override
-	public Deck[] getAll(Session s) throws WPISuiteException {
+	public Deck[] getAll(Session s) {
 		return db.retrieveAll(new Deck(), s.getProject()).toArray(new Deck[0]);
 	}
 
@@ -118,8 +115,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 *  @return array of decks with the matching id number
 	 */
 	@Override
-	public Deck[] getEntity(Session s, String id) throws NotFoundException,
-			WPISuiteException {
+	public Deck[] getEntity(Session s, String id) throws NotFoundException {
 			final int intId = Integer.parseInt(id);
 			if(intId < 1) {
 				throw new NotFoundException();
@@ -159,7 +155,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * @param s session to associate deck to 
 	 * @param model deck object to store in the database
 	 */
-	public void save(Session s, Deck model) throws WPISuiteException {
+	public void save(Session s, Deck model) {
 		db.save(model, s.getProject());
 	}
 

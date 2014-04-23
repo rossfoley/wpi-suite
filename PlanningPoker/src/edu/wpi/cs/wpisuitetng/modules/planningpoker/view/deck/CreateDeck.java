@@ -463,7 +463,7 @@ public class CreateDeck extends JPanel {
 			// Walk through the listener list and call the estimateSubmitted method in each
 			final Enumeration<DeckListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				DeckListener l = (DeckListener) e.nextElement();
+				DeckListener l = e.nextElement();
 				l.deckSubmitted(event);
 			}
 		}

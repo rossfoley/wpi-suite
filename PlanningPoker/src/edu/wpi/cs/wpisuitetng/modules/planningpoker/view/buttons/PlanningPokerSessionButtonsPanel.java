@@ -142,7 +142,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 					}
 				});
 				t.setDaemon(true);
-				t.run();
+				t.start();
 				
 				
 			}

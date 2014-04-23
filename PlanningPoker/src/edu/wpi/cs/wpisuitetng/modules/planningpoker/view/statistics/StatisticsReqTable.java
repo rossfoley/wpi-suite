@@ -50,9 +50,9 @@ public class StatisticsReqTable extends JTable {
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	public HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
-	int rowNumber = 0;
-	StatisticsDetailPanel detailPanel;
+	private HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
+	private int rowNumber = 0;
+	private StatisticsDetailPanel detailPanel;
 	private StatisticsInfoPanel infoPanel;
 	/**
 	 * Sets initial table view
@@ -138,12 +138,7 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public boolean isCellEditable(int row, int col) {
-		if (col == 2){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return col == 2;
 	}
 	
 	/**

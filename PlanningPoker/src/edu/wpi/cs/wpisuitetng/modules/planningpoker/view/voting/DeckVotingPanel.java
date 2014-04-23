@@ -661,7 +661,7 @@ public class DeckVotingPanel extends JPanel
 			// Walk through the listener list and call the estimateSubmitted method in each
 			final Enumeration<EstimateListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				EstimateListener l = (EstimateListener) e.nextElement();
+				EstimateListener l = e.nextElement();
 				l.estimateSubmitted(event);
 			}
 			estimateSubmittedMessage.setVisible(true);
