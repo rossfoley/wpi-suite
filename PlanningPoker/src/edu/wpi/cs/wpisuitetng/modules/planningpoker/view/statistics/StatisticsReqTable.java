@@ -219,8 +219,7 @@ public class StatisticsReqTable extends JTable {
 			if (isInteger){
 				if (numberEst >= 0){
 					int reqID = tableRows.get(i);
-					// 
-					
+					currentSession.addFinalEstimate(reqID, numberEst);
 				}
 			}
 			refresh(currentSession);
