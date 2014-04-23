@@ -603,7 +603,7 @@ public class DeckVotingPanel extends JPanel
 	/**
 	 * Listens for changes in the text field value and handles these events
 	 */
-	public void estimateValueChange() {
+	private void estimateValueChange() {
 		System.out.println("Field value changed");
 		try {
 			userEstimate = Integer.parseInt(estimateField.getText());
