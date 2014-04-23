@@ -84,7 +84,7 @@ public class StatisticsInfoPanel extends JPanel {
 		add(scrollPane);
 		add(lblMean);
 		add(lblMedian);
-		add(lblStdDev);
+		//add(lblStdDev);
 		add(meanDisplay);
 		add(medianDisplay);
 		add(stdDevDisplay);
