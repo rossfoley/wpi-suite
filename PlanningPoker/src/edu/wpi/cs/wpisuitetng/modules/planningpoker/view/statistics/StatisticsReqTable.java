@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -196,7 +197,7 @@ public class StatisticsReqTable extends JTable {
 	
 	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
-		final HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
+		final Map<Requirement,Integer> finalEstimates = session.getFinalEstimates();
 		if (finalEstimates.containsKey(reqToFind)){
 			return finalEstimates.get(reqToFind).toString();
 		}

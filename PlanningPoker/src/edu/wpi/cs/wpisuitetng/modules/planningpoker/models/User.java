@@ -122,14 +122,10 @@ public class User extends AbstractModel
 	}
 	
 	/* database interaction */
-	public void save()
-	{
-		return;
+	public void save() {
 	}
 	
-	public void delete()
-	{
-		return;
+	public void delete(){
 	}
 	
 	/* Serializing */
@@ -141,13 +137,8 @@ public class User extends AbstractModel
 	 */
 	public String toJSON()
 	{
-		final String json;
-		
 		final Gson gson = new GsonBuilder().registerTypeAdapter(User.class, new UserSerializer()).create();
-		
-		json = gson.toJson(this, User.class);
-		
-		return json;	
+		return gson.toJson(this, User.class);	
 	}
 	
 	/**
@@ -160,8 +151,7 @@ public class User extends AbstractModel
 	{
 		String json ="[";
 		
-		for(User a : u)
-		{
+		for (User a : u) {
 			json += a.toJSON() + ", ";
 		}
 		
@@ -179,7 +169,7 @@ public class User extends AbstractModel
 	 */
 	public String toString()
 	{
-		return this.toJSON();
+		return toJSON();
 	}
 
 	@Override

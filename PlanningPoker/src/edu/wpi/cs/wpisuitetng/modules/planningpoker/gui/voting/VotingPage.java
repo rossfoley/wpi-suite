@@ -64,7 +64,7 @@ public class VotingPage extends JSplitPane {
 	private PlanningPokerSession activeSession;
 
 	private Requirement requirement;
-	private final LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+	private final List<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 
 	private OverviewVoterTable thetable;

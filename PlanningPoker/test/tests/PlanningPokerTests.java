@@ -56,7 +56,7 @@ public class PlanningPokerTests {
 	 */
 	@Test
 	public void testReqIDs() {
-		final HashSet<Integer> aSet = new HashSet<Integer>(); 
+		final Set<Integer> aSet = new HashSet<Integer>(); 
 		testSession.setRequirementIDs(aSet); 
 		assertNotNull(testSession.getRequirementIDs()); 
 		testSession.addRequirement(5); 
