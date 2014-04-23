@@ -427,7 +427,7 @@ public class PlanningPokerSession extends AbstractModel {
 
 		if (estimationComplete) {
 			reqsWithCompleteEstimates.add(reqID);
-			addReqEstimateStats(reqID); 
+			addReqEstimateStats(reqID);
 		}
 	}
 

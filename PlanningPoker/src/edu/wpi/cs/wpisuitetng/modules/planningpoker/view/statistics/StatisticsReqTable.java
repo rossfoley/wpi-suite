@@ -79,7 +79,8 @@ public class StatisticsReqTable extends JTable {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				rowNumber = rowAtPoint(getMousePosition());
-				infoPanel.currentReqID = tableRows.get(rowNumber);
+				//infoPanel.currentReqID = tableRows.get(rowNumber);
+				infoPanel.setCurrentReqID(tableRows.get(rowNumber));
 					}
 		}); 
 				}

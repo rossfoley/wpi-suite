@@ -22,7 +22,9 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.RequirementManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.Dimension;
 
@@ -45,12 +47,15 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel medianDisplay;
 	JLabel stdDevDisplay;
 	SpringLayout springLayout;
-	public int currentReqID;
+	public int currentReqID = -1;
+	private Requirement aReq; 
+	private PlanningPokerSession session;
 	
 	public StatisticsInfoPanel(PlanningPokerSession session) {
 
 		ViewEventController.getInstance().setStatisticsInfoPanel(this);
 		
+		this.session = session; 
 		lblReqName = new JLabel("Name:");
 		reqNameDisplay = new JLabel("");
 		lblReqDescription = new JLabel("Description:");
@@ -86,13 +91,30 @@ public class StatisticsInfoPanel extends JPanel {
 	}
 	
 	public void refresh(PlanningPokerSession session) {
-		
-		// Change session description
-		reqDescriptionDisplay.setText(session.getDescription());
-		
-		
-		//RequirementEstimateStats reqStats = new RequirementEstimateStats();
 
+		if (aReq != null) {
+			// Change session name
+			reqNameDisplay.setText(aReq.getName());
+			
+			// Change session description
+			reqDescriptionDisplay.setText(aReq.getDescription());
+		}
+		
+		if (currentReqID != -1) {
+			if (session.isEnded() || session.isClosed()) {
+				session.addReqEstimateStats(currentReqID);
+			}
+			
+			/**
+			 *  change mean display
+			 */
+			meanDisplay.setText(formatMean(session.getReqEstimateStats().get(currentReqID)));
+			
+			/**
+			 * change median display
+			 */
+			medianDisplay.setText(formatMedian(session.getReqEstimateStats().get(currentReqID)));
+		}
 	}
 
 	
@@ -162,6 +184,13 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, 328, SpringLayout.WEST, this);
 		
 		
+	}
+
+	public void setCurrentReqID(int ID) {
+		System.out.println("ID = " + ID);
+		currentReqID = ID;
+		aReq = RequirementModel.getInstance().getRequirement(ID);
+		refresh(session);
 	}
 
 
