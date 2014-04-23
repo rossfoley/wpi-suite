@@ -129,7 +129,16 @@ public class StatisticsReqTable extends JTable {
 			String value = tableRows.get(i).toString();
 			System.out.println(key + ":" + value);
 		}
-		
+	}
+	
+	@Override 
+	public boolean isCellEditable(int row, int col) {
+		if (col == 2){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	/**
@@ -181,15 +190,6 @@ public class StatisticsReqTable extends JTable {
 
     }
 	
-	/**
-	 * Overrides the isCellEditable method to ensure no cells are editable.
-	 * @param row	row of OverviewReqTable cell is located
-	 * @param col	column of OverviewReqTable cell is located
-	 * @return boolean */
-	@Override
-	public boolean isCellEditable(int row, int col)	{
-		return false;
-	}
 	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
 		HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
