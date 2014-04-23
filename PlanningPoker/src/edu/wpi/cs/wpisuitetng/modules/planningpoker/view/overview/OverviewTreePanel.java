@@ -24,8 +24,10 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
@@ -55,9 +57,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		initialized = false;
 		// Disable all toolbar buttons on initialization
 		try {
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
 		} catch (NullPointerException ex) {} // Do nothing if the toolbar has not been instantiated yet
 	}
 	
@@ -116,15 +119,15 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         
         ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
 
-        System.out.println("finished refreshing the tree");
+        //System.out.println("finished refreshing the tree");
 	}
 	
 	/**
-	 * Method mouseClicked.
+	 * Method mousePressed.
 	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent) */
+	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent) */
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		final int x = e.getX();
 		final int y = e.getY();
 
@@ -165,6 +168,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
 					}
 					
+					// If the session is ended or closed, allow the user to view statistics
+					if (session.isEnded() || session.isClosed()) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
+					}
+					
 					displaySession(session);
 				}
 			}
@@ -181,11 +189,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	
 	
 	/**
-	 * Method mousePressed.
+	 * Method mouseClicked.
 	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent) */
+	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent) */
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 	}
 
 	/**
@@ -224,7 +232,9 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			try {
 				GetSessionController.getInstance().retrieveSessions();
 				GetRequirementsController.getInstance().retrieveRequirements();
+				GetUserController.getInstance().retrieveUsers();
 				PlanningPokerSessionModel.getInstance().startLiveUpdating();
+				AddDeckController.getInstance().addDefaultDeck();
 				GetDeckController.getInstance().retrieveDecks();
 				initialized = true;
 			} catch (Exception e) {}

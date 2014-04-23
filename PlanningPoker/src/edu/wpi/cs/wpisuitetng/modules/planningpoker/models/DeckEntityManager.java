@@ -34,20 +34,29 @@ public class DeckEntityManager implements EntityManager<Deck> {
 		this.db = db;
 	}
 	
-	
 	@Override
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 	
 	@Override
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
+		switch (string) {
+		case "add-default-deck":
+			try {
+				int deckCount = db.retrieveAll(new Deck(), s.getProject()).size();
+				if (deckCount == 0) {
+					makeEntity(s, content);
+					return "true";
+				}
+			} catch (Exception e) {}
+			return "false";
+		default:
+			System.out.println(string);
+		}
 		return null;
 	}
 
@@ -60,8 +69,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 
 	@Override
 	public int Count() throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return db.retrieveAll(new Deck()).size();
 	}
 
 	/** 

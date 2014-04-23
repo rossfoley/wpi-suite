@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -14,8 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
@@ -23,11 +29,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * This class contains the toolbar buttons for the planning poker module. 
  *
  */
-public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
-	private JButton createButton = new JButton("<html>Create<br />Planning Poker Session</html>");
-	private JButton editButton = new JButton("<html>Edit<br />Planning Poker Session</html>");
-	private JButton voteButton = new JButton("<html>Vote on<br />Planning Poker Session</html>");
-	private JButton endVoteButton = new JButton("<html>End Voting on<br />Planning Poker Session</html>");
+public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
+	private JButton createButton = new JButton("<html>Create <br /> Session</html>");
+	private JButton editButton = new JButton("<html>Edit <br /> Session</html>");
+	private JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
+	private JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
+	private JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
 	private final JPanel contentPanel = new JPanel();
 
 	public PlanningPokerSessionButtonsPanel(){
@@ -41,21 +48,25 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 		createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		// Add image icon for the create planning poker session button
 		try {
-			Image img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/new_req.png"));
+			Image img = ImageIO.read(getClass().getResource("new_req.png"));
 			createButton.setIcon(new ImageIcon(img));
 
-			img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/edit.png"));
+			img = ImageIO.read(getClass().getResource("edit.png"));
 			editButton.setIcon(new ImageIcon(img));
 			
-			img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/voting-icon.png"));
+			img = ImageIO.read(getClass().getResource("voting-icon.png"));
 			voteButton.setIcon(new ImageIcon(img));
 			
-			img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/end-icon.png"));
+			img = ImageIO.read(getClass().getResource("end-icon.png"));
 			endVoteButton.setIcon(new ImageIcon(img));
+			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+			this.endVoteButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
+			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
+			this.statisticsButton.setIcon(new ImageIcon(img));
+			
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
 
@@ -89,18 +100,61 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 		endVoteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				session.setGameState(PlanningPokerSession.SessionState.VOTINGENDED);
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(session);
 				ViewEventController.getInstance().getOverviewTreePanel().refresh();
+				
+				final List<String> recipients = new LinkedList<String>();
+				List<EmailAddress> emailRecipients = null;
+				
+				GetEmailController getEmailController = GetEmailController.getInstance();
+				getEmailController.retrieveEmails();
+				
+				EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+				try {
+					emailRecipients = emailAddressModel.getEmailAddresses();
+				}
+				catch (Exception E) {
+					
+				}
+				
+				for (int i = 0; i < emailRecipients.size(); i++) {
+					recipients.add(emailRecipients.get(i).getEmail());
+				}
+				
+				
+				Thread t = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						Mailer mailer = new Mailer();
+						mailer.notifyOfPlanningPokerSessionClose(recipients, session);
+					}
+				});
+				t.setDaemon(true);
+				t.run();
+				
+				
 			}
 		});	
+		
+		// the action listener for the View Statistics Button
+		statisticsButton.addActionListener(new ActionListener() {
+			@Override
+			
+			public void actionPerformed(ActionEvent e) {
+				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				ViewEventController.getInstance().openStatisticsTab(session);
+				}
+			});
 
 
 		contentPanel.add(createButton);
 		contentPanel.add(editButton);
 		contentPanel.add(voteButton);
 		contentPanel.add(endVoteButton);
+		contentPanel.add(statisticsButton);
 		contentPanel.setOpaque(false);
 
 		add(contentPanel);
@@ -142,5 +196,13 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView {
 
 	public void enableEndVoteButton() {
 		endVoteButton.setEnabled(true);
+	}
+	
+	public void disableStatisticsButton() {
+		statisticsButton.setEnabled(false);
+	}
+	
+	public void enableStatisticsButton() {
+		statisticsButton.setEnabled(true);
 	}
 }

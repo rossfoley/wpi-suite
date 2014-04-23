@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class OverviewReqTable extends JTable {
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	
+
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill OverviewReqTable
@@ -61,10 +62,10 @@ public class OverviewReqTable extends JTable {
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
-        this.setDropMode(DropMode.ON);
-        
-    	ViewEventController.getInstance().setOverviewReqTable(this);
-    
+		this.setDropMode(DropMode.ON);
+
+		ViewEventController.getInstance().setOverviewReqTable(this);
+
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
@@ -74,7 +75,7 @@ public class OverviewReqTable extends JTable {
 		/* Create double-click event listener */
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
+
 				if(getRowCount() > 0) {
 					final int mouseY = e.getY();
 					final Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
@@ -88,7 +89,7 @@ public class OverviewReqTable extends JTable {
 			}
 		});
 	}
-	
+
 	/**
 	 * Updates OverviewReqTable with the contents of the requirement model
 	 * @param session The session to display the requirements of
@@ -96,13 +97,13 @@ public class OverviewReqTable extends JTable {
 	public void refresh(PlanningPokerSession session) {
 		// TODO Implement Your Vote, Estimate columns
 		// Currently is 0 for every estimate
-		
+
 		final Set<Integer> requirementIDs = session.getRequirementIDs();
 		final RequirementModel reqs = RequirementModel.getInstance();
 		int vote = 0;
-		final int estimate = 0;
+		String estimate;
 		final List<Estimate> estimates = session.getEstimates();
-				
+
 		// clear the table
 		tableModel.setRowCount(0);
 
@@ -110,6 +111,7 @@ public class OverviewReqTable extends JTable {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
 			vote = 0;
+			estimate = getFinalEstimate(req, session);
 			for (Estimate e : estimates) {
 				if (e.getRequirementID() == requirementID && e.getOwnerName()
 						.equals(ConfigManager.getConfig().getUserName())) {
@@ -125,7 +127,7 @@ public class OverviewReqTable extends JTable {
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
 	}
-	
+
 	/**
 	 * @return the changedByRefresh 
 	 */
@@ -156,7 +158,7 @@ public class OverviewReqTable extends JTable {
 
 		super.paintComponent(g);
 	}
-	
+
 	/**
 	 * Method prepareRenderer.
 	 * @param renderer TableCellRenderer
@@ -165,16 +167,16 @@ public class OverviewReqTable extends JTable {
 	 * @return Component
 	 */
 	@Override
-    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        final Component comp = super.prepareRenderer(renderer, row, column);
+	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+		final Component comp = super.prepareRenderer(renderer, row, column);
 
-        if (JComponent.class.isInstance(comp)) {
-            ((JComponent)comp).setBorder(paddingBorder);
-        }
+		if (JComponent.class.isInstance(comp)) {
+			((JComponent)comp).setBorder(paddingBorder);
+		}
 		return comp;
 
-    }
-	
+	}
+
 	/**
 	 * Overrides the isCellEditable method to ensure no cells are editable.
 	 * @param row	row of OverviewReqTable cell is located
@@ -183,5 +185,18 @@ public class OverviewReqTable extends JTable {
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return false;
+	}
+
+	/** 
+	 * @param reqToFind requirement to find the final estimate for
+	 * @param session session to look for final estimates in
+	 * @return a string representing the final estimate 
+	 */
+	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
+		HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
+		if (finalEstimates.containsKey(reqToFind)){
+			return finalEstimates.get(reqToFind).toString();
+		}
+		return "-";		
 	}
 }

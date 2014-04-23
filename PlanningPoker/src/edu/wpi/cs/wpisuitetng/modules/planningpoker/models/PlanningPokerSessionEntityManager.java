@@ -46,7 +46,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		if(!db.save(newSession, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		addClientUpdate(newSession);
+		addClientUpdate(newSession, s);
 		return newSession;
 	}
 
@@ -100,7 +100,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 			throw new WPISuiteException();
 		}
 		
-		addClientUpdate(existingSession);
+		addClientUpdate(existingSession, session);
 		return existingSession;
 	}
 
@@ -109,7 +109,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 */
 	@Override
 	public void save(Session s, PlanningPokerSession model) throws WPISuiteException {
-		addClientUpdate(model);
+		addClientUpdate(model, s);
 		db.save(model);
 	}
 
@@ -144,6 +144,10 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		return null;
 	}
 
+	/**
+	 * @param sessionId the current session ID
+	 * @return an ArrayList of planning poker updates for the client to use
+	 */
 	private ArrayList<PlanningPokerSession> checkForUpdate(String sessionId) {
 		if (!clientsUpdated.containsKey(sessionId)) {
 			clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
@@ -153,11 +157,18 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		return updates;
 	}
 	
-	private void addClientUpdate(PlanningPokerSession value) {
+	/**
+	 * Add the specified session to the cached list of updates for live updating
+	 * @param value the session that was created or updated
+	 * @param s the current session
+	 */
+	private void addClientUpdate(PlanningPokerSession value, Session s) {
 		for (String key : clientsUpdated.keySet()) {
-			ArrayList<PlanningPokerSession> sessions = clientsUpdated.get(key);
-			sessions.add(value);
-			clientsUpdated.put(key, sessions);
+			if (!s.getSessionId().equals(key)) {
+				ArrayList<PlanningPokerSession> sessions = clientsUpdated.get(key);
+				sessions.add(value);
+				clientsUpdated.put(key, sessions);
+			}
 		}
 	}
 
@@ -178,7 +189,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 				if (pokerSession.isOpen()) { 
 					pokerSession.addEstimate(estimate);
 					update(s, pokerSession.toJSON());
-					addClientUpdate(pokerSession);
+					addClientUpdate(pokerSession, s);
 				} else {
 					return "Voting for this session has ended!";
 				}

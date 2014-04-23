@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,6 +35,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -42,14 +44,21 @@ import net.sourceforge.jdatepicker.JDateComponentFactory;
 import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.MockNotification;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
@@ -59,6 +68,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Itera
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
 import javax.swing.JCheckBox;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
@@ -66,8 +77,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final SpringLayout layout = new SpringLayout();
 	private SpringLayout firstPanelLayout = new SpringLayout();
 	private SpringLayout secondPanelLayout = new SpringLayout();
-	private JPanel firstPanel = new JPanel();
+	private JSplitPane firstPanel = new JSplitPane();
+	private JPanel sessionDetailPanel = new JPanel();
 	private JPanel secondPanel = new JPanel();
+	private CreateDeck createDeckPanel;
 
 	private ViewMode viewMode;
 	private JComboBox<String> comboTime = new JComboBox<String>();
@@ -77,13 +90,14 @@ public class PlanningPokerSessionTab extends JPanel {
 	private JTextArea textFieldDescription = new JTextArea();
 	private JLabel dateErrorMessage = new JLabel("");
 	private JLabel nameErrorMessage = new JLabel("");
-	private JLabel descriptionErrorMessage = new JLabel("");
+	private JLabel descriptionErrorMessage = new JLabel("Please enter a description");
 	private JLabel numbers = new JLabel("Users input non-negative intergers");
 	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
 	private JDatePicker datePicker;
 	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
 	private JPanel disabledDatePicker;
+	JButton btnCreateDeck;
 
 	private boolean dateHasBeenSet;
 	private boolean haveEndDate;
@@ -141,9 +155,80 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Builds the first screen for creating/editing a session
 	 */
 	private void buildFirstPanel() {
+		buildSessionDetailPanel();
+		
+		createDeckPanel = new CreateDeck();
+		createDeckPanel.addDeckListener(new DeckListener() {
+			@Override
+			public void deckSubmitted(DeckEvent e) {
+				if (e.getDeck() == null) {
+					closeCreateDeckPanel();
+				}
+				else {
+					newDeckCreated(e.getDeck());
+				}
+			}
+		});
+		
+		firstPanel.setLeftComponent(sessionDetailPanel);
+		firstPanel.setRightComponent(null);
+		int dividerLocation = firstPanel.getSize().width - 
+				firstPanel.getInsets().right - firstPanel.getDividerSize() - createDeckPanel.getPreferredSize().width;
+		firstPanel.setDividerLocation(dividerLocation);
+		firstPanel.setResizeWeight(1.0);
+	}
+	
+	/**
+	 * Opens the Create Deck panel in the right divider of the first panel 
+	 */
+	private void openCreateDeckPanel() {
+		firstPanel.setRightComponent(createDeckPanel);
+		int dividerLocation = firstPanel.getSize().width - 
+				firstPanel.getInsets().right - firstPanel.getDividerSize() - createDeckPanel.getPreferredSize().width;
+		firstPanel.setDividerLocation(dividerLocation);
+		
+		btnCreateDeck.setEnabled(false);
+	}
+	
+	/**
+	 * Close the right divider of the first panel after a new deck has been created
+	 */
+	private void newDeckCreated(Deck newDeck) {
+		createDeckPanel = new CreateDeck();
+		createDeckPanel.addDeckListener(new DeckListener() {
+			@Override
+			public void deckSubmitted(DeckEvent e) {
+				if (e.getDeck() == null) {
+					closeCreateDeckPanel();
+				}
+				else {
+					newDeckCreated(e.getDeck());
+				}
+			}
+		});
+		// Update deck combo box
+		setDeckDropdown();
+		// Set the default deck name for the session
+		try {
+			comboDeck.setSelectedItem(newDeck.getDeckName());
+			parseDeckDropdowns();
+		} catch (NullPointerException ex) {}; // if the session is being created
+		
+		closeCreateDeckPanel();
+	}
+	
+	public void closeCreateDeckPanel() {
+		firstPanel.setRightComponent(null);
+		btnCreateDeck.setEnabled(true);
+	}
+	
+	/**
+	 * Builds the panel for setting the session name, description, endDate, and deck
+	 */
+	private void buildSessionDetailPanel() {
 		// Set the layout and colors
-		firstPanel.setLayout(firstPanelLayout);
-		firstPanel.setForeground(Color.BLACK);
+		sessionDetailPanel.setLayout(firstPanelLayout);
+		sessionDetailPanel.setForeground(Color.BLACK);
 
 		// Initialize all of the fields on the panel
 		final JLabel lblSessionName = new JLabel("Session Name: *");
@@ -153,6 +238,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		final JLabel lblDeck = new JLabel("Deck:");
 
 		final JButton btnNext = new JButton("Next >");
+		if (viewMode == ViewMode.CREATING) {
+			btnNext.setEnabled(false);
+		}
 		JButton btnCancel = new JButton("Cancel");
 		datePicker = JDateComponentFactory.createJDatePicker(new UtilCalendarModel(pokerSession.getEndDate()));
 
@@ -181,29 +269,37 @@ public class PlanningPokerSessionTab extends JPanel {
 		comboDeck.setBackground(Color.WHITE);
 		lblSessionEndTime.setForeground(Color.BLACK);
 		comboAMPM.setModel(new DefaultComboBoxModel<String>(new String[] {"AM","PM"}));
-		descriptionErrorMessage.setForeground(Color.RED);
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
 		requirementPanel.setSelectedRequirements(this.pokerSession.getRequirementIDs());
+		
+		// Button to create a deck
+		btnCreateDeck = new JButton("Create New Deck");
+		btnCreateDeck.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openCreateDeckPanel();
+			}
+		});
 
 		// Apply all of the constraints
-		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, firstPanel);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, firstPanel);
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnNext, -10, SpringLayout.SOUTH, sessionDetailPanel);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, btnNext, -10, SpringLayout.EAST, sessionDetailPanel);
 
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionName, 10, SpringLayout.NORTH, firstPanel);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionName, 10, SpringLayout.WEST, firstPanel);		
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionName, 10, SpringLayout.NORTH, sessionDetailPanel);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionName, 10, SpringLayout.WEST, sessionDetailPanel);		
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, textFieldSessionField, 6, SpringLayout.SOUTH, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, textFieldSessionField, 10, SpringLayout.WEST, firstPanel);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldSessionField, -10, SpringLayout.EAST, firstPanel);		
+		firstPanelLayout.putConstraint(SpringLayout.WEST, textFieldSessionField, 10, SpringLayout.WEST, sessionDetailPanel);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldSessionField, -10, SpringLayout.EAST, sessionDetailPanel);		
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionDescription, 6, SpringLayout.SOUTH, textFieldSessionField);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionDescription, 0, SpringLayout.WEST, lblSessionName);
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, textFieldDescription, 6, SpringLayout.SOUTH, lblSessionDescription);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, textFieldDescription, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -225, SpringLayout.SOUTH, firstPanel);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldDescription, -10, SpringLayout.EAST, firstPanel);					
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -250, SpringLayout.SOUTH, sessionDetailPanel);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldDescription, -10, SpringLayout.EAST, sessionDetailPanel);					
 
 		firstPanelLayout.putConstraint(SpringLayout.WEST, endDateCheckBox, 0, SpringLayout.WEST, lblSessionName);
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, endDateCheckBox, 6, SpringLayout.SOUTH, textFieldDescription);
@@ -227,6 +323,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblDeck);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, comboAMPM);
+		
+		firstPanelLayout.putConstraint(SpringLayout.WEST, btnCreateDeck, 0, SpringLayout.WEST, comboDeck);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, btnCreateDeck, 10, SpringLayout.SOUTH, comboDeck);
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
@@ -261,6 +360,70 @@ public class PlanningPokerSessionTab extends JPanel {
 		if ((viewMode == ViewMode.EDITING) && (pokerSession.hasEndDate())) {
 			setTimeDropdown();
 		}
+		
+		// Handle changes in session name field
+		textFieldSessionField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+		});
+		// Handle changes in description field
+		textFieldDescription.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+					descriptionErrorMessage.setForeground(Color.RED);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!validateFields()) {
+					btnNext.setEnabled(false);
+					descriptionErrorMessage.setForeground(Color.RED);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if (!validateFields()) {
+					btnNext.setEnabled(false);
+					descriptionErrorMessage.setForeground(Color.RED);
+				}
+				else {
+					btnNext.setEnabled(true);
+				}
+			}
+		});
 
 		// Time dropdown event handler
 		comboTime.addActionListener(new ActionListener(){
@@ -313,23 +476,24 @@ public class PlanningPokerSessionTab extends JPanel {
 		});
 		
 		// Add all of the elements to the first panel
-		firstPanel.add(btnNext);
-		firstPanel.add(btnCancel);
-		firstPanel.add(lblDeck);
-		firstPanel.add(lblSessionEndTime);
-		firstPanel.add(lblSessionName);
-		firstPanel.add(textFieldSessionField);
-		firstPanel.add(lblSessionDescription);
-		firstPanel.add(textFieldDescription);
-		firstPanel.add(lblEndDate);
-		firstPanel.add(comboTime);
-		firstPanel.add(comboAMPM);
-		firstPanel.add(comboDeck);
-		firstPanel.add(numbers);
-		firstPanel.add(descriptionErrorMessage);
-		firstPanel.add(nameErrorMessage);
-		firstPanel.add(dateErrorMessage);
-		firstPanel.add(endDateCheckBox);
+		sessionDetailPanel.add(btnNext);
+		sessionDetailPanel.add(btnCancel);
+		sessionDetailPanel.add(lblDeck);
+		sessionDetailPanel.add(lblSessionEndTime);
+		sessionDetailPanel.add(lblSessionName);
+		sessionDetailPanel.add(textFieldSessionField);
+		sessionDetailPanel.add(lblSessionDescription);
+		sessionDetailPanel.add(textFieldDescription);
+		sessionDetailPanel.add(lblEndDate);
+		sessionDetailPanel.add(comboTime);
+		sessionDetailPanel.add(comboAMPM);
+		sessionDetailPanel.add(comboDeck);
+		sessionDetailPanel.add(btnCreateDeck);
+		sessionDetailPanel.add(numbers);
+		sessionDetailPanel.add(descriptionErrorMessage);
+		sessionDetailPanel.add(nameErrorMessage);
+		sessionDetailPanel.add(dateErrorMessage);
+		sessionDetailPanel.add(endDateCheckBox);
 	}
 
 
@@ -411,8 +575,37 @@ public class PlanningPokerSessionTab extends JPanel {
 					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
 
-					MockNotification mock = new MockNotification();
-					mock.sessionStartedNotification();
+					final List<String> recipients = new LinkedList<String>();
+					List<EmailAddress> emailRecipients = null;
+					
+					GetEmailController getEmailController = GetEmailController.getInstance();
+					getEmailController.retrieveEmails();
+					
+					EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+					try {
+						emailRecipients = emailAddressModel.getEmailAddresses();
+					}
+					catch (Exception E) {
+						
+					}
+					
+					for (int i = 0; i < emailRecipients.size(); i++) {
+						recipients.add(emailRecipients.get(i).getEmail());
+					}
+					
+					Thread t = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							Mailer mailer = new Mailer();
+							mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
+						}
+					});
+					t.setDaemon(true);
+					t.run();
+					
+					//MockNotification mock = new MockNotification();
+					//mock.sessionStartedNotification();
 				}
 			}
 		});
@@ -462,9 +655,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	}
 
 	/**
-	 * Makes the second screen the visible panel
+	 * Makes the input screen the visible panel
 	 */
-	private void displayPanel(JPanel newPanel) {
+	private void displayPanel(JComponent newPanel) {
 		// Remove the old panel
 		this.remove(firstPanel);
 		this.remove(secondPanel);
@@ -667,8 +860,8 @@ public class PlanningPokerSessionTab extends JPanel {
 			disableDatePicker();
 		}
 
-		firstPanel.revalidate();
-		firstPanel.repaint();
+		sessionDetailPanel.revalidate();
+		sessionDetailPanel.repaint();
 		return boxChecked;
 	}
 
@@ -678,14 +871,14 @@ public class PlanningPokerSessionTab extends JPanel {
 	private void disableDatePicker() {
 		// Remove the datePicker from the layout
 		firstPanelLayout.removeLayoutComponent((Component) datePicker);
-		firstPanel.remove((JPanel) datePicker);
+		sessionDetailPanel.remove((JPanel) datePicker);
 		
 		// Add a disabled button in place of the datePicker
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, disabledDatePicker, 6, SpringLayout.SOUTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, disabledDatePicker, 0, SpringLayout.WEST, lblEndDate);	
 		firstPanelLayout.putConstraint(SpringLayout.EAST, disabledDatePicker, 0, SpringLayout.EAST, comboAMPM);
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, disabledDatePicker);
-		firstPanel.add(disabledDatePicker);
+		sessionDetailPanel.add(disabledDatePicker);
 		
 
 	}
@@ -696,14 +889,14 @@ public class PlanningPokerSessionTab extends JPanel {
 	private void enableDatePicker() {
 		// Remve the datePicker placeholder
 		firstPanelLayout.removeLayoutComponent(disabledDatePicker);
-		firstPanel.remove(disabledDatePicker);
+		sessionDetailPanel.remove(disabledDatePicker);
 		
 		// Re-add the datePicker
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, (JPanel) datePicker, 6, SpringLayout.SOUTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, (JPanel) datePicker, 0, SpringLayout.WEST, lblEndDate);	
 		firstPanelLayout.putConstraint(SpringLayout.EAST, (JPanel) datePicker, 0, SpringLayout.EAST, comboAMPM);
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, (JPanel) datePicker);
-		firstPanel.add((JPanel) datePicker);
+		sessionDetailPanel.add((JPanel) datePicker);
 	}
 	
 
@@ -731,8 +924,11 @@ public class PlanningPokerSessionTab extends JPanel {
 		// If fields were changed, confirm with user that they want the tab removed.
 		else {
 			int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			
-			return (result == 0);
+			if (result == 0) {
+				restoreInformation();
+				return true;
+			}
+			return false;
 		}
 		
 	}
@@ -806,5 +1002,13 @@ public class PlanningPokerSessionTab extends JPanel {
 	//closes this panel
 	public void closePanel() {
 		ViewEventController.getInstance().removeTab(this);
+	}
+	
+	/**
+	 * restores the original session 
+	 * used for if edits have been made, but cancel has been hit
+	 */
+	public void restoreInformation(){
+		pokerSession.copyFrom(unmodifiedSession);
 	}
 }

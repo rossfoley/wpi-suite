@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.InfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -37,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
 
 public class RequirementSelectionPanel extends JPanel{
 	
@@ -56,6 +58,10 @@ public class RequirementSelectionPanel extends JPanel{
 	JButton btnNewReq;
 	private transient Vector<RequirementsSelectedListener> listeners;
 	private int numRequirementsAdded = 0;
+	private InfoPanel infoPanel;
+	private int[] unselectedIndicesOld = {};
+	private int[] selectedIndicesOld = {};
+	private Requirement visibleRequirement;
 
 	
 	/**
@@ -71,11 +77,18 @@ public class RequirementSelectionPanel extends JPanel{
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
+		infoPanel = new InfoPanel();
+		springLayout.putConstraint(SpringLayout.NORTH, infoPanel, -150, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, infoPanel, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, infoPanel,0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, infoPanel, 0, SpringLayout.EAST, this);
+		add(infoPanel);
+		
 		Box horizontalBox = Box.createHorizontalBox();
-		springLayout.putConstraint(SpringLayout.NORTH, horizontalBox, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, horizontalBox, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, horizontalBox, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, horizontalBox, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, horizontalBox, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, horizontalBox, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, horizontalBox, 0, SpringLayout.NORTH, infoPanel);
+		springLayout.putConstraint(SpringLayout.EAST, horizontalBox, 0, SpringLayout.EAST, this);
 		add(horizontalBox);
 		
 		JPanel unselectedPanel = new JPanel();
@@ -83,8 +96,13 @@ public class RequirementSelectionPanel extends JPanel{
 		SpringLayout sl_unselectedPanel = new SpringLayout();
 		unselectedPanel.setLayout(sl_unselectedPanel);
 		
+		JLabel lblUnselectedList = new JLabel("Unselected Requirements");
+		sl_unselectedPanel.putConstraint(SpringLayout.NORTH, lblUnselectedList, 10, SpringLayout.NORTH, unselectedPanel);
+		sl_unselectedPanel.putConstraint(SpringLayout.WEST, lblUnselectedList, 10, SpringLayout.WEST, unselectedPanel);
+		unselectedPanel.add(lblUnselectedList);
+		
 		JScrollPane unselectedScrollPane = new JScrollPane();
-		sl_unselectedPanel.putConstraint(SpringLayout.NORTH, unselectedScrollPane, 10, SpringLayout.NORTH, unselectedPanel);
+		sl_unselectedPanel.putConstraint(SpringLayout.NORTH, unselectedScrollPane, 0, SpringLayout.SOUTH, lblUnselectedList);
 		sl_unselectedPanel.putConstraint(SpringLayout.WEST, unselectedScrollPane, 10, SpringLayout.WEST, unselectedPanel);
 		sl_unselectedPanel.putConstraint(SpringLayout.SOUTH, unselectedScrollPane, -10, SpringLayout.SOUTH, unselectedPanel);
 		sl_unselectedPanel.putConstraint(SpringLayout.EAST, unselectedScrollPane, -10, SpringLayout.EAST, unselectedPanel);
@@ -95,6 +113,7 @@ public class RequirementSelectionPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				validButtons();
+				viewUnselectedRequirement();
 			}
 		});
 		unselectedScrollPane.setViewportView(unselectedListGui);
@@ -104,74 +123,135 @@ public class RequirementSelectionPanel extends JPanel{
 		SpringLayout sl_btnPanel = new SpringLayout();
 		btnPanel.setLayout(sl_btnPanel);
 		
+		Box verticalBox = Box.createVerticalBox();
+		sl_btnPanel.putConstraint(SpringLayout.NORTH, verticalBox, 20, SpringLayout.NORTH, btnPanel);
+		sl_btnPanel.putConstraint(SpringLayout.WEST, verticalBox, 5, SpringLayout.WEST, btnPanel);
+		sl_btnPanel.putConstraint(SpringLayout.SOUTH, verticalBox, -5, SpringLayout.SOUTH, btnPanel);
+		sl_btnPanel.putConstraint(SpringLayout.EAST, verticalBox, -5, SpringLayout.EAST, btnPanel);
+		btnPanel.add(verticalBox);
+		
+		JPanel panelSpace = new JPanel();
+		//verticalBox.add(panelSpace);
+		panelSpace.setLayout(new SpringLayout());
+		
+		JPanel panelAddAll = new JPanel();
+		verticalBox.add(panelAddAll);
+		SpringLayout sl_panelAddAll = new SpringLayout();
+		panelAddAll.setLayout(sl_panelAddAll);
+		
 		btnAddAll = new JButton(">>");
+		sl_panelAddAll.putConstraint(SpringLayout.NORTH, btnAddAll, 5, SpringLayout.NORTH, panelAddAll);
+		sl_panelAddAll.putConstraint(SpringLayout.WEST, btnAddAll, 5, SpringLayout.WEST, panelAddAll);
+		sl_panelAddAll.putConstraint(SpringLayout.SOUTH, btnAddAll, -5, SpringLayout.SOUTH, panelAddAll);
+		sl_panelAddAll.putConstraint(SpringLayout.EAST, btnAddAll, -5, SpringLayout.EAST, panelAddAll);
+		sl_btnPanel.putConstraint(SpringLayout.WEST, btnAddAll, 10, SpringLayout.WEST, panelAddAll);
+		sl_btnPanel.putConstraint(SpringLayout.SOUTH, btnAddAll, -1, SpringLayout.SOUTH, panelAddAll);
+		sl_btnPanel.putConstraint(SpringLayout.EAST, btnAddAll, 0, SpringLayout.EAST, btnPanel);
 		btnAddAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectAll();
 			}
 		});
-		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnAddAll, 84, SpringLayout.NORTH, btnPanel);
-		sl_btnPanel.putConstraint(SpringLayout.WEST, btnAddAll, 10, SpringLayout.WEST, btnPanel);
-		sl_btnPanel.putConstraint(SpringLayout.EAST, btnAddAll, -10, SpringLayout.EAST, btnPanel);
-		btnPanel.add(btnAddAll);
+		panelAddAll.add(btnAddAll);
+		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnAdd, 25, SpringLayout.SOUTH, btnAddAll);
+		
+		JPanel panelAdd = new JPanel();
+		verticalBox.add(panelAdd);
+		SpringLayout sl_panelAdd = new SpringLayout();
+		panelAdd.setLayout(sl_panelAdd);
 		
 		btnAdd = new JButton(">");
+		sl_panelAdd.putConstraint(SpringLayout.NORTH, btnAdd, 5, SpringLayout.NORTH, panelAdd);
+		sl_panelAdd.putConstraint(SpringLayout.WEST, btnAdd, 5, SpringLayout.WEST, panelAdd);
+		sl_panelAdd.putConstraint(SpringLayout.SOUTH, btnAdd, -5, SpringLayout.SOUTH, panelAdd);
+		sl_panelAdd.putConstraint(SpringLayout.EAST, btnAdd, -5, SpringLayout.EAST, panelAdd);
+		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnAdd, 10, SpringLayout.NORTH, panelAdd);
+		sl_btnPanel.putConstraint(SpringLayout.WEST, btnAdd, 10, SpringLayout.WEST, panelAdd);
+		panelAdd.add(btnAdd);
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				add();
 			}
 		});
-		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnAdd, 6, SpringLayout.SOUTH, btnAddAll);
-		sl_btnPanel.putConstraint(SpringLayout.WEST, btnAdd, 10, SpringLayout.WEST, btnPanel);
-		sl_btnPanel.putConstraint(SpringLayout.EAST, btnAdd, -10, SpringLayout.EAST, btnPanel);
-		btnPanel.add(btnAdd);
+		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemove, 12, SpringLayout.SOUTH, btnAdd);
+		
+		JPanel panelRemove = new JPanel();
+		verticalBox.add(panelRemove);
+		SpringLayout sl_panelRemove = new SpringLayout();
+		panelRemove.setLayout(sl_panelRemove);
 		
 		btnRemove = new JButton("<");
+		sl_panelRemove.putConstraint(SpringLayout.NORTH, btnRemove, 5, SpringLayout.NORTH, panelRemove);
+		sl_panelRemove.putConstraint(SpringLayout.WEST, btnRemove, 5, SpringLayout.WEST, panelRemove);
+		sl_panelRemove.putConstraint(SpringLayout.SOUTH, btnRemove, -5, SpringLayout.SOUTH, panelRemove);
+		sl_panelRemove.putConstraint(SpringLayout.EAST, btnRemove, -5, SpringLayout.EAST, panelRemove);
+		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemove, 10, SpringLayout.NORTH, panelRemove);
+		sl_btnPanel.putConstraint(SpringLayout.WEST, btnRemove, 25, SpringLayout.WEST, panelRemove);
+		panelRemove.add(btnRemove);
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				remove();
 			}
 		});
-		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemove, 12, SpringLayout.SOUTH, btnAdd);
-		sl_btnPanel.putConstraint(SpringLayout.WEST, btnRemove, 10, SpringLayout.WEST, btnPanel);
-		sl_btnPanel.putConstraint(SpringLayout.EAST, btnRemove, -10, SpringLayout.EAST, btnPanel);
-		btnPanel.add(btnRemove);
+		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemoveAll, 6, SpringLayout.SOUTH, btnRemove);
+		
+		JPanel panelRemoveAll = new JPanel();
+		verticalBox.add(panelRemoveAll);
+		SpringLayout sl_panelRemoveAll = new SpringLayout();
+		panelRemoveAll.setLayout(sl_panelRemoveAll);
 		
 		btnRemoveAll = new JButton("<<");
+		sl_panelRemoveAll.putConstraint(SpringLayout.NORTH, btnRemoveAll, 5, SpringLayout.NORTH, panelRemoveAll);
+		sl_panelRemoveAll.putConstraint(SpringLayout.WEST, btnRemoveAll, 5, SpringLayout.WEST, panelRemoveAll);
+		sl_panelRemoveAll.putConstraint(SpringLayout.SOUTH, btnRemoveAll, -5, SpringLayout.SOUTH, panelRemoveAll);
+		sl_panelRemoveAll.putConstraint(SpringLayout.EAST, btnRemoveAll, -5, SpringLayout.EAST, panelRemoveAll);
+		sl_btnPanel.putConstraint(SpringLayout.WEST, btnRemoveAll, 10, SpringLayout.WEST, btnPanel);
+		sl_btnPanel.putConstraint(SpringLayout.EAST, btnRemoveAll, -10, SpringLayout.EAST, btnPanel);
+		panelRemoveAll.add(btnRemoveAll);
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				unselectAll();
 			}
 		});
-		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemoveAll, 6, SpringLayout.SOUTH, btnRemove);
-		sl_btnPanel.putConstraint(SpringLayout.WEST, btnRemoveAll, 10, SpringLayout.WEST, btnPanel);
-		sl_btnPanel.putConstraint(SpringLayout.EAST, btnRemoveAll, -10, SpringLayout.EAST, btnPanel);
-		btnPanel.add(btnRemoveAll);
+		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnNewReq, 6, SpringLayout.SOUTH, btnRemoveAll);
+		//sl_btnPanel.putConstraint(SpringLayout.NORTH, horizontalStrut, 24, SpringLayout.SOUTH, btnRemoveAll);
+		
+		JPanel panelNewReq = new JPanel();
+		verticalBox.add(panelNewReq);
+		SpringLayout sl_panelNewReq = new SpringLayout();
+		panelNewReq.setLayout(sl_panelNewReq);
 		
 		btnNewReq = new JButton("New Req");
+		sl_panelNewReq.putConstraint(SpringLayout.NORTH, btnNewReq, 5, SpringLayout.NORTH, panelNewReq);
+		sl_panelNewReq.putConstraint(SpringLayout.WEST, btnNewReq, 5, SpringLayout.WEST, panelNewReq);
+		sl_panelNewReq.putConstraint(SpringLayout.SOUTH, btnNewReq, -5, SpringLayout.SOUTH, panelNewReq);
+		sl_panelNewReq.putConstraint(SpringLayout.EAST, btnNewReq, -5, SpringLayout.EAST, panelNewReq);
+		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnNewReq, 10, SpringLayout.NORTH, panelNewReq);
+		sl_btnPanel.putConstraint(SpringLayout.WEST, btnNewReq, 10, SpringLayout.WEST, panelNewReq);
+		sl_btnPanel.putConstraint(SpringLayout.EAST, btnNewReq, 0, SpringLayout.EAST, btnPanel);
+		panelNewReq.add(btnNewReq);
+		
+		JPanel panelSpace2 = new JPanel();
+		//verticalBox.add(panelSpace2);
+		panelSpace2.setLayout(new SpringLayout());
 		btnNewReq.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openCreationPanel();
 			}
 		});
-		sl_btnPanel.putConstraint(SpringLayout.NORTH, btnNewReq, 6, SpringLayout.SOUTH, btnRemoveAll);
-		sl_btnPanel.putConstraint(SpringLayout.WEST, btnNewReq, 10, SpringLayout.WEST, btnPanel);
-		sl_btnPanel.putConstraint(SpringLayout.EAST, btnNewReq, -10, SpringLayout.EAST, btnPanel);
-		btnPanel.add(btnNewReq);
-		
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		sl_btnPanel.putConstraint(SpringLayout.NORTH, horizontalStrut, 24, SpringLayout.SOUTH, btnRemoveAll);
-		sl_btnPanel.putConstraint(SpringLayout.WEST, horizontalStrut, 0, SpringLayout.WEST, btnPanel);
-		sl_btnPanel.putConstraint(SpringLayout.EAST, horizontalStrut, 0, SpringLayout.EAST, btnPanel);
-		btnPanel.add(horizontalStrut);
 		
 		JPanel selectedPanel = new JPanel();
 		horizontalBox.add(selectedPanel);
 		SpringLayout sl_selectedPanel = new SpringLayout();
 		selectedPanel.setLayout(sl_selectedPanel);
 		
+		JLabel lblSelectedRequirements = new JLabel("Selected Requirements");
+		sl_selectedPanel.putConstraint(SpringLayout.NORTH, lblSelectedRequirements, 10, SpringLayout.NORTH, selectedPanel);
+		sl_selectedPanel.putConstraint(SpringLayout.WEST, lblSelectedRequirements, 10, SpringLayout.WEST, selectedPanel);
+		selectedPanel.add(lblSelectedRequirements);
+		
 		JScrollPane selectedScrollPane = new JScrollPane();
-		sl_selectedPanel.putConstraint(SpringLayout.NORTH, selectedScrollPane, 10, SpringLayout.NORTH, selectedPanel);
+		sl_selectedPanel.putConstraint(SpringLayout.NORTH, selectedScrollPane, 0, SpringLayout.SOUTH, lblSelectedRequirements);
 		sl_selectedPanel.putConstraint(SpringLayout.WEST, selectedScrollPane, 10, SpringLayout.WEST, selectedPanel);
 		sl_selectedPanel.putConstraint(SpringLayout.SOUTH, selectedScrollPane, -10, SpringLayout.SOUTH, selectedPanel);
 		sl_selectedPanel.putConstraint(SpringLayout.EAST, selectedScrollPane, -10, SpringLayout.EAST, selectedPanel);
@@ -182,9 +262,12 @@ public class RequirementSelectionPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				validButtons();
+				viewSelectedRequirement();
 			}
 		});
 		selectedScrollPane.setViewportView(selectedListGui);
+		
+		
 		
 		
 		update();
@@ -210,12 +293,6 @@ public class RequirementSelectionPanel extends JPanel{
 	 * backlog
 	 */
 	private void populateRequirements() {
-		//System.out.println("In Populate Requirements");
-		
-				// Get singleton instance of Requirements Controller
-				GetRequirementsController requirementsController = GetRequirementsController.getInstance();
-				// Manually force a population of the list of requirements in the requirement model
-				requirementsController.retrieveRequirements();
 				// Get the singleton instance of the requirement model to steal it's list of requirements.
 				RequirementModel requirementModel = RequirementModel.getInstance();
 				try {
@@ -452,6 +529,49 @@ public class RequirementSelectionPanel extends JPanel{
 		return any;
 	}
 	
+	private void viewUnselectedRequirement(){
+		int[] unselectedIndicesCurrent = unselectedListGui.getSelectedIndices();
+		for (int n : unselectedIndicesCurrent){
+			boolean contains = false;
+			for (int i : unselectedIndicesOld){
+				if (i == n){
+					contains = true;
+				}
+			}
+			if (!contains){
+				int pos = getUnselectedPos().get(n);
+				visibleRequirement = requirements.get(pos);
+				
+			}
+		}
+		
+		infoPanel.setRequirement(visibleRequirement);
+		unselectedIndicesOld = unselectedIndicesCurrent;
+		//remove(infoPanel);
+		//add(infoPanel);
+	}
+	
+	private void viewSelectedRequirement(){
+		int[] selectedIndicesCurrent = selectedListGui.getSelectedIndices();
+		for (int n : selectedIndicesCurrent){
+			boolean contains = false;
+			for (int i : selectedIndicesOld){
+				if (i == n){
+					contains = true;
+				}
+			}
+			if (!contains){
+				int pos = getSelectedPos().get(n);
+				visibleRequirement = requirements.get(pos);
+			}
+		}
+		
+		infoPanel.setRequirement(visibleRequirement);
+		selectedIndicesOld = selectedIndicesCurrent;
+		//remove(infoPanel);
+		//add(infoPanel);
+	}
+	
 	/**
 	 * This function add a new requirement directly to the selected 
 	 * list
@@ -490,9 +610,10 @@ public class RequirementSelectionPanel extends JPanel{
 		for (Integer id : selectedRequirements) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
 			int pos = this.requirements.indexOf(current);
-			this.selection.remove(pos);
-			this.selection.add(pos, true);
-			numRequirementsAdded += 1;
+			if (pos > -1) {
+				this.selection.set(pos, true);
+				numRequirementsAdded += 1;
+			}
 		}
 		update();
 	}
@@ -506,8 +627,8 @@ public class RequirementSelectionPanel extends JPanel{
 		populateBooleans();
 		int pos = this.requirements.indexOf(newReq);
 		this.selection.set(pos, true);
-		update();
 		numRequirementsAdded += 1; //Should probably be integrated better
+		update();
 	}
 	
 	synchronized public void addRequirementsSelectedListener(RequirementsSelectedListener l) {
