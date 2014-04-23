@@ -67,9 +67,9 @@ public class OverviewVoterTable extends JTable {
 	 * @return
 	 */
 	public List<String> getAllVoterNamesList() {
-		List<String> allVoters = new ArrayList<String>();
+		final List<String> allVoters = new ArrayList<String>();
 		GetUserController.getInstance().retrieveUsers();
-		List<User> user = UserModel.getInstance().getUsers();
+		final List<User> user = UserModel.getInstance().getUsers();
 		for(User u : user) {
 			try {
 				allVoters.add(u.getUsername());
@@ -82,8 +82,8 @@ public class OverviewVoterTable extends JTable {
 	 * @return
 	 */
 	public List<Requirement> getSessionReqs(){
-		Set<Integer> sessionReqIds = planningPokerSession.getRequirementIDs();
-		List<Requirement> sessionReqs = new LinkedList<Requirement>();
+		final Set<Integer> sessionReqIds = planningPokerSession.getRequirementIDs();
+		final List<Requirement> sessionReqs = new LinkedList<Requirement>();
 		for (Integer id : sessionReqIds) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
 			sessionReqs.add(current);			
@@ -94,10 +94,10 @@ public class OverviewVoterTable extends JTable {
 
 	public void populateVotePanel() {
 		tableModel.setRowCount(0);	
-		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
+		final Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
 		
-		List<String> allUserList = getAllVoterNamesList();
-		List<Requirement> ListOfRequirements =  getSessionReqs();
+		final List<String> allUserList = getAllVoterNamesList();
+		final List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (Requirement r : ListOfRequirements) {
 			int reqID = r.getId();
 			String reqName = r.getName();
@@ -132,10 +132,10 @@ public class OverviewVoterTable extends JTable {
 	 */
 	public void populateVotePanelNOTCOMPLETE() {
 		tableModel.setRowCount(0);	
-		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
+		final Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
 		
-		List<String> allUserList = getAllVoterNamesList();
-		List<Requirement> ListOfRequirements =  getSessionReqs();
+		final List<String> allUserList = getAllVoterNamesList();
+		final List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (Requirement r : ListOfRequirements) {
 			int reqID = r.getId();
 			String reqName = r.getName();
@@ -189,7 +189,7 @@ public class OverviewVoterTable extends JTable {
 	 */
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component comp = super.prepareRenderer(renderer, row, column);
+        final Component comp = super.prepareRenderer(renderer, row, column);
 
         if (JComponent.class.isInstance(comp)) {
             ((JComponent)comp).setBorder(paddingBorder);

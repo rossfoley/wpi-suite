@@ -66,7 +66,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 */
 	@Override
 	public PlanningPokerSession[] getAll(Session s) throws WPISuiteException {
-		PlanningPokerSession [] allSessions = db.retrieveAll(new PlanningPokerSession(), s.getProject()).toArray(new PlanningPokerSession[0]);
+		final PlanningPokerSession [] allSessions = db.retrieveAll(new PlanningPokerSession(), s.getProject()).toArray(new PlanningPokerSession[0]);
 		return allSessions;
 	}
 
@@ -80,19 +80,19 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 */
 	@Override
 	public PlanningPokerSession update(Session session, String content) throws WPISuiteException {
-		PlanningPokerSession updatedSession = PlanningPokerSession.fromJson(content);
+		final PlanningPokerSession updatedSession = PlanningPokerSession.fromJson(content);
 		/*
 		 * Because of the disconnected objects problem in db4o, we can't just save PlanningPokerSession.
 		 * We have to get the original defect from db4o, copy properties from updatedSession,
 		 * then save the original PlanningPokerSession again.
 		 */
-		List<Model> oldSessions = db.retrieve(PlanningPokerSession.class, "uuid", updatedSession.getID(), session.getProject());
+		final List<Model> oldSessions = db.retrieve(PlanningPokerSession.class, "uuid", updatedSession.getID(), session.getProject());
 		if(oldSessions.size() < 1 || oldSessions.get(0) == null) {
 			System.out.println("Problem with finding by the UUID");
 			throw new BadRequestException("PlanningPokerSession with UUID does not exist.");
 		}
 				
-		PlanningPokerSession existingSession = (PlanningPokerSession)oldSessions.get(0);		
+		final PlanningPokerSession existingSession = (PlanningPokerSession)oldSessions.get(0);		
 		existingSession.copyFrom(updatedSession);
 		
 		if(!db.save(existingSession, session.getProject())) {
@@ -134,7 +134,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		args = Arrays.copyOfRange(args, 2, args.length);
 		switch (args[0]) {
 			case "check-for-updates":
-				ArrayList<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
+				final ArrayList<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
 				PlanningPokerSession[] updates = new PlanningPokerSession[list.size()];
 				updates = list.toArray(updates);
 				return new Gson().toJson(updates, PlanningPokerSession[].class);
@@ -152,7 +152,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		if (!clientsUpdated.containsKey(sessionId)) {
 			clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
 		}
-		ArrayList<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
+		final ArrayList<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
 		clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
 		return updates;
 	}
@@ -184,8 +184,8 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 			throws WPISuiteException {
 		switch (string) {
 			case "update-estimate":
-				Estimate estimate = Estimate.fromJson(content);
-				PlanningPokerSession pokerSession = getEntity(s, estimate.getSessionID().toString())[0];
+				final Estimate estimate = Estimate.fromJson(content);
+				final PlanningPokerSession pokerSession = getEntity(s, estimate.getSessionID().toString())[0];
 				if (pokerSession.isOpen()) { 
 					pokerSession.addEstimate(estimate);
 					update(s, pokerSession.toJSON());

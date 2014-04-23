@@ -371,7 +371,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * @return list of positions
 	 */
 	private LinkedList<Integer> getUnselectedPos(){
-		LinkedList<Integer> positions = new LinkedList<Integer>();
+		final LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : requirements){
 			int pos = requirements.indexOf(rqt);
 			if (!selection.get(pos)){
@@ -387,7 +387,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * @return
 	 */
 	private LinkedList<Integer> getSelectedPos(){
-		LinkedList<Integer> positions = new LinkedList<Integer>();
+		final LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : requirements){
 			int pos = requirements.indexOf(rqt);
 			if (selection.get(pos)){
@@ -402,8 +402,8 @@ public class RequirementSelectionPanel extends JPanel{
 	 * become selected
 	 */
 	private void add(){
-		LinkedList<Integer> pos = getUnselectedPos();
-		int selected[] = unselectedListGui.getSelectedIndices();
+		final LinkedList<Integer> pos = getUnselectedPos();
+		final int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
 			selection.remove(position);
@@ -418,8 +418,8 @@ public class RequirementSelectionPanel extends JPanel{
 	 * indicated to become unselected
 	 */
 	private void remove(){
-		LinkedList<Integer> pos = getSelectedPos();
-		int selected[] = selectedListGui.getSelectedIndices();
+		final LinkedList<Integer> pos = getSelectedPos();
+		final int selected[] = selectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
 			selection.remove(position);
@@ -434,7 +434,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function makes all of the requirements selected
 	 */
 	private void selectAll(){
-		LinkedList<Integer> pos = getUnselectedPos();
+		final LinkedList<Integer> pos = getUnselectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
 			selection.remove(n);
@@ -449,7 +449,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function makes all of the requirements unselected
 	 */
 	private void unselectAll(){
-		LinkedList<Integer> pos = getSelectedPos();
+		final LinkedList<Integer> pos = getSelectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
 			selection.remove(n);
@@ -465,11 +465,11 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	// checks for whether any of the buttons can be used and disables the ones that can't
 	private void validButtons(){
-		boolean debug = false; // quick disable for console messages
+		final boolean debug = false; // quick disable for console messages
 		
 		//checks for full lists and disables trying to move from empty lists
-		boolean allUnselected = fullList(false);
-		boolean allSelected = fullList(true);
+		final boolean allUnselected = fullList(false);
+		final boolean allSelected = fullList(true);
 		if(allUnselected){
 			if(debug){System.out.println("Disableing removeAll");}
 			btnRemoveAll.setEnabled(false);
@@ -488,8 +488,8 @@ public class RequirementSelectionPanel extends JPanel{
 		}
 		
 		// checks to see any requirements are selected for moving
-		boolean pickedUnselected = anySelected(unselectedListGui.getSelectedIndices());
-		boolean pickedSelected = anySelected(selectedListGui.getSelectedIndices());
+		final boolean pickedUnselected = anySelected(unselectedListGui.getSelectedIndices());
+		final boolean pickedSelected = anySelected(selectedListGui.getSelectedIndices());
 		if(pickedUnselected){
 			btnAdd.setEnabled(true);
 		}
@@ -531,7 +531,7 @@ public class RequirementSelectionPanel extends JPanel{
 	}
 	
 	private void viewUnselectedRequirement(){
-		int[] unselectedIndicesCurrent = unselectedListGui.getSelectedIndices();
+		final int[] unselectedIndicesCurrent = unselectedListGui.getSelectedIndices();
 		for (int n : unselectedIndicesCurrent){
 			boolean contains = false;
 			for (int i : unselectedIndicesOld){
@@ -553,7 +553,7 @@ public class RequirementSelectionPanel extends JPanel{
 	}
 	
 	private void viewSelectedRequirement(){
-		int[] selectedIndicesCurrent = selectedListGui.getSelectedIndices();
+		final int[] selectedIndicesCurrent = selectedListGui.getSelectedIndices();
 		for (int n : selectedIndicesCurrent){
 			boolean contains = false;
 			for (int i : selectedIndicesOld){
@@ -590,7 +590,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * @return
 	 */
 	public List<Requirement> getSelected(){
-		List<Requirement> selection = new LinkedList<Requirement>();
+		final List<Requirement> selection = new LinkedList<Requirement>();
 		for(Requirement rqt : requirements){
 			if (this.selection.get(requirements.indexOf(rqt))){
 				selection.add(rqt);
@@ -626,7 +626,7 @@ public class RequirementSelectionPanel extends JPanel{
 	public void newRequirementAdded(Requirement newReq){
 		populateRequirements();
 		populateBooleans();
-		int pos = requirements.indexOf(newReq);
+		final int pos = requirements.indexOf(newReq);
 		selection.set(pos, true);
 		numRequirementsAdded += 1; //Should probably be integrated better
 		update();
@@ -658,17 +658,17 @@ public class RequirementSelectionPanel extends JPanel{
 		// Do nothing if we have no listeners
 		if (listeners != null && !listeners.isEmpty()) {
 			// Create the event object to send
-			RequirementsSelectedEvent event = 
+			final RequirementsSelectedEvent event = 
 					new RequirementsSelectedEvent(this, (numRequirementsAdded != 0));
 
 			// Make a copy of the listener list in case anyone adds/removes listeners
-			Vector<RequirementsSelectedListener> targets;
+			final Vector<RequirementsSelectedListener> targets;
 			synchronized (this) {
 				targets = (Vector<RequirementsSelectedListener>) listeners.clone();
 			}
 
 			// Walk through the listener list and call the estimateSubmitted method in each
-			Enumeration<RequirementsSelectedListener> e = targets.elements();
+			final Enumeration<RequirementsSelectedListener> e = targets.elements();
 			while (e.hasMoreElements()) {
 				RequirementsSelectedListener l = (RequirementsSelectedListener) e.nextElement();
 				l.setRequirementsSelected(event);

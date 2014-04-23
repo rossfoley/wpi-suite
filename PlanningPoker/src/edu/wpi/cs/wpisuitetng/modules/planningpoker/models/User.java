@@ -141,9 +141,9 @@ public class User extends AbstractModel
 	 */
 	public String toJSON()
 	{
-		String json;
+		final String json;
 		
-		Gson gson = new GsonBuilder().registerTypeAdapter(User.class, new UserSerializer()).create();
+		final Gson gson = new GsonBuilder().registerTypeAdapter(User.class, new UserSerializer()).create();
 		
 		json = gson.toJson(this, User.class);
 		
@@ -237,8 +237,8 @@ public class User extends AbstractModel
 	
 	public static User fromJSON(String json) {
 		// build the custom serializer/deserializer
-		Gson gson;
-		GsonBuilder builder = new GsonBuilder();
+		final Gson gson;
+		final GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(User.class, new UserDeserializer());
 
 		gson = builder.create();

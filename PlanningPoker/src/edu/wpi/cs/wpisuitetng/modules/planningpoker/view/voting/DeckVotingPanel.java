@@ -174,12 +174,12 @@ public class DeckVotingPanel extends JPanel
 		estimateFieldErrorMessage.setForeground(Color.RED);
 
 		// Add Label for estimation number
-		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
+		final JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
 		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
 		setLayout(new BorderLayout(10, 10));
 
-		SpringLayout thisLayout = new SpringLayout();
+		final SpringLayout thisLayout = new SpringLayout();
 		this.setLayout(thisLayout);
 		
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
@@ -209,7 +209,7 @@ public class DeckVotingPanel extends JPanel
 	 * Builds a deck based voting panel 
 	 */
 	private void buildDeckVotingPanel() {
-		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
+		final List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 		List<Integer> prevEstimateCards;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -240,7 +240,7 @@ public class DeckVotingPanel extends JPanel
 		});
 
 		// Create clear button
-		JButton clearButton = new JButton("Clear selected cards");
+		final JButton clearButton = new JButton("Clear selected cards");
 		clearButton.setAlignmentX(CENTER_ALIGNMENT);
 		clearButton.addActionListener(new ActionListener() {
 			@Override
@@ -256,7 +256,7 @@ public class DeckVotingPanel extends JPanel
 				"Select Cards For Your Estimate: "));
 
 		//This is the origin of the first label added.
-		Point origin = new Point(10, 20);
+		final Point origin = new Point(10, 20);
 		cardOffset = 500/numbersInDeck.size();
 
 		//Add several overlapping, card buttons to the layered pane
@@ -278,8 +278,8 @@ public class DeckVotingPanel extends JPanel
 		layeredDeckPane.setPreferredSize(new Dimension(400, 250));
 
 		// Create control panel for submit, clear, etc. buttons
-		JPanel controlPanel = new JPanel();
-		SpringLayout controlPanelLayout = new SpringLayout();
+		final JPanel controlPanel = new JPanel();
+		final SpringLayout controlPanelLayout = new SpringLayout();
 		controlPanel.setLayout(controlPanelLayout);
 		controlPanel.setPreferredSize(new Dimension(400, 30));
 		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, submitButton, 0, SpringLayout.VERTICAL_CENTER, controlPanel);
@@ -298,8 +298,8 @@ public class DeckVotingPanel extends JPanel
 		controlPanel.add(clearButton);
 
 		// Create sum of cards label and field
-		JPanel sumPane = new JPanel();
-		JLabel estimateLabel = new JLabel("Sum of Cards: ");
+		final JPanel sumPane = new JPanel();
+		final JLabel estimateLabel = new JLabel("Sum of Cards: ");
 		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
 		estimateField = new JTextField();
@@ -334,8 +334,8 @@ public class DeckVotingPanel extends JPanel
 		final JButton card = new JButton();
 		// Try to load the corresponding playing card
 		try {
-			String fileName = new String("cards/" + Integer.toString(cardValue) + "-of-Diamonds.png");
-			Image img = ImageIO.read(getClass().getResource(fileName));
+			final String fileName = new String("cards/" + Integer.toString(cardValue) + "-of-Diamonds.png");
+			final Image img = ImageIO.read(getClass().getResource(fileName));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			card.setIcon(new ImageIcon(img.getScaledInstance(112, 140, 0)));
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
@@ -445,7 +445,7 @@ public class DeckVotingPanel extends JPanel
 		}
 		// If the source of the mouseMoved event was a card, highlight it
 		else {
-			JButton currentCard = (JButton) e.getSource();
+			final JButton currentCard = (JButton) e.getSource();
 			// Find the index of the card
 			int tempIndex = -1;
 			for (int i = 0; i < listOfCardButtons.size(); i++) {
@@ -474,7 +474,7 @@ public class DeckVotingPanel extends JPanel
 	 * Moves the specified card slightly lower (y-direction) with respect to the other cards
 	 */
 	private void highlightCard() {
-		int layerLevel = layeredDeckPane.getComponentCount() - 1;
+		final int layerLevel = layeredDeckPane.getComponentCount() - 1;
 		// Un-highlight all cards not selected for highlighting
 		for (int i = 0; i < listOfCardButtons.size(); i++) {
 			if (i != lastCard) {
@@ -489,8 +489,8 @@ public class DeckVotingPanel extends JPanel
 		}
 		// Highlight this card if in the index
 		if ((lastCard >= 0) && (lastCard < listOfCardButtons.size())) {
-			Point origin = new Point(10 + cardOffset*lastCard, 50);
-			JButton card = listOfCardButtons.get(lastCard);
+			final Point origin = new Point(10 + cardOffset*lastCard, 50);
+			final JButton card = listOfCardButtons.get(lastCard);
 			card.setBounds(origin.x, origin.y, 112, 140);
 			layeredDeckPane.setComponentZOrder(card, 0);
 			layeredDeckPane.moveToFront(card);
@@ -537,7 +537,7 @@ public class DeckVotingPanel extends JPanel
 	 */
 	private List<Integer> cardsFromLastEstimate() {
 		// Get the list of numbers in the deck and sort in ascending order
-		List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
+		final List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 		Collections.sort(numbersInDeck);
 		
 		int temp = prevEstimate.getVote();
@@ -557,7 +557,7 @@ public class DeckVotingPanel extends JPanel
 		}
 		// Some decks are ony allowed to select 1 card
 		if ((!votingDeck.getAllowMultipleSelections()) && (numbersInEstimate.size() > 1)) {
-			int highCard = numbersInEstimate.get(numbersInEstimate.size() - 1);
+			final int highCard = numbersInEstimate.get(numbersInEstimate.size() - 1);
 			numbersInEstimate = new ArrayList<Integer>();
 			numbersInEstimate.add(highCard);
 		}
@@ -649,17 +649,17 @@ public class DeckVotingPanel extends JPanel
 		// Do nothing if we have no listeners
 		if (listeners != null && !listeners.isEmpty()) {
 			// Create the event object to send
-			EstimateEvent event = 
+			final EstimateEvent event = 
 					new EstimateEvent(this, this.getEstimate());
 
 			// Make a copy of the listener list in case anyone adds/removes listeners
-			Vector<EstimateListener> targets;
+			final Vector<EstimateListener> targets;
 			synchronized (this) {
 				targets = (Vector<EstimateListener>) listeners.clone();
 			}
 
 			// Walk through the listener list and call the estimateSubmitted method in each
-			Enumeration<EstimateListener> e = targets.elements();
+			final Enumeration<EstimateListener> e = targets.elements();
 			while (e.hasMoreElements()) {
 				EstimateListener l = (EstimateListener) e.nextElement();
 				l.estimateSubmitted(event);

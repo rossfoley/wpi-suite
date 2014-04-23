@@ -121,7 +121,7 @@ public class Deck extends AbstractModel {
 	public String changeNumbersToString(){
 		String stringOfDeckNums = "";
 		int loopProgress = 0;
-		int listLength = numbersInDeck.size();
+		final int listLength = numbersInDeck.size();
 		for (Integer n:numbersInDeck){
 			stringOfDeckNums += n.toString();
 			// if not at last element in the list, add a comma and a space after the number
@@ -198,7 +198,7 @@ public class Deck extends AbstractModel {
 	 * @return string containing the default name for a deck
 	 */
 	public String autoName(){
-		String newDeckName = "Deck " + Integer.toString(id);
+		final String newDeckName = "Deck " + Integer.toString(id);
 		return newDeckName;
 	}	
 	
@@ -218,7 +218,7 @@ public class Deck extends AbstractModel {
 		if (!(obj instanceof Deck)){
 			return false;
 		}
-		Deck rhs = (Deck) obj;
+		final Deck rhs = (Deck) obj;
 		return (deckName.equals(rhs.deckName) && id == rhs.id);
 		
 	}

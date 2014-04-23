@@ -39,9 +39,9 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	public void startLiveUpdating() {
 		if (!updateStarted) {
 			updateStarted = true;
-			Thread t = new Thread(new Runnable() {
+			final Thread t = new Thread(new Runnable() {
 				public void run() {
-					Timer timer = new Timer();
+					final Timer timer = new Timer();
 					timer.scheduleAtFixedRate(new TimerTask() {
 						@Override
 						public void run() {
@@ -180,8 +180,8 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 * from the model.
 	 */
 	public void emptyModel() {
-		int oldSize = getSize();
-		Iterator<PlanningPokerSession> iterator = planningPokerSessions.iterator();
+		final int oldSize = getSize();
+		final Iterator<PlanningPokerSession> iterator = planningPokerSessions.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -190,7 +190,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	}
 
 	public PlanningPokerSession addEstimateToPlanningPokerSession(Estimate estimate) {
-		PlanningPokerSession session = getPlanningPokerSession(estimate.getSessionID());
+		final PlanningPokerSession session = getPlanningPokerSession(estimate.getSessionID());
 		session.addEstimate(estimate);
 		removePlanningPokerSession(session.getID());
 		planningPokerSessions.add(session);

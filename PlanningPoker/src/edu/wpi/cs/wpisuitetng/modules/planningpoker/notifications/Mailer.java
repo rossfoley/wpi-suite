@@ -89,13 +89,13 @@ public class Mailer {
 		boolean isValidSender = true;
 		boolean isValidReciever = true;
 		try {
-			InternetAddress emailSender = new InternetAddress(username);
+			final InternetAddress emailSender = new InternetAddress(username);
 			emailSender.validate();
 		} catch (AddressException e) {
 			isValidSender = false;
 		}
 		try {
-			InternetAddress emailRecip = new InternetAddress(recipient);
+			final InternetAddress emailRecip = new InternetAddress(recipient);
 			emailRecip.validate();
 		} catch (AddressException e) {
 			isValidReciever = false;
@@ -106,7 +106,7 @@ public class Mailer {
 		if(isValidSender && isValidReciever){
 			try{
 				// Create a default MimeMessage object.
-				MimeMessage message = new MimeMessage(session);
+				final MimeMessage message = new MimeMessage(session);
 
 				// Set From: header field of the header.
 				message.setFrom(new InternetAddress(username));
@@ -177,9 +177,9 @@ public class Mailer {
 
 		boolean thisValid;
 		if (planningPokerSession.getEndDate() != null) { 
-			int day = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().DAY_OF_MONTH);
-			int month = (1 + planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().MONTH));
-			int year = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().YEAR);
+			final int day = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().DAY_OF_MONTH);
+			final int month = (1 + planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().MONTH));
+			final int year = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().YEAR);
 			final String hour = formatHour(planningPokerSession.getEndDate());
 			final String minute = formatMinute(planningPokerSession.getEndDate());
 			final String am_pm = formatAM_PM(planningPokerSession.getEndDate());

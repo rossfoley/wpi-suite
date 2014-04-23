@@ -37,7 +37,7 @@ public class PlanningPokerTests {
 	
 	@Test 
 	public void testGetSetID() {
-		UUID testuuid = UUID.randomUUID();
+		final UUID testuuid = UUID.randomUUID();
 		testSession.setID(testuuid); 
 		assertEquals(testuuid, testSession.getID()); 
 	}
@@ -56,7 +56,7 @@ public class PlanningPokerTests {
 	 */
 	@Test
 	public void testReqIDs() {
-		HashSet<Integer> aSet = new HashSet<Integer>(); 
+		final HashSet<Integer> aSet = new HashSet<Integer>(); 
 		testSession.setRequirementIDs(aSet); 
 		assertNotNull(testSession.getRequirementIDs()); 
 		testSession.addRequirement(5); 
@@ -84,10 +84,10 @@ public class PlanningPokerTests {
 	 */
 	@Test 
 	public void testToAndFromJSONSessionNameID() {
-		UUID testuuid = UUID.randomUUID();
+		final UUID testuuid = UUID.randomUUID();
 		testSession.setID(testuuid); 
 		testSession.setName("The name is Test Session"); 
-		String json = testSession.toJSON(); 
+		final String json = testSession.toJSON(); 
 		assertEquals(testuuid, testSession.fromJson(json).getID()); 
 		assertEquals("The name is Test Session", testSession.fromJson(json).getName()); 
 	} 
@@ -97,10 +97,10 @@ public class PlanningPokerTests {
 	 */
 	@Test
 	public void testGetSetEndDate() {
-		int month = 8; 
-		int day = 20; 
-		int year = 2002; 
-		GregorianCalendar testDate = new GregorianCalendar(year, month, day); 
+		final int month = 8; 
+		final int day = 20; 
+		final int year = 2002; 
+		final GregorianCalendar testDate = new GregorianCalendar(year, month, day); 
 		testSession.setEndDate(testDate); 
 		assertEquals(month, testSession.getEndDate().get(GregorianCalendar.MONTH)); 
 		assertEquals(day, testSession.getEndDate().get(GregorianCalendar.DAY_OF_MONTH));
