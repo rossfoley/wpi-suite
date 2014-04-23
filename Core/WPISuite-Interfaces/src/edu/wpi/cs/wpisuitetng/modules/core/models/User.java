@@ -234,7 +234,7 @@ public class User extends AbstractModel
 		this.role = r;
 	}
 
-	
+
 	public static User fromJSON(String json) {
 		// build the custom serializer/deserializer
 		Gson gson;
@@ -242,8 +242,13 @@ public class User extends AbstractModel
 		builder.registerTypeAdapter(User.class, new UserDeserializer());
 
 		gson = builder.create();
-		
+
 		return gson.fromJson(json, User.class);
+	}
+
+	public static User[] fromJsonArray(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, User[].class);
 	}
 
 	@Override

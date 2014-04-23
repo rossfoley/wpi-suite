@@ -46,10 +46,7 @@ public class UpdateEstimateRequestObserver implements RequestObserver {
 		// Get the response to the given request
 		final String response = iReq.getResponse().getBody();
 		if (response != null && !response.trim().equals("")) {
-			// Close the voting tab and show a popup
-			MainView main = ViewEventController.getInstance().getMainView();
-			main.removeTabAt(main.getSelectedIndex());
-			JOptionPane.showMessageDialog(null, response);
+			System.out.println("Estimate updated. Response " + response);
 		}
 	}
 	
