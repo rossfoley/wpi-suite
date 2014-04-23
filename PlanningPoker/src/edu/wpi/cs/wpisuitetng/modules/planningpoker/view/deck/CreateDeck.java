@@ -154,6 +154,7 @@ public class CreateDeck extends JPanel {
 				for (int index : toRemove) {
 					removeCard((int) cardTable.getValueAt(index, 0));
 				}
+				lblNoCardsError.setForeground(Color.RED);
 				refresh();
 			}
 		});
@@ -162,6 +163,7 @@ public class CreateDeck extends JPanel {
 		btnRemoveAll.setBounds(221, 165, 57, 23);
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				lblNoCardsError.setForeground(Color.RED);
 				removeAllCards();
 				refresh();
 			}
@@ -246,7 +248,6 @@ public class CreateDeck extends JPanel {
 		add(btnCancel);
 		add(lblNoCardsError);
 
-		refresh();
 	}
 
 	private void buildCardTable() {
