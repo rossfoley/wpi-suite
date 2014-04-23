@@ -18,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class UpdateEmailController {
 	
 	private static UpdateEmailController instance;
-	private UpdateEmailRequestObserver observer;
+	private final UpdateEmailRequestObserver observer;
 	
 	/**
 	 * Construct an UpdateEmailController for the given model, view pair

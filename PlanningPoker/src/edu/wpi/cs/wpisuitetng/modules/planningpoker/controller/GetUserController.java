@@ -19,7 +19,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class GetUserController implements ActionListener {
-	private GetUserRequestObserver observer;
+	private final GetUserRequestObserver observer;
 	private static GetUserController instance;
 	
 	/**

@@ -71,26 +71,26 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final PlanningPokerSession pokerSession;
 	private final PlanningPokerSession unmodifiedSession = new PlanningPokerSession();
 	private final SpringLayout layout = new SpringLayout();
-	private SpringLayout firstPanelLayout = new SpringLayout();
-	private SpringLayout secondPanelLayout = new SpringLayout();
-	private JSplitPane firstPanel = new JSplitPane();
-	private JPanel sessionDetailPanel = new JPanel();
-	private JPanel secondPanel = new JPanel();
+	private final SpringLayout firstPanelLayout = new SpringLayout();
+	private final SpringLayout secondPanelLayout = new SpringLayout();
+	private final JSplitPane firstPanel = new JSplitPane();
+	private final JPanel sessionDetailPanel = new JPanel();
+	private final JPanel secondPanel = new JPanel();
 	private CreateDeck createDeckPanel;
 
-	private ViewMode viewMode;
-	private JComboBox<String> comboTime = new JComboBox<String>();
-	private JComboBox<String> comboAMPM = new JComboBox<String>();
-	private JComboBox<String> comboDeck = new JComboBox<String>();
-	private JTextField textFieldSessionField = new JTextField();
-	private JTextArea textFieldDescription = new JTextArea();
-	private JLabel dateErrorMessage = new JLabel("");
-	private JLabel nameErrorMessage = new JLabel("");
-	private JLabel descriptionErrorMessage = new JLabel("Please enter a description");
-	private JLabel numbers = new JLabel("Users input non-negative intergers");
+	private final ViewMode viewMode;
+	private final JComboBox<String> comboTime = new JComboBox<String>();
+	private final JComboBox<String> comboAMPM = new JComboBox<String>();
+	private final JComboBox<String> comboDeck = new JComboBox<String>();
+	private final JTextField textFieldSessionField = new JTextField();
+	private final JTextArea textFieldDescription = new JTextArea();
+	private final JLabel dateErrorMessage = new JLabel("");
+	private final JLabel nameErrorMessage = new JLabel("");
+	private final JLabel descriptionErrorMessage = new JLabel("Please enter a description");
+	private final JLabel numbers = new JLabel("Users input non-negative intergers");
 	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
 	private JDatePicker datePicker;
-	private JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
+	private final JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
 	private JPanel disabledDatePicker;
 	JButton btnCreateDeck;
@@ -505,9 +505,9 @@ public class PlanningPokerSessionTab extends JPanel {
 		secondPanel.setLayout(secondPanelLayout);
 
 		final JButton btnSave = new JButton("Save");
-		JButton btnBack = new JButton("Back");
+		final JButton btnBack = new JButton("Back");
 		final JButton btnStart = new JButton("Start");
-		JButton btnCancel = new JButton("Cancel");
+		final JButton btnCancel = new JButton("Cancel");
 		
 		// Disable buttons if in creating mode (since no requirements are selected yet) 
 		if (viewMode == ViewMode.CREATING) {
@@ -549,7 +549,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Save button event handler
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Requirement> requirements =  requirementPanel.getSelected();
+				final List<Requirement> requirements =  requirementPanel.getSelected();
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
@@ -565,7 +565,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Start button event handler
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Requirement> requirements =  requirementPanel.getSelected();
+				final List<Requirement> requirements =  requirementPanel.getSelected();
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
@@ -578,10 +578,10 @@ public class PlanningPokerSessionTab extends JPanel {
 					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
 					
-					GetEmailController getEmailController = GetEmailController.getInstance();
+					final GetEmailController getEmailController = GetEmailController.getInstance();
 					getEmailController.retrieveEmails();
 					
-					EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+					final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 					try {
 						emailRecipients = emailAddressModel.getEmailAddresses();
 					}
@@ -683,7 +683,7 @@ public class PlanningPokerSessionTab extends JPanel {
 
 	public void setTimeDropdown() {
 		int hour = pokerSession.getEndDate().get(Calendar.HOUR_OF_DAY);
-		int minute = pokerSession.getEndDate().get(Calendar.MINUTE);
+		final int minute = pokerSession.getEndDate().get(Calendar.MINUTE);
 		String ampm = "AM";
 		if (hour > 12) {
 			hour -= 12;
@@ -691,14 +691,14 @@ public class PlanningPokerSessionTab extends JPanel {
 		} else if (hour == 0) {
 			hour = 12;
 		}
-		String selectedHour = String.format("%d:%02d", hour, minute);
+		final String selectedHour = String.format("%d:%02d", hour, minute);
 		comboTime.setSelectedItem(selectedHour);
 		comboAMPM.setSelectedItem(ampm);
 	}
 
 	public void setDeckDropdown(){
-		List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
-		String[] deckNames = new String[projectDecks.size() + 1];
+		final List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
+		final String[] deckNames = new String[projectDecks.size() + 1];
 		deckNames[0] = "None";
 		int i = 1;
 		for(Deck d:projectDecks){
@@ -712,10 +712,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * takes the strings from the time dropdown menus, parses the strings, and saves the hour and minute to the appopriate fields
 	 */
 	public void parseTimeDropdowns(){
-		String stringTime = (String) comboTime.getSelectedItem();
-		String stringAMPM = (String) comboAMPM.getSelectedItem();
+		final String stringTime = (String) comboTime.getSelectedItem();
+		final String stringAMPM = (String) comboAMPM.getSelectedItem();
 		if (!(stringTime.equals("Time"))){
-			String[] partsOfTime = stringTime.split(":");
+			final String[] partsOfTime = stringTime.split(":");
 			endMinutes = Integer.parseInt(partsOfTime[1]);
 			endHour = Integer.parseInt(partsOfTime[0]);
 			if (endHour == 12){
@@ -728,8 +728,8 @@ public class PlanningPokerSessionTab extends JPanel {
 	}
 
 	public void parseDeckDropdowns(){
-		String deckName = (String) comboDeck.getSelectedItem();
-		List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
+		final String deckName = (String) comboDeck.getSelectedItem();
+		final List<Deck> projectDecks = DeckListModel.getInstance().getDecks();
 		String deckNumbers = "";
 		if (deckName.equals("None")){
 			isUsingDeck = false;
@@ -776,7 +776,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		saveFields();
 
 		// Validate the fields to find all the errors
-		ArrayList<CreatePokerSessionErrors> errors;
+		final ArrayList<CreatePokerSessionErrors> errors;
 		errors = pokerSession.validateFields(haveEndDate, dateHasBeenSet);
 
 		// If there are no errors
@@ -818,9 +818,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * Saves the current values in the panel to the PlanningPokerSession object
 	 */
 	public void saveFields() {
-		int year = datePicker.getModel().getYear();
-		int month = datePicker.getModel().getMonth();
-		int day = datePicker.getModel().getDay();
+		final int year = datePicker.getModel().getYear();
+		final int month = datePicker.getModel().getMonth();
+		final int day = datePicker.getModel().getDay();
 
 		pokerSession.setName(textFieldSessionField.getText());
 		pokerSession.setDescription(textFieldDescription.getText());
@@ -842,7 +842,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	 * @return boolean indicating if the user wants to specify an end date
 	 */
 	public boolean handleCheckBox() {
-		boolean boxChecked = endDateCheckBox.isSelected();
+		final boolean boxChecked = endDateCheckBox.isSelected();
 
 		comboAMPM.setEnabled(boxChecked);
 		comboTime.setEnabled(boxChecked);
@@ -919,7 +919,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 		// If fields were changed, confirm with user that they want the tab removed.
 		else {
-			int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			final int result = JOptionPane.showConfirmDialog(this, "Discard unsaved changes and close tab?", "Discard Changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (result == 0) {
 				restoreInformation();
 				return true;

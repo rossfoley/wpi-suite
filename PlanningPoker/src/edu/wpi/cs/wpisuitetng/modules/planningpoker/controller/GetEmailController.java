@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
  *
  */
 public class GetEmailController implements ActionListener {
-	private GetEmailRequestObserver observer;
+	private final GetEmailRequestObserver observer;
 	private static GetEmailController instance;
 	
 	/**
