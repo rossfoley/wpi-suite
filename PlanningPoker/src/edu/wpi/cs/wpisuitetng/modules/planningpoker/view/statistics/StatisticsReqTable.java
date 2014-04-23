@@ -222,7 +222,7 @@ public class StatisticsReqTable extends JTable {
 					currentSession.addFinalEstimate(reqID, numberEst);
 				}
 			}
-			refresh(currentSession);
 		}
+		refresh(currentSession);
 	}
 }
