@@ -259,6 +259,7 @@ public class DeckVotingPanel extends JPanel
 			JButton cardButton;
 			if (prevEstimateCards.contains(numbersInDeck.get(i))) {
 				cardButton = createCardButtons(numbersInDeck.get(i), origin, true);
+				prevEstimateCards.remove(numbersInDeck.get(i));
 			}
 			else {
 				cardButton = createCardButtons(numbersInDeck.get(i), origin, false);
