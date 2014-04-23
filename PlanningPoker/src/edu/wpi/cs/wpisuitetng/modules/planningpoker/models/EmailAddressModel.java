@@ -12,6 +12,7 @@ port edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
 >>>>>>> In EmailAddressModel adds the import for addEmailController as welll as changes the addEmailAddress line to addEmail
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class EmailAddressModel extends AbstractListModel {
@@ -70,6 +71,38 @@ public class EmailAddressModel extends AbstractListModel {
 
 		}
 	}
+	public void updateEmailAddress(EmailAddress currentEmail){
+		// add the emailAddress
+		removePlanningPokerSession(currentEmail.getEmail());
+		emailAddresses.add(currentEmail);
+		try
+		{
+			UpdateEmailController.getInstance().updateEmailAddress(currentEmail);
+		}
+		catch(Exception e)
+		{
+
+		}
+	}
+	
+	
+	/**
+	 * Removes the Email with the given ID
+	 * 
+	 * @param user user of the email address to be removed.
+	 */
+	public void removePlanningPokerSession(String user){
+		// iterate through list of PlanningPokerSessions until id of project is found
+		for (int i=0; i < this.emailAddresses.size(); i++){
+			if (emailAddresses.get(i).getOwnerName().equals(user)) {
+				// remove the id
+				emailAddresses.remove(i);
+				break;
+			}
+		}
+	}
+	
+	
 	/**
 	 * Adds the given array of email Addresses to the list
 	 * @param emails the array of email addresses to add
