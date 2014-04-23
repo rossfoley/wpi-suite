@@ -39,7 +39,6 @@ public class InfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementDescription, 0, SpringLayout.WEST, lblRequirementname);
 		add(lblRequirementDescription);
 		
-
 		final JScrollPane descrScroll = new JScrollPane();
 		add(descrScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, descrScroll, 6, SpringLayout.SOUTH, lblRequirementDescription);
