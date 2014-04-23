@@ -138,10 +138,7 @@ public class SelectRequirementToUpdateTable extends JTable {
 	 * @return boolean */
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		if (col == 0){
-			return true;
-		}
-		return false;
+		return (col==0);
 	}
 
 	/**
