@@ -136,18 +136,21 @@ public class OverviewVoterTable extends JTable {
 						for (EstimateVoters evs : planningPokerSession.getEstimateVoterList()) {
 							if (evs.getVoterUsername().equals(s)) {
 								vote = evs.getVote();
+								System.out.println(vote);
 								tableModel.addRow(new Object[]{
 										reqID,
 										reqName,
 										username,
-										vote});	
+										vote});
+								break;
 							} else {
 								vote = -1;
 								tableModel.addRow(new Object[]{
 										reqID,
 										reqName,
 										username,
-										vote});	
+										vote});
+								break;
 							}
 						}
 					}

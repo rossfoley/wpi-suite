@@ -14,12 +14,12 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  *
  */
 public class EstimateVoters extends AbstractModel {
-	private int requirementID;
-	private int vote;
-	private String voterUsername;
-	private String ownerName;
-	private UUID uuid = UUID.randomUUID();
-	private UUID sessionID;
+	public int requirementID;
+	public int vote;
+	public String voterUsername;
+	public String ownerName;
+	public UUID uuid = UUID.randomUUID();
+	public UUID sessionID;
 	public List<String> VoterNameList = new ArrayList<String>();
 	
 	public EstimateVoters() {
