@@ -18,11 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -182,8 +179,6 @@ public class DeckVotingPanel extends JPanel
 		estimateLabel.setLabelFor(estimateField);
 		setLayout(new BorderLayout(10, 10));
 
-		//JPanel subPanel = new JPanel();
-		//subPanel.setPreferredSize(new Dimension(400, 100));
 		SpringLayout thisLayout = new SpringLayout();
 		this.setLayout(thisLayout);
 		
@@ -262,7 +257,7 @@ public class DeckVotingPanel extends JPanel
 
 		//This is the origin of the first label added.
 		Point origin = new Point(10, 20);
-		cardOffset = 600/numbersInDeck.size();
+		cardOffset = 500/numbersInDeck.size();
 
 		//Add several overlapping, card buttons to the layered pane
 		//using absolute positioning/sizing.
@@ -317,7 +312,7 @@ public class DeckVotingPanel extends JPanel
 		estimateField.setPreferredSize(new Dimension(112, 112));
 		sumPane.add(estimateLabel);
 		sumPane.add(estimateField);
-		sumPane.setBounds(700, origin.y, 112, 140);
+		sumPane.setBounds(600, origin.y, 112, 140);
 		layeredDeckPane.add(sumPane, layeredDeckPane.getComponentCount());
 
 		// Add the control and deck sub-panels to the overall panel
