@@ -49,6 +49,9 @@ public class StatisticsReqTable extends JTable {
 	private boolean changedByRefresh = false;
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	public HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
+	int rowNumber = 0;
+	StatisticsDetailPanel detailPanel;
+	private StatisticsInfoPanel infoPanel;
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill StatisticsReqTable
@@ -61,7 +64,8 @@ public class StatisticsReqTable extends JTable {
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
-        
+        //this.detailPanel = detailPanel;
+  
     	ViewEventController.getInstance().setStatisticsReqTable(this);
     
 		this.getTableHeader().setReorderingAllowed(false);
@@ -70,23 +74,14 @@ public class StatisticsReqTable extends JTable {
 
 		//ViewEventController.getInstance().setOverviewReqTable(this);
 		initialized = false;
-
+		
 		/* Create double-click event listener */
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
-				if(getRowCount() > 0) {
-					int mouseY = e.getY();
-					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
-					int lastRowY = lastRow.y + lastRow.height;
-
-					if(mouseY > lastRowY) {
-						getSelectionModel().clearSelection();
-						repaint();
-					}
-				}
+				rowNumber = rowAtPoint(getMousePosition());
+				infoPanel.currentReqID = tableRows.get(rowNumber);
 			}
-		}); // */
+		}); 
 	}
 	
 	/**
@@ -109,7 +104,7 @@ public class StatisticsReqTable extends JTable {
 		for (Integer requirementID : requirementIDs) {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
-			int rowID = tableModel.getRowCount() + 1;
+			int rowID = tableModel.getRowCount();
 			vote = 0;
 			for (Estimate e : estimates) {
 				if (e.getRequirementID() == requirementID && e.getOwnerName().equals(ConfigManager.getConfig().getUserName())) {
@@ -133,6 +128,7 @@ public class StatisticsReqTable extends JTable {
 			String value = tableRows.get(i).toString();
 			System.out.println(key + ":" + value);
 		}
+		
 	}
 	
 	/**
@@ -200,5 +196,11 @@ public class StatisticsReqTable extends JTable {
 			return finalEstimates.get(reqToFind).toString();
 		}
 		return "-";		
+	}
+	public int getSelectedReq() {
+		return tableRows.get(rowNumber);
+	}
+	public void setInfoPanel(StatisticsInfoPanel panel) {
+		infoPanel = panel;
 	}
 }

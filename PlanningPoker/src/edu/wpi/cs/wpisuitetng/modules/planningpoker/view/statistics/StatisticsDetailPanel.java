@@ -33,6 +33,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 	StatisticsReqTable reqTable;
 	StatisticsInfoPanel infoPanel;
 	JScrollPane tablePanel;
+	int selectedReqID;
+	
 
 	public StatisticsDetailPanel (PlanningPokerSession session) {
 
@@ -44,9 +46,9 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		// Create the info panel and table panel
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
-		infoPanel = new StatisticsInfoPanel(currentSession);
 		tablePanel = new JScrollPane(reqTable);
-		
+		infoPanel = new StatisticsInfoPanel(currentSession);
+		reqTable.setInfoPanel(infoPanel);
 		
 		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
 		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
@@ -106,6 +108,10 @@ public class StatisticsDetailPanel extends JSplitPane {
 	public PlanningPokerSession getCurrentSession() {
 		
 		return this.currentSession;
+	}
+	
+	public void setRequirementID(int ID) {
+		infoPanel.setRequirementID(ID);
 	}
 	
 	
