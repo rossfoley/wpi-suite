@@ -205,7 +205,7 @@ public class StatisticsReqTable extends JTable {
 	public void setInfoPanel(StatisticsInfoPanel panel) {
 		infoPanel = panel;
 	}
-	public void updateFinalEstimates(){
+	public void updateFinalEstimates(PlanningPokerSession currentSession){
 		for (int i = 0; i<tableModel.getRowCount(); i++){
 			String estimate = (String) tableModel.getValueAt(i, 2);
 			boolean isInteger = true;
@@ -220,8 +220,10 @@ public class StatisticsReqTable extends JTable {
 				if (numberEst >= 0){
 					int reqID = tableRows.get(i);
 					// 
+					
 				}
 			}
+			refresh(currentSession);
 		}
 	}
 }

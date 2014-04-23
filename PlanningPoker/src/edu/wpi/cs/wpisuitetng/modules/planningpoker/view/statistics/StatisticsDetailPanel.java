@@ -35,14 +35,11 @@ public class StatisticsDetailPanel extends JSplitPane {
 	StatisticsReqTable reqTable;
 	StatisticsInfoPanel infoPanel;
 	JScrollPane tablePanel;
-<<<<<<< HEAD
+
 	int selectedReqID;
-	
-=======
 	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
 	JPanel reqOverviewTablePanel = new JPanel();
 	SpringLayout reqOverviewLayout = new SpringLayout();
->>>>>>> add a button for submitting final estimates
 
 	public StatisticsDetailPanel (PlanningPokerSession session) {
 
@@ -75,7 +72,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				reqTable.updateFinalEstimates();
+				reqTable.updateFinalEstimates(currentSession);
 			}
 		});
 		
