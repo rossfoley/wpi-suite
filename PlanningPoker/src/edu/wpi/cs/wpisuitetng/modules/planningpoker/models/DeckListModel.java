@@ -81,7 +81,7 @@ public class DeckListModel extends AbstractListModel {
 	 * 
 	 * @param deckNums list of numbers to match to decks in decklistmodel
 	 */
-	public Deck getDeck(ArrayList<Integer> deckNums){
+	public Deck getDeck(List<Integer> deckNums){
 		for (Deck d:existingDecks){
 			if (d.getNumbersInDeck().equals(deckNums)){
 				return d;

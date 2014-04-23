@@ -53,8 +53,8 @@ public class SelectFromListPanel extends JPanel {
 	private final JList<String> unSelectedGuiList;
 	private AbstractListModel selectedListModel;
 	private final JList<String> Selected;
-	private LinkedList<String> selectedNames;
-	private LinkedList<String> unSelectedNames;
+	private List<String> selectedNames;
+	private List<String> unSelectedNames;
 	private final JScrollPane unSelectedScrollPane;
 	private final JScrollPane selectedScrollPane;
 	private final JButton btnAdd;
@@ -236,7 +236,7 @@ public class SelectFromListPanel extends JPanel {
 	 */
 	private void add(){
 		final int selected[] = unSelectedGuiList.getSelectedIndices();
-		final LinkedList<String> name = new LinkedList<String>();
+		final List<String> name = new LinkedList<String>();
 		for(int n : selected){
 			String str = unSelectedListData[n];
 			name.add(str);
@@ -283,7 +283,7 @@ public class SelectFromListPanel extends JPanel {
 	 */
 	private void remove(){
 		final int selected[] = Selected.getSelectedIndices();
-		final LinkedList<String> name = new LinkedList<String>();
+		final List<String> name = new LinkedList<String>();
 		for(int n : selected){
 			String str = selectedListData[n];
 			name.add(str);
@@ -328,9 +328,9 @@ public class SelectFromListPanel extends JPanel {
 	}
 	
 	// get the name to be displayed by the list from the list of requirements given
-	private LinkedList<String> getNames(LinkedList<Requirement> list){
+	private List<String> getNames(LinkedList<Requirement> list){
 		//System.out.println("In Get Names");
-		final LinkedList<String> rList = new LinkedList<String>();
+		final List<String> rList = new LinkedList<String>();
 		for(int i = 0; i < list.size(); i++){
 			//System.out.print(i + ":");
 			//rList.add(list.element());
@@ -373,23 +373,10 @@ public class SelectFromListPanel extends JPanel {
 		Selected.setModel(selectedListModel);
 	}
 	
-	//convert the data given into a linked list
-	private LinkedList<String> getData(List<String> data){
-		final LinkedList<String> list = new LinkedList<String>();
-		
-		final String[] tempList = data.toArray(new String[0]);
-		for (String element : tempList){
-			list.addLast(element);
-		}
-		
-		return list;
-	}
-	
 	/**
-	 * Function used to add a new requirement directly to the selected list
+	 * Function used to add a new requirement directList<String> list
 	 * @param requirement the requirement to add
 	 */
-	//add a requirement to the list after the object has been created 
 	public void addRequirement(Requirement requirement){
 		unSelected.addLast(null);
 		selected.addLast(requirement);
@@ -400,11 +387,10 @@ public class SelectFromListPanel extends JPanel {
 	 * Function to get the requirements that are currently selected
 	 * @return list of requirements that are selected
 	 */
-	// method to get the list of selected requirements
 	public List<Requirement> getSelected(){
 		final List<Requirement> selection = new LinkedList<Requirement>();
-		for(Requirement str : selected){
-			if (str != null){
+		for(Requirement str : selected) {
+			if (str != null) {
 				selection.add(str);
 			}
 		}
@@ -428,7 +414,7 @@ public class SelectFromListPanel extends JPanel {
 					selected.add(pos, element);
 					unSelected.remove(pos);
 					unSelected.add(pos, null);
-					numRequirementsAdded += 1;
+					numRequirementsAdded++;
 				}
 			}
 		}
@@ -507,7 +493,7 @@ public class SelectFromListPanel extends JPanel {
 	}
 	
 	// checks for full lists
-	private boolean fullList(LinkedList<Requirement> list){
+	private boolean fullList(List<Requirement> list){
 		boolean full = true;
 		
 		for(Requirement rqt : list){

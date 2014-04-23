@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
@@ -24,11 +25,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
  */
 public class RequirementEstimateStats {
 	private int ID; 
-	private ArrayList<Estimate> estimates;
+	private List<Estimate> estimates;
 	private double mean;
 	private double median;
 	
-	public RequirementEstimateStats(int reqID, ArrayList<Estimate> givenEstimates) {
+	public RequirementEstimateStats(int reqID, List<Estimate> givenEstimates) {
 		setEstimates(givenEstimates);
 		sortEstimatesByVote();
 		setMean();
@@ -116,7 +117,7 @@ public class RequirementEstimateStats {
 	 * sets the list of estimates equal to the given list 
 	 * @param givenEstimates
 	 */
-	void setEstimates(ArrayList<Estimate> givenEstimates) {
+	void setEstimates(List<Estimate> givenEstimates) {
 		estimates = givenEstimates;
 	}
 	
@@ -124,7 +125,7 @@ public class RequirementEstimateStats {
 	 * returns the list of estimates 
 	 * @return estimates
 	 */
-	ArrayList<Estimate> getEstimates() {
+	List<Estimate> getEstimates() {
 		return estimates;
 	}
 

@@ -42,8 +42,8 @@ public class VotingManager extends JPanel {
 	private JTree tree = new JTree();
 	private DefaultMutableTreeNode rootNode;
 	
-	private LinkedList<Requirement> notVotedList;
-	private LinkedList<Requirement> votedList;
+	private List<Requirement> notVotedList;
+	private List<Requirement> votedList;
 	
 	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName) {		
 		setName("Voting Manager");

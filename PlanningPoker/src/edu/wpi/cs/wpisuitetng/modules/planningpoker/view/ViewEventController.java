@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -23,13 +24,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetail
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
 
 /**
  * Provides an interface for interaction with the main GUI elements
@@ -43,16 +43,16 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTreePanel overviewTreePanel = null;
 	private OverviewDetailPanel overviewDetailPanel = null;
-	private final ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
+	private final List<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	private OverviewDetailInfoPanel overviewDetailInfoPanel;
-	private final ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
+	private final List<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
 	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private StatisticsUserTable statisticsUserTable;
 	private StatisticsDetailPanel statisticsDetailPanel;
 	private StatisticsReqTable statisticsReqTable;
 	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
-	private final ArrayList<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
+	private final List<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -331,41 +331,32 @@ public class ViewEventController {
 	}
 	
 	public void openStatisticsTab(PlanningPokerSession viewStats){
-	
-	//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-
 		StatisticsPanel exists = null;
 		
 		// Check if the session is already open in a tab
-		for(StatisticsPanel statsPanel : listOfStatisticsPanels)
-		{
-			if(statsPanel.getDisplaySession() == viewStats)
-			{
+		for (StatisticsPanel statsPanel : listOfStatisticsPanels) {
+			if (statsPanel.getDisplaySession() == viewStats) {
 				exists = statsPanel;
 				break;
 			}
 		}
 		
-		if (exists == null)
-		{
+		if (exists == null) {
 			final StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
 			
 			final StringBuilder tabName = new StringBuilder();
 			final int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
 			tabName.append(viewStats.getName().substring(0,subStringLength));
-			if(viewStats.getName().length() > 6) tabName.append("..");
+			if (viewStats.getName().length() > 6) {
+				tabName.append("..");
+			}
 			
-			main .addTab(tabName.toString(), null, statisticsPanel, viewStats.getName());
+			main.addTab(tabName.toString(), null, statisticsPanel, viewStats.getName());
 			main.invalidate(); //force the tabbedpane to redraw.
 			main.repaint();
 			main.setSelectedComponent(statisticsPanel);
-		}
-		else
-		{
+		} else {
 			main.setSelectedComponent(exists);
 		}
-
-	
 	}
-	
 }

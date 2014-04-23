@@ -370,7 +370,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * 
 	 * @return list of positions
 	 */
-	private LinkedList<Integer> getUnselectedPos(){
+	private List<Integer> getUnselectedPos(){
 		final LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : requirements){
 			int pos = requirements.indexOf(rqt);
@@ -386,7 +386,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function get the position of each selected requirement
 	 * @return
 	 */
-	private LinkedList<Integer> getSelectedPos(){
+	private List<Integer> getSelectedPos(){
 		final LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : requirements){
 			int pos = requirements.indexOf(rqt);
@@ -402,7 +402,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * become selected
 	 */
 	private void add(){
-		final LinkedList<Integer> pos = getUnselectedPos();
+		final List<Integer> pos = getUnselectedPos();
 		final int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
@@ -418,7 +418,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * indicated to become unselected
 	 */
 	private void remove(){
-		final LinkedList<Integer> pos = getSelectedPos();
+		final List<Integer> pos = getSelectedPos();
 		final int selected[] = selectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
@@ -434,7 +434,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function makes all of the requirements selected
 	 */
 	private void selectAll(){
-		final LinkedList<Integer> pos = getUnselectedPos();
+		final List<Integer> pos = getUnselectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
 			selection.remove(n);
@@ -449,7 +449,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function makes all of the requirements unselected
 	 */
 	private void unselectAll(){
-		final LinkedList<Integer> pos = getSelectedPos();
+		final List<Integer> pos = getSelectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
 			selection.remove(n);

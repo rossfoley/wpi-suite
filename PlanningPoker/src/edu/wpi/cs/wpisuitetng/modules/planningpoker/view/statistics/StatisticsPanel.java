@@ -17,6 +17,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -51,7 +52,7 @@ public class StatisticsPanel extends JSplitPane {
 	private final PlanningPokerSession activeSession;
 	
 	private Requirement requirement;
-	private final LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+	private final List<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 	
 	public StatisticsPanel(PlanningPokerSession statisticsSession)

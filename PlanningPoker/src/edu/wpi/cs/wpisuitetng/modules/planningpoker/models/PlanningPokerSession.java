@@ -17,6 +17,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -53,7 +54,7 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private final String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	private HashMap<Requirement, Integer> finalEstimatesMap;
+	private Map<Requirement, Integer> finalEstimatesMap;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
 	public List<EstimateVoters> estimateVoterList;
@@ -282,8 +283,8 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @return List<CreatePokerSessionErrors> which is a list of that type of enum 
 	 * which correspond to the possible errors with the different fields
 	 */
-	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet) {
-		final ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
+	public List<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet) {
+		final List<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
 		final GregorianCalendar currentDate = new GregorianCalendar();
 
 		if (haveEndDate) {
@@ -403,7 +404,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void checkReqEstimationComplete(Integer reqID){
 		// get all estimates for this reqID
-		final ArrayList<Estimate> estimatesForReq = new ArrayList<Estimate>();
+		final List<Estimate> estimatesForReq = new ArrayList<Estimate>();
 		for (Estimate e: estimates){
 			if (e.getRequirementID() == reqID){
 				estimatesForReq.add(e);
@@ -449,14 +450,14 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @return the reqsWithSubmittedEstimates
 	 */
-	public HashMap<Requirement, Integer> getFinalEstimatesMap() {
+	public Map<Requirement, Integer> getFinalEstimatesMap() {
 		return finalEstimatesMap; 
 	}
 	
 	/**
 	 * @param sets reqsWithSubmittedEstimates to the input HashMap 
 	 */
-	public void setFinalEstimatesMap(HashMap<Requirement, Integer> reqsWithSubmissions) {
+	public void setFinalEstimatesMap(Map<Requirement,Integer> reqsWithSubmissions) {
 		finalEstimatesMap = reqsWithSubmissions; 
 	}
 	
@@ -478,7 +479,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * with the contents of the given HashMap
 	 * @param newReqStats
 	 */
-	public void setReqEstimateStats(HashMap<Integer, RequirementEstimateStats> newReqStats) {
+	public void setReqEstimateStats(Map<Integer,RequirementEstimateStats> newReqStats) {
 		reqEstimateStats.clear();
 		reqEstimateStats.putAll(newReqStats);
 	}
@@ -489,7 +490,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param reqID
 	 */
 	public void addReqEstimateStats(int reqID) {
-		final ArrayList<Estimate> forThisReq = new ArrayList<Estimate>();
+		final List<Estimate> forThisReq = new ArrayList<Estimate>();
 		for (Estimate e : estimates) {
 			if (e.getRequirementID() == reqID) {
 				forThisReq.add(e);
@@ -555,7 +556,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * 
 	 * @return Hashmap relating requirement to final estimate for that requirement
 	 */
-	public HashMap<Requirement, Integer> getFinalEstimates() { 
+	public Map<Requirement, Integer> getFinalEstimates() { 
 		return finalEstimatesMap;
 	}
 

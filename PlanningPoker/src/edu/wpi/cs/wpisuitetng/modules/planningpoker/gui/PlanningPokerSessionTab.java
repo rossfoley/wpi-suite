@@ -776,7 +776,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		saveFields();
 
 		// Validate the fields to find all the errors
-		final ArrayList<CreatePokerSessionErrors> errors;
+		final List<CreatePokerSessionErrors> errors;
 		errors = pokerSession.validateFields(haveEndDate, dateHasBeenSet);
 
 		// If there are no errors

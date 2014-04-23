@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -34,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CheckForUpdatesCo
 public class PlanningPokerSessionEntityManager implements EntityManager<PlanningPokerSession> {
 	
 	Data db;
-	HashMap<String, ArrayList<PlanningPokerSession>> clientsUpdated = new HashMap<String, ArrayList<PlanningPokerSession>>();
+	Map<String,List<PlanningPokerSession>> clientsUpdated = new HashMap<String, List<PlanningPokerSession>>();
 	
 	public PlanningPokerSessionEntityManager(final Data db) {
 		this.db = db;
@@ -134,7 +135,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 		args = Arrays.copyOfRange(args, 2, args.length);
 		switch (args[0]) {
 			case "check-for-updates":
-				final ArrayList<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
+				final List<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
 				PlanningPokerSession[] updates = new PlanningPokerSession[list.size()];
 				updates = list.toArray(updates);
 				return new Gson().toJson(updates, PlanningPokerSession[].class);
@@ -148,11 +149,11 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 * @param sessionId the current session ID
 	 * @return an ArrayList of planning poker updates for the client to use
 	 */
-	private ArrayList<PlanningPokerSession> checkForUpdate(String sessionId) {
+	private List<PlanningPokerSession> checkForUpdate(String sessionId) {
 		if (!clientsUpdated.containsKey(sessionId)) {
 			clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
 		}
-		final ArrayList<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
+		final List<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
 		clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
 		return updates;
 	}
@@ -165,7 +166,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	private void addClientUpdate(PlanningPokerSession value, Session s) {
 		for (String key : clientsUpdated.keySet()) {
 			if (!s.getSessionId().equals(key)) {
-				ArrayList<PlanningPokerSession> sessions = clientsUpdated.get(key);
+				List<PlanningPokerSession> sessions = clientsUpdated.get(key);
 				sessions.add(value);
 				clientsUpdated.put(key, sessions);
 			}
