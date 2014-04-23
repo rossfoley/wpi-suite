@@ -58,12 +58,14 @@ public class CheckForUpdatesController implements ActionListener {
 				final String response = iReq.getResponse().getBody();
 				final PlanningPokerSession[] updates = PlanningPokerSession.fromJsonArray(response);
 				for (PlanningPokerSession update : updates) {
-					PlanningPokerSessionModel model = PlanningPokerSessionModel.getInstance();
-					PlanningPokerSession existing = model.getPlanningPokerSession(update.getUuid());
-					if (existing != null) {
-						model.removePlanningPokerSession(update.getUuid());
+					if (update != null) {
+						PlanningPokerSessionModel model = PlanningPokerSessionModel.getInstance();
+						PlanningPokerSession existing = model.getPlanningPokerSession(update.getUuid());
+						if (existing != null) {
+							model.removePlanningPokerSession(update.getUuid());
+						}
+						model.addCachedPlanningPokerSession(update);
 					}
-					model.addCachedPlanningPokerSession(update);
 				}
 				
 				if (updates.length > 0) {
