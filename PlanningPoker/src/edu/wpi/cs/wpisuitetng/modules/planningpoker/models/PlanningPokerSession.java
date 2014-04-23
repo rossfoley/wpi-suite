@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,17 +30,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * @author rossfoley
-*  @author amandaadkins 
  *
  */
 public class PlanningPokerSession extends AbstractModel {
-	
+
 	private String name;
 	private GregorianCalendar endDate;
 	private Set<Integer> requirementIDs;
 	private UUID uuid = UUID.randomUUID();
 	public enum SessionState {
-	    OPEN, PENDING, VOTINGENDED, CLOSED, 
+		OPEN, PENDING, VOTINGENDED, CLOSED, 
 	}
 	private SessionState gameState;
 	private List<Estimate> estimates;
@@ -50,7 +50,8 @@ public class PlanningPokerSession extends AbstractModel {
 	private Deck sessionDeck;
 	private String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
-	
+	private HashMap<Requirement, Integer> finalEstimatesMap;
+
 	/**
 	 * Constructor for PlanningPokerSession
 	 */
@@ -61,8 +62,9 @@ public class PlanningPokerSession extends AbstractModel {
 		this.estimates = new ArrayList<Estimate>();
 		this.reqsWithCompleteEstimates = new HashSet<Integer>();
 		this.defaultSessionName = new String(this.name.toString());
+		this.finalEstimatesMap = new HashMap<Requirement, Integer>();
 	}
-	
+
 	/**
 	 * @return the sessionCreatorID
 	 */
@@ -88,14 +90,14 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setUsingDeck(boolean isUsingDeck) {
 		this.isUsingDeck = isUsingDeck;
 	}
-	
+
 	/**
 	 * @return uuid
 	 */
 	public UUID getID() {
 		return uuid;
 	}
-	
+
 	/**
 	 * Add a requirement to existing planning poker session.
 	 * @param requirementID
@@ -103,8 +105,8 @@ public class PlanningPokerSession extends AbstractModel {
 	public void addRequirement(int requirementID) {
 		requirementIDs.add((Integer) requirementID);
 	}
-	
-	
+
+
 	public void setID(UUID iD) {
 		uuid = iD;
 	}
@@ -130,22 +132,22 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setDescription(String description) {
 		this.description = description.trim();
 	}
-	
+
 	public SessionState getGameState() {
 		return gameState;
 	}
-	
+
 	public void setGameState(SessionState gameState) {
 		this.gameState = gameState;
 	}
-	
+
 	/**
 	 * @return the endDate
 	 */
 	public GregorianCalendar getEndDate() {
 		return endDate;
 	}
-	
+
 	/**
 	 * @return if the session has an endDate
 	 */
@@ -159,7 +161,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * @return if the session name is the default name
 	 */
@@ -167,13 +169,13 @@ public class PlanningPokerSession extends AbstractModel {
 		return defaultSessionName;
 	}
 
-	 /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-     public String toString(){
-          return name;
-     }
+	public String toString(){
+		return name;
+	}
 
 	/**
 	 * @return the requirementIDs
@@ -201,28 +203,28 @@ public class PlanningPokerSession extends AbstractModel {
 		}
 		return open && gameState == SessionState.OPEN;
 	}
-	
+
 	/**
 	 * @return a boolean indicating if the session is pending
 	 */
 	public boolean isPending() {
 		return gameState == SessionState.PENDING;
 	}
-	
+
 	/**
 	 * @return a boolean indicating if the session has ended
 	 */
 	public boolean isEnded() {
 		return (new GregorianCalendar()).after(endDate) || gameState == SessionState.VOTINGENDED;
 	}
-	
+
 	/**
 	 * @return a boolean indicating if the session has been closed with a final estimate
 	 */
 	public boolean isClosed() {
 		return gameState == SessionState.CLOSED;
 	}
-	
+
 	/**
 	 * Creates the default name for the session.
 	 * 
@@ -272,7 +274,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public ArrayList<CreatePokerSessionErrors> validateFields(boolean haveEndDate, boolean dateHasBeenSet) {
 		ArrayList<CreatePokerSessionErrors> errors = new ArrayList<CreatePokerSessionErrors>();
 		GregorianCalendar currentDate = new GregorianCalendar();
-		
+
 		if (haveEndDate) {
 			if (dateHasBeenSet) {
 				if (this.endDate.before(currentDate)) {
@@ -283,12 +285,12 @@ public class PlanningPokerSession extends AbstractModel {
 				errors.add(CreatePokerSessionErrors.NoDateSelected);
 			}
 		}
-		
+
 		// Description validation
 		if (this.description.equals("")){
 			errors.add(CreatePokerSessionErrors.NoDescription);
 		}
-		
+
 		// Name validation
 		if (this.name.equals("")){
 			errors.add(CreatePokerSessionErrors.NoName);
@@ -305,12 +307,12 @@ public class PlanningPokerSession extends AbstractModel {
 	public String toJSON() {
 		return new Gson().toJson(this, PlanningPokerSession.class);
 	}
-	
+
 	public static PlanningPokerSession fromJson(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, PlanningPokerSession.class);
 	}
-	
+
 	/**
 	 * Provides the number of elements in the list of requirements for the project. This
 	 * function is called internally by the JList in NewRequirementPanel. Returns elements
@@ -321,7 +323,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public int requirementsGetSize() {
 		return requirementIDs.size();
 	}
-	
+
 	/**
 	 * @return the sessionDeck
 	 */
@@ -347,7 +349,7 @@ public class PlanningPokerSession extends AbstractModel {
 		return parser.fromJson(json, PlanningPokerSession[].class);
 	}
 
-	
+
 	/**
 	 * @param selected the list of requirements to add to the session
 	 */
@@ -369,7 +371,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setEstimates(List<Estimate> estimates) {
 		this.estimates = estimates;
 	}
-	
+
 	/**
 	 * @param estimate the estimate to add to the session
 	 */
@@ -383,7 +385,7 @@ public class PlanningPokerSession extends AbstractModel {
 		this.estimates.add(estimate);
 		//checkReqEstimationComplete(estimate.getRequirementID());
 	}
-	
+
 	/**
 	 * checks to see if all users in the current project have estimated the requirement assosciated with the given id
 	 * @param reqID requirement to check estimations of
@@ -396,7 +398,7 @@ public class PlanningPokerSession extends AbstractModel {
 				estimatesForReq.add(e);
 			}
 		}
-		
+
 		boolean estimationComplete = true;
 		for (User teamMember : getProject().getTeam()) {
 			if (teamMember != null) {
@@ -412,13 +414,13 @@ public class PlanningPokerSession extends AbstractModel {
 				}
 			}
 		}
-		
+
 		if (estimationComplete) {
 			reqsWithCompleteEstimates.add(reqID);
 		}
 	}
-	
-	
+
+
 	/**
 	 * @return the reqsWithCompleteEstimates		
 	 */
@@ -437,7 +439,7 @@ public class PlanningPokerSession extends AbstractModel {
 	public boolean isEditable() {
 		return (isPending() || ((estimates.size() == 0) && isOpen())) && sessionCreatorName.equals(ConfigManager.getConfig().getUserName());
 	}
-	
+
 	/**
 	 * @return the uuid
 	 */
@@ -467,6 +469,15 @@ public class PlanningPokerSession extends AbstractModel {
 		this.isUsingDeck = toCopyFrom.isUsingDeck;
 		this.sessionCreatorName = toCopyFrom.sessionCreatorName;
 		this.sessionDeck = toCopyFrom.sessionDeck;
+		this.finalEstimatesMap = toCopyFrom.getFinalEstimates();
 	}
-	
+
+	/** 
+	 * Returns an array of all of the final estimation values for a finished planning poker session.
+	 * 
+	 * @return Hashmap relating requirement to final estimate for that requirement
+	 */
+	public HashMap<Requirement, Integer> getFinalEstimates() { 
+		return finalEstimatesMap;
+	}
 }
