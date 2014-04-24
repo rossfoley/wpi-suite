@@ -10,6 +10,12 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Dimension;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -21,8 +27,19 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
+import java.awt.Dimension;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * The general information (name, description etc) for a given session
@@ -46,6 +63,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 	JLabel deckDisplay;
 	JLabel sessionCreatorDisplay;
 	SpringLayout springLayout;
+	JButton sendEstimatesBtn = new JButton("Send Final Estimates To Requirement Manager");
 	
 	public OverviewDetailInfoPanel() {
 
@@ -73,6 +91,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		sessionDescriptionDisplay.setWrapStyleWord(true);
 		sessionDescriptionDisplay.setLineWrap(true);
 		sessionDescriptionDisplay.setEditable(false);
+		sendEstimatesBtn.setVisible(false);
 		
 		createConstraints();
 		
@@ -87,6 +106,13 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(endTimeDisplay);
 		add(deckDisplay);
 		add(sessionCreatorDisplay);
+		add(sendEstimatesBtn);
+		
+		sendEstimatesBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().sendEstimatesFromSession();
+			}
+		});
 	}
 	
 	/**
@@ -104,6 +130,35 @@ public class OverviewDetailInfoPanel extends JPanel {
 		// Change session creator
 		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
 
+		if ((session.getGameState()==SessionState.CLOSED)||(session.getGameState()==SessionState.VOTINGENDED)){
+			// restrict exportation to moderator
+			if (ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())){
+				sendEstimatesBtn.setVisible(true);
+			}
+			else {
+				sendEstimatesBtn.setVisible(false);
+			}
+		}
+		else {
+			sendEstimatesBtn.setVisible(false);
+		}
+		
+		if (session.getFinalEstimates().size()==0){
+			sendEstimatesBtn.setEnabled(false);
+			
+			System.out.println("No estimates");
+		}
+		else {
+			if (areAllEstimatesSent(session)){
+				sendEstimatesBtn.setEnabled(false);
+			}
+			else {
+				sendEstimatesBtn.setEnabled(true);
+			}
+		}
+		
+	
+		
 		String endDate, endTime;
 		// Change end date
 		try {
@@ -238,7 +293,31 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.SOUTH, sessionCreatorDisplay, 0, SpringLayout.SOUTH, lblSessionName);
 		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesBtn, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesBtn, -10, SpringLayout.EAST, this);
+
 	}
-
-
+	
+	/**
+	 * checks to see if all of the final estimates have been used to update requirement manager
+	 * @param session - session to compare against
+	 * @return true if all of the final estimates have been sent
+	 */
+	public boolean areAllEstimatesSent(PlanningPokerSession session){
+		boolean allMatched = true;
+		final RequirementModel reqs = RequirementModel.getInstance();
+		
+		for (Integer finalEstimateID:session.getFinalEstimates().keySet()){
+			boolean foundThisOne = false;
+			for (Integer reqID:session.getRequirementsWithExportedEstimates()){
+				if (finalEstimateID == reqID){
+					foundThisOne = true;
+				}
+			}
+			allMatched &= foundThisOne;
+		}
+		return allMatched;
+	}
+	
 }

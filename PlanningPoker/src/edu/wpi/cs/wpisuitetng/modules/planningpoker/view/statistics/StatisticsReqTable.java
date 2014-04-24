@@ -50,7 +50,7 @@ public class StatisticsReqTable extends JTable {
 	private boolean initialized;
 	private boolean changedByRefresh = false;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	private HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
+	private final HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
 	private int rowNumber = 0;
 	private StatisticsDetailPanel detailPanel;
 	private StatisticsInfoPanel infoPanel;
@@ -192,9 +192,11 @@ public class StatisticsReqTable extends JTable {
 	
 	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
-		final Map<Requirement,Integer> finalEstimates = session.getFinalEstimates();
-		if (finalEstimates.containsKey(reqToFind)){
-			return finalEstimates.get(reqToFind).toString();
+		HashMap<Integer, Integer> finalEstimates = session.getFinalEstimates();
+		int reqID = reqToFind.getId();
+		if (finalEstimates.containsKey(reqID)){
+			Integer est = finalEstimates.get(reqID);
+			return est.toString();
 		}
 		return "-";		
 	}
@@ -205,6 +207,11 @@ public class StatisticsReqTable extends JTable {
 	public void setInfoPanel(StatisticsInfoPanel panel) {
 		infoPanel = panel;
 	}
+	
+	/**
+	 * update the current session with the newly entered final estimates
+	 * @param currentSession
+	 */
 	public void updateFinalEstimates(PlanningPokerSession currentSession){
 		for (int i = 0; i<tableModel.getRowCount(); i++){
 			String estimate = (String) tableModel.getValueAt(i, 2);
@@ -215,12 +222,16 @@ public class StatisticsReqTable extends JTable {
 			}
 			catch (NumberFormatException e) {
 				isInteger = false;
+				// add error message for nonnegative integers only
 			}
 			if (isInteger){
 				if (numberEst >= 0){
 					int reqID = tableRows.get(i);
 					currentSession.addFinalEstimate(reqID, numberEst);
 				}
+				/* else {
+					add error message for nonnegative integers only
+				} */
 			}
 		}
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);

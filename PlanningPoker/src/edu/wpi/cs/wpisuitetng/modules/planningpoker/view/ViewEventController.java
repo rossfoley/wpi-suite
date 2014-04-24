@@ -28,6 +28,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterT
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
 
@@ -79,6 +82,10 @@ public class ViewEventController {
 	
 	public void setOverviewDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
 		overviewDetailInfoPanel = infoPanel;
+	}
+	
+	public OverviewReqTable getOverviewReqTable(){
+		return overviewReqTable;
 	}
 	
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
@@ -250,7 +257,15 @@ public class ViewEventController {
 	 */
 	public void displayDetailedSession(PlanningPokerSession displaySession)
 	{
+		if (overviewDetailPanel.isOnSelectionTable()){
+			overviewDetailPanel.putReqTableBack();
+		}
+		
 		overviewDetailPanel.updatePanel(displaySession);
+	}
+	
+	public void sendEstimatesFromSession(){
+		overviewDetailPanel.replaceTable();
 	}
 
 	/**
@@ -310,7 +325,6 @@ public class ViewEventController {
 				break;
 			}
 		}
-		
 		if (exists == null)
 		{
 			final VotingPage votingPanel = new VotingPage(toVoteOn);
