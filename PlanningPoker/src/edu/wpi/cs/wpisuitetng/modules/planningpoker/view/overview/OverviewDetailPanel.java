@@ -10,15 +10,12 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.awt.Dimension;
 
@@ -122,8 +119,8 @@ public class OverviewDetailPanel extends JSplitPane {
 	 * Sends all of the requirements' final estimation values to the requirement manager. 
 	 */
 	public static void sendAllEstimates() {
-		LinkedList<Requirement> sessionRequirementList = new LinkedList<Requirement>();
-		Set<Integer> requirementIDs;
+		final LinkedList<Requirement> sessionRequirementList = new LinkedList<Requirement>();
+		final Set<Integer> requirementIDs;
 		requirementIDs = currentSession.getRequirementIDs();
 		Object[] arrayOfIDs = requirementIDs.toArray();
 		int i;
@@ -131,12 +128,12 @@ public class OverviewDetailPanel extends JSplitPane {
 			sessionRequirementList.addLast(RequirementModel.getInstance().getRequirement((int) arrayOfIDs[i]));
 		}
 		int j;
-		for (j = 0; j < sessionRequirementList.size(); i++) {
+		for (j = 0; j < sessionRequirementList.size(); j++) {
 			// if the requirement's estimate has not yet been sent.
 			if (!getReqsWithExportedEstimatesList().contains(sessionRequirementList.get(j))) { 
 			sessionRequirementList.get(j).setEstimate(currentSession.getFinalEstimates().get(sessionRequirementList.get(j)));
 			currentSession.addRequirementToExportedList((int) arrayOfIDs[j]);
-			}	
+			}
 			// otherwise, do nothing and go to the next element.
 		}
 	}
@@ -151,7 +148,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		// if the requirement's estimate has not yet been sent
 		if (!(currentSession.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate))) {
 			reqToSendFinalEstimate.setEstimate(currentSession.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
-			currentSession.addRequirementToExportedList(reqToSendFinalEstimate.getId());			
+			currentSession.addRequirementToExportedList(reqToSendFinalEstimate.getId());
 			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
 		}
 		// otherwise, do nothing.
@@ -175,9 +172,9 @@ public class OverviewDetailPanel extends JSplitPane {
 	 */
 	public void makeSelectionTable(){
 		Object[][] data = {};
-		String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
-		HashMap<Integer, Integer> finalEstimates = currentSession.getFinalEstimates();		
-		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements(finalEstimates);
+		final String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
+		final HashMap<Integer, Integer> finalEstimates = currentSession.getFinalEstimates();
+		final LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements(finalEstimates);
 		
 		selectToUpdateTable = new SelectRequirementToUpdateTable(data, columnNames, selectableRequirementIDs, finalEstimates);
 	}
@@ -188,13 +185,13 @@ public class OverviewDetailPanel extends JSplitPane {
 	 */
 	public void replaceTable(){
 		onSelectionTable = true;
-		int dividerLocation = getDividerLocation();
+		final int dividerLocation = getDividerLocation();
 		
-		JPanel selectionPanel = new JPanel();
-		SpringLayout selectionLayout = new SpringLayout();
+		final JPanel selectionPanel = new JPanel();
+		final SpringLayout selectionLayout = new SpringLayout();
 		selectionPanel.setLayout(selectionLayout);
-		JButton cancelButton = new JButton("Cancel");
-		JButton sendEstimatesButton = new JButton("Send Estimates");
+		final JButton cancelButton = new JButton("Cancel");
+		final JButton sendEstimatesButton = new JButton("Send Estimates");
 		final JLabel sendErrorMessage = new JLabel("Please select requirements");
 		sendErrorMessage.setForeground(Color.RED);
 		sendErrorMessage.setVisible(false);
@@ -206,7 +203,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		selectToUpdateTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
 		selectToUpdateTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
-		JScrollPane updatePane = new JScrollPane(selectToUpdateTable);
+		final JScrollPane updatePane = new JScrollPane(selectToUpdateTable);
 		
 		selectToUpdateTable.refresh();
 		
@@ -238,9 +235,9 @@ public class OverviewDetailPanel extends JSplitPane {
 		
 		sendEstimatesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Integer> selectedReqIDs = selectToUpdateTable.getSelectedReqs();
-				RequirementModel reqs = RequirementModel.getInstance();
-				if (selectedReqIDs.size()==0){
+				final ArrayList<Integer> selectedReqIDs = selectToUpdateTable.getSelectedReqs();
+				final RequirementModel reqs = RequirementModel.getInstance();
+				if (selectedReqIDs.size() == 0){
 					sendErrorMessage.setVisible(true);
 				}
 				else {
@@ -248,9 +245,8 @@ public class OverviewDetailPanel extends JSplitPane {
 					for (Integer selectedReq:selectedReqIDs){
 						sendSingleEstimate(RequirementModel.getInstance().getRequirement(selectedReq));
 					}
-					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);	
+					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
 					putReqTableBack();
-				//	updateInfoPanel(currentSession);
 				}
 			}
 		});
@@ -258,7 +254,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		
 		setBottomComponent(selectionPanel);
 		setDividerLocation(dividerLocation);
-        Dimension d = new Dimension(200, 200);
+        final Dimension d = new Dimension(200, 200);
         selectionPanel.setMinimumSize(d);
 	}
 	
@@ -267,8 +263,8 @@ public class OverviewDetailPanel extends JSplitPane {
 	 * @return linked list of ids corresponding to the requirements that the user can select
 	 */
 	private LinkedList<Integer> determineSelectableRequirements(HashMap<Integer, Integer> finalEstimates){
-		List<Integer> reqsWithExportedEstimates = currentSession.getRequirementsWithExportedEstimates();
-  		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
+		final List<Integer> reqsWithExportedEstimates = currentSession.getRequirementsWithExportedEstimates();
+  		final LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
 		for (Integer reqID:currentSession.getRequirementIDs()){
 			if (!(reqsWithExportedEstimates.contains(reqID))){
 				if (finalEstimates.containsKey(reqID)){
@@ -284,8 +280,8 @@ public class OverviewDetailPanel extends JSplitPane {
 	 */
 	public void putReqTableBack(){
 		onSelectionTable = false;
-		int dividerLocation = getDividerLocation();
-		String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
+		final int dividerLocation = getDividerLocation();
+		final String[] columnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
 		Object[][] data = {};
 		
 		reqTable = new OverviewReqTable(data, columnNames);
@@ -302,8 +298,8 @@ public class OverviewDetailPanel extends JSplitPane {
 		this.setBottomComponent(tablePanel);
 		this.setResizeWeight(0.5); 
 		
-		Dimension d = new Dimension(200, 200);
-	    tablePanel.setMinimumSize(d);	
+		final Dimension d = new Dimension(200, 200);
+	    tablePanel.setMinimumSize(d);
 		setDividerLocation(dividerLocation);
 		
 	
