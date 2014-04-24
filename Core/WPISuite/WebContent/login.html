@@ -5,15 +5,16 @@
   <title>WPI Suite Planning Poker</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to Planning Poker for WPI Suite!</h1>
     <form class="form-signin" role="form">
-      <h2 class="form-signin-heading">Please login to access the app</h2>
-      <input type="email" class="form-control" placeholder="Email address" required autofocus>
-      <input type="password" class="form-control" placeholder="Password" required>
+      <h2 class="form-signin-heading">Login</h2>
+      <input type="text" id="username" class="form-control" placeholder="Username" required autofocus>
+      <input type="password" id="password" class="form-control" placeholder="Password" required>
+      <input type="text" id="project" class="form-control" placeholder="Project" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
   </div>
