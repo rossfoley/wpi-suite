@@ -35,19 +35,17 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	}
 	
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content) {
 		switch (string) {
 		case "add-default-deck":
 			try {
-				int deckCount = db.retrieveAll(new Deck(), s.getProject()).size();
+				final int deckCount = db.retrieveAll(new Deck(), s.getProject()).size();
 				if (deckCount == 0) {
 					makeEntity(s, content);
 					return "true";
@@ -61,14 +59,13 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		return db.retrieveAll(new Deck()).size();
 	}
 
@@ -77,7 +74,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * 
 	 * @param s session corresponding to the current project
 	 */
-	public void deleteAll(Session s) throws WPISuiteException {
+	public void deleteAll(Session s) {
 		// don't know if we should restrict deleting decks to admins
 		// 		ensureRole(s, Role.ADMIN);
 		db.deleteAll(new Deck(), s.getProject());
@@ -105,7 +102,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * @return array of decks from the database that were assosciated with the given project
 	 */
 	@Override
-	public Deck[] getAll(Session s) throws WPISuiteException {
+	public Deck[] getAll(Session s) {
 		return db.retrieveAll(new Deck(), s.getProject()).toArray(new Deck[0]);
 	}
 
@@ -118,8 +115,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 *  @return array of decks with the matching id number
 	 */
 	@Override
-	public Deck[] getEntity(Session s, String id) throws NotFoundException,
-			WPISuiteException {
+	public Deck[] getEntity(Session s, String id) throws NotFoundException {
 			final int intId = Integer.parseInt(id);
 			if(intId < 1) {
 				throw new NotFoundException();
@@ -159,7 +155,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * @param s session to associate deck to 
 	 * @param model deck object to store in the database
 	 */
-	public void save(Session s, Deck model) throws WPISuiteException {
+	public void save(Session s, Deck model) {
 		db.save(model, s.getProject());
 	}
 
@@ -176,18 +172,18 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	@Override
 	public Deck update(Session s, String content) throws WPISuiteException {
 		
-		Deck updatedDeck = Deck.fromJson(content);
+		final Deck updatedDeck = Deck.fromJson(content);
 		/*
 		 * Because of the disconnected objects problem in db4o, we can't just save Requirements.
 		 * We have to get the original defect from db4o, copy properties from updatedRequirement,
 		 * then save the original Requirement again.
 		 */
-		List<Model> oldDecks = db.retrieve(Deck.class, "id", updatedDeck.getId(), s.getProject());
+		final List<Model> oldDecks = db.retrieve(Deck.class, "id", updatedDeck.getId(), s.getProject());
 		if(oldDecks.size() < 1 || oldDecks.get(0) == null) {
 			throw new BadRequestException("Deck with ID does not exist.");
 		}
 				
-		Deck existingDeck = (Deck) oldDecks.get(0);		
+		final Deck existingDeck = (Deck) oldDecks.get(0);		
 
 		// copy values to old requirement and fill in our changeset appropriately
 		existingDeck.copyFrom(updatedDeck);

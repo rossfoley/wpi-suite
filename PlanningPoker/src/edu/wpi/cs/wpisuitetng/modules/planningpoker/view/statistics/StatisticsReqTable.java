@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -48,10 +49,10 @@ public class StatisticsReqTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	public HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
-	int rowNumber = 0;
-	StatisticsDetailPanel detailPanel;
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+	private HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
+	private int rowNumber = 0;
+	private StatisticsDetailPanel detailPanel;
 	private StatisticsInfoPanel infoPanel;
 	/**
 	 * Sets initial table view
@@ -59,7 +60,7 @@ public class StatisticsReqTable extends JTable {
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
 	public StatisticsReqTable(Object[][] data, String[] columnNames) {
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -96,11 +97,11 @@ public class StatisticsReqTable extends JTable {
 		// TODO Implement Your Vote, Estimate columns
 		// Currently is 0 for every estimate
 		
-		Set<Integer> requirementIDs = session.getRequirementIDs();
-		RequirementModel reqs = RequirementModel.getInstance();
+		final Set<Integer> requirementIDs = session.getRequirementIDs();
+		final RequirementModel reqs = RequirementModel.getInstance();
 		int vote = 0;
 		String estimate;
-		List<Estimate> estimates = session.getEstimates();
+		final List<Estimate> estimates = session.getEstimates();
 		
 				
 		// clear the table
@@ -137,12 +138,7 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public boolean isCellEditable(int row, int col) {
-		if (col == 2){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return col == 2;
 	}
 	
 	/**
@@ -185,7 +181,7 @@ public class StatisticsReqTable extends JTable {
 	 */
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component comp = super.prepareRenderer(renderer, row, column);
+        final Component comp = super.prepareRenderer(renderer, row, column);
 
         if (JComponent.class.isInstance(comp)) {
             ((JComponent)comp).setBorder(paddingBorder);
@@ -196,7 +192,7 @@ public class StatisticsReqTable extends JTable {
 	
 	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
-		HashMap<Requirement, Integer> finalEstimates = session.getFinalEstimates();
+		final Map<Requirement,Integer> finalEstimates = session.getFinalEstimates();
 		if (finalEstimates.containsKey(reqToFind)){
 			return finalEstimates.get(reqToFind).toString();
 		}

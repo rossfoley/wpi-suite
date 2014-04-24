@@ -1,8 +1,17 @@
-
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -15,13 +24,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetail
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
 
 /**
  * Provides an interface for interaction with the main GUI elements
@@ -35,16 +43,16 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTreePanel overviewTreePanel = null;
 	private OverviewDetailPanel overviewDetailPanel = null;
-	private ArrayList<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
+	private final List<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
 	private OverviewDetailInfoPanel overviewDetailInfoPanel;
-	private ArrayList<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
+	private final List<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
 	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private StatisticsUserTable statisticsUserTable;
 	private StatisticsDetailPanel statisticsDetailPanel;
 	private StatisticsReqTable statisticsReqTable;
 	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
-	private ArrayList<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
+	private final List<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -70,7 +78,7 @@ public class ViewEventController {
 	}
 	
 	public void setOverviewDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
-		this.overviewDetailInfoPanel = infoPanel;
+		overviewDetailInfoPanel = infoPanel;
 	}
 	
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
@@ -81,22 +89,22 @@ public class ViewEventController {
 	}	
 	
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
-		this.planningPokerSessionButtonsPanel = buttonsPanel;
+		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
 	
 	//Statistics package set functions
 	
 	public void setStatisticsUserTable(StatisticsUserTable userTable) {
-		this.statisticsUserTable = userTable;
+		statisticsUserTable = userTable;
 	}
 	public void setStatisticsDetailPanel(StatisticsDetailPanel detailPanel) {
-		this.statisticsDetailPanel = detailPanel;
+		statisticsDetailPanel = detailPanel;
 	}
 	public void setStatisticsReqTable(StatisticsReqTable reqTable) {
-		this.statisticsReqTable = reqTable;
+		statisticsReqTable = reqTable;
 	}
 	public void setStatisticsInfoPanel(StatisticsInfoPanel infoPanel) {
-		this.statisticsInfoPanel = infoPanel;		
+		statisticsInfoPanel = infoPanel;		
 	}
 	/**
 	 * Sets the main view to the given view.
@@ -121,7 +129,7 @@ public class ViewEventController {
 	 */
 	public void createPlanningPokerSession() {
 		//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-		PlanningPokerSessionTab panel = new PlanningPokerSessionTab();
+		final PlanningPokerSessionTab panel = new PlanningPokerSessionTab();
 		main.addTab("New Session.", null, panel, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
@@ -140,14 +148,14 @@ public class ViewEventController {
 	 * @return OverviewTreePanel
 	 */
 	public OverviewTreePanel getOverviewTreePanel() {
-		return this.overviewTreePanel;
+		return overviewTreePanel;
 	}
 	
 	/**
 	 * @return OverviewDetailPanel
 	 */
 	public OverviewDetailPanel getOverviewDetailPanel() {
-		return this.overviewDetailPanel;
+		return overviewDetailPanel;
 	}
 	/**
 	 * 
@@ -167,13 +175,15 @@ public class ViewEventController {
 		// Check if the tab is a planningPokerSession tab
 		if (comp instanceof PlanningPokerSessionTab) {
 			// Only remove if it is ready to remove
-			if(!((PlanningPokerSessionTab)comp).readyToRemove())
+			if(!((PlanningPokerSessionTab)comp).readyToRemove()) {
 				return;
-			this.listOfEditingPanels.remove(comp);
+			}
+			listOfEditingPanels.remove(comp);
 		}
+		
 		// Check if the tab is a voteOnSession tab
 		if (comp instanceof VotingPage) {
-			this.listOfVotingPanels.remove(comp);
+			listOfVotingPanels.remove(comp);
 			planningPokerSessionButtonsPanel.enableVoteButton();
 			planningPokerSessionButtonsPanel.enableEndVoteButton();
 		}		
@@ -185,7 +195,7 @@ public class ViewEventController {
 	 * 
 	 */
 	public void refreshTable() {
-		this.overviewTreePanel.refresh();
+		overviewTreePanel.refresh();
 	}
 	
 	/**
@@ -199,7 +209,7 @@ public class ViewEventController {
 	 * Closes all of the tabs besides the overview tab in the main view.
 	 */
 	public void closeAllTabs() {
-		int tabCount = main.getTabCount();
+		final int tabCount = main.getTabCount();
 
 		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
@@ -215,8 +225,8 @@ public class ViewEventController {
 	 * 
 	 */
 	public void closeOthers() {
-		int tabCount = main.getTabCount();
-		Component selected = main.getSelectedComponent();
+		final int tabCount = main.getTabCount();
+		final Component selected = main.getSelectedComponent();
 
 		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
@@ -264,15 +274,15 @@ public class ViewEventController {
 		if (exists == null)
 		{
 			// eventually want to add session to edit as an argument
-			PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
+			final PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
 			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
+			final StringBuilder tabName = new StringBuilder();
+			final int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
 			tabName.append(toEdit.getName().substring(0,subStringLength));
 			if(toEdit.getName().length() > 6) tabName.append("..");
 			
 			main.addTab(tabName.toString(), null, editPanel, toEdit.getName());
-			this.listOfEditingPanels.add(editPanel);
+			listOfEditingPanels.add(editPanel);
 			main.invalidate();
 			main.repaint();
 			main.setSelectedComponent(editPanel);
@@ -303,15 +313,15 @@ public class ViewEventController {
 		
 		if (exists == null)
 		{
-			VotingPage votingPanel = new VotingPage(toVoteOn);
+			final VotingPage votingPanel = new VotingPage(toVoteOn);
 			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = toVoteOn.getName().length() > 6 ? 7 : toVoteOn.getName().length();
+			final StringBuilder tabName = new StringBuilder();
+			final int subStringLength = toVoteOn.getName().length() > 6 ? 7 : toVoteOn.getName().length();
 			tabName.append(toVoteOn.getName().substring(0,subStringLength));
 			if(toVoteOn.getName().length() > 6) tabName.append("..");
 			
 			main.addTab(tabName.toString(), null, votingPanel, toVoteOn.getName());
-			this.listOfVotingPanels.add(votingPanel);
+			listOfVotingPanels.add(votingPanel);
 			main.invalidate();
 			main.repaint();
 			main.setSelectedComponent(votingPanel);
@@ -323,41 +333,32 @@ public class ViewEventController {
 	}
 	
 	public void openStatisticsTab(PlanningPokerSession viewStats){
-	
-	//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
-
 		StatisticsPanel exists = null;
 		
 		// Check if the session is already open in a tab
-		for(StatisticsPanel statsPanel : listOfStatisticsPanels)
-		{
-			if(statsPanel.getDisplaySession() == viewStats)
-			{
+		for (StatisticsPanel statsPanel : listOfStatisticsPanels) {
+			if (statsPanel.getDisplaySession() == viewStats) {
 				exists = statsPanel;
 				break;
 			}
 		}
 		
-		if (exists == null)
-		{
-			StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
+		if (exists == null) {
+			final StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
 			
-			StringBuilder tabName = new StringBuilder();
-			int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
+			final StringBuilder tabName = new StringBuilder();
+			final int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
 			tabName.append(viewStats.getName().substring(0,subStringLength));
-			if(viewStats.getName().length() > 6) tabName.append("..");
+			if (viewStats.getName().length() > 6) {
+				tabName.append("..");
+			}
 			
-			main .addTab(tabName.toString(), null, statisticsPanel, viewStats.getName());
+			main.addTab(tabName.toString(), null, statisticsPanel, viewStats.getName());
 			main.invalidate(); //force the tabbedpane to redraw.
 			main.repaint();
 			main.setSelectedComponent(statisticsPanel);
-		}
-		else
-		{
+		} else {
 			main.setSelectedComponent(exists);
 		}
-
-	
 	}
-	
 }

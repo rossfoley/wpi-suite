@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012-2014 -- WPI Suite
- *
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 /**
@@ -42,11 +43,11 @@ import javax.swing.JLabel;
 
 public class RequirementSelectionPanel extends JPanel{
 	
-	private RequirementSelectionView parent;
+	private final RequirementSelectionView parent;
 	private LinkedList<Requirement> requirements;
 	private LinkedList<Boolean> selection;
-	private JList selectedListGui;
-	private JList unselectedListGui;
+	private final JList selectedListGui;
+	private final JList unselectedListGui;
 	private AbstractListModel unSelectedListModel;
 	private AbstractListModel selectedListModel;
 	protected String[] unSelectedListData;
@@ -58,7 +59,7 @@ public class RequirementSelectionPanel extends JPanel{
 	JButton btnNewReq;
 	private transient Vector<RequirementsSelectedListener> listeners;
 	private int numRequirementsAdded = 0;
-	private InfoPanel infoPanel;
+	private final InfoPanel infoPanel;
 	private int[] unselectedIndicesOld = {};
 	private int[] selectedIndicesOld = {};
 	private Requirement visibleRequirement;
@@ -74,7 +75,7 @@ public class RequirementSelectionPanel extends JPanel{
 		populateBooleans();
 		
 		
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
 		infoPanel = new InfoPanel();
@@ -84,24 +85,24 @@ public class RequirementSelectionPanel extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, infoPanel, 0, SpringLayout.EAST, this);
 		add(infoPanel);
 		
-		Box horizontalBox = Box.createHorizontalBox();
+		final Box horizontalBox = Box.createHorizontalBox();
 		springLayout.putConstraint(SpringLayout.NORTH, horizontalBox, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, horizontalBox, 0, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, horizontalBox, 0, SpringLayout.NORTH, infoPanel);
 		springLayout.putConstraint(SpringLayout.EAST, horizontalBox, 0, SpringLayout.EAST, this);
 		add(horizontalBox);
 		
-		JPanel unselectedPanel = new JPanel();
+		final JPanel unselectedPanel = new JPanel();
 		horizontalBox.add(unselectedPanel);
-		SpringLayout sl_unselectedPanel = new SpringLayout();
+		final SpringLayout sl_unselectedPanel = new SpringLayout();
 		unselectedPanel.setLayout(sl_unselectedPanel);
 		
-		JLabel lblUnselectedList = new JLabel("Unselected Requirements");
+		final JLabel lblUnselectedList = new JLabel("Unselected Requirements");
 		sl_unselectedPanel.putConstraint(SpringLayout.NORTH, lblUnselectedList, 10, SpringLayout.NORTH, unselectedPanel);
 		sl_unselectedPanel.putConstraint(SpringLayout.WEST, lblUnselectedList, 10, SpringLayout.WEST, unselectedPanel);
 		unselectedPanel.add(lblUnselectedList);
 		
-		JScrollPane unselectedScrollPane = new JScrollPane();
+		final JScrollPane unselectedScrollPane = new JScrollPane();
 		sl_unselectedPanel.putConstraint(SpringLayout.NORTH, unselectedScrollPane, 0, SpringLayout.SOUTH, lblUnselectedList);
 		sl_unselectedPanel.putConstraint(SpringLayout.WEST, unselectedScrollPane, 10, SpringLayout.WEST, unselectedPanel);
 		sl_unselectedPanel.putConstraint(SpringLayout.SOUTH, unselectedScrollPane, -10, SpringLayout.SOUTH, unselectedPanel);
@@ -118,25 +119,25 @@ public class RequirementSelectionPanel extends JPanel{
 		});
 		unselectedScrollPane.setViewportView(unselectedListGui);
 		
-		JPanel btnPanel = new JPanel();
+		final JPanel btnPanel = new JPanel();
 		horizontalBox.add(btnPanel);
-		SpringLayout sl_btnPanel = new SpringLayout();
+		final SpringLayout sl_btnPanel = new SpringLayout();
 		btnPanel.setLayout(sl_btnPanel);
 		
-		Box verticalBox = Box.createVerticalBox();
+		final Box verticalBox = Box.createVerticalBox();
 		sl_btnPanel.putConstraint(SpringLayout.NORTH, verticalBox, 20, SpringLayout.NORTH, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.WEST, verticalBox, 5, SpringLayout.WEST, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.SOUTH, verticalBox, -5, SpringLayout.SOUTH, btnPanel);
 		sl_btnPanel.putConstraint(SpringLayout.EAST, verticalBox, -5, SpringLayout.EAST, btnPanel);
 		btnPanel.add(verticalBox);
 		
-		JPanel panelSpace = new JPanel();
+		final JPanel panelSpace = new JPanel();
 		//verticalBox.add(panelSpace);
 		panelSpace.setLayout(new SpringLayout());
 		
-		JPanel panelAddAll = new JPanel();
+		final JPanel panelAddAll = new JPanel();
 		verticalBox.add(panelAddAll);
-		SpringLayout sl_panelAddAll = new SpringLayout();
+		final SpringLayout sl_panelAddAll = new SpringLayout();
 		panelAddAll.setLayout(sl_panelAddAll);
 		
 		btnAddAll = new JButton(">>");
@@ -155,9 +156,9 @@ public class RequirementSelectionPanel extends JPanel{
 		panelAddAll.add(btnAddAll);
 		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnAdd, 25, SpringLayout.SOUTH, btnAddAll);
 		
-		JPanel panelAdd = new JPanel();
+		final JPanel panelAdd = new JPanel();
 		verticalBox.add(panelAdd);
-		SpringLayout sl_panelAdd = new SpringLayout();
+		final SpringLayout sl_panelAdd = new SpringLayout();
 		panelAdd.setLayout(sl_panelAdd);
 		
 		btnAdd = new JButton(">");
@@ -175,9 +176,9 @@ public class RequirementSelectionPanel extends JPanel{
 		});
 		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemove, 12, SpringLayout.SOUTH, btnAdd);
 		
-		JPanel panelRemove = new JPanel();
+		final JPanel panelRemove = new JPanel();
 		verticalBox.add(panelRemove);
-		SpringLayout sl_panelRemove = new SpringLayout();
+		final SpringLayout sl_panelRemove = new SpringLayout();
 		panelRemove.setLayout(sl_panelRemove);
 		
 		btnRemove = new JButton("<");
@@ -195,9 +196,9 @@ public class RequirementSelectionPanel extends JPanel{
 		});
 		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnRemoveAll, 6, SpringLayout.SOUTH, btnRemove);
 		
-		JPanel panelRemoveAll = new JPanel();
+		final JPanel panelRemoveAll = new JPanel();
 		verticalBox.add(panelRemoveAll);
-		SpringLayout sl_panelRemoveAll = new SpringLayout();
+		final SpringLayout sl_panelRemoveAll = new SpringLayout();
 		panelRemoveAll.setLayout(sl_panelRemoveAll);
 		
 		btnRemoveAll = new JButton("<<");
@@ -216,9 +217,9 @@ public class RequirementSelectionPanel extends JPanel{
 		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnNewReq, 6, SpringLayout.SOUTH, btnRemoveAll);
 		//sl_btnPanel.putConstraint(SpringLayout.NORTH, horizontalStrut, 24, SpringLayout.SOUTH, btnRemoveAll);
 		
-		JPanel panelNewReq = new JPanel();
+		final JPanel panelNewReq = new JPanel();
 		verticalBox.add(panelNewReq);
-		SpringLayout sl_panelNewReq = new SpringLayout();
+		final SpringLayout sl_panelNewReq = new SpringLayout();
 		panelNewReq.setLayout(sl_panelNewReq);
 		
 		btnNewReq = new JButton("New Req");
@@ -231,7 +232,7 @@ public class RequirementSelectionPanel extends JPanel{
 		sl_btnPanel.putConstraint(SpringLayout.EAST, btnNewReq, 0, SpringLayout.EAST, btnPanel);
 		panelNewReq.add(btnNewReq);
 		
-		JPanel panelSpace2 = new JPanel();
+		final JPanel panelSpace2 = new JPanel();
 		//verticalBox.add(panelSpace2);
 		panelSpace2.setLayout(new SpringLayout());
 		btnNewReq.addActionListener(new ActionListener() {
@@ -240,17 +241,17 @@ public class RequirementSelectionPanel extends JPanel{
 			}
 		});
 		
-		JPanel selectedPanel = new JPanel();
+		final JPanel selectedPanel = new JPanel();
 		horizontalBox.add(selectedPanel);
-		SpringLayout sl_selectedPanel = new SpringLayout();
+		final SpringLayout sl_selectedPanel = new SpringLayout();
 		selectedPanel.setLayout(sl_selectedPanel);
 		
-		JLabel lblSelectedRequirements = new JLabel("Selected Requirements");
+		final JLabel lblSelectedRequirements = new JLabel("Selected Requirements");
 		sl_selectedPanel.putConstraint(SpringLayout.NORTH, lblSelectedRequirements, 10, SpringLayout.NORTH, selectedPanel);
 		sl_selectedPanel.putConstraint(SpringLayout.WEST, lblSelectedRequirements, 10, SpringLayout.WEST, selectedPanel);
 		selectedPanel.add(lblSelectedRequirements);
 		
-		JScrollPane selectedScrollPane = new JScrollPane();
+		final JScrollPane selectedScrollPane = new JScrollPane();
 		sl_selectedPanel.putConstraint(SpringLayout.NORTH, selectedScrollPane, 0, SpringLayout.SOUTH, lblSelectedRequirements);
 		sl_selectedPanel.putConstraint(SpringLayout.WEST, selectedScrollPane, 10, SpringLayout.WEST, selectedPanel);
 		sl_selectedPanel.putConstraint(SpringLayout.SOUTH, selectedScrollPane, -10, SpringLayout.SOUTH, selectedPanel);
@@ -280,7 +281,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	private void populateBooleans() {
 		if (selection == null){
-			this.selection = new LinkedList<Boolean>();
+			selection = new LinkedList<Boolean>();
 		}
 		
 		while (requirements.size() > selection.size()){
@@ -294,17 +295,17 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	private void populateRequirements() {
 				// Get the singleton instance of the requirement model to steal it's list of requirements.
-				RequirementModel requirementModel = RequirementModel.getInstance();
+				final RequirementModel requirementModel = RequirementModel.getInstance();
 				try {
 					// Steal list of requirements from requirement model muhahaha.
-					List<Requirement> reqsList = requirementModel.getRequirements();
-					List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
+					final List<Requirement> reqsList = requirementModel.getRequirements();
+					final List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
 					for (Requirement r:reqsList){
 						if (r.getIteration().equals("Backlog")){
 							reqsInBacklog.add(r);
 						}
 					} 
-					this.requirements = (LinkedList<Requirement>)reqsInBacklog;
+					requirements = (LinkedList<Requirement>)reqsInBacklog;
 				
 				}
 				catch (Exception e) {}
@@ -314,15 +315,15 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function is used to update the lists and the state of 
 	 * the buttons
 	 */
-	private void update(){
-		LinkedList<String> unselectedRequirements = new LinkedList<String>();
-		LinkedList<String> selectedRequirements = new LinkedList<String>();
-		for (Requirement rqt : this.requirements){
-			int pos = this.requirements.indexOf(rqt);
-			if (this.selection.get(pos) == true){
+	private void update() {
+		final LinkedList<String> unselectedRequirements = new LinkedList<String>();
+		final LinkedList<String> selectedRequirements = new LinkedList<String>();
+		for (Requirement rqt : requirements) {
+			int pos = requirements.indexOf(rqt);
+			if (selection.get(pos)) {
 				selectedRequirements.add(rqt.getName());
 			}
-			else{
+			else {
 				unselectedRequirements.add(rqt.getName());
 			}
 		}
@@ -343,12 +344,12 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	// update the data displayed in the unselected list
 	private void updateUnselectedList(){
-		this.unSelectedListModel = new AbstractListModel(){
-			String[] strings = unSelectedListData;
+		unSelectedListModel = new AbstractListModel(){
+			private final String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		this.unselectedListGui.setModel(unSelectedListModel);
+		unselectedListGui.setModel(unSelectedListModel);
 	}
 	
 	/**
@@ -356,12 +357,12 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	// update the data displayed by the selected list
 	private void updateSelectedList(){
-		this.selectedListModel = new AbstractListModel(){
-			String[] strings = selectedListData;
+		selectedListModel = new AbstractListModel(){
+			private final String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		this.selectedListGui.setModel(selectedListModel);
+		selectedListGui.setModel(selectedListModel);
 	}
 	
 	/**
@@ -369,11 +370,11 @@ public class RequirementSelectionPanel extends JPanel{
 	 * 
 	 * @return list of positions
 	 */
-	private LinkedList<Integer> getUnselectedPos(){
-		LinkedList<Integer> positions = new LinkedList<Integer>();
-		for (Requirement rqt : this.requirements){
-			int pos = this.requirements.indexOf(rqt);
-			if (!this.selection.get(pos)){
+	private List<Integer> getUnselectedPos(){
+		final LinkedList<Integer> positions = new LinkedList<Integer>();
+		for (Requirement rqt : requirements){
+			int pos = requirements.indexOf(rqt);
+			if (!selection.get(pos)){
 				positions.add(pos);
 			}
 		}
@@ -385,11 +386,11 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function get the position of each selected requirement
 	 * @return
 	 */
-	private LinkedList<Integer> getSelectedPos(){
-		LinkedList<Integer> positions = new LinkedList<Integer>();
-		for (Requirement rqt : this.requirements){
-			int pos = this.requirements.indexOf(rqt);
-			if (this.selection.get(pos)){
+	private List<Integer> getSelectedPos(){
+		final LinkedList<Integer> positions = new LinkedList<Integer>();
+		for (Requirement rqt : requirements){
+			int pos = requirements.indexOf(rqt);
+			if (selection.get(pos)){
 				positions.add(pos);
 			}
 		}
@@ -401,12 +402,12 @@ public class RequirementSelectionPanel extends JPanel{
 	 * become selected
 	 */
 	private void add(){
-		LinkedList<Integer> pos = getUnselectedPos();
-		int selected[] = unselectedListGui.getSelectedIndices();
+		final List<Integer> pos = getUnselectedPos();
+		final int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
-			this.selection.remove(position);
-			this.selection.add(position, true);
+			selection.remove(position);
+			selection.add(position, true);
 		}
 		numRequirementsAdded += 1;
 		update();
@@ -417,12 +418,12 @@ public class RequirementSelectionPanel extends JPanel{
 	 * indicated to become unselected
 	 */
 	private void remove(){
-		LinkedList<Integer> pos = getSelectedPos();
-		int selected[] = selectedListGui.getSelectedIndices();
+		final List<Integer> pos = getSelectedPos();
+		final int selected[] = selectedListGui.getSelectedIndices();
 		for(int n : selected){
 			int position = pos.get(n);
-			this.selection.remove(position);
-			this.selection.add(position, false);
+			selection.remove(position);
+			selection.add(position, false);
 		}
 		numRequirementsAdded -= 1;
 		update();
@@ -433,11 +434,11 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function makes all of the requirements selected
 	 */
 	private void selectAll(){
-		LinkedList<Integer> pos = getUnselectedPos();
+		final List<Integer> pos = getUnselectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
-			this.selection.remove(n);
-			this.selection.add(n, true);
+			selection.remove(n);
+			selection.add(n, true);
 		}
 		numRequirementsAdded = selection.size();
 		update();
@@ -448,11 +449,11 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function makes all of the requirements unselected
 	 */
 	private void unselectAll(){
-		LinkedList<Integer> pos = getSelectedPos();
+		final List<Integer> pos = getSelectedPos();
 		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
-			this.selection.remove(n);
-			this.selection.add(n, false);
+			selection.remove(n);
+			selection.add(n, false);
 		}
 		numRequirementsAdded = 0;
 		update();
@@ -464,42 +465,37 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	// checks for whether any of the buttons can be used and disables the ones that can't
 	private void validButtons(){
-		boolean debug = false; // quick disable for console messages
-		
 		//checks for full lists and disables trying to move from empty lists
-		boolean allUnselected = fullList(false);
-		boolean allSelected = fullList(true);
-		if(allUnselected){
-			if(debug){System.out.println("Disableing removeAll");}
-			this.btnRemoveAll.setEnabled(false);
+		final boolean allUnselected = fullList(false);
+		final boolean allSelected = fullList(true);
+		if (allUnselected) {
+			btnRemoveAll.setEnabled(false);
 		}
-		else{
-			if(debug){System.out.println("Enableing removeAll");}
-			this.btnRemoveAll.setEnabled(true);
+		else {
+			btnRemoveAll.setEnabled(true);
 		}
-		if(allSelected){
-			if(debug){System.out.println("Disableing addAll");}
-			this.btnAddAll.setEnabled(false);
+		
+		if (allSelected) {
+			btnAddAll.setEnabled(false);
 		}
-		else{
-			if(debug){System.out.println("Enableing addAll");}
-			this.btnAddAll.setEnabled(true);
+		else {
+			btnAddAll.setEnabled(true);
 		}
 		
 		// checks to see any requirements are selected for moving
-		boolean pickedUnselected = anySelected(this.unselectedListGui.getSelectedIndices());
-		boolean pickedSelected = anySelected(this.selectedListGui.getSelectedIndices());
-		if(pickedUnselected){
-			this.btnAdd.setEnabled(true);
+		final boolean pickedUnselected = anySelected(unselectedListGui.getSelectedIndices());
+		final boolean pickedSelected = anySelected(selectedListGui.getSelectedIndices());
+		if (pickedUnselected) {
+			btnAdd.setEnabled(true);
 		}
-		else{
-			this.btnAdd.setEnabled(false);
+		else {
+			btnAdd.setEnabled(false);
 		}
-		if(pickedSelected){
-			this.btnRemove.setEnabled(true);
+		if (pickedSelected) {
+			btnRemove.setEnabled(true);
 		}
-		else{
-			this.btnRemove.setEnabled(false);
+		else {
+			btnRemove.setEnabled(false);
 		}
 		
 		
@@ -509,7 +505,7 @@ public class RequirementSelectionPanel extends JPanel{
 	private boolean fullList(boolean aBool){
 		boolean full = true;
 		
-		for(boolean bool : this.selection){
+		for(boolean bool : selection){
 			if(bool != aBool){
 				full = false;
 			}
@@ -520,17 +516,11 @@ public class RequirementSelectionPanel extends JPanel{
 	
 	// checks for any selections from the given array
 	private boolean anySelected(int selected[]){
-		boolean any = false;
-		
-		for(int n : selected){
-			any = true;
-		}
-		
-		return any;
+		return selected != null && selected.length > 0;
 	}
 	
 	private void viewUnselectedRequirement(){
-		int[] unselectedIndicesCurrent = unselectedListGui.getSelectedIndices();
+		final int[] unselectedIndicesCurrent = unselectedListGui.getSelectedIndices();
 		for (int n : unselectedIndicesCurrent){
 			boolean contains = false;
 			for (int i : unselectedIndicesOld){
@@ -547,12 +537,10 @@ public class RequirementSelectionPanel extends JPanel{
 		
 		infoPanel.setRequirement(visibleRequirement);
 		unselectedIndicesOld = unselectedIndicesCurrent;
-		//remove(infoPanel);
-		//add(infoPanel);
 	}
 	
 	private void viewSelectedRequirement(){
-		int[] selectedIndicesCurrent = selectedListGui.getSelectedIndices();
+		final int[] selectedIndicesCurrent = selectedListGui.getSelectedIndices();
 		for (int n : selectedIndicesCurrent){
 			boolean contains = false;
 			for (int i : selectedIndicesOld){
@@ -578,8 +566,8 @@ public class RequirementSelectionPanel extends JPanel{
 	 * @param requirement the requirement to be added
 	 */
 	public void addRequirement(Requirement requirement){
-		this.selection.addLast(true);
-		this.requirements.addLast(requirement);
+		selection.addLast(true);
+		requirements.addLast(requirement);
 		update();
 	}
 	
@@ -589,9 +577,9 @@ public class RequirementSelectionPanel extends JPanel{
 	 * @return
 	 */
 	public List<Requirement> getSelected(){
-		List<Requirement> selection = new LinkedList<Requirement>();
-		for(Requirement rqt : this.requirements){
-			if (this.selection.get(this.requirements.indexOf(rqt))){
+		final List<Requirement> selection = new LinkedList<Requirement>();
+		for(Requirement rqt : requirements){
+			if (this.selection.get(requirements.indexOf(rqt))){
 				selection.add(rqt);
 			}
 		}
@@ -609,9 +597,9 @@ public class RequirementSelectionPanel extends JPanel{
 		numRequirementsAdded = 0;
 		for (Integer id : selectedRequirements) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
-			int pos = this.requirements.indexOf(current);
+			int pos = requirements.indexOf(current);
 			if (pos > -1) {
-				this.selection.set(pos, true);
+				selection.set(pos, true);
 				numRequirementsAdded += 1;
 			}
 		}
@@ -625,8 +613,8 @@ public class RequirementSelectionPanel extends JPanel{
 	public void newRequirementAdded(Requirement newReq){
 		populateRequirements();
 		populateBooleans();
-		int pos = this.requirements.indexOf(newReq);
-		this.selection.set(pos, true);
+		final int pos = requirements.indexOf(newReq);
+		selection.set(pos, true);
 		numRequirementsAdded += 1; //Should probably be integrated better
 		update();
 	}
@@ -657,19 +645,19 @@ public class RequirementSelectionPanel extends JPanel{
 		// Do nothing if we have no listeners
 		if (listeners != null && !listeners.isEmpty()) {
 			// Create the event object to send
-			RequirementsSelectedEvent event = 
+			final RequirementsSelectedEvent event = 
 					new RequirementsSelectedEvent(this, (numRequirementsAdded != 0));
 
 			// Make a copy of the listener list in case anyone adds/removes listeners
-			Vector<RequirementsSelectedListener> targets;
+			final Vector<RequirementsSelectedListener> targets;
 			synchronized (this) {
 				targets = (Vector<RequirementsSelectedListener>) listeners.clone();
 			}
 
 			// Walk through the listener list and call the estimateSubmitted method in each
-			Enumeration<RequirementsSelectedListener> e = targets.elements();
+			final Enumeration<RequirementsSelectedListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				RequirementsSelectedListener l = (RequirementsSelectedListener) e.nextElement();
+				RequirementsSelectedListener l = e.nextElement();
 				l.setRequirementsSelected(event);
 			}
 		}

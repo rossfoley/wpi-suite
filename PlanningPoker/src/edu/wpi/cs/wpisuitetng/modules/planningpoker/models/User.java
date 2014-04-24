@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 
@@ -35,32 +44,32 @@ public class User extends AbstractModel
 		this.username = username;
 		this.password = password;
 		this.idNum = idNum;
-		this.role = Role.USER;
+		role = Role.USER;
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if(other instanceof User)
 		{
-			if( ((User)other).idNum == this.idNum)
+			if( ((User)other).idNum == idNum)
 			{
 				//things that can be null
-				if(this.name != null && !this.name.equals(((User)other).name))
+				if(name != null && !name.equals(((User)other).name))
 				{
 					return false;
 				}
 				
-				if(this.username != null && !this.username.equals(((User)other).username))
+				if(username != null && !username.equals(((User)other).username))
 				{
 					return false;
 				}
 				
-				if(this.password != null && !this.password.equals(((User)other).password))
+				if(password != null && !password.equals(((User)other).password))
 				{
 					return false;
 				}
 				
-				if(this.role != null && !this.role.equals(((User)other).role))
+				if(role != null && !role.equals(((User)other).role))
 				{
 					return false;
 				}
@@ -79,7 +88,7 @@ public class User extends AbstractModel
 	 */
 	public boolean matchPassword(String pass)
 	{
-		return (this.password == null) ? false : password.equals(pass);
+		return (password == null) ? false : password.equals(pass);
 	}
 	
 	/**
@@ -88,12 +97,12 @@ public class User extends AbstractModel
 	 */
 	public void setPassword(String pass)
 	{
-		this.password = pass;
+		password = pass;
 	}
 	
 	public String getPassword()
 	{
-		return this.password;
+		return password;
 	}
 	
 	/* Accessors */
@@ -113,14 +122,10 @@ public class User extends AbstractModel
 	}
 	
 	/* database interaction */
-	public void save()
-	{
-		return;
+	public void save() {
 	}
 	
-	public void delete()
-	{
-		return;
+	public void delete(){
 	}
 	
 	/* Serializing */
@@ -132,13 +137,8 @@ public class User extends AbstractModel
 	 */
 	public String toJSON()
 	{
-		String json;
-		
-		Gson gson = new GsonBuilder().registerTypeAdapter(User.class, new UserSerializer()).create();
-		
-		json = gson.toJson(this, User.class);
-		
-		return json;	
+		final Gson gson = new GsonBuilder().registerTypeAdapter(User.class, new UserSerializer()).create();
+		return gson.toJson(this, User.class);	
 	}
 	
 	/**
@@ -151,8 +151,7 @@ public class User extends AbstractModel
 	{
 		String json ="[";
 		
-		for(User a : u)
-		{
+		for (User a : u) {
 			json += a.toJSON() + ", ";
 		}
 		
@@ -170,21 +169,21 @@ public class User extends AbstractModel
 	 */
 	public String toString()
 	{
-		return this.toJSON();
+		return toJSON();
 	}
 
 	@Override
 	public Boolean identify(Object o)
 	{
-		Boolean b  = false;
+		Boolean b = false;
 		
-		if(o instanceof User)
-			if(((User) o).username.equalsIgnoreCase(this.username))
-				b = true;
+		if(o instanceof User && ((User) o).username.equalsIgnoreCase(username)) {
+			b = true;
+		}
 		
-		if(o instanceof String)
-			if(((String) o).equalsIgnoreCase(this.username))
-				b = true;
+		if(o instanceof String && ((String) o).equalsIgnoreCase(username)) {
+			b = true;
+		}
 		return b;
 	}
 	
@@ -194,42 +193,42 @@ public class User extends AbstractModel
 	 * @return true if this and anotherUser are equal
 	 */
 	public boolean equals(User anotherUser){
-		return this.name.equalsIgnoreCase(anotherUser.getName()) &&
-				this.username.equalsIgnoreCase(anotherUser.getUsername()) &&
-				this.idNum == anotherUser.getIdNum();
+		return name.equalsIgnoreCase(anotherUser.getName()) &&
+				username.equalsIgnoreCase(anotherUser.getUsername()) &&
+				idNum == anotherUser.getIdNum();
 	}
 	
 	public User setName(String newName){
-		this.name = newName;
+		name = newName;
 		return this;
 	}
 	
 	public User setUserName(String newUserName){
-		this.username = newUserName;
+		username = newUserName;
 		return this;
 	}
 	
 	public User setIdNum(int newidNum){
-		this.idNum = newidNum;
+		idNum = newidNum;
 		return this;
 	}
 	
 	
 	public Role getRole()
 	{
-		return this.role;
+		return role;
 	}
 	
 	public void setRole(Role r)
 	{
-		this.role = r;
+		role = r;
 	}
 
 	
 	public static User fromJSON(String json) {
 		// build the custom serializer/deserializer
-		Gson gson;
-		GsonBuilder builder = new GsonBuilder();
+		final Gson gson;
+		final GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(User.class, new UserDeserializer());
 
 		gson = builder.create();

@@ -1,4 +1,12 @@
-
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting;
 
@@ -45,18 +53,18 @@ import java.awt.Dimension;
  */
 
 public class VotingPage extends JSplitPane {
-	private JPanel voteOnReqPanel = new JPanel();
+	private final JPanel voteOnReqPanel = new JPanel();
 
 	private VotingManager reqsView;
 
-	private SpringLayout layout = new SpringLayout();
+	private final SpringLayout layout = new SpringLayout();
 	private JPanel reqDetailPanel;
 	private DeckVotingPanel votingPanel;
 
 	private PlanningPokerSession activeSession;
 
 	private Requirement requirement;
-	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+	private final List<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 
 	private OverviewVoterTable thetable;
@@ -64,7 +72,7 @@ public class VotingPage extends JSplitPane {
 	private JScrollPane thetablePanel;
 
 	public VotingPage(PlanningPokerSession votingSession){
-		this.activeSession = votingSession;
+		activeSession = votingSession;
 
 		// Disable the vote button in the planning poker module toolbar
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
@@ -80,7 +88,7 @@ public class VotingPage extends JSplitPane {
 			public void selectionMade(SelectionEvent e){
 				requirement = e.getRequirement();
 				buildReqPanel(requirement);
-				JScrollPane tablePanel = new JScrollPane();
+				final JScrollPane tablePanel = new JScrollPane();
 				tablePanel.setViewportView(reqsView);
 
 				tablePanel.setMinimumSize(new Dimension(200, 300));
@@ -93,7 +101,7 @@ public class VotingPage extends JSplitPane {
 			}
 
 		});
-		JScrollPane tablePanel = new JScrollPane();
+		final JScrollPane tablePanel = new JScrollPane();
 		tablePanel.setViewportView(reqsView);
 
 		tablePanel.setMinimumSize(new Dimension(200, 300));
@@ -109,37 +117,37 @@ public class VotingPage extends JSplitPane {
 	 * @return the session being voted on in this panel
 	 */
 	public PlanningPokerSession getDisplaySession(){
-		return this.activeSession;
+		return activeSession;
 	}
 
 	public JPanel makeReqDetailPanel(Requirement reqToVoteOn) {
 
 		reqDetails = new JPanel();
-		SpringLayout sl_reqDetails = new SpringLayout();
+		final SpringLayout sl_reqDetails = new SpringLayout();
 		reqDetails.setLayout(sl_reqDetails);
-		JLabel nameLabel = new JLabel("Requirement Name:");
-		JLabel descriptionLabel = new JLabel("Requirement Description:");
-		JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
+		final JLabel nameLabel = new JLabel("Requirement Name:");
+		final JLabel descriptionLabel = new JLabel("Requirement Description:");
+		final JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
 		
-		String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
-		Object[][] data = {};
+		final String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
+		final Object[][] data = {};
 		thetable = new OverviewVoterTable(data, columnNames, activeSession);
 		thetablePanel = new JScrollPane(thetable);
 		thetable.getColumnModel().getColumn(0).setMinWidth(5); // Requirement ID
 		thetable.getColumnModel().getColumn(1).setMinWidth(100); // Requirement Name	
 		thetable.getColumnModel().getColumn(2).setMinWidth(55); // Username
 		thetable.getColumnModel().getColumn(3).setMinWidth(15); // Votes
-		Dimension d = new Dimension(150, 80);
+		final Dimension d = new Dimension(150, 80);
         thetablePanel.setMinimumSize(d);
         
         thetable.populateVotePanel();
         
-		JTextField nameField = new JTextField();
+		final JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
 		nameField.setEditable(false);
 
 		final JScrollPane descrScroll = new JScrollPane();
-		JTextArea descriptionField = new JTextArea("");
+		final JTextArea descriptionField = new JTextArea("");
 		descriptionField.setBackground(Color.WHITE);
 		descrScroll.setPreferredSize(new Dimension(300, 300));
 		descriptionField.setEditable(false);
@@ -158,7 +166,7 @@ public class VotingPage extends JSplitPane {
 			estimationComplete = false;	
 		}
 
-		boolean userIsModerator = ConfigManager.getConfig().getUserName().equals(activeSession.getSessionCreatorName());
+		final boolean userIsModerator = ConfigManager.getConfig().getUserName().equals(activeSession.getSessionCreatorName());
 
 		if (estimationComplete && userIsModerator) {
 			requirementEstimated.setVisible(true);
@@ -214,9 +222,9 @@ public class VotingPage extends JSplitPane {
 	 * @return true if the current user estimated the requirement, false otherwise
 	 */
 	public boolean isEstimated(Requirement checkReq){
-		List<Estimate> sessionEstimates  = activeSession.getEstimates();
+		final List<Estimate> sessionEstimates  = activeSession.getEstimates();
 
-		String currentUser = ConfigManager.getConfig().getUserName();
+		final String currentUser = ConfigManager.getConfig().getUserName();
 		// match current user and given requirement
 		for (Estimate e:sessionEstimates){
 			if ((checkReq.getId()==e.getRequirementID())&&(e.getOwnerName().equals(currentUser))){
@@ -231,8 +239,8 @@ public class VotingPage extends JSplitPane {
 	 * @return a list of requirements that have been selected for the given session
 	 */
 	public List<Requirement> getSessionReqs(){
-		Set<Integer> sessionReqIds = activeSession.getRequirementIDs();
-		List<Requirement> sessionReqs = new LinkedList<Requirement>();
+		final Set<Integer> sessionReqIds = activeSession.getRequirementIDs();
+		final List<Requirement> sessionReqs = new LinkedList<Requirement>();
 		for (Integer id : sessionReqIds) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
 			sessionReqs.add(current);			
@@ -307,15 +315,15 @@ public class VotingPage extends JSplitPane {
 	 * returns the list of users in a project
 	 */
 	public String getVoterName() {
-		String name = ConfigManager.getInstance().getConfig().getUserName();
+		final String name = ConfigManager.getInstance().getConfig().getUserName();
 		name.toLowerCase();
 		return name;
 	}
 	
 	public List<String> getAllVoterNamesList() {
-		List<String> allVoters = new ArrayList<String>();
+		final List<String> allVoters = new ArrayList<String>();
 		GetUserController.getInstance().retrieveUsers();
-		List<User> user = UserModel.getInstance().getUsers();
+		final List<User> user = UserModel.getInstance().getUsers();
 		
 		for(User u : user) {
 			try {
@@ -356,7 +364,7 @@ public class VotingPage extends JSplitPane {
 				if (requirement != null) {
 					Estimate estimate = new Estimate();
 					// tracking line
-					EstimateVoters estimateVoter = new EstimateVoters();
+					final EstimateVoters estimateVoter = new EstimateVoters();
 					for (Estimate e2: estimates) {
 						if (e2.getRequirementID() == requirement.getId()) {
 							estimate = e2;
@@ -386,7 +394,7 @@ public class VotingPage extends JSplitPane {
 						public void selectionMade(SelectionEvent e){
 							requirement = e.getRequirement();
 							buildReqPanel(requirement);
-							JScrollPane tablePanel = new JScrollPane();
+							final JScrollPane tablePanel = new JScrollPane();
 							tablePanel.setViewportView(reqsView);
 
 							tablePanel.setMinimumSize(new Dimension(200, 300));
@@ -399,7 +407,7 @@ public class VotingPage extends JSplitPane {
 						}
 
 					});
-					JScrollPane tablePanel = new JScrollPane();
+					final JScrollPane tablePanel = new JScrollPane();
 					tablePanel.setViewportView(reqsView);
 
 					tablePanel.setMinimumSize(new Dimension(200, 300));

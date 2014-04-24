@@ -1,8 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,16 +29,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * This class is a panel that contains the functionality for 
@@ -37,32 +42,31 @@ import java.awt.event.MouseEvent;
  */
 
 public class SelectFromListPanel extends JPanel {
-	
-	// define variables
+
 	private List<Requirement> requirements;
-	private LinkedList<Requirement> unSelected;
-	private LinkedList<Requirement> selected;
+	private final LinkedList<Requirement> unSelected;
+	private final LinkedList<Requirement> selected;
 	private String[] unSelectedListData = {};
 	private String[] selectedListData = {};
 	private int numRequirementsAdded = 0;
 	private AbstractListModel unSelectedListModel;
-	private JList<String> unSelectedGuiList;
+	private final JList<String> unSelectedGuiList;
 	private AbstractListModel selectedListModel;
-	private javax.swing.JList<String> Selected;
-	private LinkedList<String> selectedNames;
-	private LinkedList<String> unSelectedNames;
-	private JScrollPane unSelectedScrollPane;
-	private JScrollPane selectedScrollPane;
-	private JButton btnAdd;
-	private JButton btnAddAll;
-	private JButton btnRemove;
-	private JButton btnRemoveAll;
+	private final JList<String> Selected;
+	private List<String> selectedNames;
+	private List<String> unSelectedNames;
+	private final JScrollPane unSelectedScrollPane;
+	private final JScrollPane selectedScrollPane;
+	private final JButton btnAdd;
+	private final JButton btnAddAll;
+	private final JButton btnRemove;
+	private final JButton btnRemoveAll;
 	private transient Vector<RequirementsSelectedListener> listeners;
 	
 	/**
 	 * The constructor for the requirement selection panel
 	 */
-	SelectFromListPanel(){
+	public SelectFromListPanel(){
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -88,47 +92,47 @@ public class SelectFromListPanel extends JPanel {
 		//initialize the main requirement lists
 		populateRequirements();
 		//System.out.println(this.requirements.size());
-		this.unSelected = new LinkedList<Requirement>();
-		this.selected = new LinkedList<Requirement>();
+		unSelected = new LinkedList<Requirement>();
+		selected = new LinkedList<Requirement>();
 		//convert the inital data from an array to a list
 		for(Requirement rqt : requirements){
-			this.unSelected.add(rqt);
+			unSelected.add(rqt);
 		}
 		
 		//get the data to populate the initial unselected requirements
-		unSelectedListData = getNames(this.unSelected).toArray(new String[0]);
+		unSelectedListData = getNames(unSelected).toArray(new String[0]);
 		
 		
 		//populated the initial list of selected requirements
-		for (Requirement rqt : this.unSelected){
-			this.selected.add(null);
+		for (Requirement rqt : unSelected){
+			selected.add(null);
 		}
 		
 		//initializes the default unselected list data
-		this.unSelectedListModel = new javax.swing.AbstractListModel(){
-			String[] strings = unSelectedListData;
+		unSelectedListModel = new javax.swing.AbstractListModel(){
+			private final String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
 		
 		// initializes the default selected list data
-		this.selectedListModel = new javax.swing.AbstractListModel(){
-			String[] strings = selectedListData;
+		selectedListModel = new javax.swing.AbstractListModel(){
+			private final String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
 		setLayout(null);
 		
-		JLabel lblUnselectedRequirements = new JLabel("Unselected Requirements");
+		final JLabel lblUnselectedRequirements = new JLabel("Unselected Requirements");
 		lblUnselectedRequirements.setBounds(11, 20, 200, 14);
 		add(lblUnselectedRequirements);
 		
-		JLabel lblSelectedRequirements = new JLabel("Selected Requirements");
+		final JLabel lblSelectedRequirements = new JLabel("Selected Requirements");
 		lblSelectedRequirements.setBounds(288, 20, 200, 14);
 		add(lblSelectedRequirements);
 		
 		// initializes the unselected list
-		this.unSelectedGuiList = new JList<String>();
+		unSelectedGuiList = new JList<String>();
 		unSelectedGuiList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -143,7 +147,7 @@ public class SelectFromListPanel extends JPanel {
 		unSelectedScrollPane.setViewportView(unSelectedGuiList);
 		
 		// initializes the selected list
-		this.Selected = new JList<String>();
+		Selected = new JList<String>();
 		Selected.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -203,7 +207,7 @@ public class SelectFromListPanel extends JPanel {
 		//System.out.println("In Update");
 		//section updates the unselected list object
 		unSelectedNames = getNames(unSelected);
-		LinkedList<String> unSelectedNonNull = new LinkedList<String>();
+		final LinkedList<String> unSelectedNonNull = new LinkedList<String>();
 		for(String str : unSelectedNames){
 			if (str != null){
 				unSelectedNonNull.addLast(str);
@@ -211,7 +215,7 @@ public class SelectFromListPanel extends JPanel {
 		}
 		unSelectedListData = unSelectedNonNull.toArray(new String[0]);
 		selectedNames = getNames(selected);
-		LinkedList<String> selectedNonNull = new LinkedList<String>();
+		final LinkedList<String> selectedNonNull = new LinkedList<String>();
 		for(String str : selectedNames){
 			if (str != null){
 				selectedNonNull.addLast(str);
@@ -231,24 +235,24 @@ public class SelectFromListPanel extends JPanel {
 	 * the selected list
 	 */
 	private void add(){
-		int selected[] = unSelectedGuiList.getSelectedIndices();
-		LinkedList<String> name = new LinkedList<String>();
+		final int selected[] = unSelectedGuiList.getSelectedIndices();
+		final List<String> name = new LinkedList<String>();
 		for(int n : selected){
-			String str = this.unSelectedListData[n];
+			String str = unSelectedListData[n];
 			name.add(str);
 		}
 		for(String str : name){
 			//this.selected.add(n, this.unSelected.get(n));
-			int pos = this.unSelectedNames.indexOf(str);
-			if (this.unSelected.get(pos) != null){
-				Requirement element = this.unSelected.get(pos);
+			int pos = unSelectedNames.indexOf(str);
+			if (unSelected.get(pos) != null){
+				Requirement element = unSelected.get(pos);
 				//this.unSelected.add(n, null);
 				//System.out.println(element);
 				if (!this.selected.contains(element)){
 					this.selected.remove(pos);
 					this.selected.add(pos, element);
-					this.unSelected.remove(pos);
-					this.unSelected.add(pos, null);
+					unSelected.remove(pos);
+					unSelected.add(pos, null);
 					update();
 					numRequirementsAdded += 1;
 				}
@@ -259,14 +263,14 @@ public class SelectFromListPanel extends JPanel {
 	}
 	
 	private void addAll(){
-		for(int i = 0; i < this.unSelected.size(); i++){
+		for(int i = 0; i < unSelected.size(); i++){
 			int pos = i;
-			Requirement element = this.unSelected.get(pos);
+			Requirement element = unSelected.get(pos);
 			if (element != null){
-				this.selected.remove(pos);
-				this.selected.add(pos, element);
-				this.unSelected.remove(pos);
-				this.unSelected.add(pos, null);
+				selected.remove(pos);
+				selected.add(pos, element);
+				unSelected.remove(pos);
+				unSelected.add(pos, null);
 			}
 		}
 		numRequirementsAdded = selected.size();
@@ -278,24 +282,24 @@ public class SelectFromListPanel extends JPanel {
 	 * the unselected list
 	 */
 	private void remove(){
-		int selected[] = Selected.getSelectedIndices();
-		LinkedList<String> name = new LinkedList<String>();
+		final int selected[] = Selected.getSelectedIndices();
+		final List<String> name = new LinkedList<String>();
 		for(int n : selected){
-			String str = this.selectedListData[n];
+			String str = selectedListData[n];
 			name.add(str);
 		}
 		for(String str : name){
 			//System.out.print(n);
 			//this.selected.add(n, this.unSelected.get(n));
 			//String str = this.selectedListData[n];
-			int pos = this.selectedNames.indexOf(str);
+			int pos = selectedNames.indexOf(str);
 			if (this.selected.get(pos) != null){
 				Requirement element = this.selected.get(pos);
 				//this.unSelected.add(n, null);
 				//System.out.println(element);
-				if (!this.unSelected.contains(element)){
-					this.unSelected.remove(pos);
-					this.unSelected.add(pos, element);
+				if (!unSelected.contains(element)){
+					unSelected.remove(pos);
+					unSelected.add(pos, element);
 					this.selected.remove(pos);
 					this.selected.add(pos, null);
 					update();
@@ -308,14 +312,14 @@ public class SelectFromListPanel extends JPanel {
 	}
 	
 	private void unSelectAll(){
-		for(int i = 0; i < this.selected.size(); i++){
+		for(int i = 0; i < selected.size(); i++){
 			int pos = i;
-			Requirement element = this.selected.get(pos);
+			Requirement element = selected.get(pos);
 			if (element != null){
-				this.unSelected.remove(pos);
-				this.unSelected.add(pos, element);
-				this.selected.remove(pos);
-				this.selected.add(pos, null);
+				unSelected.remove(pos);
+				unSelected.add(pos, element);
+				selected.remove(pos);
+				selected.add(pos, null);
 			}
 		}
 		numRequirementsAdded = 0;
@@ -324,9 +328,9 @@ public class SelectFromListPanel extends JPanel {
 	}
 	
 	// get the name to be displayed by the list from the list of requirements given
-	private LinkedList<String> getNames(LinkedList<Requirement> list){
+	private List<String> getNames(LinkedList<Requirement> list){
 		//System.out.println("In Get Names");
-		LinkedList<String> rList = new LinkedList<String>();
+		final List<String> rList = new LinkedList<String>();
 		for(int i = 0; i < list.size(); i++){
 			//System.out.print(i + ":");
 			//rList.add(list.element());
@@ -351,41 +355,28 @@ public class SelectFromListPanel extends JPanel {
 	
 	// update the data displayed in the unselected list
 	private void updateUnselectedList(){
-		this.unSelectedListModel = new AbstractListModel(){
-			String[] strings = unSelectedListData;
+		unSelectedListModel = new AbstractListModel(){
+			private final String[] strings = unSelectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		this.unSelectedGuiList.setModel(unSelectedListModel);	
+		unSelectedGuiList.setModel(unSelectedListModel);	
 	}
 	
 	// update the data displayed by the selected list
 	private void updateSelectedList(){
-		this.selectedListModel = new AbstractListModel(){
-			String[] strings = selectedListData;
+		selectedListModel = new AbstractListModel(){
+			private final String[] strings = selectedListData;
 			public int getSize(){return strings.length;}
 			public Object getElementAt(int i){return strings[i];}
 		};
-		this.Selected.setModel(selectedListModel);
-	}
-	
-	//convert the data given into a linked list
-	private LinkedList<String> getData(List<String> data){
-		LinkedList<String> list = new LinkedList<String>();
-		
-		String[] tempList = data.toArray(new String[0]);
-		for (String element : tempList){
-			list.addLast(element);
-		}
-		
-		return list;
+		Selected.setModel(selectedListModel);
 	}
 	
 	/**
-	 * Function used to add a new requirement directly to the selected list
+	 * Function used to add a new requirement directList<String> list
 	 * @param requirement the requirement to add
 	 */
-	//add a requirement to the list after the object has been created 
 	public void addRequirement(Requirement requirement){
 		unSelected.addLast(null);
 		selected.addLast(requirement);
@@ -396,11 +387,10 @@ public class SelectFromListPanel extends JPanel {
 	 * Function to get the requirements that are currently selected
 	 * @return list of requirements that are selected
 	 */
-	// method to get the list of selected requirements
 	public List<Requirement> getSelected(){
-		List<Requirement> selection = new LinkedList<Requirement>();
-		for(Requirement str : selected){
-			if (str != null){
+		final List<Requirement> selection = new LinkedList<Requirement>();
+		for(Requirement str : selected) {
+			if (str != null) {
 				selection.add(str);
 			}
 		}
@@ -416,15 +406,15 @@ public class SelectFromListPanel extends JPanel {
 		numRequirementsAdded = 0;
 		for (Integer id : selectedRequirements) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
-			int pos = this.unSelectedNames.indexOf(current.getName());
-			if (this.unSelected.get(pos) != null) {
-				Requirement element = this.unSelected.get(pos);
-				if (!this.selected.contains(element)) {
-					this.selected.remove(pos);
-					this.selected.add(pos, element);
-					this.unSelected.remove(pos);
-					this.unSelected.add(pos, null);
-					numRequirementsAdded += 1;
+			int pos = unSelectedNames.indexOf(current.getName());
+			if (unSelected.get(pos) != null) {
+				Requirement element = unSelected.get(pos);
+				if (!selected.contains(element)) {
+					selected.remove(pos);
+					selected.add(pos, element);
+					unSelected.remove(pos);
+					unSelected.add(pos, null);
+					numRequirementsAdded++;
 				}
 			}
 		}
@@ -438,22 +428,22 @@ public class SelectFromListPanel extends JPanel {
 		//System.out.println("In Populate Requirements");
 		
 		// Get singleton instance of Requirements Controller
-		GetRequirementsController requirementsController = GetRequirementsController.getInstance();
+		final GetRequirementsController requirementsController = GetRequirementsController.getInstance();
 		// Manually force a population of the list of requirements in the requirement model
 		requirementsController.retrieveRequirements();
 		GetUserController.getInstance().retrieveUsers();
 		// Get the singleton instance of the requirement model to steal it's list of requirements.
-		RequirementModel requirementModel = RequirementModel.getInstance();
+		final RequirementModel requirementModel = RequirementModel.getInstance();
 		try {
 			// Steal list of requirements from requirement model muhahaha.
-			List<Requirement> reqsList = requirementModel.getRequirements();
-			List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
+			final List<Requirement> reqsList = requirementModel.getRequirements();
+			final List<Requirement> reqsInBacklog = new LinkedList<Requirement>();
 			for (Requirement r:reqsList){
 				if (r.getIteration().equals("Backlog")){
 					reqsInBacklog.add(r);
 				}
 			} 
-			this.requirements = reqsInBacklog;
+			requirements = reqsInBacklog;
 		
 		}
 		catch (Exception e) {}
@@ -461,49 +451,49 @@ public class SelectFromListPanel extends JPanel {
 	
 	// checks for whether any of the buttons can be used and disables the ones that can't
 	private void validButtons(){
-		boolean debug = false; // quick disable for console messages
+		final boolean debug = false; // quick disable for console messages
 		
 		//checks for full lists and disables trying to move from empty lists
-		boolean allUnselected = fullList(this.unSelected);
-		boolean allSelected = fullList(this.selected);
+		final boolean allUnselected = fullList(unSelected);
+		final boolean allSelected = fullList(selected);
 		if(allUnselected){
 			if(debug){System.out.println("Disableing removeAll");}
-			this.btnRemoveAll.setEnabled(false);
+			btnRemoveAll.setEnabled(false);
 		}
 		else{
 			if(debug){System.out.println("Enableing removeAll");}
-			this.btnRemoveAll.setEnabled(true);
+			btnRemoveAll.setEnabled(true);
 		}
 		if(allSelected){
 			if(debug){System.out.println("Disableing addAll");}
-			this.btnAddAll.setEnabled(false);
+			btnAddAll.setEnabled(false);
 		}
 		else{
 			if(debug){System.out.println("Enableing addAll");}
-			this.btnAddAll.setEnabled(true);
+			btnAddAll.setEnabled(true);
 		}
 		
 		// checks to see any requirements are selected for moving
-		boolean pickedUnselected = anySelected(this.unSelectedGuiList.getSelectedIndices());
-		boolean pickedSelected = anySelected(this.Selected.getSelectedIndices());
+		final boolean pickedUnselected = anySelected(unSelectedGuiList.getSelectedIndices());
+		final boolean pickedSelected = anySelected(Selected.getSelectedIndices());
 		if(pickedUnselected){
-			this.btnAdd.setEnabled(true);
+			btnAdd.setEnabled(true);
 		}
 		else{
-			this.btnAdd.setEnabled(false);
+			btnAdd.setEnabled(false);
 		}
 		if(pickedSelected){
-			this.btnRemove.setEnabled(true);
+			btnRemove.setEnabled(true);
 		}
 		else{
-			this.btnRemove.setEnabled(false);
+			btnRemove.setEnabled(false);
 		}
 		
 		
 	}
 	
 	// checks for full lists
-	private boolean fullList(LinkedList<Requirement> list){
+	private boolean fullList(List<Requirement> list){
 		boolean full = true;
 		
 		for(Requirement rqt : list){
@@ -556,19 +546,19 @@ public class SelectFromListPanel extends JPanel {
 		// Do nothing if we have no listeners
 		if (listeners != null && !listeners.isEmpty()) {
 			// Create the event object to send
-			RequirementsSelectedEvent event = 
+			final RequirementsSelectedEvent event = 
 					new RequirementsSelectedEvent(this, (numRequirementsAdded != 0));
 
 			// Make a copy of the listener list in case anyone adds/removes listeners
-			Vector<RequirementsSelectedListener> targets;
+			final Vector<RequirementsSelectedListener> targets;
 			synchronized (this) {
 				targets = (Vector<RequirementsSelectedListener>) listeners.clone();
 			}
 
 			// Walk through the listener list and call the estimateSubmitted method in each
-			Enumeration<RequirementsSelectedListener> e = targets.elements();
+			final Enumeration<RequirementsSelectedListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				RequirementsSelectedListener l = (RequirementsSelectedListener) e.nextElement();
+				RequirementsSelectedListener l = e.nextElement();
 				l.setRequirementsSelected(event);
 			}
 		}

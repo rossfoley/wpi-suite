@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Component;
@@ -30,8 +39,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class OverviewVoterTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-	private PlanningPokerSession planningPokerSession;
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+	private final PlanningPokerSession planningPokerSession;
 	
 	/**
 	 * Sets initial table view
@@ -39,8 +48,8 @@ public class OverviewVoterTable extends JTable {
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
 	public OverviewVoterTable(Object[][] data, String[] columnNames, PlanningPokerSession pps) {
-		this.planningPokerSession = pps;
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		planningPokerSession = pps;
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -58,9 +67,9 @@ public class OverviewVoterTable extends JTable {
 	 * @return
 	 */
 	public List<String> getAllVoterNamesList() {
-		List<String> allVoters = new ArrayList<String>();
+		final List<String> allVoters = new ArrayList<String>();
 		GetUserController.getInstance().retrieveUsers();
-		List<User> user = UserModel.getInstance().getUsers();
+		final List<User> user = UserModel.getInstance().getUsers();
 		for(User u : user) {
 			try {
 				allVoters.add(u.getUsername());
@@ -73,8 +82,8 @@ public class OverviewVoterTable extends JTable {
 	 * @return
 	 */
 	public List<Requirement> getSessionReqs(){
-		Set<Integer> sessionReqIds = planningPokerSession.getRequirementIDs();
-		List<Requirement> sessionReqs = new LinkedList<Requirement>();
+		final Set<Integer> sessionReqIds = planningPokerSession.getRequirementIDs();
+		final List<Requirement> sessionReqs = new LinkedList<Requirement>();
 		for (Integer id : sessionReqIds) {
 			Requirement current = RequirementModel.getInstance().getRequirement(id);
 			sessionReqs.add(current);			
@@ -85,10 +94,10 @@ public class OverviewVoterTable extends JTable {
 
 	public void populateVotePanel() {
 		tableModel.setRowCount(0);	
-		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
+		final Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
 		
-		List<String> allUserList = getAllVoterNamesList();
-		List<Requirement> ListOfRequirements =  getSessionReqs();
+		final List<String> allUserList = getAllVoterNamesList();
+		final List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (Requirement r : ListOfRequirements) {
 			int reqID = r.getId();
 			String reqName = r.getName();
@@ -123,10 +132,10 @@ public class OverviewVoterTable extends JTable {
 	 */
 	public void populateVotePanelNOTCOMPLETE() {
 		tableModel.setRowCount(0);	
-		Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
+		final Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
 		
-		List<String> allUserList = getAllVoterNamesList();
-		List<Requirement> ListOfRequirements =  getSessionReqs();
+		final List<String> allUserList = getAllVoterNamesList();
+		final List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (Requirement r : ListOfRequirements) {
 			int reqID = r.getId();
 			String reqName = r.getName();
@@ -180,7 +189,7 @@ public class OverviewVoterTable extends JTable {
 	 */
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component comp = super.prepareRenderer(renderer, row, column);
+        final Component comp = super.prepareRenderer(renderer, row, column);
 
         if (JComponent.class.isInstance(comp)) {
             ((JComponent)comp).setBorder(paddingBorder);

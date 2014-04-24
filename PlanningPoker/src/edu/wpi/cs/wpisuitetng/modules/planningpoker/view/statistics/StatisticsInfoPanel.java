@@ -47,9 +47,9 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel medianDisplay;
 	JLabel stdDevDisplay;
 	SpringLayout springLayout;
-	public int currentReqID = -1;
+	private int currentReqID = -1;
 	private Requirement aReq; 
-	private PlanningPokerSession session;
+	private final PlanningPokerSession session;
 	
 	public StatisticsInfoPanel(PlanningPokerSession session) {
 

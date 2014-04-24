@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
@@ -14,13 +23,13 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  *
  */
 public class EstimateVoters extends AbstractModel {
-	public int requirementID;
-	public int vote;
-	public String voterUsername;
-	public String ownerName;
-	public UUID uuid = UUID.randomUUID();
-	public UUID sessionID;
-	public List<String> VoterNameList = new ArrayList<String>();
+	private int requirementID;
+	private int vote;
+	private String voterUsername;
+	private String ownerName;
+	private UUID uuid = UUID.randomUUID();
+	private UUID sessionID;
+	private List<String> VoterNameList = new ArrayList<String>();
 	
 	public EstimateVoters() {
 		voterUsername = new String();
@@ -36,7 +45,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return the requirement ID to be estimated
 	 */
 	public int getRequirementID(){
-		return this.requirementID;
+		return requirementID;
 	}
 	
 	/**
@@ -44,7 +53,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return returns the ID of the estimate
 	 */
 	public UUID getID(){
-		return this.uuid;
+		return uuid;
 	}
 	
 	/**
@@ -52,7 +61,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return the value to vote for
 	 */
 	public int getVote(){
-		return this.vote;
+		return vote;
 	}
 	
 	/**
@@ -60,7 +69,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @return the name of the creator
 	 */
 	public String getOwnerName(){
-		return this.ownerName;
+		return ownerName;
 	}
 	//---------------Sets
 	/**
@@ -75,7 +84,7 @@ public class EstimateVoters extends AbstractModel {
 	 * @param ID
 	 */
 	public void setID(UUID ID){
-		this.uuid = ID;
+		uuid = ID;
 	}
 	/**
 	 * sets the vote
@@ -94,10 +103,10 @@ public class EstimateVoters extends AbstractModel {
 
 
 	public UUID getSessionID() {
-		return this.sessionID;
+		return sessionID;
 	}
 	public void setSessionID(UUID id) {
-		this.sessionID = id;
+		sessionID = id;
 	}
 	/**
 	 * @param VoterNameList the VoterNameList to set

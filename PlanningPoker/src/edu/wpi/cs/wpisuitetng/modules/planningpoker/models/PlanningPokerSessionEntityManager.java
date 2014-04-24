@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -34,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CheckForUpdatesCo
 public class PlanningPokerSessionEntityManager implements EntityManager<PlanningPokerSession> {
 	
 	Data db;
-	HashMap<String, ArrayList<PlanningPokerSession>> clientsUpdated = new HashMap<String, ArrayList<PlanningPokerSession>>();
+	Map<String,List<PlanningPokerSession>> clientsUpdated = new HashMap<String, List<PlanningPokerSession>>();
 	
 	public PlanningPokerSessionEntityManager(final Data db) {
 		this.db = db;
@@ -51,7 +52,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 
 	@Override
-	public PlanningPokerSession[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
+	public PlanningPokerSession[] getEntity(Session s, String id) throws NotFoundException {
 		try {
 			return db.retrieve(PlanningPokerSession.class, "uuid", UUID.fromString(id), s.getProject()).toArray(new PlanningPokerSession[0]);
 		} catch (WPISuiteException e) {
@@ -65,8 +66,8 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 * @return array of all of the current user's Planning Poker sessions
 	 */
 	@Override
-	public PlanningPokerSession[] getAll(Session s) throws WPISuiteException {
-		PlanningPokerSession [] allSessions = db.retrieveAll(new PlanningPokerSession(), s.getProject()).toArray(new PlanningPokerSession[0]);
+	public PlanningPokerSession[] getAll(Session s) {
+		final PlanningPokerSession [] allSessions = db.retrieveAll(new PlanningPokerSession(), s.getProject()).toArray(new PlanningPokerSession[0]);
 		return allSessions;
 	}
 
@@ -80,19 +81,19 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 */
 	@Override
 	public PlanningPokerSession update(Session session, String content) throws WPISuiteException {
-		PlanningPokerSession updatedSession = PlanningPokerSession.fromJson(content);
+		final PlanningPokerSession updatedSession = PlanningPokerSession.fromJson(content);
 		/*
 		 * Because of the disconnected objects problem in db4o, we can't just save PlanningPokerSession.
 		 * We have to get the original defect from db4o, copy properties from updatedSession,
 		 * then save the original PlanningPokerSession again.
 		 */
-		List<Model> oldSessions = db.retrieve(PlanningPokerSession.class, "uuid", updatedSession.getID(), session.getProject());
+		final List<Model> oldSessions = db.retrieve(PlanningPokerSession.class, "uuid", updatedSession.getID(), session.getProject());
 		if(oldSessions.size() < 1 || oldSessions.get(0) == null) {
 			System.out.println("Problem with finding by the UUID");
 			throw new BadRequestException("PlanningPokerSession with UUID does not exist.");
 		}
 				
-		PlanningPokerSession existingSession = (PlanningPokerSession)oldSessions.get(0);		
+		final PlanningPokerSession existingSession = (PlanningPokerSession)oldSessions.get(0);		
 		existingSession.copyFrom(updatedSession);
 		
 		if(!db.save(existingSession, session.getProject())) {
@@ -108,7 +109,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, PlanningPokerSession model) throws WPISuiteException {
+	public void save(Session s, PlanningPokerSession model) {
 		addClientUpdate(model, s);
 		db.save(model);
 	}
@@ -119,22 +120,22 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 	
 	@Override
-	public void deleteAll(Session s) throws WPISuiteException {
+	public void deleteAll(Session s) {
 		db.deleteAll(new PlanningPokerSession(), s.getProject());
 	}
 
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		return db.retrieveAll(new PlanningPokerSession()).size();
 	}
 	
 	@Override
-	public String advancedGet(Session s, String[] args) throws WPISuiteException {
+	public String advancedGet(Session s, String[] args) {
 		// Remove the Advanced/PlanningPokerSession part of the args
 		args = Arrays.copyOfRange(args, 2, args.length);
 		switch (args[0]) {
 			case "check-for-updates":
-				ArrayList<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
+				final List<PlanningPokerSession> list = checkForUpdate(s.getSessionId());
 				PlanningPokerSession[] updates = new PlanningPokerSession[list.size()];
 				updates = list.toArray(updates);
 				return new Gson().toJson(updates, PlanningPokerSession[].class);
@@ -148,11 +149,11 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	 * @param sessionId the current session ID
 	 * @return an ArrayList of planning poker updates for the client to use
 	 */
-	private ArrayList<PlanningPokerSession> checkForUpdate(String sessionId) {
+	private List<PlanningPokerSession> checkForUpdate(String sessionId) {
 		if (!clientsUpdated.containsKey(sessionId)) {
 			clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
 		}
-		ArrayList<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
+		final List<PlanningPokerSession> updates = clientsUpdated.get(sessionId);
 		clientsUpdated.put(sessionId, new ArrayList<PlanningPokerSession>());
 		return updates;
 	}
@@ -165,7 +166,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	private void addClientUpdate(PlanningPokerSession value, Session s) {
 		for (String key : clientsUpdated.keySet()) {
 			if (!s.getSessionId().equals(key)) {
-				ArrayList<PlanningPokerSession> sessions = clientsUpdated.get(key);
+				List<PlanningPokerSession> sessions = clientsUpdated.get(key);
 				sessions.add(value);
 				clientsUpdated.put(key, sessions);
 			}
@@ -173,8 +174,7 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -184,8 +184,8 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 			throws WPISuiteException {
 		switch (string) {
 			case "update-estimate":
-				Estimate estimate = Estimate.fromJson(content);
-				PlanningPokerSession pokerSession = getEntity(s, estimate.getSessionID().toString())[0];
+				final Estimate estimate = Estimate.fromJson(content);
+				final PlanningPokerSession pokerSession = getEntity(s, estimate.getSessionID().toString())[0];
 				if (pokerSession.isOpen()) { 
 					pokerSession.addEstimate(estimate);
 					update(s, pokerSession.toJSON());

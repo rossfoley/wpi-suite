@@ -1,55 +1,57 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.SpringLayout;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeNode;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.IterationIcon;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.RequirementIcon;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-import javax.swing.Icon;
-import javax.swing.SpringLayout;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 public class VotingManager extends JPanel {
 	
-	private List<Requirement> requirements;
-	private List<Estimate> estimates;
-	private String ownerName;
+	private final List<Requirement> requirements;
+	private final List<Estimate> estimates;
+	private final String ownerName;
 	private transient Vector<SelectionListener> selectionListeners;
 	private transient Vector<EstimateListener> estimateListeners;
 	
 	private JTree tree = new JTree();
 	private DefaultMutableTreeNode rootNode;
 	
-	private LinkedList<Requirement> notVotedList;
-	private LinkedList<Requirement> votedList;
+	private List<Requirement> notVotedList;
+	private List<Requirement> votedList;
 	
 	public VotingManager(List<Requirement> requirements, PlanningPokerSession pokerSession, String ownerName) {		
 		setName("Voting Manager");
-		this.estimates = pokerSession.getEstimates();
+		estimates = pokerSession.getEstimates();
 		this.requirements = requirements;
 		this.ownerName = ownerName;
 		
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
 		update();
@@ -69,7 +71,7 @@ public class VotingManager extends JPanel {
 				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 				final Icon requirementIcon = new RequirementIcon();
 				final Icon iterationIcon = new IterationIcon();
-				String name = (String) node.getUserObject();
+				final String name = (String) node.getUserObject();
 
 				setIcon(requirementIcon);
 				if (name != null) {
@@ -85,7 +87,7 @@ public class VotingManager extends JPanel {
 	}
 	
 	private void update() {
-		TreeNode rootNode = createNodes();
+		final TreeNode rootNode = createNodes();
 		
 		tree = new JTree(rootNode);
 		for (int i = 0; i < tree.getRowCount(); i++) {
@@ -95,7 +97,7 @@ public class VotingManager extends JPanel {
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Requirement selected = getSelected();
+				final Requirement selected = getSelected();
 				if (selected != null){
 					System.out.println(selected.getId() + ":" + selected.getName());
 					fireSelectionEvent(selected);
@@ -105,12 +107,12 @@ public class VotingManager extends JPanel {
 	}
 
 	private Requirement getSelected(){
-		Requirement rqt = new Requirement();
+		final Requirement rqt = new Requirement();
 		
-		TreeNode node = (TreeNode)tree.getLastSelectedPathComponent();
+		final TreeNode node = (TreeNode)tree.getLastSelectedPathComponent();
 		if (node != null){
-			String selected = node.toString();
-			for (Requirement requirement : this.requirements){
+			final String selected = node.toString();
+			for (Requirement requirement : requirements){
 				if (requirement.getName() == selected){
 					return requirement;
 				}
@@ -121,14 +123,14 @@ public class VotingManager extends JPanel {
 	}
 
 	private TreeNode createNodes() {
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Requirements");
-		DefaultMutableTreeNode notVoted = new DefaultMutableTreeNode("Need Estimation");
-		DefaultMutableTreeNode voted = new DefaultMutableTreeNode("Estimated");
+		final DefaultMutableTreeNode root = new DefaultMutableTreeNode("Requirements");
+		final DefaultMutableTreeNode notVoted = new DefaultMutableTreeNode("Need Estimation");
+		final DefaultMutableTreeNode voted = new DefaultMutableTreeNode("Estimated");
 		notVotedList = new LinkedList<Requirement>();
 		votedList = new LinkedList<Requirement>();
 		
 		
-		for (Requirement rqt : this.requirements){
+		for (Requirement rqt : requirements){
 			if (hasEstimate(rqt)){
 				votedList.add(rqt);
 			}
@@ -154,10 +156,10 @@ public class VotingManager extends JPanel {
 	}
 
 	private boolean hasEstimate(Requirement rqt) {
-		int id = rqt.getId();
-		for (Estimate es : this.estimates) {
+		final int id = rqt.getId();
+		for (Estimate es : estimates) {
 
-			if (es.getRequirementID() == id && es.getOwnerName().equals(this.ownerName)) {
+			if (es.getRequirementID() == id && es.getOwnerName().equals(ownerName)) {
 				return true;
 			}
 		}
@@ -167,39 +169,39 @@ public class VotingManager extends JPanel {
 	
 
 	synchronized public void addSelectionListener(SelectionListener l) {
-		if (this.selectionListeners == null) {
-			this.selectionListeners = new Vector<SelectionListener>();
+		if (selectionListeners == null) {
+			selectionListeners = new Vector<SelectionListener>();
 		}
-		this.selectionListeners.addElement(l);
+		selectionListeners.addElement(l);
 	}  
 
 	/** Remove a listener for EstimateEvents */
 	synchronized public void removeSelectionListener(SelectionListener l) {
-		if (this.selectionListeners == null) {
-			this.selectionListeners = new Vector<SelectionListener>();
+		if (selectionListeners == null) {
+			selectionListeners = new Vector<SelectionListener>();
 		}
 		else {
-			this.selectionListeners.removeElement(l);
+			selectionListeners.removeElement(l);
 		}
 	}
 	
 	protected void fireSelectionEvent(Requirement rqt) {
 		// if we have no listeners, do nothing...
-		if (this.selectionListeners != null && !this.selectionListeners.isEmpty()) {
+		if (selectionListeners != null && !selectionListeners.isEmpty()) {
 			// create the event object to send
-			SelectionEvent event = 
+			final SelectionEvent event = 
 					new SelectionEvent(this, rqt);
 
 			// make a copy of the listener list in case
 			//   anyone adds/removes listeners
-			Vector<SelectionListener> targets;
+			final Vector<SelectionListener> targets;
 			synchronized (this) {
-				targets = (Vector<SelectionListener>) this.selectionListeners.clone();
+				targets = (Vector<SelectionListener>) selectionListeners.clone();
 			}
 
 			// walk through the listener list and
 			//   call the sunMoved method in each
-			Enumeration e = targets.elements();
+			final Enumeration e = targets.elements();
 			while (e.hasMoreElements()) {
 				SelectionListener l = (SelectionListener) e.nextElement();
 				l.selectionMade(event);
@@ -209,19 +211,19 @@ public class VotingManager extends JPanel {
 	
 	/** Register a listener for EstimateEvents */
 	synchronized public void addEstimateListener(EstimateListener l) {
-		if (this.estimateListeners == null) {
-			this.estimateListeners = new Vector<EstimateListener>();
+		if (estimateListeners == null) {
+			estimateListeners = new Vector<EstimateListener>();
 		}
-		this.estimateListeners.addElement(l);
+		estimateListeners.addElement(l);
 	}  
 
 	/** Remove a listener for EstimateEvents */
 	synchronized public void removeEstimateListener(EstimateListener l) {
-		if (this.estimateListeners == null) {
-			this.estimateListeners = new Vector<EstimateListener>();
+		if (estimateListeners == null) {
+			estimateListeners = new Vector<EstimateListener>();
 		}
 		else {
-			this.estimateListeners.removeElement(l);
+			estimateListeners.removeElement(l);
 		}
 	}
 

@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 
 import javax.swing.JPanel;
@@ -10,17 +19,14 @@ import javax.swing.JTextArea;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class InfoPanel extends JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private JTextArea name;
-	private JTextArea description;
+	private final JTextArea name;
+	private final JTextArea description;
 	public InfoPanel() {
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
-		JLabel lblRequirementname = new JLabel("RequirementName");
+		final JLabel lblRequirementname = new JLabel("RequirementName");
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementname, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementname, 10, SpringLayout.WEST, this);
 		add(lblRequirementname);
@@ -34,7 +40,7 @@ public class InfoPanel extends JPanel {
 		add(name);
 		name.setColumns(10);
 		
-		JLabel lblRequirementDescription = new JLabel("Requirement Description");
+		final JLabel lblRequirementDescription = new JLabel("Requirement Description");
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementDescription, 6, SpringLayout.SOUTH, name);
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementDescription, 0, SpringLayout.WEST, lblRequirementname);
 		add(lblRequirementDescription);

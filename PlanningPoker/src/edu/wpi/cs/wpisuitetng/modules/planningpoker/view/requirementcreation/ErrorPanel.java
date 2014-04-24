@@ -1,11 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation;
 
 import java.awt.Color;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * @author justinhess
@@ -13,18 +22,16 @@ import javax.swing.JPanel;
  */
 public class ErrorPanel extends JLabel {
 
-	private List<String> errorList;
+	private final List<String> errorList;
 	
 	/**
 	 * Constructor for the error panel which displays errors as needed.
 	 */
 	public ErrorPanel()
-	{
-		super();
-		
+	{	
 		errorList = new LinkedList<String>();
-		this.setForeground(Color.RED);
-		this.setAlignmentX(LEFT_ALIGNMENT);
+		setForeground(Color.RED);
+		setAlignmentX(LEFT_ALIGNMENT);
 	}
 	
 	/**
@@ -34,7 +41,7 @@ public class ErrorPanel extends JLabel {
 	public void displayError(String msg)
 	{
 		if(errorList.contains(msg)) return;
-		this.errorList.add(msg);
+		errorList.add(msg);
 		refreshErrors();
 	}
 	
@@ -43,7 +50,7 @@ public class ErrorPanel extends JLabel {
 	 */
 	public void removeAllErrors()
 	{
-		this.errorList.clear();
+		errorList.clear();
 		refreshErrors();
 	}
 	
@@ -52,10 +59,10 @@ public class ErrorPanel extends JLabel {
 	 */
 	public void refreshErrors()
 	{
-		this.setText("");
+		setText("");
 		for(String err : errorList)
 		{
-			this.setText(this.getText() + " " + err);
+			setText(getText() + " " + err);
 		}
 	}
 	
@@ -64,7 +71,7 @@ public class ErrorPanel extends JLabel {
 	 * @return whether there are outstanding errors */
 	public boolean hasErrors()
 	{
-		return this.errorList.size() != 0;
+		return errorList.size() != 0;
 	}
 
 	/**
@@ -72,7 +79,7 @@ public class ErrorPanel extends JLabel {
 	 * @param msg the error to remove
 	 */
 	public void removeError(String msg) {
-		this.errorList.remove(msg);
+		errorList.remove(msg);
 		refreshErrors();
 	}
 }

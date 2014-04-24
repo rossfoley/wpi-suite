@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
@@ -39,11 +48,11 @@ public class MainView extends JTabbedPane {
 	private Image tabImage = null;
 	private Point currentMouseLocation = null;
 	private int draggedTabIndex = 0;
-	private OverviewPanel overviewPanel = new OverviewPanel();
+	private final OverviewPanel overviewPanel = new OverviewPanel();
 	private Component lastTab = null;
 	private final JPopupMenu popup = new JPopupMenu();
-	private JMenuItem closeAll = new JMenuItem("Close All Tabs");
-	private JMenuItem closeOthers = new JMenuItem("Close Others");
+	private final JMenuItem closeAll = new JMenuItem("Close All Tabs");
+	private final JMenuItem closeOthers = new JMenuItem("Close Others");
 
 	OverviewDetailPanel detailPanel;
 
@@ -84,16 +93,16 @@ public class MainView extends JTabbedPane {
 
 				if(!dragging) {
 					// Gets the tab index based on the mouse position
-					int tabNumber = getUI().tabForCoordinate(MainView.this, e.getX(), e.getY());
+					final int tabNumber = getUI().tabForCoordinate(MainView.this, e.getX(), e.getY());
 
 					if(tabNumber >= 0) {
 						draggedTabIndex = tabNumber;
-						Rectangle bounds = getUI().getTabBounds(MainView.this, tabNumber);
+						final Rectangle bounds = getUI().getTabBounds(MainView.this, tabNumber);
 
 
 						// Paint the tabbed pane to a buffer
-						Image totalImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-						Graphics totalGraphics = totalImage.getGraphics();
+						final Image totalImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+						final Graphics totalGraphics = totalImage.getGraphics();
 						totalGraphics.setClip(bounds);
 						// Don't be double buffered when painting to a static image.
 						setDoubleBuffered(false);
@@ -101,7 +110,7 @@ public class MainView extends JTabbedPane {
 
 						// Paint just the dragged tab to the buffer
 						tabImage = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
-						Graphics graphics = tabImage.getGraphics();
+						final Graphics graphics = tabImage.getGraphics();
 						graphics.drawImage(totalImage, 0, 0, bounds.width, bounds.height, bounds.x, bounds.y, bounds.x + bounds.width, bounds.y+bounds.height, MainView.this);
 
 						dragging = true;
@@ -129,10 +138,10 @@ public class MainView extends JTabbedPane {
 
 			public void mouseReleased(MouseEvent e) {
 				if(dragging) {
-					int tabNumber = getUI().tabForCoordinate(MainView.this, e.getX(), e.getY());
+					final int tabNumber = getUI().tabForCoordinate(MainView.this, e.getX(), e.getY());
 					if(tabNumber >= 0) {
-						Component comp = getComponentAt(draggedTabIndex);
-						String title = getTitleAt(draggedTabIndex);
+						final Component comp = getComponentAt(draggedTabIndex);
+						final String title = getTitleAt(draggedTabIndex);
 						if (!title.equals("Current Sessions")) {
 							removeTabAt(draggedTabIndex);
 							insertTab(title, null, comp, null, tabNumber);
@@ -149,7 +158,7 @@ public class MainView extends JTabbedPane {
 		this.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				
-				JComponent selected = (JComponent) MainView.this.getSelectedComponent();
+				final JComponent selected = (JComponent) MainView.this.getSelectedComponent();
 
 				ViewEventController.getInstance().getOverviewTreePanel().refresh();
 				overviewPanel.revalidate();
@@ -205,7 +214,7 @@ public class MainView extends JTabbedPane {
 	 */
 	@Override
 	public void setSelectedComponent(Component c){
-		this.lastTab = this.getSelectedComponent();
+		lastTab = this.getSelectedComponent();
 		super.setSelectedComponent(c);
 	}
 
@@ -217,8 +226,8 @@ public class MainView extends JTabbedPane {
 	public void removeTabAt(int i){
 		super.removeTabAt(i);
 		try{
-			if (this.lastTab != null){
-				setSelectedComponent(this.lastTab);}
+			if (lastTab != null){
+				setSelectedComponent(lastTab);}
 		} catch (IllegalArgumentException e){}
 	}
 	

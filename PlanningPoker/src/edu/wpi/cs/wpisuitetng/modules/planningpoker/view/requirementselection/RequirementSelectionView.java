@@ -1,6 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 
-import java.awt.Frame;
 import java.util.List;
 import java.util.Set;
 
@@ -8,16 +16,13 @@ import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementSelectionPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementsSelectedListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationInformationPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementInformationPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
 public class RequirementSelectionView extends JSplitPane{
 	
-	private RequirementSelectionPanel reqPanel;
-	private RequirementCreationPanel createPanel;
+	private final RequirementSelectionPanel reqPanel;
+	private final RequirementCreationPanel createPanel;
 	
 	public RequirementSelectionView(){
 		reqPanel = new RequirementSelectionPanel(this);

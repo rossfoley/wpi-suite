@@ -27,7 +27,7 @@ public class DeckListModel extends AbstractListModel {
 	/** 
 	 * the list in which all the decks for a project are contained
 	 */
-	private List<Deck> existingDecks;
+	private final List<Deck> existingDecks;
 	private int nextID; // the next available id for a deck
 	
 	private static DeckListModel instance; // static object to allow the decklistmodel 
@@ -37,7 +37,7 @@ public class DeckListModel extends AbstractListModel {
 	 */
 	private DeckListModel(){
 		existingDecks = new ArrayList<Deck>();
-		this.nextID = 0;
+		nextID = 0;
 	}
 
 	/** 
@@ -81,7 +81,7 @@ public class DeckListModel extends AbstractListModel {
 	 * 
 	 * @param deckNums list of numbers to match to decks in decklistmodel
 	 */
-	public Deck getDeck(ArrayList<Integer> deckNums){
+	public Deck getDeck(List<Integer> deckNums){
 		for (Deck d:existingDecks){
 			if (d.getNumbersInDeck().equals(deckNums)){
 				return d;
@@ -91,7 +91,7 @@ public class DeckListModel extends AbstractListModel {
 	}
 	
 	public int getNextID(){
-		return this.nextID++;
+		return nextID++;
 	}
 	
 	/**
@@ -101,7 +101,7 @@ public class DeckListModel extends AbstractListModel {
 	 */
 	public void addDecks(Deck[] decks) {
 		for (int i = 0; i < decks.length; i++) {
-			this.existingDecks.add(decks[i]);
+			existingDecks.add(decks[i]);
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class DeckListModel extends AbstractListModel {
 	 * @return defaultDeck deck containing the default numbers
 	 */
 	public Deck makeDefaultDeck(){
-		ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
+		final ArrayList<Integer> defaultDeckNums = new ArrayList<Integer>();
 		defaultDeckNums.add(0);
 		defaultDeckNums.add(1);
 		defaultDeckNums.add(1);
@@ -119,7 +119,7 @@ public class DeckListModel extends AbstractListModel {
 		defaultDeckNums.add(5);
 		defaultDeckNums.add(8);
 		defaultDeckNums.add(13);
-		Deck defaultDeck = new Deck(defaultDeckNums, true);
+		final Deck defaultDeck = new Deck(defaultDeckNums, true);
 		defaultDeck.setDeckName("Default"); 
 		return defaultDeck;
 	}

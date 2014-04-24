@@ -26,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class Deck extends AbstractModel {
 	private String deckName;
-	private ArrayList<Integer> numbersInDeck = new ArrayList<Integer>();
+	private List<Integer> numbersInDeck = new ArrayList<Integer>();
 	private boolean allowMultipleSelections;
 	private int id;
 	
@@ -34,10 +34,10 @@ public class Deck extends AbstractModel {
 	 * 
 	 * @param listOfCards numbers to use in the new deck
 	 */
-	public Deck(ArrayList<Integer> listOfCards, boolean allowMultipleSelections) {
-		this.numbersInDeck = listOfCards;
+	public Deck(List<Integer> listOfCards, boolean allowMultipleSelections) {
+		numbersInDeck = listOfCards;
 		this.allowMultipleSelections = allowMultipleSelections;
-		this.deckName = autoName();
+		deckName = autoName();
 	}
 	/**
 	 * constructor for decks that does not have a list given at initialization
@@ -45,8 +45,8 @@ public class Deck extends AbstractModel {
 	 * deckName is set to "" as a default
 	 */
 	public Deck(){
-		this.deckName = autoName();
-		this.allowMultipleSelections = false;
+		deckName = autoName();
+		allowMultipleSelections = false;
 	}
 	
 	
@@ -121,7 +121,7 @@ public class Deck extends AbstractModel {
 	public String changeNumbersToString(){
 		String stringOfDeckNums = "";
 		int loopProgress = 0;
-		int listLength = numbersInDeck.size();
+		final int listLength = numbersInDeck.size();
 		for (Integer n:numbersInDeck){
 			stringOfDeckNums += n.toString();
 			// if not at last element in the list, add a comma and a space after the number
@@ -138,14 +138,14 @@ public class Deck extends AbstractModel {
 	/**
 	 * @return the numbersInDeck
 	 */
-	public ArrayList<Integer> getNumbersInDeck() {
+	public List<Integer> getNumbersInDeck() {
 		return numbersInDeck;
 	}
 
 	/**
 	 * @param numbersInDeck the numbersInDeck to set
 	 */
-	public void setNumbersInDeck(ArrayList<Integer> numbersInDeck) {
+	public void setNumbersInDeck(List<Integer> numbersInDeck) {
 		this.numbersInDeck = numbersInDeck;
 	}
 	
@@ -160,7 +160,7 @@ public class Deck extends AbstractModel {
 	 * @return	If multiple cards can be selected when voting
 	 */
 	public boolean getAllowMultipleSelections() {
-		return this.allowMultipleSelections;
+		return allowMultipleSelections;
 	}
 	
 
@@ -186,10 +186,10 @@ public class Deck extends AbstractModel {
 	 * @param toCopyFrom deck to copy attributes from
 	 */
 	public void copyFrom(Deck toCopyFrom) {
-		this.id = toCopyFrom.getId();
-		this.numbersInDeck = toCopyFrom.getNumbersInDeck();
-		this.allowMultipleSelections = toCopyFrom.getAllowMultipleSelections();
-		this.deckName = toCopyFrom.getDeckName();
+		id = toCopyFrom.getId();
+		numbersInDeck = toCopyFrom.getNumbersInDeck();
+		allowMultipleSelections = toCopyFrom.getAllowMultipleSelections();
+		deckName = toCopyFrom.getDeckName();
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public class Deck extends AbstractModel {
 	 * @return string containing the default name for a deck
 	 */
 	public String autoName(){
-		String newDeckName = "Deck " + Integer.toString(this.id);
+		final String newDeckName = "Deck " + Integer.toString(id);
 		return newDeckName;
 	}	
 	
@@ -218,7 +218,7 @@ public class Deck extends AbstractModel {
 		if (!(obj instanceof Deck)){
 			return false;
 		}
-		Deck rhs = (Deck) obj;
+		final Deck rhs = (Deck) obj;
 		return (deckName.equals(rhs.deckName) && id == rhs.id);
 		
 	}

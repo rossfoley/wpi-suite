@@ -44,7 +44,7 @@ public class OverviewTable extends JTable
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private boolean changedByRefresh = false;
-	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
+	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
 	private OverviewDetailPanel detailPanel;
 	
 	/**
@@ -54,7 +54,7 @@ public class OverviewTable extends JTable
 	 */
 	public OverviewTable(Object[][] data, String[] columnNames)
 	{
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -74,9 +74,9 @@ public class OverviewTable extends JTable
 				
 				if(getRowCount() > 0)
 				{
-					int mouseY = e.getY();
-					Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
-					int lastRowY = lastRow.y + lastRow.height;
+					final int mouseY = e.getY();
+					final Rectangle lastRow = getCellRect(getRowCount() - 1, 0, true);
+					final int lastRowY = lastRow.y + lastRow.height;
 
 					if(mouseY > lastRowY) 
 					{
@@ -112,8 +112,8 @@ public class OverviewTable extends JTable
 	 */
 
 	public List<PlanningPokerSession> getOpenSessions() {
-		List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
-		List<PlanningPokerSession> openSessions = new ArrayList<PlanningPokerSession>();
+		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
+		final List<PlanningPokerSession> openSessions = new ArrayList<PlanningPokerSession>();
 		for (PlanningPokerSession session : sessions) {
 			if (session.isOpen()){
 				openSessions.add(session);
@@ -128,7 +128,7 @@ public class OverviewTable extends JTable
 	 */
 	public void refresh() {
 				
-		List<PlanningPokerSession> pokerSessions = getSessions();
+		final List<PlanningPokerSession> pokerSessions = getSessions();
 				
 		// clear the table
 		tableModel.setRowCount(0);		
@@ -139,21 +139,21 @@ public class OverviewTable extends JTable
 			try {
 				endDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(pokerSession.getEndDate().getTime());
 			} catch (NullPointerException ex) {
-				endDate = new String("No end date");
+				endDate = "No end date";
 			}
 			
 			// Handle if there was no owner
 			try {
 				createrName = pokerSession.getSessionCreatorName();
 			} catch (NullPointerException ex) {
-				createrName = new String("Creater not set");
+				createrName = "Creater not set";
 			}
 			
 			// Handle if there was no deck set
 			try {
 				deckName = pokerSession.getSessionDeck().getDeckName();
 			} catch (NullPointerException ex) {
-				deckName = new String("None");
+				deckName = "None";
 			}
 
 			tableModel.addRow(new Object[]{
@@ -216,7 +216,7 @@ public class OverviewTable extends JTable
 	 */
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component comp = super.prepareRenderer(renderer, row, column);
+        final Component comp = super.prepareRenderer(renderer, row, column);
 
         if (JComponent.class.isInstance(comp)){
             ((JComponent)comp).setBorder(paddingBorder);
@@ -240,7 +240,7 @@ public class OverviewTable extends JTable
 	}
 	
 	public OverviewDetailPanel getDetailPanel() {
-		return this.detailPanel;
+		return detailPanel;
 	}
 }
 

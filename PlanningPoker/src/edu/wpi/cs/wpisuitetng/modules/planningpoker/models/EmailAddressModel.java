@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
@@ -16,7 +25,7 @@ public class EmailAddressModel extends AbstractListModel {
 	/** 
 	 * the list in which all the emails for a project are contained
 	 */
-	private List<EmailAddress> emailAddresses;
+	private final List<EmailAddress> emailAddresses;
 	//private int nextID; // the next available id for a EmailAddress
 	
 	private static EmailAddressModel instance; // static object to allow the EmailAddressModel 
@@ -89,7 +98,7 @@ public class EmailAddressModel extends AbstractListModel {
 	 */
 	public void removePlanningPokerSession(String user){
 		// iterate through list of PlanningPokerSessions until id of project is found
-		for (int i=0; i < this.emailAddresses.size(); i++){
+		for (int i=0; i < emailAddresses.size(); i++){
 			if (emailAddresses.get(i).getOwnerName().equals(user)) {
 				// remove the id
 				emailAddresses.remove(i);
@@ -105,8 +114,8 @@ public class EmailAddressModel extends AbstractListModel {
 	 */
 	public void addEmailAddresses(EmailAddress[] emails) {
 		for (int i = 0; i < emails.length; i++) {
-			this.emailAddresses.add(emails[i]);
-		};
+			emailAddresses.add(emails[i]);
+		}
 	}
 	
 	/**

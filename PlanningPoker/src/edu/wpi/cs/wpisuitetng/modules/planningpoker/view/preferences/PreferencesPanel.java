@@ -28,13 +28,13 @@ import java.util.List;
  *
  */
 public class PreferencesPanel extends JPanel {
-	private JTextField txtEnterEmailHere;
+	private final JTextField txtEnterEmailHere;
 	private boolean emailError = false;
 	JLabel lblEmailErrorText;
 
 
 	public PreferencesPanel() {
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 
 		txtEnterEmailHere = new JTextField();
@@ -44,14 +44,14 @@ public class PreferencesPanel extends JPanel {
 		add(txtEnterEmailHere);
 		txtEnterEmailHere.setColumns(10);
 
-		JLabel lblSub = new JLabel("Subscribe To Email Notifications");
+		final JLabel lblSub = new JLabel("Subscribe To Email Notifications");
 		springLayout.putConstraint(SpringLayout.NORTH, txtEnterEmailHere, 13, SpringLayout.SOUTH, lblSub);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblSub, -240, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblSub, 31, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, lblSub, -240, SpringLayout.EAST, this);
 		add(lblSub);
 
-		JButton btnSubmit = new JButton("Submit");
+		final JButton btnSubmit = new JButton("Submit");
 		springLayout.putConstraint(SpringLayout.NORTH, btnSubmit, -1, SpringLayout.NORTH, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -34, SpringLayout.EAST, this);
@@ -76,30 +76,30 @@ public class PreferencesPanel extends JPanel {
 	}
 
 	void submitEmail() {
-		String email = txtEnterEmailHere.getText();
+		final String email = txtEnterEmailHere.getText();
 
 		// Validate
 		if (validateEmail(email) == true) {
 			emailError = false;
 			lblEmailErrorText.setVisible(emailError);
-			EmailAddress newEmail = new EmailAddress();
+			final EmailAddress newEmail = new EmailAddress();
 			newEmail.setEmail(email);
 			newEmail.setOwnerName(ConfigManager.getInstance().getConfig().getUserName());
 
 
-			GetEmailController getEmailController = GetEmailController.getInstance();
+			final GetEmailController getEmailController = GetEmailController.getInstance();
 			getEmailController.retrieveEmails();
 			List<EmailAddress> emailRecipients = null;
 			boolean userHasEmail = false;
 
-			EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+			final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 			try {
 				emailRecipients = emailAddressModel.getEmailAddresses();
 			}
 			catch (Exception E) {
 
 			}
-			String userName = ConfigManager.getInstance().getConfig().getUserName();
+			final String userName = ConfigManager.getInstance().getConfig().getUserName();
 			for (int i = 0; i < emailRecipients.size(); i++) {
 				if (userName.equals(emailRecipients.get(i).getOwnerName())) {
 					userHasEmail = true;
@@ -128,7 +128,7 @@ public class PreferencesPanel extends JPanel {
 	boolean validateEmail(String email) {
 
 		try {
-			InternetAddress valid = new InternetAddress(email);
+			final InternetAddress valid = new InternetAddress(email);
 			valid.validate();
 		}
 		catch (AddressException e) {

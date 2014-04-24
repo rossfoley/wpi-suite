@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -147,7 +148,7 @@ public class PlanningPokerSessionTest {
 		session.setDescription("");
 		session.setEndDate(endDate);
 		
-		ArrayList<CreatePokerSessionErrors> errors = session.validateFields(true, true);
+		List<CreatePokerSessionErrors> errors = session.validateFields(true, true);
 		assertTrue(errors.contains(CreatePokerSessionErrors.EndDateTooEarly));
 		assertTrue(errors.contains(CreatePokerSessionErrors.NoDescription));
 		assertTrue(errors.contains(CreatePokerSessionErrors.NoName));

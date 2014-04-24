@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
@@ -71,7 +80,7 @@ public class EmailAddress extends AbstractModel {
 	 * @return the email address
 	 */
 	public String getEmail() {
-		return this.emailAddress;
+		return emailAddress;
 	}
 	/**
 	 * 
@@ -87,18 +96,18 @@ public class EmailAddress extends AbstractModel {
 	 * @return the name of the user who owns this email address
 	 */
 	public String getOwnerName() {
-		return this.userName;
+		return userName;
 	}
 	/**
 	 *
 	 * @param name of the user to associate with this email
 	 */
 	public void setOwnerName(String name) {
-		this.userName = name;
+		userName = name;
 	}
 	public void copyFrom(EmailAddress updatedEmail) {
-		this.emailAddress = updatedEmail.getEmail();
-		this.userName = updatedEmail.getOwnerName();
+		emailAddress = updatedEmail.getEmail();
+		userName = updatedEmail.getOwnerName();
 		
 	}
 	

@@ -17,6 +17,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -48,19 +49,19 @@ public class StatisticsPanel extends JSplitPane {
 	StatisticsUserTable userTable;
 	JScrollPane tablePanel; 
 	
-	private PlanningPokerSession activeSession;
+	private final PlanningPokerSession activeSession;
 	
 	private Requirement requirement;
-	private LinkedList<Estimate> estimates = new LinkedList<Estimate>();
+	private final List<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 	
 	public StatisticsPanel(PlanningPokerSession statisticsSession)
 	{
-		this.activeSession = statisticsSession;
+		activeSession = statisticsSession;
 		
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		String[] userColumnNames = {"User", "Estimate"};
-		Object[][] userData = {};
+		final String[] userColumnNames = {"User", "Estimate"};
+		final Object[][] userData = {};
 
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel(activeSession);
@@ -80,7 +81,7 @@ public class StatisticsPanel extends JSplitPane {
 		ViewEventController.getInstance().setStatisticsDetailPanel(detailPanel);
 		
 		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(200, 200);
+		final Dimension d = new Dimension(200, 200);
         detailPanel.setMinimumSize(d);
         detailPanel.setPreferredSize(d);
         userTable.setMinimumSize(d);
@@ -112,7 +113,7 @@ public class StatisticsPanel extends JSplitPane {
 		this.userTable = userTable;
 	}
 	public PlanningPokerSession getDisplaySession() {
-		return this.activeSession;
+		return activeSession;
 	}
 
 /*

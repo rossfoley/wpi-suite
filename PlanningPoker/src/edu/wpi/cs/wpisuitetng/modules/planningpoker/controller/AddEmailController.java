@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class AddEmailController {
 	private static AddEmailController instance;
-	private AddEmailRequestObserver observer;
+	private final AddEmailRequestObserver observer;
 	
 	/**
 	 * Construct an AddEmailController for the given model, view pair

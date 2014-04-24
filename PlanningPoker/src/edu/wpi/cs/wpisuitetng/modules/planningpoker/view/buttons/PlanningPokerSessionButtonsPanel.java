@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Image;
@@ -30,11 +39,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  *
  */
 public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
-	private JButton createButton = new JButton("<html>Create <br /> Session</html>");
-	private JButton editButton = new JButton("<html>Edit <br /> Session</html>");
-	private JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
-	private JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
-	private JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
+	private final JButton createButton = new JButton("<html>Create <br /> Session</html>");
+	private final JButton editButton = new JButton("<html>Edit <br /> Session</html>");
+	private final JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
+	private final JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
+	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
 	private final JPanel contentPanel = new JPanel();
 
 	public PlanningPokerSessionButtonsPanel(){
@@ -60,15 +69,15 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			img = ImageIO.read(getClass().getResource("end-icon.png"));
 			endVoteButton.setIcon(new ImageIcon(img));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.endVoteButton.setIcon(new ImageIcon(img));
+			endVoteButton.setIcon(new ImageIcon(img));
 			
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			this.statisticsButton.setIcon(new ImageIcon(img));
+			statisticsButton.setIcon(new ImageIcon(img));
 			
 
-		} catch (IOException | NullPointerException | IllegalArgumentException ex) {}; 
+		} catch (IOException | NullPointerException | IllegalArgumentException ex) {} 
 
 		// the action listener for the Create Planning Poker Session Button
 		createButton.addActionListener(new ActionListener() {
@@ -82,7 +91,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().editSession(session);
 			}
 		});		
@@ -91,7 +100,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		voteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().voteOnSession(session);
 			}
 		});	
@@ -108,10 +117,10 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				final List<String> recipients = new LinkedList<String>();
 				List<EmailAddress> emailRecipients = null;
 				
-				GetEmailController getEmailController = GetEmailController.getInstance();
+				final GetEmailController getEmailController = GetEmailController.getInstance();
 				getEmailController.retrieveEmails();
 				
-				EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+				final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 				try {
 					emailRecipients = emailAddressModel.getEmailAddresses();
 				}
@@ -124,16 +133,16 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				}
 				
 				
-				Thread t = new Thread(new Runnable() {
+				final Thread t = new Thread(new Runnable() {
 					
 					@Override
 					public void run() {
-						Mailer mailer = new Mailer();
+						final Mailer mailer = new Mailer();
 						mailer.notifyOfPlanningPokerSessionClose(recipients, session);
 					}
 				});
 				t.setDaemon(true);
-				t.run();
+				t.start();
 				
 				
 			}
@@ -144,7 +153,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			@Override
 			
 			public void actionPerformed(ActionEvent e) {
-				PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().openStatisticsTab(session);
 				}
 			});
@@ -164,14 +173,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	 * Method getCreateButton.
 	 * @return JButton */
 	public JButton getCreateButton() {
-		return this.createButton;
+		return createButton;
 	}
 
 	/**
 	 * Method geteditButton
 	 * @return JButton */
 	public JButton getCreateIterationButton() {
-		return this.editButton;
+		return editButton;
 	}
 
 	public void disableEditButton() {
