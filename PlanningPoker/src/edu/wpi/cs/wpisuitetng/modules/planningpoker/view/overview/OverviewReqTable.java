@@ -101,7 +101,7 @@ public class OverviewReqTable extends JTable {
 
 		final Set<Integer> requirementIDs = session.getRequirementIDs();
 		final RequirementModel reqs = RequirementModel.getInstance();
-		int vote = 0;
+		String vote = "-";
 		String estimate;
 		final List<Estimate> estimates = session.getEstimates();
 
@@ -111,12 +111,12 @@ public class OverviewReqTable extends JTable {
 		for (Integer requirementID : requirementIDs) {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
-			vote = 0;
+			vote = "-";
 			estimate = getFinalEstimate(req, session);
 			for (Estimate e : estimates) {
 				if (e.getRequirementID() == requirementID && e.getOwnerName()
 						.equals(ConfigManager.getConfig().getUserName())) {
-					vote = e.getVote();
+					vote = ((Integer) e.getVote()).toString();
 				}
 			}
 
