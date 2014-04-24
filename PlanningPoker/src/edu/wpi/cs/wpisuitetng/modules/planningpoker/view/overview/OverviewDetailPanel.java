@@ -30,8 +30,10 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectRequirementToUpdateTable;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -147,9 +149,10 @@ public class OverviewDetailPanel extends JSplitPane {
 	 */
 	public static void sendSingleEstimate(Requirement reqToSendFinalEstimate) {
 		// if the requirement's estimate has not yet been sent
-		if (!getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate)) { 
-			reqToSendFinalEstimate.setEstimate(currentSession.getFinalEstimates().get(reqToSendFinalEstimate));
-			currentSession.addRequirementToExportedList((int) reqToSendFinalEstimate.getId());
+		if (!(currentSession.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate))) {
+			reqToSendFinalEstimate.setEstimate(currentSession.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
+			currentSession.addRequirementToExportedList(reqToSendFinalEstimate.getId());			
+			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
 		}
 		// otherwise, do nothing.
 	}
@@ -173,13 +176,7 @@ public class OverviewDetailPanel extends JSplitPane {
 	public void makeSelectionTable(){
 		Object[][] data = {};
 		String[] columnNames  = {"Send Estimate?", "Requirement Name", "Final Estimate"};
-		Map<Requirement, Integer> finalEstimatesByRequirement = currentSession.getFinalEstimates();
-		HashMap<Integer, Integer> finalEstimates = new HashMap<Integer, Integer>();
-		
-		for (Requirement r:finalEstimatesByRequirement.keySet()){
-			finalEstimates.put(r.getId(), finalEstimatesByRequirement.get(r));
-		}
-		
+		HashMap<Integer, Integer> finalEstimates = currentSession.getFinalEstimates();		
 		LinkedList<Integer> selectableRequirementIDs = determineSelectableRequirements(finalEstimates);
 		
 		selectToUpdateTable = new SelectRequirementToUpdateTable(data, columnNames, selectableRequirementIDs, finalEstimates);
@@ -251,8 +248,9 @@ public class OverviewDetailPanel extends JSplitPane {
 					for (Integer selectedReq:selectedReqIDs){
 						sendSingleEstimate(RequirementModel.getInstance().getRequirement(selectedReq));
 					}
+					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);	
 					putReqTableBack();
-					updateInfoPanel(currentSession);
+				//	updateInfoPanel(currentSession);
 				}
 			}
 		});
@@ -269,8 +267,8 @@ public class OverviewDetailPanel extends JSplitPane {
 	 * @return linked list of ids corresponding to the requirements that the user can select
 	 */
 	private LinkedList<Integer> determineSelectableRequirements(HashMap<Integer, Integer> finalEstimates){
-		LinkedList<Requirement> reqsWithExportedEstimates = currentSession.getReqsWithExportedEstimatesList();
-		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
+		List<Integer> reqsWithExportedEstimates = currentSession.getRequirementsWithExportedEstimates();
+  		LinkedList<Integer> selectableRequirements = new LinkedList<Integer>();
 		for (Integer reqID:currentSession.getRequirementIDs()){
 			if (!(reqsWithExportedEstimates.contains(reqID))){
 				if (finalEstimates.containsKey(reqID)){
@@ -299,6 +297,8 @@ public class OverviewDetailPanel extends JSplitPane {
 		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 
+		updatePanel(currentSession);
+		
 		this.setBottomComponent(tablePanel);
 		this.setResizeWeight(0.5); 
 		
@@ -306,7 +306,7 @@ public class OverviewDetailPanel extends JSplitPane {
 	    tablePanel.setMinimumSize(d);	
 		setDividerLocation(dividerLocation);
 		
-		updateReqTable(currentSession);
+	
 	}
 	
 	/**
