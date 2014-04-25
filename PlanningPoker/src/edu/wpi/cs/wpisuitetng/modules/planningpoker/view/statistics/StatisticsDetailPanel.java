@@ -32,7 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 public class StatisticsDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
-	StatisticsReqTable reqTable;
+	StatisticsUserTable userTable;
 	StatisticsInfoPanel infoPanel;
 	JScrollPane tablePanel;
 
@@ -44,23 +44,21 @@ public class StatisticsDetailPanel extends JSplitPane {
 	public StatisticsDetailPanel (PlanningPokerSession session) {
 
 		currentSession = session;
-		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
-		final String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
-		final Object[][] reqData = {};
+		final String[] userColumnNames = {"User", "Estimate"};
+		final Object[][] userData = {};
 		
 		// Create the info panel and table panel
-		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
-		tablePanel = new JScrollPane(reqTable);
+		userTable = new StatisticsUserTable(userData, userColumnNames);
+		tablePanel = new JScrollPane(userTable);
 		infoPanel = new StatisticsInfoPanel(currentSession);
-		reqTable.setInfoPanel(infoPanel);
 		
-		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
-		reqTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
-		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
-		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
+		userTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
+		userTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
+		userTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
+
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
 		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
@@ -70,20 +68,27 @@ public class StatisticsDetailPanel extends JSplitPane {
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
-		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
+		/*submitFinalEstimatesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				reqTable.updateFinalEstimates(currentSession);
+				StatisticsReqTable reqTable = 
+				//reqTable.updateFinalEstimates(currentSession);
 			}
-		});
+		});*/
 		
 		
 		reqOverviewTablePanel.add(tablePanel);
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 	
 		// Put the info panel and table panel into the split pane
-		this.setLeftComponent(reqOverviewTablePanel);
-		this.setRightComponent(infoPanel);
+		this.setLeftComponent(infoPanel);
+		this.setRightComponent(reqOverviewTablePanel);
 		this.setResizeWeight(0.5); 
+<<<<<<< HEAD
+=======
+
+		ViewEventController.getInstance().setStatisticsInfoPanel(infoPanel);
+		ViewEventController.getInstance().setStatisticsUserTable(userTable);
+>>>>>>> Rearranges statistics panel layout
 		
 		// Makes the split pane divide 50/50 for each portion
 		final Dimension d = new Dimension(100, 100);
@@ -111,7 +116,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 	}
 
 	private void updateReqTable(PlanningPokerSession session) {
-		reqTable.refresh(session);
+		userTable.refresh(session);
 		
 	}
 
@@ -133,6 +138,10 @@ public class StatisticsDetailPanel extends JSplitPane {
 	
 	public void setRequirementID(int ID) {
 		infoPanel.setRequirementID(ID);
+	}
+
+	public StatisticsInfoPanel getInfoPanel() {
+		return infoPanel;
 	}
 	
 	
