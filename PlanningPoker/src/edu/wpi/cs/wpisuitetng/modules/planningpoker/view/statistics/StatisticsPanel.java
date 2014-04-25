@@ -13,6 +13,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.swing.BorderFactory;
+import javax.swing.DropMode;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
@@ -26,8 +41,14 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	 * Sets up directory tree of all planning poker sessions
 	 */
 	private StatisticsDetailPanel detailPanel;
-	private StatisticsUserTable userTable;
+	private StatisticsReqTable reqTable;
 	private JScrollPane tablePanel; 
+	private StatisticsInfoPanel infoPanel;
+	
+	int selectedReqID;
+	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
+	JPanel reqOverviewTablePanel = new JPanel();
+	SpringLayout reqOverviewLayout = new SpringLayout();
 	
 	private final PlanningPokerSession activeSession;
 	
@@ -35,31 +56,79 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	{
 		activeSession = statisticsSession;
 		
-		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		final String[] userColumnNames = {"User", "Estimate"};
-		final Object[][] userData = {};
+		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		final String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
+		final Object[][] reqData = {};
 
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel(activeSession);
-		userTable = new StatisticsUserTable(userData, userColumnNames);
-		tablePanel = new JScrollPane(userTable);
+		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
+		tablePanel = new JScrollPane(reqTable);
 		
-		userTable.getColumnModel().getColumn(0).setMinWidth(200); // User Name
-		userTable.getColumnModel().getColumn(1).setMinWidth(300); // User Vote
-		userTable.getColumnModel().getColumn(1).setMaxWidth(500); // User Vote
+		//set infoPanel to get estimate information for statistics
+		reqTable.setInfoPanel(infoPanel);
+		
+		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
+		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
+		reqTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
+		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
+		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 
+		//
+		reqOverviewTablePanel.setLayout(reqOverviewLayout);
+		
+		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.EAST, submitFinalEstimatesBtn, -10, SpringLayout.EAST, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
+		reqOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
+		
+		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//StatisticsReqTable reqTable = 
+				reqTable.updateFinalEstimates(activeSession);
+			}
+		});
+		
+		
+		reqOverviewTablePanel.add(tablePanel);
+		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 		
 		// Put the overview table and sidebar into the tab
 		this.setTopComponent(detailPanel);
 		this.setBottomComponent(tablePanel);
 		
+		this.updatePanel();
+		
 		// Makes the split pane divide 50/50 for each portion
-		final Dimension d = new Dimension(200, 200);
-        detailPanel.setMinimumSize(d);
-        detailPanel.setPreferredSize(d);
-        userTable.setMinimumSize(d);
+		//final Dimension d = new Dimension(300, 100);
+        //detailPanel.setMinimumSize(d);
+       // detailPanel.setPreferredSize(d);
+       // reqTable.setMinimumSize(d);
+       // reqTable.setPreferredSize(d);
+		
+		this.setDividerLocation(350);
 
-        this.setEnabled(false);
+
+        this.setEnabled(true);
+	}
+	
+	public void updatePanel()	{	
+		// update each part of the split panel
+		//updateInfoPanel(activeSession);
+		updateReqTable(activeSession);
+		
+		// change the visibility of the top buttons
+		//setButtonVisibility(activeSession);
+	}	
+	
+	//private void updateInfoPanel(PlanningPokerSession session) {
+	//	infoPanel.refresh(session);
+	//}
+
+	private void updateReqTable(PlanningPokerSession session) {
+		reqTable.refresh(session);
 	}
 	
 	/**
@@ -79,15 +148,15 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	/**
 	 * @return the statistics user tree panel
 	 */
-	public StatisticsUserTable getStatisticsUserTable() {
-		return userTable;
+	public StatisticsReqTable getStatisticsReqTable() {
+		return reqTable;
 	}
 	
 	/**
 	 * @param endVotePanel the endVotePanel to set
 	 */
-	public void setStatisticsUserTable(StatisticsUserTable userTable) {
-		this.userTable = userTable;
+	public void setStatisticsUserTable(StatisticsReqTable reqTable) {
+		this.reqTable = reqTable;
 	}
 	
 	/**
