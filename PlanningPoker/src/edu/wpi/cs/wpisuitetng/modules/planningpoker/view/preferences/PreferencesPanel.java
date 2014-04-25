@@ -39,14 +39,6 @@ import java.util.List;
 /**
  * This class implements an interface to manage user preferences.
  */
-/**
- * @author Hemuro
- *
- */
-/**
- * @author Hemuro
- *
- */
 public class PreferencesPanel extends JPanel implements FocusListener {
 	private final JTextField txtEnterEmailHere;
 	private boolean emailError = false;
