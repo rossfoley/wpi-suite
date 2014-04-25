@@ -136,7 +136,12 @@ public class OverviewVoterTable extends JTable {
 				int reqID = reqToVoteOn.getId();
 				String reqName = reqToVoteOn.getName();
 				String username = s;
-				String vote = String.valueOf(getVote(reqToVoteOn));
+				String vote = "A";
+				if(getVote(reqToVoteOn) == -1) {
+					vote = "HAS NOT VOTED";
+				} else {
+					vote = String.valueOf(getVote(reqToVoteOn));
+				}
 				tableModel.addRow(new Object[]{
 						reqID,
 						reqName,
@@ -147,7 +152,7 @@ public class OverviewVoterTable extends JTable {
 				int reqID = reqToVoteOn.getId();
 				String reqName = reqToVoteOn.getName();
 				String username = s;
-				String vote = "FALSE";
+				String vote = "HAS NOT VOTED";
 				tableModel.addRow(new Object[]{
 						reqID,
 						reqName,
