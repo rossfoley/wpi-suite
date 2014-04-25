@@ -1,0 +1,68 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
+import org.junit.Test;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+
+public class TestRequirementEstimateStats {
+	ArrayList<Estimate> testEstimates = new ArrayList<Estimate>();
+	
+	RequirementEstimateStats testStats = new RequirementEstimateStats(0, testEstimates);
+	
+	@Test
+	public void testCalculateMean() {
+		assertEquals(0, testStats.calculateMean(), 0.1);
+		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
+		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
+		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
+		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
+		testStats.add(new Estimate(8, 8, UUID.randomUUID()));
+		assertEquals(4.2, testStats.calculateMean(), 0.01);
+		testStats.add(new Estimate(13, 13, UUID.randomUUID()));
+		assertEquals(5.66, testStats.calculateMean(), 0.01);
+	}
+	
+	@Test
+	public void testCalculateMedian() {
+		assertEquals(0, testStats.calculateMedian(), 0.1);
+		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
+		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
+		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
+		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
+		testStats.add(new Estimate(8, 8, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(3, testStats.calculateMedian(), 0.1);
+		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(5, testStats.calculateMedian(), 0.1);
+	}
+	
+	@Test
+	public void testCalculateStdDev() {
+		assertEquals(0, testStats.calculateStdDev(), 0.1); 
+		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
+		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
+		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
+		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
+		testStats.add(new Estimate(8, 8, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(2.8, testStats.calculateStdDev(), 0.1);
+		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(3.1, testStats.calculateStdDev(), 0.1);
+	}
+}
