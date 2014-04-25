@@ -10,10 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.lang.Math; 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
@@ -83,7 +81,7 @@ public class RequirementEstimateStats {
 				final int mid2 = size/2 - 1;
 				final int val1 = estimates.get(mid1).getVote();
 				final int val2 = estimates.get(mid2).getVote();
-				theMedian = (val1+val2)/2;
+				theMedian = (val1+val2)/2.0;
 				median = theMedian;
 				return theMedian;
 			}
