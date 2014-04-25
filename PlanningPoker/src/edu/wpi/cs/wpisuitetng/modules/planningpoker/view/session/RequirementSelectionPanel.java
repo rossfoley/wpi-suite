@@ -346,6 +346,7 @@ public class RequirementSelectionPanel extends JPanel{
 				}
 			}
 			requirements = (LinkedList<Requirement>)keep;
+
 		}
 		catch (Exception e) {}
 	}
