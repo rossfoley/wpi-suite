@@ -128,6 +128,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		
 		// change the visibility of the top buttons
 		//setButtonVisibility(activeSession);
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
 	}	
 	
 	//private void updateInfoPanel(PlanningPokerSession session) {
