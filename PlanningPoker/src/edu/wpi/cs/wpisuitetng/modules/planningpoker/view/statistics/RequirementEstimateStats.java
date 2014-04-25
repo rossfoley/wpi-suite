@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.lang.Math; 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
@@ -28,19 +29,18 @@ public class RequirementEstimateStats {
 	private List<Estimate> estimates;
 	private double mean;
 	private double median;
+	private double stdDev; 
 	
 	public RequirementEstimateStats(int reqID, List<Estimate> givenEstimates) {
 		setEstimates(givenEstimates);
-		sortEstimatesByVote();
-		setMean();
-		setMedian();
+		refreshAll(); 
 	}
 	
 	/**
 	 * calculates the mean value of the estimates 
 	 * @return the mean value of the estimates 
 	 */
-	double calculateMean() {
+	public double calculateMean() {
 		double sum = 0;
 		for (Estimate e : estimates) {
 			sum += e.getVote();
@@ -57,7 +57,7 @@ public class RequirementEstimateStats {
 	 * assumes that the list of estimates is already sorted by vote value
 	 * @return the median value of the estimates 
 	 */
-	double calculateMedian() {
+	public double calculateMedian() {
 		final int size = estimates.size();
 		if (size == 0) {
 			return 0; 
@@ -76,16 +76,46 @@ public class RequirementEstimateStats {
 	}
 	
 	/**
+	 * calculate the population standard deviation of the votes in the list of estimates
+	 * assumes that the mean has already been calculated for this list of estimates 
+	 * @return the standard deviation 
+	 */
+	public double calculateStdDev() {
+		double var = 0;
+		for (Estimate e : estimates) {
+			var += Math.pow(e.getVote() - mean, 2);
+			System.out.println("var = " + var + ", mean = " + mean + ", e.getVote() = " + e.getVote());
+		}
+		if (estimates.size() == 0) {
+			return 0;
+		}
+		else {
+			return Math.sqrt(var/estimates.size());
+		}
+	}
+	
+	/**
 	 * sorts the list of estimates by vote value
 	 */
-	void sortEstimatesByVote() {
+	public void sortEstimatesByVote() {
 		  Collections.sort(estimates);
+	}
+	
+	/**
+	 * calls the methods to sort the list of estimates, then calculates and sets 
+	 * the mean, median, and population standard deviation in the appropriate order 
+	 */
+	public void refreshAll() {
+		sortEstimatesByVote();
+		setMean();
+		setMedian();
+		setStdDev();
 	}
 	
 	/**
 	 * set this.mean to the mean value of the votes in the list of estimates 
 	 */
-	void setMean() {
+	public void setMean() {
 		mean = calculateMean();
 	}
 	
@@ -93,7 +123,7 @@ public class RequirementEstimateStats {
 	 * returns the mean
 	 * @return mean
 	 */
-	double getMean() {
+	public double getMean() {
 		return mean;
 	}
 	
@@ -101,7 +131,7 @@ public class RequirementEstimateStats {
 	 * set this.median to the median value of the votes in the list of estimates
 	 * @param theMedian
 	 */
-	void setMedian() {
+	public void setMedian() {
 		median = calculateMedian();
 	}
 	
@@ -109,7 +139,7 @@ public class RequirementEstimateStats {
 	 * returns the median 
 	 * @return median 
 	 */
-	double getMedian() {
+	public double getMedian() {
 		return median;
 	}
 	
@@ -117,7 +147,7 @@ public class RequirementEstimateStats {
 	 * sets the list of estimates equal to the given list 
 	 * @param givenEstimates
 	 */
-	void setEstimates(List<Estimate> givenEstimates) {
+	public void setEstimates(List<Estimate> givenEstimates) {
 		estimates = givenEstimates;
 	}
 	
@@ -125,8 +155,24 @@ public class RequirementEstimateStats {
 	 * returns the list of estimates 
 	 * @return estimates
 	 */
-	List<Estimate> getEstimates() {
+	public List<Estimate> getEstimates() {
 		return estimates;
+	}
+	
+	/**
+	 * set this.stdDev to the population standard deviation of the votes
+	 * in the list of estimates 
+	 */
+	public void setStdDev() {
+		stdDev = calculateStdDev();
+	}
+	
+	/**
+	 * get the population standard deviation of the estimates 
+	 * @return stdDev 
+	 */
+	public double getStdDev() {
+		return stdDev;
 	}
 
 	/**
@@ -143,5 +189,13 @@ public class RequirementEstimateStats {
 	 */
 	public void setID(int iD) {
 		ID = iD;
+	}
+	
+	/**
+	 * adds estimate anEstimate to the list of estimates
+	 * @param anEstimate
+	 */
+	public void add(Estimate anEstimate) {
+		estimates.add(anEstimate); 
 	}
 }
