@@ -64,6 +64,7 @@ public class VotingPage extends JSplitPane {
 	private PlanningPokerSession activeSession;
 
 	private Requirement requirement;
+	private Requirement selectedRequirement;
 	private final List<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 
@@ -125,6 +126,7 @@ public class VotingPage extends JSplitPane {
 		reqDetails = new JPanel();
 		final SpringLayout sl_reqDetails = new SpringLayout();
 		reqDetails.setLayout(sl_reqDetails);
+		this.selectedRequirement = reqToVoteOn;
 		final JLabel nameLabel = new JLabel("Requirement Name:");
 		final JLabel descriptionLabel = new JLabel("Requirement Description:");
 		final JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
@@ -139,8 +141,9 @@ public class VotingPage extends JSplitPane {
 		thetable.getColumnModel().getColumn(3).setMinWidth(15); // Votes
 		final Dimension d = new Dimension(150, 80);
         thetablePanel.setMinimumSize(d);
+        thetable.populateVotePanel(reqToVoteOn);
+        //ViewEventController.getInstance().setOverviewVoterTable(thetable);
         
-        thetable.populateVotePanel();
         
 		final JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
@@ -209,7 +212,6 @@ public class VotingPage extends JSplitPane {
 		reqDetails.add(nameField);
 		reqDetails.add(thetablePanel);
 		reqDetails.add(descrScroll);
-
 		return reqDetails; 
 	}
 
@@ -278,6 +280,7 @@ public class VotingPage extends JSplitPane {
 		for (Estimate e :activeSession.getEstimates()) {
 			if( e.getRequirementID() == ev.getRequirementID() && e.getOwnerName().equals(ev.getOwnerName())) {
 				e.setVote(ev.getVote());
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 				return ;
 			}
 		}
@@ -417,7 +420,7 @@ public class VotingPage extends JSplitPane {
 					setRightComponent(voteOnReqPanel);
 
 					setDividerLocation(225);
-					thetable.populateVotePanel();
+					thetable.populateVotePanel(ViewEventController.getInstance().getOverviewVoterTable().getSelectedRequirement());
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 				}
 			}

@@ -91,10 +91,21 @@ public class ViewEventController {
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
 		this.overviewReqTable = overviewReqTable;
 	}
+	/**
+	 * 
+	 * @param overviewVoterTable
+	 */
 	public void setOverviewVoterTable(OverviewVoterTable overviewVoterTable) {
 		this.overviewVoterTable  = overviewVoterTable;
-	}	
-	
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public OverviewVoterTable getOverviewVoterTable() {
+		return this.overviewVoterTable;
+	}
+
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		planningPokerSessionButtonsPanel = buttonsPanel;
 	}

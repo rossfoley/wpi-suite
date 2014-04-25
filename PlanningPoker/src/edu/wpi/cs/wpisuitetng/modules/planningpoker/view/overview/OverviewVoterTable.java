@@ -41,6 +41,7 @@ public class OverviewVoterTable extends JTable {
 	private boolean initialized;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	private final PlanningPokerSession planningPokerSession;
+	Requirement selectedRequirement;
 	
 	/**
 	 * Sets initial table view
@@ -55,12 +56,20 @@ public class OverviewVoterTable extends JTable {
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
-        ViewEventController.getInstance().setOverviewVoterTable(this);
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 		initialized = false;
+		ViewEventController.getInstance().setOverviewVoterTable(this);
 
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Requirement getSelectedRequirement() {
+		return this.selectedRequirement;
 	}
 	/**
 	 * 
@@ -90,12 +99,70 @@ public class OverviewVoterTable extends JTable {
 		}
 		return sessionReqs;
 	}
+	public boolean EstimateContains(List<Estimate> estimateList, String name) {
+		for (Estimate e : estimateList) {
+			if (name.equals(e.getOwnerName())) {
+				return true;
+			}
+		}
+		return false;		
+	}
+	public int getVote (Requirement reqToVoteOn) {
+		if(reqToVoteOn == null) {
+			return -1;
+		}
+		final List<Estimate> ListofEstiamte =  planningPokerSession.getEstimates();
+		for(Estimate e : ListofEstiamte) {
+			if(reqToVoteOn.getId() == e.getRequirementID()) {
+				return e.getVote();
+			}
+		}
+		return -1;
+	}
+	public void populateVotePanel(Requirement reqToVoteOn) {
+		if(reqToVoteOn == null) {
+			return ;	
+		}
+		StringBuilder sb = new StringBuilder();
+		System.out.println(reqToVoteOn.getId());
+		System.out.println(reqToVoteOn.getName());
+		tableModel.setRowCount(0);	
+		this.selectedRequirement = reqToVoteOn;
+		final List<String> allUserList = getAllVoterNamesList();
+		final List<Requirement> ListOfRequirements =  getSessionReqs();
+		for (String s : allUserList) {
+			if(EstimateContains(planningPokerSession.getEstimates(), s)){
+				System.out.println(s + "populatePanel");
+				int reqID = reqToVoteOn.getId();
+				String reqName = reqToVoteOn.getName();
+				String username = s;
+				String vote = String.valueOf(getVote(reqToVoteOn));
+				tableModel.addRow(new Object[]{
+						reqID,
+						reqName,
+						username,
+						vote});					
+			} else {
+				System.out.println(s + "populatePanel");
+				int reqID = reqToVoteOn.getId();
+				String reqName = reqToVoteOn.getName();
+				String username = s;
+				String vote = "FALSE";
+				tableModel.addRow(new Object[]{
+						reqID,
+						reqName,
+						username,
+						vote});					
+			}
+		}
+	}
+	// bottom one doenst work for most people excpet me :(
 	
-
-	public void populateVotePanel() {
+/*
+	public void populateVotePanel(Requirement reqToVoteOn) {
 		tableModel.setRowCount(0);	
 		final Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
-		
+		this.selectedRequirement = reqToVoteOn;
 		final List<String> allUserList = getAllVoterNamesList();
 		final List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (Requirement r : ListOfRequirements) {
@@ -126,6 +193,7 @@ public class OverviewVoterTable extends JTable {
 			}
 		}
 	}
+	*/
 	/**DOESNT WORK CARE
 	 *  populates the panel
 	 *  
@@ -207,4 +275,5 @@ public class OverviewVoterTable extends JTable {
 	public boolean isCellEditable(int row, int col)	{
 		return false;
 	}
+
 }
