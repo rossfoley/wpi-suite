@@ -259,7 +259,6 @@ public class CreateDeck extends JPanel {
 		cardTable.setModel(cardTableModel);
 		cardTable.setToolTipText("List of cards already added to the deck");
 		cardTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		cardTable.setDragEnabled(true);
 		cardTable.setDropMode(DropMode.ON);
 		cardTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		cardTable.setPreferredScrollableViewportSize(new Dimension(75, 100));
