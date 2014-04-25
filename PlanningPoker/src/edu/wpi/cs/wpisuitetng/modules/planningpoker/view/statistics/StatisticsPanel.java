@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
-
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -37,6 +36,7 @@ import javax.swing.table.TableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /** 
  *  This class is the panel that is shown when viewing statistics on a session
@@ -72,7 +72,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		tablePanel = new JScrollPane(reqTable);
 		
 		// initialize infoPanel
-		//infoPanel = new StatisticsInfoPanel(activeSession);
 		infoPanel = detailPanel.getInfoPanel();
 		
 		//set infoPanel to get estimate information for statistics
