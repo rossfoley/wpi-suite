@@ -86,7 +86,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final JTextArea textFieldDescription = new JTextArea();
 	private final JLabel dateErrorMessage = new JLabel("");
 	private final JLabel nameErrorMessage = new JLabel("");
-	private final JLabel descriptionErrorMessage = new JLabel("Please enter a description");
+	private final JLabel descriptionErrorMessage = new JLabel("");
 	private final JLabel numbers = new JLabel("Users input non-negative intergers");
 	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
 	private JDatePicker datePicker;
