@@ -22,7 +22,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetail
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
@@ -31,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Itera
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
 
 /**
@@ -53,7 +53,7 @@ public class ViewEventController {
 	private StatisticsUserTable statisticsUserTable;
 	private StatisticsDetailPanel statisticsDetailPanel;
 	private StatisticsReqTable statisticsReqTable;
-	private StatisticsInfoPanel statisticsInfoPanel;	private OverviewVoterTable overviewVoterTable = null;
+	private StatisticsInfoPanel statisticsInfoPanel;	private VoterTable overviewVoterTable = null;
 	private final List<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
 
 	/**
@@ -90,7 +90,7 @@ public class ViewEventController {
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
 		this.overviewReqTable = overviewReqTable;
 	}
-	public void setOverviewVoterTable(OverviewVoterTable overviewVoterTable) {
+	public void setOverviewVoterTable(VoterTable overviewVoterTable) {
 		this.overviewVoterTable  = overviewVoterTable;
 	}	
 	

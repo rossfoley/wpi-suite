@@ -31,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionM
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.database.*;
@@ -60,7 +59,7 @@ public class VotingPage extends JSplitPane {
 	private final List<Estimate> estimates = new LinkedList<Estimate>();
 	private JPanel reqDetails;
 
-	private OverviewVoterTable thetable;
+	private VoterTable thetable;
 
 	private JScrollPane thetablePanel;
 
@@ -106,7 +105,7 @@ public class VotingPage extends JSplitPane {
 	}
 
 	/**
-	 * get the session that is being voted on 
+	 * Get the session that is being voted on 
 	 * @return the session being voted on in this panel
 	 */
 	public PlanningPokerSession getDisplaySession(){
@@ -122,14 +121,11 @@ public class VotingPage extends JSplitPane {
 		final JLabel descriptionLabel = new JLabel("Requirement Description:");
 		final JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
 		
-		final String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
+		final String[] columnNames = {"Users That Have Voted"};
 		final Object[][] data = {};
-		thetable = new OverviewVoterTable(data, columnNames, activeSession);
+		thetable = new VoterTable(data, columnNames, activeSession, reqToVoteOn);
 		thetablePanel = new JScrollPane(thetable);
-		thetable.getColumnModel().getColumn(0).setMinWidth(5); // Requirement ID
-		thetable.getColumnModel().getColumn(1).setMinWidth(100); // Requirement Name	
-		thetable.getColumnModel().getColumn(2).setMinWidth(55); // Username
-		thetable.getColumnModel().getColumn(3).setMinWidth(15); // Votes
+		thetable.getColumnModel().getColumn(0).setMinWidth(100); // Username
 		final Dimension d = new Dimension(150, 80);
         thetablePanel.setMinimumSize(d);
         
