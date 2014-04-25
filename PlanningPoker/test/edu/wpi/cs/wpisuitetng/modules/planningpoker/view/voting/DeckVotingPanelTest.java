@@ -26,6 +26,9 @@ public class DeckVotingPanelTest {
 		testDeckSingleSelect = new Deck(cards, false);
 	}
 
+	/**
+	 * Tests to make sure the panel is built without any errors
+	 */
 	@Test
 	public void testBuildGUIWithNoDeck() {	
 		try {
@@ -38,6 +41,9 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests the setCardSelected and isCardSelected setters/getters
+	 */
 	@Test
 	public void testCardSelection() {
 		DeckVotingPanel deckPanel = new DeckVotingPanel(testDeckMultiSelect);
@@ -56,6 +62,9 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests the clearSelectedCards setter with no cards set
+	 */
 	@Test
 	public void testClearSelectedCardsOnNoneSelected() {
 		DeckVotingPanel deckPanel = new DeckVotingPanel(testDeckMultiSelect);
@@ -67,6 +76,9 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests the clearSelectedCards setter with all cards selected
+	 */
 	@Test
 	public void testClearSelectedCardsOnAllSelected() {
 		DeckVotingPanel deckPanel = new DeckVotingPanel(testDeckMultiSelect);
@@ -81,6 +93,9 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests the clearSelectedCards setter with some cards set
+	 */
 	@Test
 	public void testClearSelectedCardsOnSomeSelected() {
 		DeckVotingPanel deckPanel = new DeckVotingPanel(testDeckMultiSelect);
@@ -102,6 +117,9 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests the getEstimate getter with no cards selected
+	 */
 	@Test
 	public void testGetEstimateNoneSelected() {
 		int estimate = 0;
@@ -115,6 +133,9 @@ public class DeckVotingPanelTest {
 		
 	}
 	
+	/**
+	 * Tests the getEstimate getter with some cards selected using a single selection deck
+	 */
 	@Test
 	public void testSingleDeckGetEstimateSomeSelected() {	
 		int estimate = 0;
@@ -138,6 +159,9 @@ public class DeckVotingPanelTest {
 		assertEquals(estimate, deckPanel.getEstimate());
 	}
 	
+	/**
+	 * Tests the getEstimate getter with some cards selected using a multipe selection deck
+	 */
 	@Test
 	public void testMultiDeckGetEstimateSomeSelected() {	
 		int estimate = 0;
@@ -159,6 +183,9 @@ public class DeckVotingPanelTest {
 		assertEquals(estimate, deckPanel.getEstimate());
 	}
 	
+	/**
+	 * Tests the getEstimate getter with all cards selected using a single selection deck
+	 */
 	@Test
 	public void testSingleDeckGetEstimateAllSelected() {	
 		int estimate = 0;
@@ -175,6 +202,9 @@ public class DeckVotingPanelTest {
 		assertEquals(estimate, deckPanel.getEstimate());
 	}
 	
+	/**
+	 * Tests the getEstimate getter with all cards selected using a multiple selection deck
+	 */
 	@Test
 	public void testMultiDeckGetEstimateAllSelected() {	
 		int estimate = 0;
@@ -197,6 +227,10 @@ public class DeckVotingPanelTest {
 		assertEquals(5, deckPanel.getEstimate());
 	}	
 	
+	/**
+	 * Tests the updateEstimate function after selected and de-selected a card with a
+	 * single selection deck
+	 */
 	@Test
 	public void testSingleDeckUpdateEstimateDeselectCard() {
 		int estimate = 0;
@@ -217,6 +251,10 @@ public class DeckVotingPanelTest {
 		}
 	}
 
+	/**
+	 * Tests if the previous selected cards can be correctly determined with a multiple selection deck.
+	 * Previous estimate = 0
+	 */
 	@Test
 	public void testMultiDeckCardsFromLastEstimateZero() {
 		Estimate prevEst = new Estimate();
@@ -229,6 +267,10 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests if the previous selected cards can be correctly determined with a single selection deck.
+	 * Previous estimate = 0
+	 */
 	@Test
 	public void testSingleDeckCardsFromLastEstimateZero() {
 		Estimate prevEst = new Estimate();
@@ -241,6 +283,10 @@ public class DeckVotingPanelTest {
 		}
 	}
 
+	/**
+	 * Tests if the previous selected cards can be correctly determined with a multiple selection deck.
+	 * Previous estimate is 2 of the cards
+	 */
 	@Test
 	public void testMultiDeckCardsFromLastEstimateSomeSelected() {
 		// Create Previous Estimate
@@ -263,18 +309,14 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests if the previous selected cards can be correctly determined with a single selection deck.
+	 * Previous estimate is a single card
+	 */
 	@Test
 	public void testSingleDeckCardsFromLastEstimateSomeSelected() {
 		// Create Previous Estimate
-		List<Integer> prevCards = new ArrayList<Integer>();
-		prevCards.add(testDeckMultiSelect.getNumbersInDeck().get(3));
-		prevCards.add(testDeckMultiSelect.getNumbersInDeck().get(6));
-		int prevVote = 0;
-		for (int val : prevCards) {
-			if (val > prevVote) {
-				prevVote = val;
-			}
-		}
+		int prevVote= testDeckMultiSelect.getNumbersInDeck().get(6); 
 		Estimate prevEst = new Estimate();
 		prevEst.setVote(prevVote);
 		
@@ -283,10 +325,14 @@ public class DeckVotingPanelTest {
 		// Get previous selected cards
 		List<Integer> prevSelected = deckPanel.cardsFromLastEstimate();
 		for (int val : prevSelected) {
-			assertTrue(prevCards.contains(val));
+			assertEquals(prevVote , val);
 		}
 	}
 	
+	/**
+	 * Tests if the previous selected cards can be correctly determined with a multiple selection deck.
+	 * Previous estimate = all cards
+	 */
 	@Test
 	public void testMutliDeckCardsFromLastEstimateAllSelected() {
 		// Create Previous Estimate
@@ -306,6 +352,9 @@ public class DeckVotingPanelTest {
 		}
 	}
 	
+	/**
+	 * Tests if the panel correctly fires an event with no previous estimate input
+	 */
 	@Test
 	public void testFireEstimateEventNoPrevEst() {
 		final DeckVotingPanel deckPanel = new DeckVotingPanel(testDeckSingleSelect);
@@ -319,6 +368,9 @@ public class DeckVotingPanelTest {
 		deckPanel.fireEstimateEvent();
 	}
 	
+	/**
+	 * Tests if the panel correctly fires an event with a previous estimate input
+	 */
 	@Test
 	public void testFireEstimateEventWithPrevEst() {
 		Estimate prevEst = new Estimate();
