@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import java.util.Collections;
 import java.util.List;
+import java.lang.Math; 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
@@ -28,7 +29,7 @@ public class RequirementEstimateStats {
 	private double mean;
 	private double median;
 	private double stdDev; 
-	private boolean isUpToDate; 
+	private boolean isUpToDate;
 	
 	public RequirementEstimateStats(int reqID, List<Estimate> givenEstimates) {
 		setEstimates(givenEstimates);
@@ -43,8 +44,7 @@ public class RequirementEstimateStats {
 	 */
 	public double getMean() {
 		if (isUpToDate) {
-			return mean;
-		}
+			return mean;		}
 		else {
 			double sum = 0;
 			for (Estimate e : estimates) {
