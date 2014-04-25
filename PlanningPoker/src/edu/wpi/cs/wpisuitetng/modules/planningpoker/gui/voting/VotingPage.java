@@ -422,6 +422,7 @@ public class VotingPage extends JSplitPane {
 					setDividerLocation(225);
 					thetable.populateVotePanel(ViewEventController.getInstance().getOverviewVoterTable().getSelectedRequirement());
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 				}
 			}
 		});

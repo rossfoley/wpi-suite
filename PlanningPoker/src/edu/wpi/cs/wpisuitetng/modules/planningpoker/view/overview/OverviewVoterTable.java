@@ -107,13 +107,13 @@ public class OverviewVoterTable extends JTable {
 		}
 		return false;		
 	}
-	public int getVote (Requirement reqToVoteOn) {
+	public int getVote (Requirement reqToVoteOn, String name) {
 		if(reqToVoteOn == null) {
 			return -1;
 		}
 		final List<Estimate> ListofEstiamte =  planningPokerSession.getEstimates();
 		for(Estimate e : ListofEstiamte) {
-			if(reqToVoteOn.getId() == e.getRequirementID()) {
+			if(reqToVoteOn.getId() == e.getRequirementID() && name.equals(e.getOwnerName())) {
 				return e.getVote();
 			}
 		}
@@ -128,19 +128,20 @@ public class OverviewVoterTable extends JTable {
 		System.out.println(reqToVoteOn.getName());
 		tableModel.setRowCount(0);	
 		this.selectedRequirement = reqToVoteOn;
+		int reqID;
+		String vote = "A";
 		final List<String> allUserList = getAllVoterNamesList();
 		final List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (String s : allUserList) {
 			if(EstimateContains(planningPokerSession.getEstimates(), s)){
 				System.out.println(s + "populatePanel");
-				int reqID = reqToVoteOn.getId();
+				reqID = reqToVoteOn.getId();
 				String reqName = reqToVoteOn.getName();
 				String username = s;
-				String vote = "A";
-				if(getVote(reqToVoteOn) == -1) {
+				if(getVote(reqToVoteOn, s) == -1) {
 					vote = "HAS NOT VOTED";
 				} else {
-					vote = String.valueOf(getVote(reqToVoteOn));
+					vote = String.valueOf(getVote(reqToVoteOn, s));
 				}
 				tableModel.addRow(new Object[]{
 						reqID,
@@ -149,10 +150,10 @@ public class OverviewVoterTable extends JTable {
 						vote});					
 			} else {
 				System.out.println(s + "populatePanel");
-				int reqID = reqToVoteOn.getId();
+				reqID = reqToVoteOn.getId();
 				String reqName = reqToVoteOn.getName();
 				String username = s;
-				String vote = "HAS NOT VOTED";
+				vote = "HAS NOT VOTED";
 				tableModel.addRow(new Object[]{
 						reqID,
 						reqName,
