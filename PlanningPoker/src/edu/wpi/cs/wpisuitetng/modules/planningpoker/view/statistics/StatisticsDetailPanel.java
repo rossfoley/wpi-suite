@@ -83,6 +83,12 @@ public class StatisticsDetailPanel extends JSplitPane {
 		this.setLeftComponent(infoPanel);
 		this.setRightComponent(reqOverviewTablePanel);
 		this.setResizeWeight(0.5); 
+<<<<<<< HEAD
+=======
+
+		ViewEventController.getInstance().setStatisticsInfoPanel(infoPanel);
+		ViewEventController.getInstance().setStatisticsUserTable(userTable);
+>>>>>>> Rearranges statistics panel layout
 		
 		// Makes the split pane divide 50/50 for each portion
 		final Dimension d = new Dimension(100, 100);
