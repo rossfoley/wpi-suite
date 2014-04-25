@@ -81,7 +81,7 @@ public class StatisticsInfoPanel extends JPanel {
 		add(scrollPane);
 		add(lblMean);
 		add(lblMedian);
-		//add(lblStdDev);
+		add(lblStdDev);
 		add(meanDisplay);
 		add(medianDisplay);
 		add(stdDevDisplay);
@@ -111,6 +111,11 @@ public class StatisticsInfoPanel extends JPanel {
 			 * change median display
 			 */
 			medianDisplay.setText(formatMedian(session.getReqEstimateStats().get(currentReqID)));
+			
+			/**
+			 * change standard deviation display 
+			 */
+			stdDevDisplay.setText(formatStdDev(session.getReqEstimateStats().get(currentReqID)));
 		}
 	}
 
@@ -126,6 +131,12 @@ public class StatisticsInfoPanel extends JPanel {
 		String median = "";
 		median = Double.toString(stats.getMedian());
 		return median;
+	}
+	//format estimate standard deviation to a string
+	public String formatStdDev(RequirementEstimateStats stats) {
+		String stdDev = "";
+		stdDev = Double.toString(stats.getStdDev());
+		return stdDev;
 	}
 	//set selected requirement ID
 	public void setRequirementID(int ID) {

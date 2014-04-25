@@ -19,8 +19,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
 /**
  * This class holds a list of estimates sorted by vote value
- * and both calculates and holds the mean and median values
- * for that list of elements 
+ * and both calculates and holds the mean, median, and standard 
+ * deviation values for that list of elements. 
  * 
  * @author Rick Wight (fmwight)
  */
@@ -30,6 +30,7 @@ public class RequirementEstimateStats {
 	private double mean;
 	private double median;
 	private double stdDev; 
+	private boolean isUpToDate; 
 	
 	public RequirementEstimateStats(int reqID, List<Estimate> givenEstimates) {
 		setEstimates(givenEstimates);
@@ -37,110 +38,110 @@ public class RequirementEstimateStats {
 	}
 	
 	/**
-	 * calculates the mean value of the estimates 
+	 * Check if the current statistics are all up to date. If yes, return mean. 
+	 * If no, calculate the mean value of the votes in the list of estimates, 
+	 * update mean with that value, and return that value. 
 	 * @return the mean value of the estimates 
 	 */
-	public double calculateMean() {
-		double sum = 0;
-		for (Estimate e : estimates) {
-			sum += e.getVote();
+	public double getMean() {
+		if (isUpToDate) {
+			return mean;
 		}
-		double theMean = 0; 
-		if (estimates.size() != 0) {
-			theMean = sum/estimates.size();
+		else {
+			double sum = 0;
+			for (Estimate e : estimates) {
+				sum += e.getVote();
+			}
+			double theMean = 0;
+			if (estimates.size() != 0) {
+				theMean = sum/estimates.size();
+			}
+			mean = theMean;
+			return theMean;
 		}
-		return theMean;
 	}
 	
 	/**
-	 * calculates the median of the estimates 
-	 * assumes that the list of estimates is already sorted by vote value
+	 * Check if the current statistics are all up to date. If yes, return median. 
+	 * If no, calculate the median of the votes in the list of estimates, update
+	 * median with that value, and return that value. 
+	 * Assumes that the list of estimates is already sorted by vote value. 
 	 * @return the median value of the estimates 
 	 */
-	public double calculateMedian() {
-		final int size = estimates.size();
-		if (size == 0) {
-			return 0; 
-		}
-		else if (size % 2 == 0) {
-			final int mid1 = size/2;
-			final int mid2 = size/2 - 1;
-			final int val1 = estimates.get(mid1).getVote();
-			final int val2 = estimates.get(mid2).getVote();
-			return (val1+val2)/2;
+	public double getMedian() {
+		if (isUpToDate) {
+			return median;
 		}
 		else {
-			final int mid = size/2;
-			return estimates.get(mid).getVote();
+			double theMedian;
+			final int size = estimates.size();
+			if (size == 0) {
+				return 0;
+			}
+			else if (size % 2 == 0) {
+				final int mid1 = size/2;
+				final int mid2 = size/2 - 1;
+				final int val1 = estimates.get(mid1).getVote();
+				final int val2 = estimates.get(mid2).getVote();
+				theMedian = (val1+val2)/2;
+				median = theMedian;
+				return theMedian;
+			}
+			else {
+				final int mid = size/2;
+				theMedian = estimates.get(mid).getVote();
+				median = theMedian;
+				return theMedian;
+			}
 		}
 	}
 	
 	/**
-	 * calculate the population standard deviation of the votes in the list of estimates
-	 * assumes that the mean has already been calculated for this list of estimates 
+	 * Check if the current statistics are all up to date. If yes, return stdDev. 
+	 * If no, calculate the population standard deviation of the votes in the list 
+	 * of estimates, update stdDev with that value, and return that value. 
+	 * Assumes that the mean has already been calculated for this list of estimates 
 	 * @return the standard deviation 
 	 */
-	public double calculateStdDev() {
-		double var = 0;
-		for (Estimate e : estimates) {
-			var += Math.pow(e.getVote() - mean, 2);
-			System.out.println("var = " + var + ", mean = " + mean + ", e.getVote() = " + e.getVote());
-		}
-		if (estimates.size() == 0) {
-			return 0;
+	public double getStdDev() {
+		if (isUpToDate) {
+			return stdDev;
 		}
 		else {
-			return Math.sqrt(var/estimates.size());
+			double var = 0;
+			double theStdDev; 
+			for (Estimate e : estimates) {
+				var += Math.pow(e.getVote() - mean, 2);
+			}
+			if (estimates.size() == 0) {
+				stdDev = 0;
+				return 0;
+			}
+			else {
+				theStdDev = Math.sqrt(var/estimates.size());
+				stdDev = theStdDev; 
+				return theStdDev; 
+			}
 		}
 	}
 	
 	/**
-	 * sorts the list of estimates by vote value
+	 * Sorts the list of estimates by vote value
 	 */
 	public void sortEstimatesByVote() {
 		  Collections.sort(estimates);
 	}
 	
 	/**
-	 * calls the methods to sort the list of estimates, then calculates and sets 
-	 * the mean, median, and population standard deviation in the appropriate order 
+	 * Calls the methods to sort the list of estimates, then updates the 
+	 * mean, median, and stdDev fields and sets isUpToDate to true. 
 	 */
 	public void refreshAll() {
 		sortEstimatesByVote();
-		setMean();
-		setMedian();
-		setStdDev();
-	}
-	
-	/**
-	 * set this.mean to the mean value of the votes in the list of estimates 
-	 */
-	public void setMean() {
-		mean = calculateMean();
-	}
-	
-	/**
-	 * returns the mean
-	 * @return mean
-	 */
-	public double getMean() {
-		return mean;
-	}
-	
-	/**
-	 * set this.median to the median value of the votes in the list of estimates
-	 * @param theMedian
-	 */
-	public void setMedian() {
-		median = calculateMedian();
-	}
-	
-	/**
-	 * returns the median 
-	 * @return median 
-	 */
-	public double getMedian() {
-		return median;
+		getMean();
+		getMedian();
+		getStdDev();
+		isUpToDate = true;
 	}
 	
 	/**
@@ -160,23 +161,7 @@ public class RequirementEstimateStats {
 	}
 	
 	/**
-	 * set this.stdDev to the population standard deviation of the votes
-	 * in the list of estimates 
-	 */
-	public void setStdDev() {
-		stdDev = calculateStdDev();
-	}
-	
-	/**
-	 * get the population standard deviation of the estimates 
-	 * @return stdDev 
-	 */
-	public double getStdDev() {
-		return stdDev;
-	}
-
-	/**
-	 * get the ID number of the requirement
+	 * Get the ID number of the requirement
 	 * @return ID
 	 */
 	public int getID() {
@@ -184,7 +169,7 @@ public class RequirementEstimateStats {
 	}
 
 	/**
-	 * set the ID number to the ID of the requirement
+	 * Set the ID number to the ID of the requirement
 	 * @param ID
 	 */
 	public void setID(int iD) {
@@ -192,10 +177,11 @@ public class RequirementEstimateStats {
 	}
 	
 	/**
-	 * adds estimate anEstimate to the list of estimates
+	 * Adds estimate anEstimate to the list of estimates and sets isUpToDate to false. 
 	 * @param anEstimate
 	 */
 	public void add(Estimate anEstimate) {
-		estimates.add(anEstimate); 
+		estimates.add(anEstimate);
+		isUpToDate = false; 
 	}
 }
