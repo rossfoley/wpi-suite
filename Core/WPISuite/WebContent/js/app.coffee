@@ -21,7 +21,7 @@ $ ->
     name: attr 'string'
     endDate: attr 'date'
     sessionCreatorName: attr 'string'
-    description: 'string'
+    description: attr 'string'
     uuid: attr 'string'
     gameState: attr 'string'
     requirementIDs: attr 'raw'
