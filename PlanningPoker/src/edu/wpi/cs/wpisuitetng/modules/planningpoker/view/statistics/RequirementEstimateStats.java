@@ -28,7 +28,7 @@ public class RequirementEstimateStats {
 	private List<Estimate> estimates;
 	private double mean;
 	private double median;
-	private double stdDev; 
+	private double stdDev;
 	private boolean isUpToDate;
 	
 	public RequirementEstimateStats(int reqID, List<Estimate> givenEstimates) {
@@ -44,7 +44,8 @@ public class RequirementEstimateStats {
 	 */
 	public double getMean() {
 		if (isUpToDate) {
-			return mean;		}
+			return mean;
+		}
 		else {
 			double sum = 0;
 			for (Estimate e : estimates) {
