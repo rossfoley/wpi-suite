@@ -311,17 +311,27 @@ public class RequirementSelectionPanel extends JPanel{
 			}
 			
 			List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
-			for (PlanningPokerSession session : sessions){
+			LinkedList<Integer> toRemove = new LinkedList<Integer>();
+			for (PlanningPokerSession session : sessions) {
 				if (!session.isPending()){
 					Set<Integer> IDs = session.getRequirementIDs();
-					for (Requirement req : reqsInBacklog){
-						if (IDs.contains(req.getId())){
+					for (Requirement req : reqsInBacklog) {
+						if (IDs.contains(req.getId())) {
 							int index = reqsInBacklog.indexOf(req);
-							reqsInBacklog.remove(index);
-							System.out.println("Removing requirement: " + Integer.toString(req.getId()));
+							System.out.println("Removing index: " + Integer.toString(index));
+							//reqsInBacklog.remove(index);
+							toRemove.add(index);
+							//System.out.println("Removing requirement: " + Integer.toString(req.getId()));
 						}
 					}
 				}
+			}
+			
+			System.out.println("toRemove: " + toRemove);
+			for (int i = toRemove.size() -1; i >= 0 ; i--) {
+				int index = toRemove.get(i);
+				//System.out.println("Removing index: " + Integer.toString(index));
+				reqsInBacklog.remove(index);
 			}
 			
 			
