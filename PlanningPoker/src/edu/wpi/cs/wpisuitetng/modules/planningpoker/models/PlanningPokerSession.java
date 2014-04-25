@@ -27,10 +27,10 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.CreatePokerSessionErrors;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.NoDescriptionException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.RequirementEstimateStats;
 
 /**

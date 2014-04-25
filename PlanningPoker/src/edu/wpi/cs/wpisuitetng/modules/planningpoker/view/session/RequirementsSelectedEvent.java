@@ -7,11 +7,21 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
-/**
- * @author Pat Desmarais & Cameron Peterson
- *
- */
-public class NoDescriptionException extends Exception {
+import java.util.EventObject;
+
+public class RequirementsSelectedEvent extends EventObject {
+	private final boolean areRequirementsSelected;
+	
+	public RequirementsSelectedEvent(Object source, boolean areRequirementsSelected) {
+		super(source);
+		
+		this.areRequirementsSelected = areRequirementsSelected;
+	}
+	
+	public boolean areRequirementsSelected() {
+		return areRequirementsSelected;
+	}
+
 }
