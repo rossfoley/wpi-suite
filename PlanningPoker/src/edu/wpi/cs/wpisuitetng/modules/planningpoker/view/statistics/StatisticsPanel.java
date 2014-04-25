@@ -29,6 +29,12 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
 
@@ -96,11 +102,11 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 		
 		// Put the overview table and sidebar into the tab
-		this.setTopComponent(detailPanel);
-		this.setBottomComponent(tablePanel);
+		this.setLeftComponent(tablePanel);
+		this.setRightComponent(detailPanel);
 		
 		this.updatePanel();
-		
+
 		// Makes the split pane divide 50/50 for each portion
 		//final Dimension d = new Dimension(300, 100);
         //detailPanel.setMinimumSize(d);
