@@ -512,6 +512,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
 
+		
+		final GetEmailController getEmailController = GetEmailController.getInstance();
+		getEmailController.retrieveEmails();
+		
 		final JButton btnSave = new JButton("Save");
 		final JButton btnBack = new JButton("Back");
 		final JButton btnStart = new JButton("Start");
@@ -586,8 +590,8 @@ public class PlanningPokerSessionTab extends JPanel {
 					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
 					
-					final GetEmailController getEmailController = GetEmailController.getInstance();
-					getEmailController.retrieveEmails();
+					//final GetEmailController getEmailController = GetEmailController.getInstance();
+					//getEmailController.retrieveEmails();
 					
 					final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 					try {
@@ -601,15 +605,21 @@ public class PlanningPokerSessionTab extends JPanel {
 						recipients.add(emailRecipients.get(i).getEmail());
 					}
 					
+					final Mailer mailer = new Mailer();
+					System.out.println(recipients.toString());
+					mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
+					
+					/*
 					final Thread t = new Thread(new Runnable() {
 						@Override
 						public void run() {
 							final Mailer mailer = new Mailer();
+							System.out.println(recipients.toString());
 							mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
 						}
 					});
 					t.setDaemon(true);
-					t.start();
+					t.start();*/
 				}
 			}
 		});
