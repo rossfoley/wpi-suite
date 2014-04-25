@@ -26,7 +26,7 @@ public class EmailAddressModel extends AbstractListModel {
 	 * the list in which all the emails for a project are contained
 	 */
 	private final List<EmailAddress> emailAddresses;
-	//private int nextID; // the next available id for a EmailAddress
+
 	
 	private static EmailAddressModel instance; // static object to allow the EmailAddressModel 
 	
@@ -78,7 +78,7 @@ public class EmailAddressModel extends AbstractListModel {
 	}
 	public void updateEmailAddress(EmailAddress currentEmail){
 		// add the emailAddress
-		removePlanningPokerSession(currentEmail.getEmail());
+		removeEmailAddress(currentEmail.getOwnerName());
 		emailAddresses.add(currentEmail);
 		try
 		{
@@ -96,7 +96,7 @@ public class EmailAddressModel extends AbstractListModel {
 	 * 
 	 * @param user user of the email address to be removed.
 	 */
-	public void removePlanningPokerSession(String user){
+	public void removeEmailAddress(String user){
 		// iterate through list of PlanningPokerSessions until id of project is found
 		for (int i=0; i < emailAddresses.size(); i++){
 			if (emailAddresses.get(i).getOwnerName().equals(user)) {
