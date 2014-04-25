@@ -25,41 +25,67 @@ public class TestRequirementEstimateStats {
 	
 	@Test
 	public void testCalculateMean() {
+<<<<<<< HEAD
 		assertEquals(0, testStats.getMean(), 0.1);
+=======
+		assertEquals(0, testStats.calculateMean(), 0.1);
+>>>>>>> requirementEstimateStats class can now calculate the population standard deviation of a list of estimates. Test cases include testing of standard deviation calculator
 		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
 		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
 		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
 		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
 		testStats.add(new Estimate(8, 8, UUID.randomUUID()));
+<<<<<<< HEAD
 		assertEquals(4.2, testStats.getMean(), 0.01);
 		testStats.add(new Estimate(13, 13, UUID.randomUUID()));
 		assertEquals(5.66, testStats.getMean(), 0.01);
+=======
+		assertEquals(4.2, testStats.calculateMean(), 0.01);
+		testStats.add(new Estimate(13, 13, UUID.randomUUID()));
+		assertEquals(5.66, testStats.calculateMean(), 0.01);
+>>>>>>> requirementEstimateStats class can now calculate the population standard deviation of a list of estimates. Test cases include testing of standard deviation calculator
 	}
 	
 	@Test
 	public void testCalculateMedian() {
+<<<<<<< HEAD
 		assertEquals(0, testStats.getMedian(), 0.1);
+=======
+		assertEquals(0, testStats.calculateMedian(), 0.1);
+>>>>>>> requirementEstimateStats class can now calculate the population standard deviation of a list of estimates. Test cases include testing of standard deviation calculator
 		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
 		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
 		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
 		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
 		testStats.add(new Estimate(8, 8, UUID.randomUUID()));
 		testStats.refreshAll();
+<<<<<<< HEAD
 		assertEquals(3, testStats.getMedian(), 0.1);
 		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
 		testStats.refreshAll();
 		assertEquals(5, testStats.getMedian(), 0.1);
+=======
+		assertEquals(3, testStats.calculateMedian(), 0.1);
+		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(5, testStats.calculateMedian(), 0.1);
+>>>>>>> requirementEstimateStats class can now calculate the population standard deviation of a list of estimates. Test cases include testing of standard deviation calculator
 	}
 	
 	@Test
 	public void testCalculateStdDev() {
+<<<<<<< HEAD
 		assertEquals(0, testStats.getStdDev(), 0.1); 
+=======
+		assertEquals(0, testStats.calculateStdDev(), 0.1); 
+>>>>>>> requirementEstimateStats class can now calculate the population standard deviation of a list of estimates. Test cases include testing of standard deviation calculator
 		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
 		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
 		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
 		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
 		testStats.add(new Estimate(8, 8, UUID.randomUUID()));
 		testStats.refreshAll();
+<<<<<<< HEAD
 		assertEquals(2.8, testStats.getStdDev(), 0.1);
 		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
 		testStats.refreshAll();
@@ -80,5 +106,11 @@ public class TestRequirementEstimateStats {
 		assertEquals(aList.get(0).getVote(), testStats.getEstimates().get(0).getVote());
 		assertEquals(aList.get(0).getSessionID(), 
 				testStats.getEstimates().get(0).getSessionID());
+=======
+		assertEquals(2.8, testStats.calculateStdDev(), 0.1);
+		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(3.1, testStats.calculateStdDev(), 0.1);
+>>>>>>> requirementEstimateStats class can now calculate the population standard deviation of a list of estimates. Test cases include testing of standard deviation calculator
 	}
 }
