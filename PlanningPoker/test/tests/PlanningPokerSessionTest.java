@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -197,5 +198,32 @@ public class PlanningPokerSessionTest {
 		
 		assertTrue(testSession.getRequirementIDs().contains(0));
 		assertTrue(testSession.getRequirementIDs().contains(1));
+	}
+	
+	@Test
+	public void testGetVotersForRequirement() {
+		PlanningPokerSession session = new PlanningPokerSession();
+		Estimate e1 = new Estimate(), e2 = new Estimate(), e3 = new Estimate();
+		Set<Integer> requirementIDs = new HashSet<Integer>();
+		
+		requirementIDs.add(0);
+		requirementIDs.add(1);
+		session.setRequirementIDs(requirementIDs);
+		
+		e1.setOwnerName("owner");
+		e2.setOwnerName("owner");
+		e3.setOwnerName("bob");
+		
+		e1.setRequirementID(0);
+		e2.setRequirementID(1);
+		e3.setRequirementID(0);
+		
+		session.addEstimate(e1);
+		session.addEstimate(e2);
+		session.addEstimate(e3);
+		
+		Set<String> voters = session.getVotersForRequirement(0);
+		assertTrue(voters.contains("owner"));
+		assertTrue(voters.contains("bob"));
 	}
 }

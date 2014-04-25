@@ -26,7 +26,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EstimateVoters;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -252,21 +251,6 @@ public class VotingPage extends JSplitPane {
 		}
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 	}
-
-	public void addVoterNameToEstimateVotersList(EstimateVoters ev) {
-		for (EstimateVoters e :activeSession.getEstimateVoterList()) {
-			if( e.getRequirementID() == ev.getRequirementID() && e.getVoterUsername().equals(ev.getVoterUsername())) {
-				e.setOwnerName(ev.getOwnerName());
-				e.setID(ev.getID());
-				e.setRequirementID(ev.getRequirementID());
-				e.setVoterUsername(ev.getVoterUsername());
-				e.setVote(ev.getVote());
-				return ;
-			}
-		}
-		activeSession.getEstimateVoterList().add(ev);
-		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-	}
 	
 	public void addVoterNameToEstimatesList(Estimate ev) {
 		for (Estimate e :activeSession.getEstimates()) {
@@ -277,31 +261,6 @@ public class VotingPage extends JSplitPane {
 		}
 		activeSession.getEstimates().add(ev);
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-	}
-	
-	/**
-	 * 
-	 * @param username
-	 */
-	public void addVoterNameToEstimateVotersList(String username, int requirementID, EstimateVoters NewEstimateVoter) {
-		for (int i = 0; i < activeSession.getEstimateVoterList().size(); i++) {
-			if(activeSession.getEstimateVoterList().get(i).getRequirementID() == requirementID) {
-				if(activeSession.getEstimateVoterList().get(i).getVoterNameList().contains(username)) {
-					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
-					return;
-				} else {
-					activeSession.getEstimateVoterList().get(i).getVoterNameList().add(username);
-					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
-					return;
-				}
-			}
-		}
-		NewEstimateVoter.getVoterNameList().add(username);
-		activeSession.getEstimateVoterList().add(NewEstimateVoter);
-		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-		UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
 	}
 	
 
@@ -357,8 +316,7 @@ public class VotingPage extends JSplitPane {
 				System.out.println("Estimate submitted: " + e.getEstimate());
 				if (requirement != null) {
 					Estimate estimate = new Estimate();
-					// tracking line
-					final EstimateVoters estimateVoter = new EstimateVoters();
+					
 					for (Estimate e2: estimates) {
 						if (e2.getRequirementID() == requirement.getId()) {
 							estimate = e2;
@@ -368,18 +326,8 @@ public class VotingPage extends JSplitPane {
 					estimate.setRequirementID(requirement.getId());
 					estimate.setSessionID(activeSession.getID());
 					estimate.setVote((int)e.getEstimate());
-					
-					estimateVoter.setOwnerName(ConfigManager.getConfig().getUserName());
-					estimateVoter.setRequirementID(requirement.getId());
-					estimateVoter.setSessionID(activeSession.getID());
-					estimateVoter.setVote((int)e.getEstimate());
-					estimateVoter.setVoterUsername(getVoterName());
-					//
-					addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
 					addVoterNameToEstimatesList(estimate);
 
-					
-					
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
 					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());

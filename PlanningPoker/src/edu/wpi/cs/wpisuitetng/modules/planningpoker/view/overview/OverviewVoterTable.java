@@ -93,83 +93,25 @@ public class OverviewVoterTable extends JTable {
 	
 
 	public void populateVotePanel() {
-		tableModel.setRowCount(0);	
-		final Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
-		
-		final List<String> allUserList = getAllVoterNamesList();
-		final List<Requirement> ListOfRequirements =  getSessionReqs();
-		for (Requirement r : ListOfRequirements) {
-			int reqID = r.getId();
-			String reqName = r.getName();
-			boolean vote = false;
-			for (int i = 0; i < planningPokerSession.getEstimateVoterList().size(); i++) {
-				if(planningPokerSession.getEstimateVoterList().get(i).getRequirementID() == r.getId()) {
-					for (String s : allUserList) {
-						vote = false;
-						String username = s;
-						if(planningPokerSession.getEstimateVoterList().get(i).getVoterNameList().contains(s)) {
-							vote = true; //mean voted
-							tableModel.addRow(new Object[]{
-									reqID,
-									reqName,
-									username,
-									vote});	
-						} else {
-							tableModel.addRow(new Object[]{
-									reqID,
-									reqName,
-									username,
-									vote});	
+		tableModel.setRowCount(0);
+
+		for (Requirement r : getSessionReqs()) {
+			for (Estimate estimate : planningPokerSession.getEstimates()) {
+				if (estimate.getRequirementID() == r.getId()) {
+					for (String username : getAllVoterNamesList()) {
+						boolean voted = false;
+						if (planningPokerSession.getVotersForRequirement(r.getId()).contains(username)) {
+							voted = true;
 						}
+						Object[] row = {r.getId(), r.getName(), username, voted};
+						tableModel.addRow(row);	
 					}
 				}
 			}
 		}
 	}
-	/**DOESNT WORK CARE
-	 *  populates the panel
-	 *  
-	 */
-	public void populateVotePanelNOTCOMPLETE() {
-		tableModel.setRowCount(0);	
-		final Set<Integer> requirementIDs = planningPokerSession.getRequirementIDs();
-		
-		final List<String> allUserList = getAllVoterNamesList();
-		final List<Requirement> ListOfRequirements =  getSessionReqs();
-		for (Requirement r : ListOfRequirements) {
-			int reqID = r.getId();
-			String reqName = r.getName();
-			int vote = -1;
-			for (Estimate ev : planningPokerSession.getEstimates()) {
-				if (ev.getRequirementID() == reqID) {
-					for (String s : allUserList) {
-						String username = s;
-						for (Estimate evs : planningPokerSession.getEstimates()) {
-							if (evs.getOwnerName().equals(s)) {
-								vote = evs.getVote();
-								tableModel.addRow(new Object[]{
-										reqID,
-										reqName,
-										username,
-										vote});
-								break;
-							} else {
-								vote = -1;
-								tableModel.addRow(new Object[]{
-										reqID,
-										reqName,
-										username,
-										vote});
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	public void paintComponent(Graphics g)
-	{
+
+	public void paintComponent(Graphics g) {
 		if(!initialized) {
 			try {
 				GetSessionController.getInstance().retrieveSessions();
