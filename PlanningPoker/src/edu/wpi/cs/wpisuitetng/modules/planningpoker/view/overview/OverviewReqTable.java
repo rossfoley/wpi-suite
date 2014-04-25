@@ -16,7 +16,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -194,11 +193,11 @@ public class OverviewReqTable extends JTable {
 	 * @return a string representing the final estimate 
 	 */
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
-		HashMap<Integer, Integer> finalEstimates = session.getFinalEstimates();
-		int reqID = reqToFind.getId();
+		final HashMap<Integer, Integer> finalEstimates = session.getFinalEstimates();
+		final int reqID = reqToFind.getId();
 		if (finalEstimates.containsKey(reqID)){
 			return finalEstimates.get(reqID).toString();
 		}
-		return "-";		
+		return "-";	
 	}
 }
