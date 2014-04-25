@@ -71,9 +71,12 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
 		tablePanel = new JScrollPane(reqTable);
 		
+<<<<<<< HEAD
 		// initialize infoPanel
 		infoPanel = detailPanel.getInfoPanel();
 		
+=======
+>>>>>>> Rearranges statistics panel layout
 		//set infoPanel to get estimate information for statistics
 		reqTable.setInfoPanel(infoPanel);
 		
@@ -109,7 +112,12 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		this.setRightComponent(detailPanel);
 		
 		this.updatePanel();
+<<<<<<< HEAD
 
+=======
+		
+	
+>>>>>>> Rearranges statistics panel layout
 		// Makes the split pane divide 50/50 for each portion
 		//final Dimension d = new Dimension(300, 100);
         //detailPanel.setMinimumSize(d);
@@ -130,7 +138,10 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		
 		// change the visibility of the top buttons
 		//setButtonVisibility(activeSession);
+<<<<<<< HEAD
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
+=======
+>>>>>>> Rearranges statistics panel layout
 	}	
 	
 	//private void updateInfoPanel(PlanningPokerSession session) {
