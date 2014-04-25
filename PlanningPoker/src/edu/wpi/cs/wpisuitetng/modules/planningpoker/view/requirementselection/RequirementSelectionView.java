@@ -14,9 +14,9 @@ import java.util.Set;
 
 import javax.swing.JSplitPane;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementSelectionPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.RequirementsSelectedListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.RequirementSelectionPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.RequirementsSelectedListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class RequirementSelectionView extends JSplitPane{

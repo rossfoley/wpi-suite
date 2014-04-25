@@ -7,15 +7,11 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 /**
- * this enum contains the different types of errors that can happen in the create game tab
- * 
- * @author amandaadkins
+ * @author Pat Desmarais & Cameron Peterson
  *
  */
-public enum CreatePokerSessionErrors {
-	NoName, MissingDateFields, EndDateTooEarly, NoDescription, NoDateSelected
-
+public class NoDescriptionException extends Exception {
 }

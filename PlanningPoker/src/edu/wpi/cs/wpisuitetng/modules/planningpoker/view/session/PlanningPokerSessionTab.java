@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 /**
  * This class makes up the panel that is used to create a game

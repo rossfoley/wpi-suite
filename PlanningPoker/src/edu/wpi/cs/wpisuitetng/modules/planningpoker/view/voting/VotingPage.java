@@ -8,7 +8,7 @@
  * Contributors: The Team8s
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.voting;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,12 +33,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewVoterTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateEvent;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.SelectionEvent;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.SelectionListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.database.*;

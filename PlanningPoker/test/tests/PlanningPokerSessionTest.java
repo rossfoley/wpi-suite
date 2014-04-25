@@ -22,10 +22,10 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
