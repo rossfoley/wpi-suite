@@ -107,6 +107,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final String[] availableTimes = new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
 			"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
 			"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" };
+	private boolean editedDescription;
 
 
 	/**
@@ -118,6 +119,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		dateHasBeenSet = false;
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
+		editedDescription = false;
 	}
 
 	/**
@@ -136,6 +138,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
+		
+		editedDescription = true;
 
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
@@ -393,8 +397,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		});
 		// Handle changes in description field
 		textFieldDescription.getDocument().addDocumentListener(new DocumentListener() {
+			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
+				editedDescription = true;
 				if (!validateFields()) {
 					btnNext.setEnabled(false);
 					descriptionErrorMessage.setForeground(Color.RED);
@@ -405,6 +411,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				editedDescription = true;
 				if(!validateFields()) {
 					btnNext.setEnabled(false);
 					descriptionErrorMessage.setForeground(Color.RED);
@@ -415,6 +422,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				editedDescription = true;
 				if (!validateFields()) {
 					btnNext.setEnabled(false);
 					descriptionErrorMessage.setForeground(Color.RED);
@@ -788,12 +796,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		} else { 
 			// Display all error messages
 			// Handle description error
-			if (errors.contains(CreatePokerSessionErrors.NoDescription)){
-				descriptionErrorMessage.setText("Please enter a description");
-			} else {
-				descriptionErrorMessage.setText("");
+			if (editedDescription){
+				if (errors.contains(CreatePokerSessionErrors.NoDescription)){
+					descriptionErrorMessage.setText("Please enter a description");
+				} else {
+					descriptionErrorMessage.setText("");
+				}
 			}
-
 			// Handle name error
 			if (errors.contains(CreatePokerSessionErrors.NoName)){
 				nameErrorMessage.setText("Please enter a name");
