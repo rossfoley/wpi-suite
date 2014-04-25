@@ -1,6 +1,11 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences;
 
 import javax.mail.internet.AddressException;
@@ -21,25 +26,44 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.List;
 
 /**
+ * 
  * @author Andrew Leonard
  *
  */
-public class PreferencesPanel extends JPanel {
+
+/**
+ * This class implements an interface to manage user preferences.
+ */
+/**
+ * @author Hemuro
+ *
+ */
+/**
+ * @author Hemuro
+ *
+ */
+public class PreferencesPanel extends JPanel implements FocusListener {
 	private final JTextField txtEnterEmailHere;
 	private boolean emailError = false;
+	private boolean emailSent = false;
 	JLabel lblEmailErrorText;
+	JLabel lblEmailSubmitted;
 
-
-	public PreferencesPanel() {
+	/**
+	 * Constructs the Preferences Panel
+	 */
+	public PreferencesPanel() {		
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 
 		txtEnterEmailHere = new JTextField();
 		springLayout.putConstraint(SpringLayout.WEST, txtEnterEmailHere, 31, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, txtEnterEmailHere, -129, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, txtEnterEmailHere, -200, SpringLayout.EAST, this);
 		txtEnterEmailHere.setText("Enter Email Here...");
 		add(txtEnterEmailHere);
 		txtEnterEmailHere.setColumns(10);
@@ -54,17 +78,27 @@ public class PreferencesPanel extends JPanel {
 		final JButton btnSubmit = new JButton("Submit");
 		springLayout.putConstraint(SpringLayout.NORTH, btnSubmit, -1, SpringLayout.NORTH, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
-		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -34, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, 100, SpringLayout.EAST, txtEnterEmailHere);
 		add(btnSubmit);
 
 		lblEmailErrorText = new JLabel("Invalid Email");
-		lblEmailErrorText.setForeground(Color.RED);
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmailErrorText, 6, SpringLayout.SOUTH, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, lblEmailErrorText, 31, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, lblEmailErrorText, 20, SpringLayout.SOUTH, txtEnterEmailHere);
-		springLayout.putConstraint(SpringLayout.EAST, lblEmailErrorText, 0, SpringLayout.EAST, txtEnterEmailHere);
+		springLayout.putConstraint(SpringLayout.SOUTH, lblEmailErrorText, -187, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblEmailErrorText, -129, SpringLayout.EAST, this);
+		lblEmailErrorText.setForeground(Color.RED);
 		add(lblEmailErrorText);
+		
+		lblEmailSubmitted = new JLabel("Submitted Email!");
+		springLayout.putConstraint(SpringLayout.NORTH, lblEmailSubmitted, 0, SpringLayout.NORTH, lblEmailErrorText);
+		springLayout.putConstraint(SpringLayout.WEST, lblEmailSubmitted, 0, SpringLayout.WEST, btnSubmit);
+		springLayout.putConstraint(SpringLayout.EAST, lblEmailSubmitted, -26, SpringLayout.EAST, this);
+		lblEmailSubmitted.setForeground(new Color(50, 205, 50));
+		add(lblEmailSubmitted);
+		
+		
 		lblEmailErrorText.setVisible(emailError);
+		lblEmailSubmitted.setVisible(emailSent);
 
 		// Add functionality to submit
 		btnSubmit.addActionListener(new ActionListener() {
@@ -73,15 +107,22 @@ public class PreferencesPanel extends JPanel {
 			}
 		});
 
+		addFocusListener(this);
 	}
 
+
+	/**
+	 * This method contains all the functionality of user hitting the submit button for the email box.
+	 */
 	void submitEmail() {
 		final String email = txtEnterEmailHere.getText();
 
 		// Validate
 		if (validateEmail(email) == true) {
 			emailError = false;
+			emailSent = true;
 			lblEmailErrorText.setVisible(emailError);
+			lblEmailSubmitted.setVisible(emailSent);
 			final EmailAddress newEmail = new EmailAddress();
 			newEmail.setEmail(email);
 			newEmail.setOwnerName(ConfigManager.getInstance().getConfig().getUserName());
@@ -115,13 +156,18 @@ public class PreferencesPanel extends JPanel {
 		}
 		else {
 			emailError = true;
+			emailSent = false;
 			lblEmailErrorText.setVisible(emailError);
+			lblEmailSubmitted.setVisible(emailSent);
 		}
 		
 
 
 	}
 
+	/**
+	 * This function validates a given email address for form.
+	 */
 	boolean validateEmail(String email) {
 
 		try {
@@ -133,5 +179,24 @@ public class PreferencesPanel extends JPanel {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Focus listen function for describing what happens when this panel comes into focus.
+	 */
+	@Override
+	public void focusGained(FocusEvent e) {
+		emailSent = false;
+		lblEmailSubmitted.setVisible(emailSent);
+	}
+
+	/**
+	 * Focus listen function for describing what happens when this panel comes out of focus.
+	 */
+	@Override
+	public void focusLost(FocusEvent e) {
+		emailSent = false;
+		lblEmailSubmitted.setVisible(emailSent);
+		
 	}
 }
