@@ -605,20 +605,19 @@ public class PlanningPokerSessionTab extends JPanel {
 					}
 					
 					final Mailer mailer = new Mailer();
-					System.out.println(recipients.toString());
-					mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
 					
-					/*
 					final Thread t = new Thread(new Runnable() {
 						@Override
 						public void run() {
 							final Mailer mailer = new Mailer();
+							/* this is for testing who is emailed 
 							System.out.println(recipients.toString());
+							*/
 							mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
 						}
 					});
 					t.setDaemon(true);
-					t.start();*/
+					t.start();
 				}
 			}
 		});
