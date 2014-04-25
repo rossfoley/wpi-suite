@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import java.util.Collections;
 import java.util.List;
-import java.lang.Math; 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
