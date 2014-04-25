@@ -14,11 +14,9 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class EmailAddressModel extends AbstractListModel {
 
@@ -76,6 +74,10 @@ public class EmailAddressModel extends AbstractListModel {
 
 		}
 	}
+	/**
+	 * Goes into the updateEmailController and calls updateEmailAddress with the email. While it says currentEmail it goes through and finds an email address with the same user as currentEmail and removes it, adding currentEmail in its place.
+	 * @param currentEmail the email address you wish to update
+	 */
 	public void updateEmailAddress(EmailAddress currentEmail){
 		// add the emailAddress
 		removeEmailAddress(currentEmail.getOwnerName());
@@ -121,7 +123,7 @@ public class EmailAddressModel extends AbstractListModel {
 	/**
 	 * Finds the email address with the given string as its address
 	 * 
-	 * @param email address to look for. Formated as a string.
+	 * @param emailaddress to look for. Formated as a string.
 	 * @return the email Address with the given String as its address
 	 */
 	public EmailAddress getEmailAddress(String emailAddress){

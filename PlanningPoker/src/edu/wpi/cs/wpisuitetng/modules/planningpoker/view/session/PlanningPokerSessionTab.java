@@ -590,8 +590,7 @@ public class PlanningPokerSessionTab extends JPanel {
 					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
 					
-					//final GetEmailController getEmailController = GetEmailController.getInstance();
-					//getEmailController.retrieveEmails();
+					
 					
 					final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 					try {
