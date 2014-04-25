@@ -68,6 +68,7 @@ public class CreateDeck extends JPanel {
 	private JTable cardTable;
 	private DefaultTableModel cardTableModel;
 	private SpringLayout springLayout;
+	private SpringLayout modePanelLayout = new SpringLayout();
 	private transient Vector<DeckListener> listeners;
 
 
@@ -193,11 +194,12 @@ public class CreateDeck extends JPanel {
 		// Sprint layout constraints
 		springLayout.putConstraint(SpringLayout.WEST, lblDeckName, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, lblDeckName, 20, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, txtDeckName, 10, SpringLayout.EAST, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, txtDeckName, 0, SpringLayout.EAST, btnAddCard);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txtDeckName, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
-		springLayout.putConstraint(SpringLayout.WEST, lblDeckNameError, 10, SpringLayout.EAST, txtDeckName);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblDeckNameError, 0, SpringLayout.VERTICAL_CENTER, txtDeckName);
+		springLayout.putConstraint(SpringLayout.WEST, txtDeckName, 0, SpringLayout.WEST, lblDeckName);
+		springLayout.putConstraint(SpringLayout.EAST, txtDeckName, 150, SpringLayout.WEST, txtDeckName);
+		springLayout.putConstraint(SpringLayout.NORTH, txtDeckName, 10, SpringLayout.SOUTH, lblDeckName);
+
+		springLayout.putConstraint(SpringLayout.WEST, lblDeckNameError, 10, SpringLayout.EAST, lblDeckName);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblDeckNameError, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
 
 		springLayout.putConstraint(SpringLayout.WEST, modeSelectionPanel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, modeSelectionPanel, 10, SpringLayout.SOUTH, txtDeckName);
@@ -396,10 +398,18 @@ public class CreateDeck extends JPanel {
 		modeBtnPanel.add(rbtnSingle);
 		modeBtnPanel.add(rbtnMulti);
 
-		final JPanel modePanel = new JPanel(new BorderLayout());
+		final JPanel modePanel = new JPanel();
 		final JLabel lblMode = new JLabel("Card Selection Mode: ");
-		modePanel.add(lblMode, BorderLayout.LINE_START);
-		modePanel.add(modeBtnPanel, BorderLayout.CENTER);
+		modePanel.setLayout(modePanelLayout);
+		
+		modePanelLayout.putConstraint(SpringLayout.NORTH, lblMode, 0, SpringLayout.NORTH, modePanel);
+		modePanelLayout.putConstraint(SpringLayout.WEST, lblMode, 0, SpringLayout.WEST, modePanel);
+		
+		modePanelLayout.putConstraint(SpringLayout.NORTH, modeBtnPanel, 10, SpringLayout.SOUTH, lblMode);
+		modePanelLayout.putConstraint(SpringLayout.WEST, modeBtnPanel, 0, SpringLayout.WEST, modePanel);
+		
+		modePanel.add(lblMode);
+		modePanel.add(modeBtnPanel);
 
 		return modePanel;
 	}
