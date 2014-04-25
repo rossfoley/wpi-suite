@@ -79,6 +79,7 @@ public class DeckVotingPanel extends JPanel
 	 */
 	public DeckVotingPanel(Deck votingDeck) {
 		this.votingDeck = votingDeck;
+		prevEstimate = new Estimate();
 		// Make sure a deck was input
 		if (votingDeck == null) {
 			buildDefaultVotingPanel();	
@@ -110,6 +111,7 @@ public class DeckVotingPanel extends JPanel
 	 */
 	public DeckVotingPanel() {
 		votingDeck = null;
+		prevEstimate = new Estimate();
 		buildDefaultVotingPanel();
 	}
 
@@ -372,7 +374,7 @@ public class DeckVotingPanel extends JPanel
 	 * Updates the users estimate on a card button click
 	 * @param card	the card clicked
 	 */
-	private void updateEstimate(JButton card) {
+	public void updateEstimate(JButton card) {
 		// If multiple cards can be selected
 		if (votingDeck.getAllowMultipleSelections()) {
 			// If card was selected from estimate
@@ -419,7 +421,7 @@ public class DeckVotingPanel extends JPanel
 	/**
 	 * Sets all the cards as not selected and the current estimate to zero.
 	 */
-	private void clearSelectedCards() {
+	public void clearSelectedCards() {
 		// De-select all cards
 		for (JButton card : listOfCardButtons) {
 			setCardSelected(card, false);
@@ -503,10 +505,11 @@ public class DeckVotingPanel extends JPanel
 	
 
 	/**
+	 * Marks the input card as selected via changing the background and border
 	 * @param card	The card to set properties for
 	 * @param cardSelected	If the card is selected or not
 	 */
-	private void setCardSelected(JButton card, boolean cardSelected) {
+	public void setCardSelected(JButton card, boolean cardSelected) {
 		// Set the card to selected
 		if (cardSelected) {
 			card.setBackground(selectedColor);	// card is part of estimate
@@ -520,9 +523,10 @@ public class DeckVotingPanel extends JPanel
 	}
 	
 	/** 
+	 * Checks the background of the card to see if it is marked as selected
 	 * @param card	The card to check if selected
 	 */
-	private boolean isCardSelected(JButton card) {
+	public boolean isCardSelected(JButton card) {
 		// Card is selected
 		if (card.getBackground() == selectedColor) {
 			return true;
@@ -530,12 +534,20 @@ public class DeckVotingPanel extends JPanel
 		// Card is not selected (background == Color.WHITE)
 		return false;
 	}
+
+	/**
+	 * Getter method for the card buttons
+	 * @return	A list of the card buttons created
+	 */
+	public List<JButton> getCardButtons() {
+		return listOfCardButtons;
+	}
 	
 	/**
 	 * Assumes that the cards fit exactly into the estimate
 	 * @return	The numbers from the deck that made up the previous estimate
 	 */
-	private List<Integer> cardsFromLastEstimate() {
+	public List<Integer> cardsFromLastEstimate() {
 		// Get the list of numbers in the deck and sort in ascending order
 		final List<Integer> numbersInDeck = votingDeck.getNumbersInDeck();
 		Collections.sort(numbersInDeck);
@@ -579,7 +591,7 @@ public class DeckVotingPanel extends JPanel
 	/**
 	 * @return returns true if the estimate is valid (i.e. non-negative) 
 	 */
-	public boolean validateEstimate() {
+	private boolean validateEstimate() {
 		if (userEstimate < 0) {
 			estimateFieldErrorMessage.setText("Please enter a positive integer");
 			estimateFieldErrorMessage.setVisible(true);
@@ -608,7 +620,6 @@ public class DeckVotingPanel extends JPanel
 	 * Listens for changes in the text field value and handles these events
 	 */
 	private void estimateValueChange() {
-		System.out.println("Field value changed");
 		try {
 			userEstimate = Integer.parseInt(estimateField.getText());
 			validateEstimate();
