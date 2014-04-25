@@ -61,7 +61,6 @@ public class PlanningPokerSession extends AbstractModel {
 	private List<Integer> requirementsWithExportedEstimatesIDs;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
-	private List<EstimateVoters> estimateVoterList;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -78,7 +77,6 @@ public class PlanningPokerSession extends AbstractModel {
 		finalEstimatesMap = new HashMap<Integer, Integer>(); 
 		defaultSessionName = new String(name.toString());
 		this.setVoterNameList(new ArrayList<String>());
-		estimateVoterList = new ArrayList<EstimateVoters>();
 	}
 
 	/**
@@ -421,7 +419,24 @@ public class PlanningPokerSession extends AbstractModel {
 			}
 		}
 		estimates.add(estimate);
-		//checkReqEstimationComplete(estimate.getRequirementID());
+	}
+	
+	/**
+	 * @param requirementID the requirement to check for
+	 * @return a list of users who have voted on the specified requirement
+	 */
+	public Set<String> getVotersForRequirement(int requirementID) {
+		if (requirementIDs.contains(requirementID)) {
+			Set<String> voters = new HashSet<String>();
+			for (Estimate estimate : estimates) {
+				if (estimate.getRequirementID() == requirementID) {
+					voters.add(estimate.getOwnerName());
+				}
+			}
+			return voters;
+		}
+		
+		return new HashSet<String>();
 	}
 
 	/**
@@ -577,7 +592,6 @@ public class PlanningPokerSession extends AbstractModel {
 		sessionDeck = toCopyFrom.sessionDeck;
 		finalEstimatesMap = toCopyFrom.getFinalEstimates();
 		VoterNameList = toCopyFrom.VoterNameList;
-		estimateVoterList = toCopyFrom.estimateVoterList;
 		reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
 		requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
 		requirementsWithExportedEstimatesIDs = toCopyFrom.requirementsWithExportedEstimatesIDs;
@@ -617,24 +631,20 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void addRequirementToExportedList(int reqIDToAdd) {
 		requirementsWithExportedEstimatesIDs.add(reqIDToAdd);
-}
+	}
+	
 	/**
 	 * @return the VoterNameList
 	 */
 	public List<String> getVoterNameList() {
 		return VoterNameList;
 	}
+	
+	/**
+	 * @param VoterNameList the list of people who have voted
+	 */
 	public void setVoterNameList(List<String> VoterNameList)  {
 		this.VoterNameList = VoterNameList;
-	}
-	public List<EstimateVoters> getEstimateVoterList() {
-		return estimateVoterList;
-	}
-	/**
-	 * @param VoterNameList the VoterNameList to set
-	 */
-	public void setEstimateVoterList(List<EstimateVoters> EstimateVoterList) {
-		estimateVoterList = EstimateVoterList;
 	}
 	
 }
