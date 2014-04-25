@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
@@ -35,13 +37,17 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-
+/**
+ * 
+ * @author Shawn-User-Ultrabook
+ *
+ */
 public class OverviewVoterTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private boolean initialized;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	private final PlanningPokerSession planningPokerSession;
-	Requirement selectedRequirement;
+	private Requirement selectedRequirement;
 	
 	/**
 	 * Sets initial table view
@@ -52,7 +58,9 @@ public class OverviewVoterTable extends JTable {
 		planningPokerSession = pps;
 		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
-		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setAlignmentX(CENTER_ALIGNMENT);
+		this.setDefaultRenderer(Object.class, centerRenderer);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
@@ -63,7 +71,22 @@ public class OverviewVoterTable extends JTable {
 		ViewEventController.getInstance().setOverviewVoterTable(this);
 
 	}
-
+	/**custom cell renderer.
+	 * 
+	 */
+    DefaultTableCellRenderer r = new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object
+            value, boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(
+                table, value, isSelected, hasFocus, row, column);
+            setForeground(Color.blue);
+            setHorizontalAlignment(JLabel.CENTER);
+            setFont(getFont().deriveFont(50f));
+            return this;
+        }
+    };
+	
 	/**
 	 * 
 	 * @return

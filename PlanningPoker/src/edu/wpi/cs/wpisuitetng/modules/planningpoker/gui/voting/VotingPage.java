@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
@@ -45,11 +46,13 @@ import edu.wpi.cs.wpisuitetng.database.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 /** 
  *  This class is the panel that is shown when the user goes to vote
- *  @author amandaadkins
+ *  @author amandaadkins 
+ *  @implementation of voter list @Shawn
  */
 
 public class VotingPage extends JSplitPane {
@@ -131,14 +134,29 @@ public class VotingPage extends JSplitPane {
 		final JLabel descriptionLabel = new JLabel("Requirement Description:");
 		final JLabel requirementEstimated = new JLabel("Estimation of this requirement is complete");
 		
-		final String[] columnNames = {"Requirement ID","Requirement Name", "Username", "Votes"};
+		final String[] columnNames = {"ID","Requirement Name", "Username", "Votes"};
 		final Object[][] data = {};
 		thetable = new OverviewVoterTable(data, columnNames, activeSession);
 		thetablePanel = new JScrollPane(thetable);
-		thetable.getColumnModel().getColumn(0).setMinWidth(5); // Requirement ID
-		thetable.getColumnModel().getColumn(1).setMinWidth(100); // Requirement Name	
-		thetable.getColumnModel().getColumn(2).setMinWidth(55); // Username
-		thetable.getColumnModel().getColumn(3).setMinWidth(15); // Votes
+		thetable.getColumnModel().getColumn(0).setMaxWidth(40); // Requirement ID
+		thetable.getColumnModel().getColumn(1).setMaxWidth(200); // Requirement Name	
+		thetable.getColumnModel().getColumn(2).setMaxWidth(120); // Username
+		thetable.getColumnModel().getColumn(3).setMaxWidth(100); // Votes
+        DefaultTableCellRenderer r = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object
+                value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(
+                    table, value, isSelected, hasFocus, row, column);
+                setForeground(Color.blue);
+                setHorizontalAlignment(JLabel.CENTER);
+                return this;
+            }
+        };
+        thetable.getColumnModel().getColumn(0).setCellRenderer(r);
+        thetable.getColumnModel().getColumn(1).setCellRenderer(r);
+        thetable.getColumnModel().getColumn(2).setCellRenderer(r);
+        thetable.getColumnModel().getColumn(3).setCellRenderer(r);
 		final Dimension d = new Dimension(150, 80);
         thetablePanel.setMinimumSize(d);
         thetable.populateVotePanel(reqToVoteOn);
