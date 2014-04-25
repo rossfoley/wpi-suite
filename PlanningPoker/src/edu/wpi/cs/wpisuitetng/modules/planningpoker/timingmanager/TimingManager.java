@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2012 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Perry Franklin
+ *******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager;
 
 import java.util.ArrayList;
@@ -5,11 +17,16 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CheckForUpdatesController;
-
+/**
+ * Singleton class that handles objects that require regular polling
+ * In essence, abstracts Timers so that only one timer needs to be created
+ * @author Perry
+ * @version 1
+ *
+ */
 public class TimingManager {
 
-	private static TimingManager instance = new TimingManager();
+	private static final TimingManager instance = new TimingManager();
 	private final List<IPollable> PollList;
 	private final long T = 5000;
 	
@@ -25,7 +42,7 @@ public class TimingManager {
 				timer.scheduleAtFixedRate(new TimerTask() {
 					@Override
 					public void run() {
-						timedFunc();							
+						timedFunc();
 					}
 				}, 0, T);
 			}
@@ -75,6 +92,10 @@ public class TimingManager {
 		}
 	}
 	
+	/**
+	 * gets the current timer interval (which is final)
+	 * @return the timer interval
+	 */
 	public long getTimerInterval(){
 		return T;
 	}
