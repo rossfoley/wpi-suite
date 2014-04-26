@@ -54,6 +54,8 @@ public class MainView extends JTabbedPane {
 	private final JPopupMenu popup = new JPopupMenu();
 	private final JMenuItem closeAll = new JMenuItem("Close All Tabs");
 	private final JMenuItem closeOthers = new JMenuItem("Close Others");
+	
+	private Component currentTab = null; 
 
 	OverviewDetailPanel detailPanel;
 
@@ -134,7 +136,19 @@ public class MainView extends JTabbedPane {
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				if(e.isPopupTrigger()) popup.show(e.getComponent(), e.getX(), e.getY());
+				if(e.isPopupTrigger()) {
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+				
+				/**
+				 * Disable the statistics button once a tab other than Current Sessions is selected.
+				 * Statistics button will never be enabled except for when a closed/ended session is
+				 * selected in the Current Sessions tab. 
+				 */
+				setCurrentTab(); 
+				if (!currentTab.equals(overviewPanel)) {
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton(); 	
+				}
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -255,5 +269,9 @@ public class MainView extends JTabbedPane {
 	 */
 	public JMenuItem getCloseOthers() {
 		return closeOthers;
+	}
+	
+	private void setCurrentTab() {
+		currentTab = this.getSelectedComponent();
 	}
 }
