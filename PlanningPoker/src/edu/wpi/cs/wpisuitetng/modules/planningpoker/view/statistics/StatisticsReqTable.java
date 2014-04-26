@@ -80,7 +80,7 @@ public class StatisticsReqTable extends JTable {
 				try {
 					infoPanel.setCurrentReqID(tableRows.get(rowNumber));
 				}
-				catch (NullPointerException ex){}
+				catch (NullPointerException ex) {}
 			}
 		}); 
 	}
@@ -118,12 +118,14 @@ public class StatisticsReqTable extends JTable {
 			tableModel.addRow(new Object[]{
 					reqName,
 					vote,
-					estimate});	
+					estimate});
 			
 			tableRows.put(rowID, requirementID);
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
+		// TODO remove these prints
+		System.out.println("rowNumber:reqID in tableRows HashMap:");
 		for(Integer i: tableRows.keySet()){
 			String key = i.toString();
 			String value = tableRows.get(i).toString();

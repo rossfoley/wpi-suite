@@ -71,6 +71,10 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
 		tablePanel = new JScrollPane(reqTable);
 		
+		// initialize infoPanel
+		//infoPanel = new StatisticsInfoPanel(activeSession);
+		infoPanel = detailPanel.getInfoPanel();
+		
 		//set infoPanel to get estimate information for statistics
 		reqTable.setInfoPanel(infoPanel);
 		
