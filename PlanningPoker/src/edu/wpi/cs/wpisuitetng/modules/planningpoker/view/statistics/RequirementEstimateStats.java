@@ -140,6 +140,14 @@ public class RequirementEstimateStats {
 	}
 	
 	/**
+	 * Prints out the ID, mean, median, and stdDev
+	 */
+	public void printStats() {
+		System.out.println("Printing stats. ID = " + ID + ", mean = " + mean 
+				+ ", median = " + median + ", stdDev = " + stdDev );
+	}
+	
+	/**
 	 * Calls the methods to sort the list of estimates, then updates the 
 	 * mean, median, and stdDev fields and sets isUpToDate to true. 
 	 */
