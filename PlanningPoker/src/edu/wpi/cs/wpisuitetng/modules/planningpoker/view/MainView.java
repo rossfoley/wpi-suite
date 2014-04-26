@@ -31,6 +31,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.PreferencesPanel;
@@ -175,6 +176,7 @@ public class MainView extends JTabbedPane {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
+		TimingManager.getInstance().start();
 		// Are we dragging?
 		if(dragging && currentMouseLocation != null && tabImage != null) {
 			// Draw the dragged tab

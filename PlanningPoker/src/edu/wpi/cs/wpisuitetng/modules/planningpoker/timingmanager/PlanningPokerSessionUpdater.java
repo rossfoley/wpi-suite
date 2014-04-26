@@ -8,18 +8,23 @@
  *
  * Contributors: TheTeam8s
  *******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CheckForUpdatesController;
+
 /**
- * Interface for objects that will need regular polling
- * @author Perry
+ * Check for updates to Planning Poker Sessions
+ * @author rossfoley
  * @version 1
- *
  */
-public interface IPollable {
-	/**
-	 * Function to be called repeatedly, i.e. checking for updates
+public class PlanningPokerSessionUpdater implements IPollable {
+
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable#pollFunction()
 	 */
-	void pollFunction();
+	@Override
+	public void pollFunction() {
+		CheckForUpdatesController.getInstance().checkForUpdates();
+	}
+
 }

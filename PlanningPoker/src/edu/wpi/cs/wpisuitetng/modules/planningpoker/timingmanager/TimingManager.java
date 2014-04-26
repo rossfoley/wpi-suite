@@ -1,13 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Perry Franklin
+ * Contributors: TheTeam8s
  *******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager;
@@ -29,14 +28,16 @@ public class TimingManager {
 	private static final TimingManager instance = new TimingManager();
 	private final List<IPollable> PollList;
 	private final long T = 5000;
+	private final Thread thread;
+	private boolean started = false;
 	
 	/**
 	 * Constructor for the singleton class TimingManager
 	 */
-	private TimingManager(){
+	private TimingManager() {
 		PollList = new ArrayList<IPollable>();
 		
-		final Thread t = new Thread(new Runnable() {
+		thread = new Thread(new Runnable() {
 			public void run() {
 				final Timer timer = new Timer();
 				timer.scheduleAtFixedRate(new TimerTask() {
@@ -47,8 +48,7 @@ public class TimingManager {
 				}, 0, T);
 			}
 		});
-		t.setDaemon(true);
-		t.start();
+		thread.setDaemon(true);
 	}
 	
 	/**
@@ -81,10 +81,9 @@ public class TimingManager {
 	 * Function that is called every T seconds
 	 * Cycles through the list of objects that need polling and calls pollFunction()
 	 */
-	private void timedFunc(){
-		for(IPollable p: PollList){
-			
-			if(p != null){
+	private void timedFunc() {
+		for (IPollable p: PollList) {
+			if (p != null) {
 				p.pollFunction();
 			} else {
 				removePollable(p);
@@ -98,6 +97,16 @@ public class TimingManager {
 	 */
 	public long getTimerInterval(){
 		return T;
+	}
+
+	/**
+	 * Start the thread running the registered pollable objects
+	 */
+	public void start() {
+		if (!started) {
+			thread.start();
+			started = true;
+		}
 	}
 	
 }
