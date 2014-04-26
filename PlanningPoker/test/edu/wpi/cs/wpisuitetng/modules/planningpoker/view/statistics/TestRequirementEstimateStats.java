@@ -145,4 +145,20 @@ public class TestRequirementEstimateStats {
 		assertEquals(3.1, testStats.getStdDev(), 0.1);
 >>>>>>> statistics page now has a standard deviation field. Refractored requirementEstimateStats and updated comments
 	}
+	
+	@Test
+	public void testGetters() {
+		assertEquals(0, testStats.getID());
+		ArrayList<Estimate> aList = new ArrayList<Estimate>();
+		assertEquals(aList, testStats.getEstimates());
+		UUID firstID = UUID.randomUUID();
+		testStats.add(new Estimate(1, 1, firstID));
+		aList.add(new Estimate(1, 1, firstID));
+		assertEquals(aList.size(), testStats.getEstimates().size());
+		assertEquals(aList.get(0).getRequirementID(), 
+				testStats.getEstimates().get(0).getRequirementID());
+		assertEquals(aList.get(0).getVote(), testStats.getEstimates().get(0).getVote());
+		assertEquals(aList.get(0).getSessionID(), 
+				testStats.getEstimates().get(0).getSessionID());
+	}
 }
