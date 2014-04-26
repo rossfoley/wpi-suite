@@ -114,7 +114,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
        // reqTable.setMinimumSize(d);
        // reqTable.setPreferredSize(d);
 		
-		this.setDividerLocation(350);
+		this.setDividerLocation(400);
 
 
         this.setEnabled(true);
