@@ -132,7 +132,6 @@ public class RequirementEstimateStats {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Prints out the ID, mean, median, and stdDev
 	 */
 	public void printStats() {
@@ -141,8 +140,6 @@ public class RequirementEstimateStats {
 	}
 	
 	/**
-=======
->>>>>>> statistics page now has a standard deviation field. Refractored requirementEstimateStats and updated comments
 	 * Calls the methods to sort the list of estimates, then updates the 
 	 * mean, median, and stdDev fields and sets isUpToDate to true. 
 	 */
