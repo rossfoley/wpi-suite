@@ -31,6 +31,7 @@ public class RequirementEstimateStats {
 	private boolean isUpToDate;
 	
 	public RequirementEstimateStats(int reqID, List<Estimate> givenEstimates) {
+		setID(reqID); 
 		setEstimates(givenEstimates);
 		refreshAll(); 
 	}
