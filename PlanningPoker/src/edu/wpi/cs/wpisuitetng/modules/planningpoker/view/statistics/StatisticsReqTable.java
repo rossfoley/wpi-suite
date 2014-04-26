@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
+import javax.swing.event.RowSorterEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -76,13 +77,14 @@ public class StatisticsReqTable extends JTable {
 		/* Create double-click event listener */
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				rowNumber = rowAtPoint(getMousePosition());
+				rowNumber = convertRowIndexToModel(rowAtPoint(getMousePosition()));
+				//infoPanel.currentReqID = tableRows.get(rowNumber);
 				try {
 					infoPanel.setCurrentReqID(tableRows.get(rowNumber));
 				}
 				catch (NullPointerException ex) {}
 			}
-		}); 
+		});
 	}
 	
 	/**
@@ -139,7 +141,7 @@ public class StatisticsReqTable extends JTable {
 	}
 	
 	/**
-	 * @return the changedByRefresh 
+	 * @return the changedByRefresh
 	 */
 	public boolean wasChangedByRefresh() {
 		return changedByRefresh;
