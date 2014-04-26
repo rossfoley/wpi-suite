@@ -59,6 +59,7 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 		txtEnterEmailHere.setText("Enter Email Here...");
 		add(txtEnterEmailHere);
 		txtEnterEmailHere.setColumns(10);
+		txtEnterEmailHere.addFocusListener(this);
 
 		final JLabel lblSub = new JLabel("Subscribe To Email Notifications");
 		springLayout.putConstraint(SpringLayout.NORTH, txtEnterEmailHere, 13, SpringLayout.SOUTH, lblSub);
