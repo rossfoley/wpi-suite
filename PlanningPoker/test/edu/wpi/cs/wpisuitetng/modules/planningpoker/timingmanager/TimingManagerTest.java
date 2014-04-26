@@ -60,6 +60,7 @@ public class TimingManagerTest {
 		final mockPollable mock1 = new mockPollable();
 		
 		TimingManager.getInstance().addPollable(mock1);
+		TimingManager.getInstance().start();
 		assertTrue(mock1.getNumTimesPolled() == 0); //mock1.pollFunction has not been called
 
 		try {
@@ -92,9 +93,11 @@ public class TimingManagerTest {
 		final mockPollable mock2 = new mockPollable();
 		
 		TimingManager.getInstance().addPollable(mock1);
-		assertTrue(mock1.getNumTimesPolled() == 0);
 		TimingManager.getInstance().addPollable(mock2);
+		assertTrue(mock1.getNumTimesPolled() == 0);
 		assertTrue(mock2.getNumTimesPolled() == 0);
+		
+		TimingManager.getInstance().start();
 
 		try {
 			Thread.sleep(TimingManager.getInstance().getTimerInterval());

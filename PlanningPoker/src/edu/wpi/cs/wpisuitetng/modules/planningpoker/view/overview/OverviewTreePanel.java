@@ -233,7 +233,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				GetSessionController.getInstance().retrieveSessions();
 				GetRequirementsController.getInstance().retrieveRequirements();
 				GetUserController.getInstance().retrieveUsers();
-				PlanningPokerSessionModel.getInstance().startLiveUpdating();
 				AddDeckController.getInstance().addDefaultDeck();
 				GetDeckController.getInstance().retrieveDecks();
 				initialized = true;
