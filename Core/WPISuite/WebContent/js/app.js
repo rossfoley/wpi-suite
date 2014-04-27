@@ -4,7 +4,18 @@
     var attr;
     window.App = Ember.Application.create();
     App.ApplicationAdapter = DS.FixtureAdapter.extend({
-      serializer: 'App.SessionSerializer'
+      queryFixtures: function(fixtures, query, type) {
+        return fixtures.filter(function(item) {
+          var prop, _i, _len;
+          for (_i = 0, _len = query.length; _i < _len; _i++) {
+            prop = query[_i];
+            if (item[prop] !== query[prop]) {
+              false;
+            }
+          }
+          return true;
+        });
+      }
     });
     App.Store = DS.Store.extend({
       adapter: DS.FixtureAdapter
@@ -26,7 +37,12 @@
       uuid: attr('string'),
       gameState: attr('string'),
       requirementIDs: attr('raw'),
-      isUsingDeck: attr('boolean')
+      isUsingDeck: attr('boolean'),
+      estimates: attr('raw')
+    });
+    App.Requirement = DS.Model.extend({
+      name: attr('string'),
+      description: attr('string')
     });
     $.ajax({
       dataType: 'json',
@@ -40,6 +56,16 @@
             session['id'] = session['uuid'];
           }
           return App.Session.FIXTURES = data;
+        };
+      })(this)
+    });
+    $.ajax({
+      dataType: 'json',
+      url: 'API/requirementmanager/requirement',
+      async: false,
+      success: (function(_this) {
+        return function(data) {
+          return App.Requirement.FIXTURES = data;
         };
       })(this)
     });
@@ -57,12 +83,25 @@
         return this.store.find('session');
       }
     });
-    return App.SessionRoute = Ember.Route.extend({
+    App.SessionRoute = Ember.Route.extend({
       serialize: function(session) {
         return {
           session_uuid: session.get('uuid')
         };
+      },
+      model: function(params) {
+        return this.store.find('session', {
+          uuid: params.session_uuid
+        });
       }
+    });
+    App.SessionController = Ember.ObjectController.extend({
+      requirementByID: function(id) {
+        return this.store.find('requirement', id);
+      }
+    });
+    return Ember.Handlebars.helper('requirementName', function(requirementID) {
+      return App.Requirement.FIXTURES.findBy('id', requirementID)['name'];
     });
   });
 
