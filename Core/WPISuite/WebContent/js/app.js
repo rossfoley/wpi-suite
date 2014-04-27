@@ -25,7 +25,7 @@
       async: false,
       success: (function(_this) {
         return function(data) {
-          var estimate, requirement, session, _i, _len, _results;
+          var estimate, numUsers, numVotes, percent, requirement, session, _i, _len, _results;
           _results = [];
           for (_i = 0, _len = data.length; _i < _len; _i++) {
             requirement = data[_i];
@@ -35,15 +35,36 @@
               _results1 = [];
               for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
                 session = _ref[_j];
-                _ref1 = session['estimates'];
-                for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-                  estimate = _ref1[_k];
-                  if (requirement['id'] === estimate['requirementID']) {
-                    estimate['requirement'] = requirement;
+                if (_ref1 = requirement['id'], __indexOf.call(session['requirementIDs'], _ref1) >= 0) {
+                  numUsers = session['project']['team'].length;
+                  numVotes = 0;
+                  _ref2 = session['estimates'];
+                  for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                    estimate = _ref2[_k];
+                    if (estimate['requirementID'] === requirement['id']) {
+                      numVotes++;
+                    }
                   }
-                }
-                if (_ref2 = requirement['id'], __indexOf.call(session['requirementIDs'], _ref2) >= 0) {
-                  _results1.push(session['requirements'].push(requirement));
+                  percent = 0;
+                  if (numUsers > 0) {
+                    percent = parseInt((numVotes / numUsers) * 100);
+                  }
+                  requirement['percent'] = "" + percent + "%";
+                  session['requirements'].push(requirement);
+                  _results1.push((function() {
+                    var _l, _len3, _ref3, _results2;
+                    _ref3 = session['estimates'];
+                    _results2 = [];
+                    for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+                      estimate = _ref3[_l];
+                      if (requirement['id'] === estimate['requirementID']) {
+                        _results2.push(estimate['requirement'] = requirement);
+                      } else {
+                        _results2.push(void 0);
+                      }
+                    }
+                    return _results2;
+                  })());
                 } else {
                   _results1.push(void 0);
                 }
@@ -69,7 +90,7 @@
         return App.Sessions;
       }
     });
-    App.SessionRoute = Ember.Route.extend({
+    return App.SessionRoute = Ember.Route.extend({
       serialize: function(session) {
         return {
           session_uuid: session['uuid']
@@ -78,29 +99,6 @@
       model: function(params) {
         return App.Sessions.findBy('uuid', params.session_uuid);
       }
-    });
-    return Ember.Handlebars.helper('percentComplete', function(requirement, options) {
-      var estimate, id, numUsers, numVotes, percent, session, _i, _len, _ref;
-      console.log(options);
-      id = requirement['id'];
-      session = App.Sessions.findBy('uuid', options.hash['session']);
-      numUsers = session['project']['team'].length;
-      console.log(numUsers);
-      console.log(id);
-      numVotes = 0;
-      _ref = session['estimates'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        estimate = _ref[_i];
-        if (estimate['requirementID'] === id) {
-          numVotes++;
-          console.log('found a vote');
-        }
-      }
-      percent = 0;
-      if (numUsers > 0) {
-        percent = parseInt((numVotes / numUsers) * 100);
-      }
-      return "" + percent + "%";
     });
   });
 

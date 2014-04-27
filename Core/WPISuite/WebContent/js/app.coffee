@@ -20,14 +20,23 @@ $ ->
     success: (data) =>
       for requirement in data
         for session in App.Sessions
-          # Add the requirement object to each estimate
-          for estimate in session['estimates']
-            if requirement['id'] == estimate['requirementID']
-              estimate['requirement'] = requirement
-
           # Also add each requirement to the session they belong to
           if requirement['id'] in session['requirementIDs']
+            numUsers = session['project']['team'].length
+            numVotes = 0
+            for estimate in session['estimates']
+              if estimate['requirementID'] == requirement['id']
+                numVotes++
+            percent = 0
+            if numUsers > 0
+              percent = parseInt((numVotes / numUsers) * 100)
+            requirement['percent'] = "#{percent}%"
             session['requirements'].push requirement
+
+            # Add the requirement object to each estimate
+            for estimate in session['estimates']
+              if requirement['id'] == estimate['requirementID']
+                estimate['requirement'] = requirement
 
   # Routes
   App.Router.map ->
@@ -44,22 +53,3 @@ $ ->
       session_uuid: session['uuid']
     model: (params) ->
       App.Sessions.findBy('uuid', params.session_uuid)
-
-  # Template helper for percentage of users that have voted on a requirement
-  Ember.Handlebars.helper 'percentComplete', (requirement, options) ->
-    console.log options
-    id = requirement['id']
-    session = App.Sessions.findBy('uuid', options.hash['session'])
-    numUsers = session['project']['team'].length
-    console.log(numUsers)
-    console.log(id)
-    numVotes = 0
-    for estimate in session['estimates']
-      if estimate['requirementID'] == id
-        numVotes++
-        console.log('found a vote')
-
-    percent = 0
-    if numUsers > 0
-      percent = parseInt((numVotes / numUsers) * 100)
-    "#{percent}%"

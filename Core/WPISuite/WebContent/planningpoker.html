@@ -69,11 +69,11 @@
       <div class="panel-heading"><h3 class="panel-title">{{name}} - Created by {{sessionCreatorName}}</h3></div>
       <div class="panel-body">{{description}}</div>
       <ul class="list-group">
-        {{#each requirement in requirements}}
-          <li class="list-group-item">{{requirement.name}}:
+        {{#each requirements}}
+          <li class="list-group-item">{{name}}:
             <div class="progress">
-              <div class="progress-bar" role="progressbar" style='width: {{percentComplete requirement session=uuid}};'>
-                {{percentComplete requirement session=uuid}}
+              <div class="progress-bar" role="progressbar" style='width: {{percent}};'>
+                {{percent}}
               </div>
             </div>
           </li>
