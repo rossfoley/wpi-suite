@@ -143,9 +143,19 @@
     return App.RequirementVoteComponent = Ember.Component.extend({
       classNames: ['requirement-vote'],
       showVoteForm: false,
+      voteValue: '',
       actions: {
         startVote: function() {
           return this.toggleProperty('showVoteForm');
+        },
+        submitVote: function() {
+          var estimate, vote;
+          vote = parseInt(this.voteValue);
+          return estimate = {
+            sessionID: this.get('uuid'),
+            requirementID: this.get('requirement')['id'],
+            vote: vote
+          };
         }
       }
     });

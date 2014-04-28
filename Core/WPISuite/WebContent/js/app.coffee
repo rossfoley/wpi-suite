@@ -89,7 +89,15 @@ $ ->
   App.RequirementVoteComponent = Ember.Component.extend
     classNames: ['requirement-vote']
     showVoteForm: no
+    voteValue: ''
 
     actions:
       startVote: ->
         @toggleProperty 'showVoteForm'
+
+      submitVote: ->
+        vote = parseInt(@voteValue)
+        estimate = 
+          sessionID: @get('uuid')
+          requirementID: @get('requirement')['id']
+          vote: vote
