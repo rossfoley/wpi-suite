@@ -59,8 +59,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 	
 	public OverviewDetailInfoPanel() {
 
-		ViewEventController.getInstance().setOverviewDetailInfoPanel(this);
-		
 		lblSessionName = new JLabel("Session Name:");
 		sessionNameDisplay = new JLabel("");
 		lblSessionDescription = new JLabel("Session Description:");

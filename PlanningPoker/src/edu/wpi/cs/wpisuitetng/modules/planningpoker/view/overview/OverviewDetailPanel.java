@@ -71,7 +71,6 @@ public class OverviewDetailPanel extends JSplitPane {
 		this.setBottomComponent(tablePanel);
 		this.setResizeWeight(0.5); 
 
-		ViewEventController.getInstance().setOverviewDetailInfoPanel(infoPanel);
 		ViewEventController.getInstance().setOverviewReqTable(reqTable);
 		
 		// Makes the split pane divide 50/50 for each portion

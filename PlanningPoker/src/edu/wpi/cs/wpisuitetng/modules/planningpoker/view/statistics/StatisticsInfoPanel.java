@@ -52,9 +52,6 @@ public class StatisticsInfoPanel extends JPanel {
 	private final PlanningPokerSession session;
 	
 	public StatisticsInfoPanel(PlanningPokerSession session) {
-
-		ViewEventController.getInstance().setStatisticsInfoPanel(this);
-		
 		this.session = session; 
 		lblReqName = new JLabel("Name:");
 		reqNameDisplay = new JLabel("");

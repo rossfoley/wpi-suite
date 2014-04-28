@@ -66,22 +66,17 @@ public class StatisticsReqTable extends JTable {
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
-        //this.detailPanel = detailPanel;
-        
-    	ViewEventController.getInstance().setStatisticsReqTable(this);
     
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 
-		//ViewEventController.getInstance().setOverviewReqTable(this);
 		initialized = false;
 		
 		/* Create double-click event listener */
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				rowNumber = rowAtPoint(getMousePosition());
-				//infoPanel.currentReqID = tableRows.get(rowNumber);
 				try {
 					infoPanel.setCurrentReqID(tableRows.get(rowNumber));
 				}

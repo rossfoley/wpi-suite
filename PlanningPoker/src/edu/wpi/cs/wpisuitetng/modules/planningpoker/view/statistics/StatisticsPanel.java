@@ -76,9 +76,6 @@ public class StatisticsPanel extends JSplitPane {
 		// Put the overview table and sidebar into the tab
 		this.setTopComponent(detailPanel);
 		this.setBottomComponent(tablePanel);
-
-		ViewEventController.getInstance().setStatisticsUserTable(userTable);
-		ViewEventController.getInstance().setStatisticsDetailPanel(detailPanel);
 		
 		// Makes the split pane divide 50/50 for each portion
 		final Dimension d = new Dimension(200, 200);
