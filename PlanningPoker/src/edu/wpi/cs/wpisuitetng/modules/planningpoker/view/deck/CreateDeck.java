@@ -26,7 +26,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -44,7 +43,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Font;
 
 
 /**
@@ -438,7 +436,7 @@ public class CreateDeck extends JPanel {
 				}
 				else {
 					btnAddCard.setEnabled(false);
-					lblAddCardError.setVisible(true);					
+					lblAddCardError.setVisible(true);	
 				}
 				// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {
