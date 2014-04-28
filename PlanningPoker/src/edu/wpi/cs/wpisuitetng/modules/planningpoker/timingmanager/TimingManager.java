@@ -64,6 +64,7 @@ public class TimingManager {
 	 * @param p object that needs polling
 	 */
 	public void addPollable(IPollable p){
+		System.out.println("In addPollables");
 		if (!PollList.contains(p)){
 			PollList.add(p);
 		}

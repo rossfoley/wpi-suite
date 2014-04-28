@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -26,7 +28,7 @@ import java.awt.event.ActionListener;
  * @author Andrew Leonard
  *
  */
-public class GetEmailController implements ActionListener {
+public class GetEmailController implements ActionListener, IPollable {
 	private final GetEmailRequestObserver observer;
 	private static GetEmailController instance;
 	
@@ -35,6 +37,8 @@ public class GetEmailController implements ActionListener {
 	 */
 	private GetEmailController() {
 		observer = new GetEmailRequestObserver(this);
+		//Adds this to the list of things to be polled.
+		TimingManager.getInstance().addPollable(this);
 	}
 	
 	
@@ -92,6 +96,16 @@ public class GetEmailController implements ActionListener {
 			// add the email addresses to the local model
 			EmailAddressModel.getInstance().addEmailAddresses(emailAddresses);
 		}
+	}
+
+
+	/**
+	 * Implemented pollFunction that retrieves theEmails every time you need to poll.
+	 */
+	@Override
+	public void pollFunction() {
+		retrieveEmails();
+		
 	}
 
 }
