@@ -66,9 +66,9 @@ public class DeckTest {
 	
 	@Test
 	public void testgetNumbersInDeck() {
-		List<Integer> testList2 = testDeck.getNumbersInDeck();
 		testList.add(1);
 		testList.add(2);
+		List<Integer> testList2 = testDeck.getNumbersInDeck();
 		
 		assertTrue(testList == testList2);
 	}
@@ -81,5 +81,13 @@ public class DeckTest {
 		testDeck.setNumbersInDeck(testList2);
 		
 		assertTrue(testDeck.getNumbersInDeck() == testList2);
+	}
+	@Test 
+	public void testcopyFrom() {
+		List<Integer> testList2 = new ArrayList<Integer>();
+		boolean mult2 = true;
+		Deck testDeck2 = new Deck(testList2, mult2);
+		testDeck.setId(1);
+		testDeck.set
 	}
 }
