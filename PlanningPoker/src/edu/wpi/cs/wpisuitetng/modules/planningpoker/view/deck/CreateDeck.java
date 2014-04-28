@@ -106,7 +106,8 @@ public class CreateDeck extends JPanel {
 		lblCard.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		// Radio button group for multiple vs. single selection mode
-		final JPanel modeSelectionPanel = createModeSelectionPanel();
+		JPanel modeSelectionPanel = createModeSelectionPanel();
+		modeSelectionPanel.setPreferredSize(new Dimension(200, 70));
 
 		btnAddCard = new JButton("Add Card");
 		btnAddCard.addActionListener(new ActionListener() {
@@ -122,7 +123,6 @@ public class CreateDeck extends JPanel {
 		});
 		lblAddCardError.setVisible(false);
 		lblAddCardError.setForeground(Color.RED);
-
 
 		txtCardValue = new JTextField();
 		txtCardValue.setPreferredSize(new Dimension(26, 26));
@@ -203,7 +203,8 @@ public class CreateDeck extends JPanel {
 
 		springLayout.putConstraint(SpringLayout.WEST, modeSelectionPanel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, modeSelectionPanel, 10, SpringLayout.SOUTH, txtDeckName);
-
+		//springLayout.putConstraint(SpringLayout.SOUTH, modeSelectionPanel, 100, SpringLayout.NORTH, modeSelectionPanel);
+		
 		springLayout.putConstraint(SpringLayout.WEST, lblCard, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblCard, 0, SpringLayout.VERTICAL_CENTER, txtCardValue);
 
@@ -405,8 +406,8 @@ public class CreateDeck extends JPanel {
 		modePanelLayout.putConstraint(SpringLayout.NORTH, lblMode, 0, SpringLayout.NORTH, modePanel);
 		modePanelLayout.putConstraint(SpringLayout.WEST, lblMode, 0, SpringLayout.WEST, modePanel);
 		
-		modePanelLayout.putConstraint(SpringLayout.NORTH, modeBtnPanel, 10, SpringLayout.SOUTH, lblMode);
-		modePanelLayout.putConstraint(SpringLayout.WEST, modeBtnPanel, 0, SpringLayout.WEST, modePanel);
+		modePanelLayout.putConstraint(SpringLayout.NORTH, modeBtnPanel, 6, SpringLayout.SOUTH, lblMode);
+		modePanelLayout.putConstraint(SpringLayout.WEST, modeBtnPanel, 20, SpringLayout.WEST, modePanel);
 		
 		modePanel.add(lblMode);
 		modePanel.add(modeBtnPanel);
