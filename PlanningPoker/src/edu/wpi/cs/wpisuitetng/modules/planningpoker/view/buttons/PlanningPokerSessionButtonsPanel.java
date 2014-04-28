@@ -44,6 +44,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private final JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
 	private final JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
 	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
+	private final JButton helpButton = new JButton("<html>Help</html>");
 	private final JPanel contentPanel = new JPanel();
 
 	public PlanningPokerSessionButtonsPanel(){
@@ -75,6 +76,11 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			statisticsButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/help.png"));
+			// This help icon was a free icon from "http://findicons.com/icon/199583/help"
+			helpButton.setIcon(new ImageIcon(img));
 			
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {} 
@@ -157,6 +163,15 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				ViewEventController.getInstance().openStatisticsTab(session);
 				}
 			});
+		
+		// the action listener for the Help Button
+		helpButton.addActionListener(new ActionListener() {
+			@Override
+			
+			public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().createPlanningPokerSession();
+			}
+		});
 
 
 		contentPanel.add(createButton);
@@ -164,6 +179,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		contentPanel.add(voteButton);
 		contentPanel.add(endVoteButton);
 		contentPanel.add(statisticsButton);
+		contentPanel.add(helpButton);
 		contentPanel.setOpaque(false);
 
 		add(contentPanel);
@@ -213,5 +229,13 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	
 	public void enableStatisticsButton() {
 		statisticsButton.setEnabled(true);
+	}
+	
+	public void disableHelpButton() {
+		helpButton.setEnabled(false);
+	}
+	
+	public void enableHelpButton() {
+		helpButton.setEnabled(true);
 	}
 }
