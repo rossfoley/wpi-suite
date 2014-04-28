@@ -121,6 +121,9 @@ public class PreferencesPanel extends JPanel {
 			emailError = true;
 			lblEmailErrorText.setVisible(emailError);
 		}
+		
+		final GetEmailController getEmailController = GetEmailController.getInstance();
+		getEmailController.retrieveEmails();
 
 
 	}

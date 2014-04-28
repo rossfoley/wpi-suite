@@ -619,6 +619,8 @@ public class PlanningPokerSessionTab extends JPanel {
 					t.setDaemon(true);
 					t.start();
 				}
+				//final GetEmailController getEmailController = GetEmailController.getInstance();
+				//getEmailController.retrieveEmails();
 			}
 		});
 		
