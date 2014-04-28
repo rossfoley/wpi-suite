@@ -48,7 +48,8 @@ public class ViewEventController {
 
 	/**
 	 * Returns the singleton instance of the vieweventcontroller.
-	 * @return The instance of this controller. */
+	 * @return The instance of this controller.
+	 */
 	public static ViewEventController getInstance() {
 		if (instance == null) {
 			instance = new ViewEventController();
@@ -56,22 +57,42 @@ public class ViewEventController {
 		return instance;
 	}
 	
+	/**
+	 * Sets the overview tree for the given view
+	 * @param overviewTreePanel	The overview tree
+	 */
 	public void setOverviewTree(OverviewTreePanel overviewTreePanel) {
 		this.overviewTreePanel = overviewTreePanel;
 	}
 	
+	/**
+	 * Sets the OverviewDetailPanel for the given view.
+	 * @param overviewDetailPanel	The detail panel
+	 */
 	public void setOverviewDetailPanel(OverviewDetailPanel overviewDetailPanel) {
 		this.overviewDetailPanel = overviewDetailPanel;
 	}
 	
-	public OverviewReqTable getOverviewReqTable(){
-		return overviewReqTable;
-	}
-	
+	/**
+	 * Sets the requirement table for the given view.
+	 * @param overviewReqTable	The requirement table to set
+	 */	
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
 		this.overviewReqTable = overviewReqTable;
 	}
 	
+	/**
+	 * Gets the requirement table for the given view.
+	 * @return The requirement table
+	 */
+	public OverviewReqTable getOverviewReqTable(){
+		return overviewReqTable;
+	}
+	
+	/**
+	 * Sets the toolbar button panel for the given view.
+	 * @param buttonsPanel	The buttons panel to set
+	 */	
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
@@ -127,7 +148,6 @@ public class ViewEventController {
 	}
 	
 	/**
-	 * 
 	 * @param overviewEndVotePanel
 	 */
 	public PlanningPokerSessionButtonsPanel getPlanningPokerSessionButtonsPanel() {
