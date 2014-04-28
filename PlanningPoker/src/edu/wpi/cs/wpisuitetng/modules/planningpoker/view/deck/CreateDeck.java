@@ -324,7 +324,7 @@ public class CreateDeck extends JPanel {
 	 *  Enables the valid buttons and disables all other buttons
 	 */
 	private void validateButtons() {
-		// Only display remove all button and create buton if there are cards in the deck
+		// Only display remove all button and create button if there are cards in the deck
 		btnCreate.setEnabled(true);
 		if (listOfCards.size() > 0) {
 			btnRemoveAll.setEnabled(true);
