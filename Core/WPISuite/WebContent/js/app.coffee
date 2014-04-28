@@ -73,18 +73,7 @@ $ ->
       "#{percent}%"
       ).property('uuid', 'requirement')
 
-    widthStyle: (->
-      numUsers = App.Team.length
-      numVotes = 0
-      session = App.Sessions.findBy('uuid', @get('uuid'))
-      for estimate in session['estimates']
-        if estimate['requirementID'] == @get('requirement')['id']
-          numVotes++
-      percent = 0
-      if numUsers > 0
-        percent = parseInt((numVotes / numUsers) * 100)
-      "width: #{percent}%"
-      ).property('uuid', 'requirement')
+    widthStyle: (-> "width: #{@get('width')}" ).property('width')
 
   App.RequirementVoteComponent = Ember.Component.extend
     classNames: ['requirement-vote']

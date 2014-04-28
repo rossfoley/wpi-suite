@@ -122,23 +122,8 @@
         return "" + percent + "%";
       }).property('uuid', 'requirement'),
       widthStyle: (function() {
-        var estimate, numUsers, numVotes, percent, session, _i, _len, _ref;
-        numUsers = App.Team.length;
-        numVotes = 0;
-        session = App.Sessions.findBy('uuid', this.get('uuid'));
-        _ref = session['estimates'];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          estimate = _ref[_i];
-          if (estimate['requirementID'] === this.get('requirement')['id']) {
-            numVotes++;
-          }
-        }
-        percent = 0;
-        if (numUsers > 0) {
-          percent = parseInt((numVotes / numUsers) * 100);
-        }
-        return "width: " + percent + "%";
-      }).property('uuid', 'requirement')
+        return "width: " + (this.get('width'));
+      }).property('width')
     });
     return App.RequirementVoteComponent = Ember.Component.extend({
       classNames: ['requirement-vote'],
