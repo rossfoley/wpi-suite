@@ -47,6 +47,7 @@ import javax.swing.JLabel;
 public class RequirementSelectionPanel extends JPanel{
 
 	private final RequirementSelectionView parent;
+	private final PlanningPokerSession currentSession;
 	private LinkedList<Requirement> requirements;
 	private LinkedList<Boolean> selection;
 	private final JList selectedListGui;
@@ -71,9 +72,10 @@ public class RequirementSelectionPanel extends JPanel{
 	/**
 	 * Constructor to create the requirement selection panel
 	 */
-	public RequirementSelectionPanel(RequirementSelectionView parent){
+	public RequirementSelectionPanel(RequirementSelectionView parent, PlanningPokerSession session){
 
 		this.parent = parent;
+		this.currentSession = session;
 		requirements = new LinkedList<Requirement>();
 		populateRequirements();
 		populateBooleans();
@@ -309,24 +311,40 @@ public class RequirementSelectionPanel extends JPanel{
 					reqsInBacklog.add(r);
 				}
 			}
-			
+
 			List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
 			LinkedList<Integer> toRemove = new LinkedList<Integer>();
 			for (PlanningPokerSession session : sessions) {
-				if (!session.isPending()){
-					Set<Integer> IDs = session.getRequirementIDs();
-					for (Requirement req : reqsInBacklog) {
-						if (IDs.contains(req.getId())) {
-							int index = req.getId();
-							System.out.println("Removing ID: " + Integer.toString(index));
-							//reqsInBacklog.remove(index);
-							if (!toRemove.contains(index)) {toRemove.add(index);}
-							//System.out.println("Removing requirement: " + Integer.toString(req.getId()));
+				if (currentSession != null) {
+					if (!session.isPending() && !session.getID().equals(currentSession.getID())) {
+						Set<Integer> IDs = session.getRequirementIDs();
+						for (Requirement req : reqsInBacklog) {
+							if (IDs.contains(req.getId())) {
+								int index = req.getId();
+								System.out.println("Removing ID: " + Integer.toString(index));
+								//reqsInBacklog.remove(index);
+								if (!toRemove.contains(index)) {toRemove.add(index);}
+								//System.out.println("Removing requirement: " + Integer.toString(req.getId()));
+							}
+						}
+					}
+				}
+				else {
+					if (!session.isPending()) {
+						Set<Integer> IDs = session.getRequirementIDs();
+						for (Requirement req : reqsInBacklog) {
+							if (IDs.contains(req.getId())) {
+								int index = req.getId();
+								System.out.println("Removing ID: " + Integer.toString(index));
+								//reqsInBacklog.remove(index);
+								if (!toRemove.contains(index)) {toRemove.add(index);}
+								//System.out.println("Removing requirement: " + Integer.toString(req.getId()));
+							}
 						}
 					}
 				}
 			}
-			
+
 			System.out.println("toRemove: " + toRemove);
 			LinkedList<Requirement> keep = new LinkedList<Requirement>();
 			for (Requirement req : reqsInBacklog){
@@ -339,10 +357,10 @@ public class RequirementSelectionPanel extends JPanel{
 				//System.out.println("Removing index: " + Integer.toString(index));
 				reqsInBacklog.remove(index);
 			}*/
-			
-			
+
+
 			requirements = (LinkedList<Requirement>)keep;
-			
+
 			//requirements = (LinkedList<Requirement>)filterRequirements(reqsList);
 
 		}

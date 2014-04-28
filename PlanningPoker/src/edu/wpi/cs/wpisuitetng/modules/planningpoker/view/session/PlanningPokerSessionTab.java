@@ -88,7 +88,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private final JLabel nameErrorMessage = new JLabel("");
 	private final JLabel descriptionErrorMessage = new JLabel("");
 	private final JLabel numbers = new JLabel("Users input non-negative intergers");
-	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
+	private final RequirementSelectionView requirementPanel;
 	private JDatePicker datePicker;
 	private final JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
@@ -115,6 +115,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	public PlanningPokerSessionTab() {
 		pokerSession = new PlanningPokerSession();
+		requirementPanel = new RequirementSelectionView(null);
 		viewMode = (ViewMode.CREATING);
 		dateHasBeenSet = false;
 		this.buildLayouts();
@@ -128,6 +129,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		pokerSession = existingSession;
+		requirementPanel = new RequirementSelectionView(pokerSession);
 		viewMode = (ViewMode.EDITING);
 		// Set the end date checkbox and update fields.
 		dateHasBeenSet = (existingSession.getEndDate() != null);
