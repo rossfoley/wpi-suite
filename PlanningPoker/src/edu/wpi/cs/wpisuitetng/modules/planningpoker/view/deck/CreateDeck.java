@@ -79,7 +79,7 @@ public class CreateDeck extends JPanel {
 	private void buildPanel() {
 		springLayout = new SpringLayout();
 		setLayout(springLayout);
-		setPreferredSize(new Dimension(370, 350));
+		setPreferredSize(new Dimension(390, 350));
 
 		final JLabel lblDeckName = new JLabel("Deck Name:* ");
 		//lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
