@@ -79,10 +79,10 @@ public class CreateDeck extends JPanel {
 	private void buildPanel() {
 		springLayout = new SpringLayout();
 		setLayout(springLayout);
-		setPreferredSize(new Dimension(420, 330));
+		setPreferredSize(new Dimension(370, 350));
 
 		final JLabel lblDeckName = new JLabel("Deck Name:* ");
-		lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		//lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
 		final Deck tempDeck = new Deck();
 		txtDeckName.setText(tempDeck.getDeckName());
 		txtDeckName.getDocument().addDocumentListener(new DocumentListener() {
@@ -103,7 +103,8 @@ public class CreateDeck extends JPanel {
 		lblDeckNameError.setForeground(Color.RED);
 
 		final JLabel lblCard = new JLabel("New Card Value: ");
-		lblCard.setFont(new Font("Tahoma", Font.BOLD, 11));
+		final JLabel cardArea = new JLabel("Add/Remove Cards:");
+		//lblCard.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		// Radio button group for multiple vs. single selection mode
 		JPanel modeSelectionPanel = createModeSelectionPanel();
@@ -203,34 +204,41 @@ public class CreateDeck extends JPanel {
 
 		springLayout.putConstraint(SpringLayout.WEST, modeSelectionPanel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, modeSelectionPanel, 10, SpringLayout.SOUTH, txtDeckName);
-		//springLayout.putConstraint(SpringLayout.SOUTH, modeSelectionPanel, 100, SpringLayout.NORTH, modeSelectionPanel);
 		
-		springLayout.putConstraint(SpringLayout.WEST, lblCard, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblCard, 0, SpringLayout.VERTICAL_CENTER, txtCardValue);
-
-		springLayout.putConstraint(SpringLayout.WEST, txtCardValue, 0, SpringLayout.EAST, lblCard);
-		springLayout.putConstraint(SpringLayout.NORTH, txtCardValue, 10, SpringLayout.SOUTH, modeSelectionPanel);
-
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddCard, 0, SpringLayout.VERTICAL_CENTER, txtCardValue);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 10, SpringLayout.EAST, txtCardValue);		
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, btnAddCard);
-		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, btnAddCard);
-
-		springLayout.putConstraint(SpringLayout.EAST, cardScrollPane, 0, SpringLayout.EAST, txtCardValue);
-		springLayout.putConstraint(SpringLayout.NORTH, cardScrollPane, 10, SpringLayout.SOUTH, txtCardValue);
-		springLayout.putConstraint(SpringLayout.SOUTH, cardScrollPane, 150, SpringLayout.NORTH, cardScrollPane);
-
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnRemoveAll, -25, SpringLayout.VERTICAL_CENTER, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, cardArea, 20, SpringLayout.SOUTH, modeSelectionPanel);
+		springLayout.putConstraint(SpringLayout.WEST, cardArea, 10, SpringLayout.WEST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, cardScrollPane, 10, SpringLayout.SOUTH, cardArea);
+		springLayout.putConstraint(SpringLayout.WEST, cardScrollPane, 25, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, cardScrollPane, -10, SpringLayout.NORTH, btnCancel);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, txtCardValue, -30, SpringLayout.VERTICAL_CENTER, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, txtCardValue, 10, SpringLayout.EAST, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, txtCardValue, 50, SpringLayout.WEST, txtCardValue);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, lblCard, -10, SpringLayout.NORTH, txtCardValue);
+		springLayout.putConstraint(SpringLayout.WEST, lblCard, 10, SpringLayout.EAST, cardScrollPane);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, btnRemove, 30, SpringLayout.VERTICAL_CENTER, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, btnRemove, 10, SpringLayout.EAST, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, btnRemove, 0, SpringLayout.EAST, btnRemoveAll);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 10, SpringLayout.SOUTH, btnRemove);
 		springLayout.putConstraint(SpringLayout.WEST, btnRemoveAll, 10, SpringLayout.EAST, cardScrollPane);
-
-		springLayout.putConstraint(SpringLayout.WEST, btnRemove, 0, SpringLayout.WEST, btnRemoveAll);
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemove, 5, SpringLayout.SOUTH, btnRemoveAll);
+		springLayout.putConstraint(SpringLayout.EAST, btnRemoveAll, 0, SpringLayout.EAST, btnAddCard);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 0, SpringLayout.NORTH, txtCardValue);
+		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 10, SpringLayout.EAST, txtCardValue);
+		
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, lblCard);
+		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, lblCard);
 
 		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 10, SpringLayout.SOUTH, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, this);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnCreate, 10, SpringLayout.EAST, btnCancel);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnCreate, 00, SpringLayout.VERTICAL_CENTER, btnCancel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnCreate, 0, SpringLayout.VERTICAL_CENTER, btnCancel);
+		
 		springLayout.putConstraint(SpringLayout.WEST, lblNoCardsError, 10, SpringLayout.EAST, btnCreate);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblNoCardsError, 0, SpringLayout.VERTICAL_CENTER, btnCreate);
 		
@@ -250,6 +258,7 @@ public class CreateDeck extends JPanel {
 		add(btnCreate);
 		add(btnCancel);
 		add(lblNoCardsError);
+		add(cardArea);
 		
 		refresh();
 	}
@@ -407,7 +416,7 @@ public class CreateDeck extends JPanel {
 		modePanelLayout.putConstraint(SpringLayout.WEST, lblMode, 0, SpringLayout.WEST, modePanel);
 		
 		modePanelLayout.putConstraint(SpringLayout.NORTH, modeBtnPanel, 6, SpringLayout.SOUTH, lblMode);
-		modePanelLayout.putConstraint(SpringLayout.WEST, modeBtnPanel, 20, SpringLayout.WEST, modePanel);
+		modePanelLayout.putConstraint(SpringLayout.WEST, modeBtnPanel, 10, SpringLayout.WEST, modePanel);
 		
 		modePanel.add(lblMode);
 		modePanel.add(modeBtnPanel);
