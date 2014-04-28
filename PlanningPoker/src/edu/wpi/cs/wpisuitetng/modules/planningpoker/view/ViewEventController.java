@@ -10,29 +10,19 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
 
 /**
