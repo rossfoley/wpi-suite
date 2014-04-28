@@ -51,7 +51,6 @@ public class VoterTable extends JTable {
 		setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 		
-		ViewEventController.getInstance().setOverviewVoterTable(this);
 	}
 
 	public void populateVotePanel() {

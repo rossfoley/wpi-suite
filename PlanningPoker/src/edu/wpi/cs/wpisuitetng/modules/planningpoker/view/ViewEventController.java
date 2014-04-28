@@ -11,8 +11,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JComponent;
 
@@ -48,14 +49,7 @@ public class ViewEventController {
 	private OverviewDetailPanel overviewDetailPanel = null;
 	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
-	private StatisticsUserTable statisticsUserTable;
-	private StatisticsDetailPanel statisticsDetailPanel;
-	private StatisticsReqTable statisticsReqTable;
-	private StatisticsInfoPanel statisticsInfoPanel;
-	private VoterTable overviewVoterTable = null;
-	
-	private Hashtable<PlanningPokerSession, JComponent> openSessionTabHashTable = 
-			new Hashtable<PlanningPokerSession, JComponent>();
+	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -87,28 +81,9 @@ public class ViewEventController {
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
 		this.overviewReqTable = overviewReqTable;
 	}
-	public void setOverviewVoterTable(VoterTable overviewVoterTable) {
-		this.overviewVoterTable  = overviewVoterTable;
-	}	
 	
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		planningPokerSessionButtonsPanel = buttonsPanel;
-	}
-	/**
-	 * Sets the Statistics user table
-	 * @param userTable
-	 */
-	public void setStatisticsUserTable(StatisticsUserTable userTable) {
-		statisticsUserTable = userTable;
-	}
-	public void setStatisticsDetailPanel(StatisticsDetailPanel detailPanel) {
-		statisticsDetailPanel = detailPanel;
-	}
-	public void setStatisticsReqTable(StatisticsReqTable reqTable) {
-		statisticsReqTable = reqTable;
-	}
-	public void setStatisticsInfoPanel(StatisticsInfoPanel infoPanel) {
-		statisticsInfoPanel = infoPanel;		
 	}
 	
 	/**
@@ -226,7 +201,7 @@ public class ViewEventController {
 			main.removeTabAt(i);
 		}
 
-		openSessionTabHashTable = new Hashtable<PlanningPokerSession, JComponent>();
+		openSessionTabHashTable = new HashMap<PlanningPokerSession, JComponent>();
 		main.repaint();
 	}
 
