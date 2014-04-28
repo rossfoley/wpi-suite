@@ -9,12 +9,17 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.util.ArrayList;
+
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
+/**
+ * Class for email adresses. It contains two strings: an emailAdress and a userName
+ * @author theTeam8s
+ * @version 1.0
+ *
+ */
 public class EmailAddress extends AbstractModel {
 	private String emailAddress;
 	private String userName;
@@ -105,6 +110,10 @@ public class EmailAddress extends AbstractModel {
 	public void setOwnerName(String name) {
 		userName = name;
 	}
+	/**
+	 * Takes an email address and changes the values of this to the given EmailAddress
+	 * @param updatedEmail Email to copy from
+	 */
 	public void copyFrom(EmailAddress updatedEmail) {
 		emailAddress = updatedEmail.getEmail();
 		userName = updatedEmail.getOwnerName();

@@ -37,8 +37,8 @@ public class GetEmailController implements ActionListener, IPollable {
 	 */
 	private GetEmailController() {
 		observer = new GetEmailRequestObserver(this);
+		//Adds this to the list of things to be polled.
 		TimingManager.getInstance().addPollable(this);
-		System.out.println("Adding to Polling Manager");
 	}
 	
 	
@@ -99,9 +99,11 @@ public class GetEmailController implements ActionListener, IPollable {
 	}
 
 
+	/**
+	 * Implemented pollFunction that retrieves theEmails every time you need to poll.
+	 */
 	@Override
 	public void pollFunction() {
-		System.out.println("Polling GetEmailController");
 		retrieveEmails();
 		
 	}

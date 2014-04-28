@@ -47,6 +47,7 @@ public class PlanningPoker implements IJanewayModule {
 
 		// Register all of the polling classes
 		TimingManager.getInstance().addPollable(new PlanningPokerSessionUpdater());
+		// Calls GetEmailController.getInstance() so that it can start polling.
 		GetEmailController.getInstance();
 		// Add the tab to the list of tabs owned by this module
 		tabs.add(tab1);

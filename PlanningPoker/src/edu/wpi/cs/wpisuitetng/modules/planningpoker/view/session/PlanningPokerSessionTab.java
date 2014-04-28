@@ -610,9 +610,6 @@ public class PlanningPokerSessionTab extends JPanel {
 						@Override
 						public void run() {
 							final Mailer mailer = new Mailer();
-							/* this is for testing who is emailed 
-							System.out.println(recipients.toString());
-							*/
 							mailer.notifyOfPlanningPokerSessionStart(recipients, pokerSession);
 						}
 					});

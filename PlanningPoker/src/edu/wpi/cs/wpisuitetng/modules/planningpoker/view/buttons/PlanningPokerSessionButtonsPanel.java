@@ -134,7 +134,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 					recipients.add(emailRecipients.get(i).getEmail());
 				}
 				
-				System.out.println(recipients.toString());
 				final Thread t = new Thread(new Runnable() {
 					
 					@Override

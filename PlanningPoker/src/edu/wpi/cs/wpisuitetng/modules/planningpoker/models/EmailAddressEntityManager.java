@@ -22,7 +22,11 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
-
+/**
+ * Works with the database and manages emailAdresses from it.
+ * @author Kevin
+ * @version 1.0
+ */
 public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 
 	Data db;

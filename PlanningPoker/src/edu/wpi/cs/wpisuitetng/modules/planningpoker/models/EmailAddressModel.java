@@ -18,11 +18,12 @@ import javax.swing.AbstractListModel;
 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
+
 /**
  * @author theteam8s
+ * @version 1.0
  * Interacts with the controller for adding, updating and removing email addresses.
  */
 public class EmailAddressModel extends AbstractListModel {
@@ -78,7 +79,7 @@ public class EmailAddressModel extends AbstractListModel {
 		}
 		catch(Exception e)
 		{
-
+			
 		}
 	}
 	/**
@@ -108,7 +109,7 @@ public class EmailAddressModel extends AbstractListModel {
 	 * @param user user of the email address to be removed.
 	 */
 	public void removeEmailAddress(String user){
-		// iterate through list of PlanningPokerSessions until id of project is found
+		// iterate through list of emailAddresses until user is found
 		for (int i=0; i < emailAddresses.size(); i++){
 			if (emailAddresses.get(i).getOwnerName().equals(user)) {
 				// remove the id
