@@ -31,8 +31,10 @@ import javax.swing.table.TableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -130,11 +132,11 @@ public class OverviewVoterTable extends JTable {
 		}
 		return false;		
 	}
-	public int getVote (Requirement reqToVoteOn, String name) {
+	public int getVote (Requirement reqToVoteOn, String name, List<Estimate> estimate) {
 		if(reqToVoteOn == null) {
 			return -1;
 		}
-		final List<Estimate> ListofEstiamte =  planningPokerSession.getEstimates();
+		final List<Estimate> ListofEstiamte =  estimate;
 		for(Estimate e : ListofEstiamte) {
 			if(reqToVoteOn.getId() == e.getRequirementID() && name.equals(e.getOwnerName())) {
 				return e.getVote();
@@ -142,38 +144,34 @@ public class OverviewVoterTable extends JTable {
 		}
 		return -1;
 	}
-	public void displayEverything(){
-		for(Estimate e : planningPokerSession.getEstimates()) {
+	public void displayEverything(List <Estimate> l){
+		for(Estimate e : l) {
 			System.out.println(e.getOwnerName()+ "name");
 			System.out.println(e.getRequirementID() + "id");
 			System.out.println(e.getVote() + "vote");
 			
 		}
 	}
-	public void populateVotePanel(Requirement reqToVoteOn) {
-		if(reqToVoteOn == null) {
+	public void populateVotePanel(Requirement reqToVoteOn, List<Estimate> estimates) {
+		if(reqToVoteOn == null || estimates.size() == 0) {
 			return ;	
 		}
-		displayEverything();
-		StringBuilder sb = new StringBuilder();
-		System.out.println(reqToVoteOn.getId());
-		System.out.println(reqToVoteOn.getName());
 		tableModel.setRowCount(0);	
 		this.selectedRequirement = reqToVoteOn;
 		int reqID;
+		System.out.println(estimates.size() + " is the size of estimates");
 		String vote = "A";
 		final List<String> allUserList = getAllVoterNamesList();
-		List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (String s : allUserList) {
-			if(EstimateContains(planningPokerSession.getEstimates(), s)){
-				System.out.println(s + "populatePanel");
+			if(EstimateContains(estimates, s)){
+				System.out.println(s + "populatePanel if");
 				reqID = reqToVoteOn.getId();
 				String reqName = reqToVoteOn.getName();
 				String username = s;
-				if(getVote(reqToVoteOn, s) == -1) {
+				if(getVote(reqToVoteOn, s, estimates) == -1) {
 					vote = "-";
 				} else {
-					vote = String.valueOf(getVote(reqToVoteOn, s));
+					vote = String.valueOf(getVote(reqToVoteOn, s, estimates));
 				}
 				tableModel.addRow(new Object[]{
 						reqID,
@@ -181,7 +179,7 @@ public class OverviewVoterTable extends JTable {
 						username,
 						vote});					
 			} else {
-				System.out.println(s + "populatePanel");
+				System.out.println(s + "populatePanel else");
 				reqID = reqToVoteOn.getId();
 				String reqName = reqToVoteOn.getName();
 				String username = s;
@@ -193,6 +191,8 @@ public class OverviewVoterTable extends JTable {
 						vote});					
 			}
 		}
+		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(planningPokerSession);
+		UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(planningPokerSession);
 	}
 	// bottom one doenst work for most people excpet me :(
 	

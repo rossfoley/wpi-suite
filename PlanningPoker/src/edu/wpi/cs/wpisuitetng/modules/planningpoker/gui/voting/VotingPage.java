@@ -68,7 +68,7 @@ public class VotingPage extends JSplitPane {
 
 	private Requirement requirement;
 	private Requirement selectedRequirement;
-	private final List<Estimate> estimates = new LinkedList<Estimate>();
+	private List<Estimate> estimates;
 	private JPanel reqDetails;
 
 	private OverviewVoterTable thetable;
@@ -77,7 +77,7 @@ public class VotingPage extends JSplitPane {
 
 	public VotingPage(PlanningPokerSession votingSession){
 		activeSession = votingSession;
-
+		estimates = activeSession.getEstimates();
 		// Disable the vote button in the planning poker module toolbar
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
@@ -159,7 +159,7 @@ public class VotingPage extends JSplitPane {
         thetable.getColumnModel().getColumn(3).setCellRenderer(r);
 		final Dimension d = new Dimension(150, 80);
         thetablePanel.setMinimumSize(d);
-        thetable.populateVotePanel(reqToVoteOn);
+        thetable.populateVotePanel(reqToVoteOn, estimates);
         //ViewEventController.getInstance().setOverviewVoterTable(thetable);
         
         
@@ -388,7 +388,8 @@ public class VotingPage extends JSplitPane {
 					final EstimateVoters estimateVoter = new EstimateVoters();
 					for (Estimate e2: estimates) {
 						if (e2.getRequirementID() == requirement.getId() && e2.getOwnerName().equals(ConfigManager.getInstance().getConfig().getUserName())) {
-							estimate = e2;
+							System.out.println("Removed");
+							estimates.remove(e2);
 						}
 					}
 					estimate.setOwnerName(ConfigManager.getConfig().getUserName());
@@ -402,7 +403,7 @@ public class VotingPage extends JSplitPane {
 					estimateVoter.setVote((int)e.getEstimate());
 					estimateVoter.setVoterUsername(getVoterName());
 					//
-					addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
+					//addVoterNameToEstimateVotersList(getVoterName() ,requirement.getId(),estimateVoter);
 					addVoterNameToEstimatesList(estimate);
 
 					
@@ -438,9 +439,10 @@ public class VotingPage extends JSplitPane {
 					setRightComponent(voteOnReqPanel);
 
 					setDividerLocation(225);
-					thetable.populateVotePanel(ViewEventController.getInstance().getOverviewVoterTable().getSelectedRequirement());
+					thetable.displayEverything(estimates);
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 					UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(activeSession);
+					thetable.populateVotePanel(ViewEventController.getInstance().getOverviewVoterTable().getSelectedRequirement(), estimates);
 				}
 			}
 		});
