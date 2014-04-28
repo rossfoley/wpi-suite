@@ -317,10 +317,10 @@ public class RequirementSelectionPanel extends JPanel{
 					Set<Integer> IDs = session.getRequirementIDs();
 					for (Requirement req : reqsInBacklog) {
 						if (IDs.contains(req.getId())) {
-							int index = reqsInBacklog.indexOf(req);
-							System.out.println("Removing index: " + Integer.toString(index));
+							int index = req.getId();
+							System.out.println("Removing ID: " + Integer.toString(index));
 							//reqsInBacklog.remove(index);
-							toRemove.add(index);
+							if (!toRemove.contains(index)) {toRemove.add(index);}
 							//System.out.println("Removing requirement: " + Integer.toString(req.getId()));
 						}
 					}
@@ -328,14 +328,20 @@ public class RequirementSelectionPanel extends JPanel{
 			}
 			
 			System.out.println("toRemove: " + toRemove);
-			for (int i = toRemove.size() -1; i >= 0 ; i--) {
+			LinkedList<Requirement> keep = new LinkedList<Requirement>();
+			for (Requirement req : reqsInBacklog){
+				if (!toRemove.contains(req.getId())){
+					keep.add(req);
+				}
+			}
+			/*for (int i = toRemove.size() -1; i >= 0 ; i--) {
 				int index = toRemove.get(i);
 				//System.out.println("Removing index: " + Integer.toString(index));
 				reqsInBacklog.remove(index);
-			}
+			}*/
 			
 			
-			requirements = (LinkedList<Requirement>)reqsInBacklog;
+			requirements = (LinkedList<Requirement>)keep;
 			
 			//requirements = (LinkedList<Requirement>)filterRequirements(reqsList);
 
