@@ -101,3 +101,10 @@ $ ->
           sessionID: @get('uuid')
           requirementID: @get('requirement')['id']
           vote: vote
+        $.ajax
+          type: 'POST'
+          dataType: 'json'
+          url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
+          data: JSON.stringify(estimate)
+          success: => @toggleProperty 'showVoteForm'
+          error: => console.log 'Error updating the estimate'

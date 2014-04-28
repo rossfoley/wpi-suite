@@ -151,11 +151,27 @@
         submitVote: function() {
           var estimate, vote;
           vote = parseInt(this.voteValue);
-          return estimate = {
+          estimate = {
             sessionID: this.get('uuid'),
             requirementID: this.get('requirement')['id'],
             vote: vote
           };
+          return $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
+            data: JSON.stringify(estimate),
+            success: (function(_this) {
+              return function() {
+                return _this.toggleProperty('showVoteForm');
+              };
+            })(this),
+            error: (function(_this) {
+              return function() {
+                return console.log('Error updating the estimate');
+              };
+            })(this)
+          });
         }
       }
     });
