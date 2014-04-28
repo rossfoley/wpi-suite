@@ -69,17 +69,25 @@
       <div class="panel-heading"><h3 class="panel-title">{{name}} - Created by {{sessionCreatorName}}</h3></div>
       <div class="panel-body">{{description}}</div>
       <ul class="list-group">
-        {{#each requirements}}
-          <li class="list-group-item">{{name}}:
-            <div class="progress">
-              <div class="progress-bar" role="progressbar" style='width: {{percent}};'>
-                {{percent}}
-              </div>
-            </div>
+        {{#each requirement in requirements}}
+          <li class="list-group-item">{{requirement.name}}:
+            {{requirement-progress uuid=uuid requirement=requirement}}
+            {{requirement-vote uuid=uuid requirement=requirement}}
           </li>
         {{/each}}
       </ul>
     </div>
+  </script>
+
+  <script type="text/x-handlebars" id="components/requirement-progress">
+    Progress:
+    <div class="progress-bar progress-bar-success" role="progressbar" {{bind-attr style=widthStyle}}>
+      {{width}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="components/requirement-vote">
+    <a href="#">Vote!</a>
   </script>
 
   <script src="js/libs/jquery-2.1.0.js"></script>
