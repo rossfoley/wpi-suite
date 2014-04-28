@@ -97,7 +97,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 		}
 		catch(Exception e)
 		{
-
+			System.out.println("HUGE ERROR ");
 		}
 	}
 	

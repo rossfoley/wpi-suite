@@ -387,7 +387,7 @@ public class VotingPage extends JSplitPane {
 					// tracking line
 					final EstimateVoters estimateVoter = new EstimateVoters();
 					for (Estimate e2: estimates) {
-						if (e2.getRequirementID() == requirement.getId()) {
+						if (e2.getRequirementID() == requirement.getId() && e2.getOwnerName().equals(ConfigManager.getInstance().getConfig().getUserName())) {
 							estimate = e2;
 						}
 					}

@@ -142,10 +142,19 @@ public class OverviewVoterTable extends JTable {
 		}
 		return -1;
 	}
+	public void displayEverything(){
+		for(Estimate e : planningPokerSession.getEstimates()) {
+			System.out.println(e.getOwnerName()+ "name");
+			System.out.println(e.getRequirementID() + "id");
+			System.out.println(e.getVote() + "vote");
+			
+		}
+	}
 	public void populateVotePanel(Requirement reqToVoteOn) {
 		if(reqToVoteOn == null) {
 			return ;	
 		}
+		displayEverything();
 		StringBuilder sb = new StringBuilder();
 		System.out.println(reqToVoteOn.getId());
 		System.out.println(reqToVoteOn.getName());
@@ -154,7 +163,7 @@ public class OverviewVoterTable extends JTable {
 		int reqID;
 		String vote = "A";
 		final List<String> allUserList = getAllVoterNamesList();
-		final List<Requirement> ListOfRequirements =  getSessionReqs();
+		List<Requirement> ListOfRequirements =  getSessionReqs();
 		for (String s : allUserList) {
 			if(EstimateContains(planningPokerSession.getEstimates(), s)){
 				System.out.println(s + "populatePanel");
@@ -162,7 +171,7 @@ public class OverviewVoterTable extends JTable {
 				String reqName = reqToVoteOn.getName();
 				String username = s;
 				if(getVote(reqToVoteOn, s) == -1) {
-					vote = "HAS NOT VOTED";
+					vote = "-";
 				} else {
 					vote = String.valueOf(getVote(reqToVoteOn, s));
 				}
@@ -176,7 +185,7 @@ public class OverviewVoterTable extends JTable {
 				reqID = reqToVoteOn.getId();
 				String reqName = reqToVoteOn.getName();
 				String username = s;
-				vote = "HAS NOT VOTED";
+				vote = "-";
 				tableModel.addRow(new Object[]{
 						reqID,
 						reqName,
