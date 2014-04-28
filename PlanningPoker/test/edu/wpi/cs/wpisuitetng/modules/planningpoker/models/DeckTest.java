@@ -1,4 +1,4 @@
-package tests;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,50 +18,47 @@ public class DeckTest {
 	
 	@Test
 	public void testGetDeckName() {
-		testDeck.setDeckName("testDeck");
+		String testDeckString = new String("testDeck");
+		testDeck.setDeckName(testDeckString);
 		
-		assertTrue(testDeck.getDeckName() == "testDeck");
-		assertFalse(testDeck.getDeckName() == "Blarg");
+		assertEquals(testDeckString, testDeck.getDeckName());
 	}
 	
 	@Test
 	public void testSetDeckName() {
 		testDeck.setDeckName("testDeck");
 		
-		assertTrue(testDeck.getDeckName() == "testDeck");
 		testDeck.setDeckName("nottestdeck");
-		assertTrue(testDeck.getDeckName() == "nottestdeck");
+		assertEquals("nottestdeck", testDeck.getDeckName());
 	}
 	
 	@Test
 	public void testGetId() {
 		testDeck.setId(2);
 		
-		assertTrue(testDeck.getId() == 2);
+		assertEquals(2, testDeck.getId());
 	}
 	
 	@Test
 	public void testSetId() {
 		testDeck.setId(2);
 		
-		assertTrue(testDeck.getId() == 2);
 		testDeck.setId(5);
-		assertTrue(testDeck.getId() == 5);
+		assertEquals(5, testDeck.getId());
 	}
 	
 	@Test
 	public void testgetAllowMultipleSelections() {
 		
-		assertTrue(testDeck.getAllowMultipleSelections() == mult);
+		assertEquals(mult, testDeck.getAllowMultipleSelections());
 	}
 	
 	@Test
 	public void testsetAllowMultipleSelections() {
 		boolean changed = false;
 		
-		assertTrue(testDeck.getAllowMultipleSelections() == mult);
 		testDeck.setAllowMultipleSelections(changed);
-		assertTrue(testDeck.getAllowMultipleSelections() == changed);
+		assertEquals(changed, testDeck.getAllowMultipleSelections());
 	}
 	
 	@Test
@@ -70,7 +67,7 @@ public class DeckTest {
 		testList.add(2);
 		List<Integer> testList2 = testDeck.getNumbersInDeck();
 		
-		assertTrue(testList == testList2);
+		assertEquals(testList, testList2);
 	}
 	
 	@Test 
@@ -80,14 +77,26 @@ public class DeckTest {
 		testList2.add(2);
 		testDeck.setNumbersInDeck(testList2);
 		
-		assertTrue(testDeck.getNumbersInDeck() == testList2);
+		assertEquals(testList2, testDeck.getNumbersInDeck());
 	}
 	@Test 
 	public void testcopyFrom() {
 		List<Integer> testList2 = new ArrayList<Integer>();
+		testList2.add(1);
+		testList2.add(2);
 		boolean mult2 = true;
 		Deck testDeck2 = new Deck(testList2, mult2);
-		testDeck.setId(1);
-		testDeck.set
+		testDeck2.setId(1);
+		testDeck2.setDeckName("Hurf");
+		testDeck.setId(5);
+		testDeck.setDeckName("Durf");
+		
+		testDeck.copyFrom(testDeck2);
+		assertEquals(1, testDeck.getId());
+		assertEquals("Hurf", testDeck.getDeckName());
+		assertEquals(mult2, testDeck.getAllowMultipleSelections());
+		assertEquals(testList2, testDeck.getNumbersInDeck());
+		
+		
 	}
 }
