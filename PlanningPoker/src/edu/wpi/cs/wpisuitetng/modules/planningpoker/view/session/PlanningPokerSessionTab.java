@@ -21,7 +21,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -55,6 +54,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
@@ -65,9 +65,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 
 /**
  * The GUI for creating and updating Planning Poker Sessions
- * @author rossfoley and jdorich
+ * 
  */
-public class PlanningPokerSessionTab extends JPanel {
+public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private final PlanningPokerSession pokerSession;
 	private final PlanningPokerSession unmodifiedSession = new PlanningPokerSession();
 	private final SpringLayout layout = new SpringLayout();

@@ -10,29 +10,19 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
 
 /**
@@ -40,7 +30,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
  * All actions on GUI elements should be conducted through this controller.
  * @version $Revision: 1.0 $
  */
-
 public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
@@ -58,7 +47,8 @@ public class ViewEventController {
 
 	/**
 	 * Returns the singleton instance of the vieweventcontroller.
-	 * @return The instance of this controller. */
+	 * @return The instance of this controller.
+	 */
 	public static ViewEventController getInstance() {
 		if (instance == null) {
 			instance = new ViewEventController();
@@ -66,22 +56,42 @@ public class ViewEventController {
 		return instance;
 	}
 	
+	/**
+	 * Sets the overview tree for the given view
+	 * @param overviewTreePanel	The overview tree
+	 */
 	public void setOverviewTree(OverviewTreePanel overviewTreePanel) {
 		this.overviewTreePanel = overviewTreePanel;
 	}
 	
+	/**
+	 * Sets the OverviewDetailPanel for the given view.
+	 * @param overviewDetailPanel	The detail panel
+	 */
 	public void setOverviewDetailPanel(OverviewDetailPanel overviewDetailPanel) {
 		this.overviewDetailPanel = overviewDetailPanel;
 	}
 	
-	public OverviewReqTable getOverviewReqTable(){
-		return overviewReqTable;
-	}
-	
+	/**
+	 * Sets the requirement table for the given view.
+	 * @param overviewReqTable	The requirement table to set
+	 */	
 	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
 		this.overviewReqTable = overviewReqTable;
 	}
 	
+	/**
+	 * Gets the requirement table for the given view.
+	 * @return The requirement table
+	 */
+	public OverviewReqTable getOverviewReqTable(){
+		return overviewReqTable;
+	}
+	
+	/**
+	 * Sets the toolbar button panel for the given view.
+	 * @param buttonsPanel	The buttons panel to set
+	 */	
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
@@ -137,12 +147,14 @@ public class ViewEventController {
 	}
 	
 	/**
-	 * 
-	 * @param overviewEndVotePanel
+	 * Getter for the buttons panel toolbar
+	 * @return	The Buttons panel toolbar
 	 */
 	public PlanningPokerSessionButtonsPanel getPlanningPokerSessionButtonsPanel() {
 		return planningPokerSessionButtonsPanel;
 	}
+	
+	
 
 	/**
 	 * Removes the tab for the given JComponent
@@ -156,17 +168,10 @@ public class ViewEventController {
 			if(!((PlanningPokerSessionTab)comp).readyToRemove()) {
 				return;
 			}
-			openSessionTabHashTable.remove(((PlanningPokerSessionTab)comp).getDisplaySession());
 		}
-		// Check if the tab is a session voting tab
-		if (comp instanceof VotingPage) {
-			planningPokerSessionButtonsPanel.enableVoteButton();
-			planningPokerSessionButtonsPanel.enableEndVoteButton();
-			openSessionTabHashTable.remove(((VotingPage)comp).getDisplaySession());
-		}
-		// Check if the tab is viewing a sessions statistics
-		if (comp instanceof StatisticsPanel) {
-			openSessionTabHashTable.remove(((StatisticsPanel)comp).getDisplaySession());
+		// Check if the tab contains a planning poker session
+		if (comp instanceof ISessionTab) {
+			openSessionTabHashTable.remove(((ISessionTab)comp).getDisplaySession());
 		}
 		
 		main.remove(comp);
