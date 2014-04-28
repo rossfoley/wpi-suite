@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -45,7 +46,7 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 	private boolean emailSent = false;
 	JLabel lblEmailErrorText;
 	JLabel lblEmailSubmitted;
-
+	long emailLastSubmitted;
 	/**
 	 * Constructs the Preferences Panel
 	 */
@@ -81,15 +82,15 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 		springLayout.putConstraint(SpringLayout.EAST, lblEmailErrorText, -129, SpringLayout.EAST, this);
 		lblEmailErrorText.setForeground(Color.RED);
 		add(lblEmailErrorText);
-		
+
 		lblEmailSubmitted = new JLabel("Submitted Email!");
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmailSubmitted, 0, SpringLayout.NORTH, lblEmailErrorText);
 		springLayout.putConstraint(SpringLayout.WEST, lblEmailSubmitted, 0, SpringLayout.WEST, btnSubmit);
 		springLayout.putConstraint(SpringLayout.EAST, lblEmailSubmitted, -26, SpringLayout.EAST, this);
 		lblEmailSubmitted.setForeground(new Color(50, 205, 50));
 		add(lblEmailSubmitted);
-		
-		
+
+
 		lblEmailErrorText.setVisible(emailError);
 		lblEmailSubmitted.setVisible(emailSent);
 
@@ -146,6 +147,7 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 			else {
 				EmailAddressModel.getInstance().addEmail(newEmail);
 			}
+			emailLastSubmitted = System.currentTimeMillis();
 		}
 		else {
 			emailError = true;
@@ -190,6 +192,19 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 	public void focusLost(FocusEvent e) {
 		emailSent = false;
 		lblEmailSubmitted.setVisible(emailSent);
-		
+
+	}
+
+	/**
+	 * Calls the super classes repaint and them implements a timeout for email submission
+	 * success message.
+	 * @param g
+	 */
+	public void repaint(Graphics g) {
+		super.repaint();
+		if (System.currentTimeMillis() > emailLastSubmitted + 1000*60*10) {
+			emailSent = false;
+			lblEmailSubmitted.setVisible(emailSent);
+		}
 	}
 }
