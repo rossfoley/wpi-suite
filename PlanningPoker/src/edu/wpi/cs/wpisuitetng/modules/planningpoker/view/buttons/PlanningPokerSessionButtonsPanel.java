@@ -46,6 +46,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private final JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
 	private final JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
 	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
+	private final JButton helpButton = new JButton("<html>Help</html>");
 	private final JPanel contentPanel = new JPanel();
 
 
@@ -80,7 +81,11 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			statisticsButton.setIcon(new ImageIcon(img));
 
-
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/help.png"));
+			// This help icon was a free icon from "http://findicons.com/icon/199583/help"
+			helpButton.setIcon(new ImageIcon(img));
+			
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {} 
 
 		// the action listener for the Create Planning Poker Session Button
@@ -157,7 +162,20 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+<<<<<<< HEAD
 				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+=======
+				ViewEventController.getInstance().openStatisticsTab(session);
+				}
+			});
+		
+		// the action listener for the Help Button
+		helpButton.addActionListener(new ActionListener() {
+			@Override
+			
+			public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().createPlanningPokerSession();
+>>>>>>> Click Help button on button selection panel to open a new tab, Brian Flynn ' button does not currently have correct functionality, but a rebase is needed as an important file has been changed by another member. '
 			}
 		});
 
@@ -167,6 +185,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		contentPanel.add(voteButton);
 		contentPanel.add(endVoteButton);
 		contentPanel.add(statisticsButton);
+		contentPanel.add(helpButton);
 		contentPanel.setOpaque(false);
 
 		add(contentPanel);
@@ -242,6 +261,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	public void enableStatisticsButton() {
 		statisticsButton.setEnabled(true);
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Enables the tool-bar buttons based on the input PlanningPoker and Client session 
@@ -291,6 +311,15 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		disableVoteButton();
 		disableEndVoteButton();
 		disableStatisticsButton();		
+=======
+	
+	public void disableHelpButton() {
+		helpButton.setEnabled(false);
+	}
+	
+	public void enableHelpButton() {
+		helpButton.setEnabled(true);
+>>>>>>> Click Help button on button selection panel to open a new tab, Brian Flynn ' button does not currently have correct functionality, but a rebase is needed as an important file has been changed by another member. '
 	}
 }
 
