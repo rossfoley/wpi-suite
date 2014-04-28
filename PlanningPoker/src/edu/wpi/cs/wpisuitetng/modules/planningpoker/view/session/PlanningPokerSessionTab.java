@@ -571,7 +571,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				if (changes == 0) return;
+				if (changes != 0) return;
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
@@ -598,7 +598,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				if (changes == 0) return;
+				if (changes != 0) return;
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
