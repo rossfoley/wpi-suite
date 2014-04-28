@@ -191,8 +191,23 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 				} else {
 					return "Voting for this session has ended!";
 				}
+				break;
+			case "update-estimate-website":
+				final Estimate e = Estimate.fromJson(content);
+				final PlanningPokerSession session = getEntity(s, e.getSessionID().toString())[0];
+				e.setID(UUID.randomUUID());
+				e.setOwnerName(s.getUsername());
+				if (session.isOpen()) { 
+					session.addEstimate(e);
+					update(s, session.toJSON());
+					addClientUpdate(session, s);
+				} else {
+					return "Voting for this session has ended!";
+				}
+				break;
 			default:
 				System.out.println(string);
+				break;
 		}
 
 		return null;
