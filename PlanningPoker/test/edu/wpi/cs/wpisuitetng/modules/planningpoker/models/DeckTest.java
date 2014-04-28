@@ -96,7 +96,5 @@ public class DeckTest {
 		assertEquals("Hurf", testDeck.getDeckName());
 		assertEquals(mult2, testDeck.getAllowMultipleSelections());
 		assertEquals(testList2, testDeck.getNumbersInDeck());
-		
-		
 	}
 }
