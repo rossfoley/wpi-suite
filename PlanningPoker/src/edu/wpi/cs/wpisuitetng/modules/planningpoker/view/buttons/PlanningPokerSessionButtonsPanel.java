@@ -72,7 +72,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			// Combined a help icon and an options icon that can both be found on the site.
 			helpButton.setIcon(new ImageIcon(img));
 
-
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
 			System.out.println("Failed to read planning poker button images");
 		} 
@@ -107,9 +106,9 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		// the action listener for the View Statistics Button
 		statisticsButton.addActionListener(new ActionListener() {
 			@Override
-
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+
 				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
 //				ViewEventController.getInstance().openStatisticsTab(session);
 				}
