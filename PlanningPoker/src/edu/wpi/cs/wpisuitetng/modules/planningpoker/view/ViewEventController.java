@@ -30,7 +30,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
  * All actions on GUI elements should be conducted through this controller.
  * @version $Revision: 1.0 $
  */
-
 public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
@@ -166,17 +165,10 @@ public class ViewEventController {
 			if(!((PlanningPokerSessionTab)comp).readyToRemove()) {
 				return;
 			}
-			openSessionTabHashTable.remove(((PlanningPokerSessionTab)comp).getDisplaySession());
 		}
-		// Check if the tab is a session voting tab
-		if (comp instanceof VotingPage) {
-			planningPokerSessionButtonsPanel.enableVoteButton();
-			planningPokerSessionButtonsPanel.enableEndVoteButton();
-			openSessionTabHashTable.remove(((VotingPage)comp).getDisplaySession());
-		}
-		// Check if the tab is viewing a sessions statistics
-		if (comp instanceof StatisticsPanel) {
-			openSessionTabHashTable.remove(((StatisticsPanel)comp).getDisplaySession());
+		// Check if the tab contains a planning poker session
+		if (comp instanceof ISessionTab) {
+			openSessionTabHashTable.remove(((ISessionTab)comp).getDisplaySession());
 		}
 		
 		main.remove(comp);
