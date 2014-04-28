@@ -8,9 +8,12 @@ $ ->
     url: 'API/planningpoker/planningpokersession'
     async: no
     success: (data) => 
+      openSessions = []
       for session in data
         session['requirements'] = []
-      App.Sessions = data
+        if session['gameState'] == 'OPEN'
+          openSessions.push session
+      App.Sessions = openSessions
 
   # Load in the requirements
   $.ajax
@@ -84,4 +87,9 @@ $ ->
       ).property('uuid', 'requirement')
 
   App.RequirementVoteComponent = Ember.Component.extend
+    classNames: ['requirement-vote']
+    showVoteForm: no
 
+    actions:
+      startVote: ->
+        @toggleProperty 'showVoteForm'

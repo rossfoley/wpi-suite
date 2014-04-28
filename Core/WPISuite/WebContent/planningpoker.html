@@ -12,7 +12,7 @@
     <div class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">WPI Suite Planning Poker</a>
+          {{#link-to 'sessions' class='navbar-brand'}}WPI Suite Planning Poker{{/link-to}}
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -25,34 +25,21 @@
     {{outlet}}
   </script>
 
-  <script type="text/x-handlebars" id="index">
-    <form id="login" method="post">
-      <label for="username">Username:</label>
-      <input type="text" placeholder="Username" name="username" id="username" />
-
-      <label for="password">Password:</label>
-      <input type="password" placeholder="Password" name="password" id="password" />
-
-      <label for="project">Project:</label>
-      <input type="text" placeholder="Project" name="project" id="project" />
-
-      <input type="submit" value="Login" />
-    </form>
-  </script>
-
   <script type="text/x-handlebars" id="sessions">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-3">
           <table class='table'>
             <thead>
-              <tr><th>Planning Poker Sessions</th></tr>
+              <tr><th>Open Planning Poker Sessions</th></tr>
             </thead>
             <tbody>
               {{#each model}}
               <tr><td>
                   {{#link-to 'session' this}}{{name}}{{/link-to}}
               </td></tr>
+              {{else}}
+              <tr><td>There are no open Planning Poker sessions!</td></tr>
               {{/each}}
             </tbody>
           </table>
@@ -70,7 +57,10 @@
       <div class="panel-body">{{description}}</div>
       <ul class="list-group">
         {{#each requirement in requirements}}
-          <li class="list-group-item">{{requirement.name}}:
+          <li class="list-group-item">
+            <h4>{{requirement.name}}:</h4>
+            <p>{{requirement.description}}</p>
+            <span class="progress-label">Progress:</span>
             {{requirement-progress uuid=uuid requirement=requirement}}
             {{requirement-vote uuid=uuid requirement=requirement}}
           </li>
@@ -80,14 +70,16 @@
   </script>
 
   <script type="text/x-handlebars" id="components/requirement-progress">
-    Progress:
     <div class="progress-bar progress-bar-success" role="progressbar" {{bind-attr style=widthStyle}}>
       {{width}}
     </div>
   </script>
 
   <script type="text/x-handlebars" id="components/requirement-vote">
-    <a href="#">Vote!</a>
+    <a {{action "startVote"}}>Vote!</a>
+    {{#if showVoteForm}}
+      <input type="text" placeholder="Vote here!" />
+    {{/if}}
   </script>
 
   <script src="js/libs/jquery-2.1.0.js"></script>

@@ -10,12 +10,16 @@
       async: false,
       success: (function(_this) {
         return function(data) {
-          var session, _i, _len;
+          var openSessions, session, _i, _len;
+          openSessions = [];
           for (_i = 0, _len = data.length; _i < _len; _i++) {
             session = data[_i];
             session['requirements'] = [];
+            if (session['gameState'] === 'OPEN') {
+              openSessions.push(session);
+            }
           }
-          return App.Sessions = data;
+          return App.Sessions = openSessions;
         };
       })(this)
     });
@@ -136,7 +140,15 @@
         return "width: " + percent + "%";
       }).property('uuid', 'requirement')
     });
-    return App.RequirementVoteComponent = Ember.Component.extend;
+    return App.RequirementVoteComponent = Ember.Component.extend({
+      classNames: ['requirement-vote'],
+      showVoteForm: false,
+      actions: {
+        startVote: function() {
+          return this.toggleProperty('showVoteForm');
+        }
+      }
+    });
   });
 
 }).call(this);

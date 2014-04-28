@@ -2,3 +2,13 @@
 .ember-application {
     margin: 20px;
 }
+
+.requirement-progress {
+  width: 75%;
+}
+
+.progress-label {
+  display: block;
+  float: left;
+  margin-right: 10px;
+}
