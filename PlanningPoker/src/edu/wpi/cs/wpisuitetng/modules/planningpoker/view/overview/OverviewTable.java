@@ -30,10 +30,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 /**
@@ -196,7 +194,6 @@ public class OverviewTable extends JTable
 			try {
 				GetSessionController.getInstance().retrieveSessions();
 				GetRequirementsController.getInstance().retrieveRequirements();
-				GetUserController.getInstance().retrieveUsers();
 
 				initialized = true;
 			} catch (Exception e) {}

@@ -147,11 +147,14 @@ public class ViewEventController {
 	}
 	
 	/**
-	 * @param overviewEndVotePanel
+	 * Getter for the buttons panel toolbar
+	 * @return	The Buttons panel toolbar
 	 */
 	public PlanningPokerSessionButtonsPanel getPlanningPokerSessionButtonsPanel() {
 		return planningPokerSessionButtonsPanel;
 	}
+	
+	
 
 	/**
 	 * Removes the tab for the given JComponent

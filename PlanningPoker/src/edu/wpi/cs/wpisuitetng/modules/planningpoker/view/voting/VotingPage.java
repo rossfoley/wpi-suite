@@ -19,8 +19,6 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
@@ -258,19 +256,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		final String name = ConfigManager.getInstance().getConfig().getUserName();
 		name.toLowerCase();
 		return name;
-	}
-	
-	public List<String> getAllVoterNamesList() {
-		final List<String> allVoters = new ArrayList<String>();
-		GetUserController.getInstance().retrieveUsers();
-		final List<User> user = UserModel.getInstance().getUsers();
-		
-		for(User u : user) {
-			try {
-				allVoters.add(u.getUsername());
-			} catch (Exception E) {}
-		}
-		return allVoters;
 	}
 
 	/**
