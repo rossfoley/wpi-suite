@@ -38,6 +38,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private final JButton editButton = new JButton("<html>Edit <br /> Session</html>");
 	private final JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
 	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
+	private final JButton helpButton = new JButton("<html>Help</html>");
 	private final JPanel contentPanel = new JPanel();
 
 
@@ -64,6 +65,11 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
 			statisticsButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/help.png"));
+			// This help icon was a free icon from "http://findicons.com/icon/199583/help"
+			helpButton.setIcon(new ImageIcon(img));
 
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
@@ -104,8 +110,18 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+//				ViewEventController.getInstance().openStatisticsTab(session);
+				}
+			});
+		
+		// the action listener for the Help Button
+		helpButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().createPlanningPokerSession();
 			}
 		});
+
 
 		// Disable all buttons on initialization
 		disableAllButtons();
@@ -114,6 +130,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		contentPanel.add(editButton);
 		contentPanel.add(voteButton);
 		contentPanel.add(statisticsButton);
+		contentPanel.add(helpButton);
 		contentPanel.setOpaque(false);
 
 		add(contentPanel);
@@ -220,6 +237,14 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		disableEditButton();
 		disableVoteButton();
 		disableStatisticsButton();		
+	}
+	
+	public void disableHelpButton() {
+		helpButton.setEnabled(false);
+	}
+	
+	public void enableHelpButton() {
+		helpButton.setEnabled(true);
 	}
 }
 
