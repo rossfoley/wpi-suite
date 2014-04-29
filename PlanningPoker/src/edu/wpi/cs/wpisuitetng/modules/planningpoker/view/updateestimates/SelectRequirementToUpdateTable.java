@@ -140,14 +140,6 @@ public class SelectRequirementToUpdateTable extends JTable {
 		return col == 0;
 	}
 	
-	/**
-	 * @return returns a list of the ids of the requirements 
-	 * that have been selected to update in requirement manager
-	 */
-	public List<Integer> getSelectedRequirements(){
-		return new ArrayList<Integer>();
-	}
-	
 	@Override
 	public Class getColumnClass(int column){
 		if (column == 0){
