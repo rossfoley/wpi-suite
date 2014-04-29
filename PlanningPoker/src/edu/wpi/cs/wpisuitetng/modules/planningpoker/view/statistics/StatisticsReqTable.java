@@ -78,12 +78,18 @@ public class StatisticsReqTable extends JTable {
 		/* Create double-click event listener */
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				rowNumber = convertRowIndexToModel(rowAtPoint(getMousePosition()));
-				//infoPanel.currentReqID = tableRows.get(rowNumber);
 				try {
-					infoPanel.setCurrentReqID(tableRows.get(rowNumber));
+					rowNumber = convertRowIndexToModel(rowAtPoint(getMousePosition()));
+					System.out.println("rowNumber = " + rowNumber);
+					//infoPanel.currentReqID = tableRows.get(rowNumber);
+					try {
+						infoPanel.setCurrentReqID(tableRows.get(rowNumber));
+					}
+					catch (NullPointerException ex) {}
 				}
-				catch (NullPointerException ex) {}
+				catch (IndexOutOfBoundsException obe) {
+					System.out.println("There is no row at current mouse position");
+				}
 			}
 		});
 	}
@@ -145,6 +151,9 @@ public class StatisticsReqTable extends JTable {
 	public void editingStopped(ChangeEvent e) {
 		System.out.println("Editing Stopped");
 		String estimate = (String) tableModel.getValueAt(editingRow, editingColumn);
+		System.out.println("Estimate = " + estimate + ", editingRow = " + editingRow 
+				+ ", editingColumn = " + editingColumn);
+		super.editingStopped(e);
 		boolean isInteger = true;
 		int numberEst = -1;
 		try {
