@@ -46,7 +46,6 @@ public class SelectRequirementToUpdateTableTest {
 		DefaultTableModel testDefaultTableModel = new DefaultTableModel();
 		assertEquals(Boolean.class, testTable.getColumnClass(0));
 		assertEquals(testDefaultTableModel.getColumnClass(2), testTable.getColumnClass(2));
-		assertNotEquals(testDefaultTableModel.getColumnClass(0), testTable.getColumnClass(0));
 	}
 	
 	@Test
