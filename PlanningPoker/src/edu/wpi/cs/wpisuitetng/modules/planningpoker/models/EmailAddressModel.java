@@ -14,19 +14,25 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddSessionController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
+
+/**
+ * @author theteam8s
+ * @version 1.0
+ * Interacts with the controller for adding, updating and removing email addresses.
+ */
 public class EmailAddressModel extends AbstractListModel {
 
 	/** 
 	 * the list in which all the emails for a project are contained
 	 */
 	private final List<EmailAddress> emailAddresses;
-	//private int nextID; // the next available id for a EmailAddress
+
 	
 	private static EmailAddressModel instance; // static object to allow the EmailAddressModel 
 	
@@ -73,12 +79,18 @@ public class EmailAddressModel extends AbstractListModel {
 		}
 		catch(Exception e)
 		{
-
+			
 		}
 	}
+	/**
+	 * Goes into the updateEmailController and calls updateEmailAddress with the email. 
+	 * While it says currentEmail it goes through and finds an email address with the same user as 
+	 * currentEmail and removes it, adding currentEmail in its place.
+	 * @param currentEmail the email address you wish to update
+	 */
 	public void updateEmailAddress(EmailAddress currentEmail){
 		// add the emailAddress
-		removePlanningPokerSession(currentEmail.getEmail());
+		removeEmailAddress(currentEmail.getOwnerName());
 		emailAddresses.add(currentEmail);
 		try
 		{
@@ -96,8 +108,8 @@ public class EmailAddressModel extends AbstractListModel {
 	 * 
 	 * @param user user of the email address to be removed.
 	 */
-	public void removePlanningPokerSession(String user){
-		// iterate through list of PlanningPokerSessions until id of project is found
+	public void removeEmailAddress(String user){
+		// iterate through list of emailAddresses until user is found
 		for (int i=0; i < emailAddresses.size(); i++){
 			if (emailAddresses.get(i).getOwnerName().equals(user)) {
 				// remove the id
@@ -121,7 +133,7 @@ public class EmailAddressModel extends AbstractListModel {
 	/**
 	 * Finds the email address with the given string as its address
 	 * 
-	 * @param email address to look for. Formated as a string.
+	 * @param emailAddress to look for. Formated as a string.
 	 * @return the email Address with the given String as its address
 	 */
 	public EmailAddress getEmailAddress(String emailAddress){
@@ -132,11 +144,6 @@ public class EmailAddressModel extends AbstractListModel {
 		}
 		return null;
 	}
-	/*
-	public int getNextID(){
-		return this.nextID++;
-	}
-	*/
 	/**
 	 * 
 	 * @return list of emails stored in the EmailAddressModel

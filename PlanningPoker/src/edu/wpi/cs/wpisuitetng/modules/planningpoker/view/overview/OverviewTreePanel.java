@@ -27,10 +27,8 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
@@ -172,6 +170,9 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 					if (session.isEnded() || session.isClosed()) {
 						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
 					}
+					else if (session.isOpen() || session.isPending()) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
+					}
 					
 					displaySession(session);
 				}
@@ -232,8 +233,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			try {
 				GetSessionController.getInstance().retrieveSessions();
 				GetRequirementsController.getInstance().retrieveRequirements();
-				GetUserController.getInstance().retrieveUsers();
-				PlanningPokerSessionModel.getInstance().startLiveUpdating();
 				AddDeckController.getInstance().addDefaultDeck();
 				GetDeckController.getInstance().retrieveDecks();
 				initialized = true;

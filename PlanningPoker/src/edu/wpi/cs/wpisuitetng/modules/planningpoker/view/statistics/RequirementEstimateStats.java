@@ -31,6 +31,7 @@ public class RequirementEstimateStats {
 	private boolean isUpToDate; 
 	
 	public RequirementEstimateStats(int reqID, List<Estimate> givenEstimates) {
+		setID(reqID); 
 		setEstimates(givenEstimates);
 		refreshAll(); 
 	}
@@ -101,13 +102,14 @@ public class RequirementEstimateStats {
 	 * Assumes that the mean has already been calculated for this list of estimates 
 	 * @return the standard deviation 
 	 */
+	
 	public double getStdDev() {
 		if (isUpToDate) {
 			return stdDev;
 		}
 		else {
 			double var = 0;
-			double theStdDev; 
+			double theStdDev;
 			for (Estimate e : estimates) {
 				var += Math.pow(e.getVote() - mean, 2);
 			}
@@ -117,8 +119,8 @@ public class RequirementEstimateStats {
 			}
 			else {
 				theStdDev = Math.sqrt(var/estimates.size());
-				stdDev = theStdDev; 
-				return theStdDev; 
+				stdDev = theStdDev;
+				return theStdDev;
 			}
 		}
 	}
@@ -128,6 +130,15 @@ public class RequirementEstimateStats {
 	 */
 	public void sortEstimatesByVote() {
 		  Collections.sort(estimates);
+	}
+	
+	/**
+	 * Prints out the ID, mean, median, and stdDev
+	 */
+	public void printStats() {
+		System.out.println("Printing stats. ID = " + ID + ", mean = " + mean 
+				+ ", median = " + median + ", stdDev = " + stdDev );
+
 	}
 	
 	/**
@@ -181,5 +192,11 @@ public class RequirementEstimateStats {
 	public void add(Estimate anEstimate) {
 		estimates.add(anEstimate);
 		isUpToDate = false; 
+	}
+
+	
+	public void addAndRefresh(Estimate anEstimate) {
+		add(anEstimate); 
+		refreshAll(); 
 	}
 }

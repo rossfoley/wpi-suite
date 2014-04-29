@@ -27,10 +27,10 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.CreatePokerSessionErrors;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.gui.NoDescriptionException;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.CreatePokerSessionErrors;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.NoDescriptionException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.RequirementEstimateStats;
 
 /**
@@ -56,12 +56,12 @@ public class PlanningPokerSession extends AbstractModel {
 	private final String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
 	private HashMap<Integer, Integer> finalEstimatesMap;
+	private HashMap<Integer, Boolean> finalEstimatesModified; 
 	private List<Integer> requirementsWithExportedEstimates;
 
 	private List<Integer> requirementsWithExportedEstimatesIDs;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	private List<String> VoterNameList;
-	private List<EstimateVoters> estimateVoterList;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -76,9 +76,9 @@ public class PlanningPokerSession extends AbstractModel {
 		requirementsWithExportedEstimates = new ArrayList<Integer>();
 		requirementsWithExportedEstimatesIDs = new ArrayList<Integer>();
 		finalEstimatesMap = new HashMap<Integer, Integer>(); 
+		setFinalEstimatesModified(new HashMap<Integer, Boolean>()); 
 		defaultSessionName = new String(name.toString());
 		this.setVoterNameList(new ArrayList<String>());
-		estimateVoterList = new ArrayList<EstimateVoters>();
 	}
 
 	/**
@@ -421,7 +421,24 @@ public class PlanningPokerSession extends AbstractModel {
 			}
 		}
 		estimates.add(estimate);
-		//checkReqEstimationComplete(estimate.getRequirementID());
+	}
+	
+	/**
+	 * @param requirementID the requirement to check for
+	 * @return a list of users who have voted on the specified requirement
+	 */
+	public Set<String> getVotersForRequirement(int requirementID) {
+		if (requirementIDs.contains(requirementID)) {
+			Set<String> voters = new HashSet<String>();
+			for (Estimate estimate : estimates) {
+				if (estimate.getRequirementID() == requirementID) {
+					voters.add(estimate.getOwnerName());
+				}
+			}
+			return voters;
+		}
+		
+		return new HashSet<String>();
 	}
 
 	/**
@@ -473,11 +490,13 @@ public class PlanningPokerSession extends AbstractModel {
 		this.reqsWithCompleteEstimates = reqsWithCompleteEstimates;
 	}
 	
-	/**
-	 * @return a map of requirement ID to its final estimate
+	/** 
+	 * Returns an array of all of the final estimation values for a finished planning poker session.
+	 * 
+	 * @return Hashmap relating requirement to final estimate for that requirement
 	 */
-	public HashMap<Integer, Integer> getFinalEstimatesMap() {
-		return finalEstimatesMap; 
+	public HashMap<Integer, Integer> getFinalEstimates() { 
+		return finalEstimatesMap;
 	}
 	
 	/**
@@ -492,7 +511,10 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param ID id of the requirement to associate the estimate with
 	 * @param estimate final estimate for the requiremend with ID
 	 */
-	public void addFinalEstimate(int ID, int estimate){
+	public void addFinalEstimate(int ID, int estimate) {
+		if (finalEstimatesMap.containsKey(ID) && finalEstimatesMap.get(ID) != estimate) {
+			estimateWasModified(ID); 
+		}
 		finalEstimatesMap.put(ID, estimate);
 	}
 	
@@ -577,19 +599,9 @@ public class PlanningPokerSession extends AbstractModel {
 		sessionDeck = toCopyFrom.sessionDeck;
 		finalEstimatesMap = toCopyFrom.getFinalEstimates();
 		VoterNameList = toCopyFrom.VoterNameList;
-		estimateVoterList = toCopyFrom.estimateVoterList;
 		reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
 		requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
 		requirementsWithExportedEstimatesIDs = toCopyFrom.requirementsWithExportedEstimatesIDs;
-	}
-
-	/** 
-	 * Returns an array of all of the final estimation values for a finished planning poker session.
-	 * 
-	 * @return Hashmap relating requirement to final estimate for that requirement
-	 */
-	public HashMap<Integer, Integer> getFinalEstimates() { 
-		return finalEstimatesMap;
 	}
 
 	/**
@@ -617,24 +629,40 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void addRequirementToExportedList(int reqIDToAdd) {
 		requirementsWithExportedEstimatesIDs.add(reqIDToAdd);
-}
+	}
+	
 	/**
 	 * @return the VoterNameList
 	 */
 	public List<String> getVoterNameList() {
 		return VoterNameList;
 	}
+	
+	/**
+	 * @param VoterNameList the list of people who have voted
+	 */
 	public void setVoterNameList(List<String> VoterNameList)  {
 		this.VoterNameList = VoterNameList;
 	}
-	public List<EstimateVoters> getEstimateVoterList() {
-		return estimateVoterList;
-	}
+
 	/**
-	 * @param VoterNameList the VoterNameList to set
+	 * gets the HashMap of boolean values signifying if the final estimate has been modified 
+	 * @return finalEstimatesModified
 	 */
-	public void setEstimateVoterList(List<EstimateVoters> EstimateVoterList) {
-		estimateVoterList = EstimateVoterList;
+	public HashMap<Integer, Boolean> getFinalEstimatesModified() {
+		return finalEstimatesModified;
+	}
+
+	/**
+	 * sets finalEstimatesModified equal to the given HashMap
+	 * @param finalEstimatesModified
+	 */
+	public void setFinalEstimatesModified(HashMap<Integer, Boolean> newFinalEstimatesModified) {
+		finalEstimatesModified = newFinalEstimatesModified;
+	}
+	
+	public void estimateWasModified(int reqID) {
+		finalEstimatesModified.put(reqID, true);
 	}
 	
 }

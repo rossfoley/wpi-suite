@@ -22,7 +22,6 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 
 	private final List<PlanningPokerSession> planningPokerSessions;
 	private static PlanningPokerSessionModel instance;
-	private boolean updateStarted = false;
 
 	private PlanningPokerSessionModel() {
 		planningPokerSessions = new ArrayList<PlanningPokerSession>();
@@ -33,26 +32,6 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 			instance = new PlanningPokerSessionModel();
 		}
 		return instance;
-
-	}
-	
-	public void startLiveUpdating() {
-		if (!updateStarted) {
-			updateStarted = true;
-			final Thread t = new Thread(new Runnable() {
-				public void run() {
-					final Timer timer = new Timer();
-					timer.scheduleAtFixedRate(new TimerTask() {
-						@Override
-						public void run() {
-							CheckForUpdatesController.getInstance().checkForUpdates();							
-						}
-					}, 0, 5000);
-				}
-			});
-			t.setDaemon(true);
-			t.start();
-		}
 	}
 
 	/**
@@ -63,14 +42,9 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	public void addPlanningPokerSession(PlanningPokerSession newSession) {
 		// add the PlanningPokerSession
 		planningPokerSessions.add(newSession);
-		try 
-		{
+		try {
 			AddSessionController.getInstance().addPlanningPokerSession(newSession);
-		}
-		catch(Exception e)
-		{
-
-		}
+		} catch(Exception e) {}
 	}
 	
 	/**
@@ -87,18 +61,13 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 * 
 	 * @param newReq The PlanningPokerSession to be added to the list of PlanningPokerSessions in the project
 	 */
-	public void updatePlanningPokerSession(PlanningPokerSession currentSession){
+	public void updatePlanningPokerSession(PlanningPokerSession currentSession) {
 		// add the PlanningPokerSession
 		removePlanningPokerSession(currentSession.getID());
 		planningPokerSessions.add(currentSession);
-		try 
-		{
+		try {
 			UpdatePlanningPokerSessionController.getInstance().updatePlanningPokerSession(currentSession);
-		}
-		catch(Exception e)
-		{
-
-		}
+		} catch(Exception e) {}
 	}
 	
 	/**
@@ -107,13 +76,12 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	 * @param id The ID number of the PlanningPokerSession to be returned
 
 	 * @return the PlanningPokerSession for the id or null if the PlanningPokerSession is not found */
-	public PlanningPokerSession getPlanningPokerSession(UUID id)
-	{
+	public PlanningPokerSession getPlanningPokerSession(UUID id) {
 		PlanningPokerSession temp = null;
 		// iterate through list of planningPokerSessions until id is found
-		for (int i=0; i < planningPokerSessions.size(); i++){
+		for (int i=0; i < planningPokerSessions.size(); i++) {
 			temp = planningPokerSessions.get(i);
-			if (temp.getID().equals(id)){
+			if (temp.getID().equals(id)) {
 				break;
 			}
 		}
@@ -123,7 +91,7 @@ public class PlanningPokerSessionModel extends AbstractListModel {
 	public PlanningPokerSession getPlanningPokerSession(String sessionName) {
 		PlanningPokerSession temp = null;
 		// iterate through list of planningPokerSessions until id is found
-		for (int i=0; i < planningPokerSessions.size(); i++){
+		for (int i=0; i < planningPokerSessions.size(); i++) {
 			temp = planningPokerSessions.get(i);
 			if (temp.getName().equals(sessionName)) {
 				return temp;

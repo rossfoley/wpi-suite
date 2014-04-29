@@ -26,7 +26,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -44,7 +43,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Font;
 
 
 /**
@@ -68,6 +66,7 @@ public class CreateDeck extends JPanel {
 	private JTable cardTable;
 	private DefaultTableModel cardTableModel;
 	private SpringLayout springLayout;
+	private SpringLayout modePanelLayout = new SpringLayout();
 	private transient Vector<DeckListener> listeners;
 
 
@@ -78,10 +77,10 @@ public class CreateDeck extends JPanel {
 	private void buildPanel() {
 		springLayout = new SpringLayout();
 		setLayout(springLayout);
-		setPreferredSize(new Dimension(420, 330));
+		setPreferredSize(new Dimension(390, 350));
 
 		final JLabel lblDeckName = new JLabel("Deck Name:* ");
-		lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
 		final Deck tempDeck = new Deck();
 		txtDeckName.setText(tempDeck.getDeckName());
 		txtDeckName.getDocument().addDocumentListener(new DocumentListener() {
@@ -102,12 +101,13 @@ public class CreateDeck extends JPanel {
 		lblDeckNameError.setForeground(Color.RED);
 
 		final JLabel lblCard = new JLabel("New Card Value: ");
-		lblCard.setFont(new Font("Tahoma", Font.BOLD, 11));
+		final JLabel cardArea = new JLabel("Add/Remove Cards:");
 
 		// Radio button group for multiple vs. single selection mode
-		final JPanel modeSelectionPanel = createModeSelectionPanel();
+		JPanel modeSelectionPanel = createModeSelectionPanel();
+		modeSelectionPanel.setPreferredSize(new Dimension(200, 70));
 
-		btnAddCard = new JButton("Add Card:");
+		btnAddCard = new JButton("Add Card");
 		btnAddCard.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -121,7 +121,6 @@ public class CreateDeck extends JPanel {
 		});
 		lblAddCardError.setVisible(false);
 		lblAddCardError.setForeground(Color.RED);
-
 
 		txtCardValue = new JTextField();
 		txtCardValue.setPreferredSize(new Dimension(26, 26));
@@ -193,41 +192,50 @@ public class CreateDeck extends JPanel {
 		// Sprint layout constraints
 		springLayout.putConstraint(SpringLayout.WEST, lblDeckName, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, lblDeckName, 20, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, txtDeckName, 10, SpringLayout.EAST, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, txtDeckName, 0, SpringLayout.EAST, btnAddCard);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txtDeckName, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
-		springLayout.putConstraint(SpringLayout.WEST, lblDeckNameError, 10, SpringLayout.EAST, txtDeckName);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblDeckNameError, 0, SpringLayout.VERTICAL_CENTER, txtDeckName);
+		springLayout.putConstraint(SpringLayout.WEST, txtDeckName, 0, SpringLayout.WEST, lblDeckName);
+		springLayout.putConstraint(SpringLayout.EAST, txtDeckName, 150, SpringLayout.WEST, txtDeckName);
+		springLayout.putConstraint(SpringLayout.NORTH, txtDeckName, 10, SpringLayout.SOUTH, lblDeckName);
+
+		springLayout.putConstraint(SpringLayout.WEST, lblDeckNameError, 10, SpringLayout.EAST, lblDeckName);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblDeckNameError, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
 
 		springLayout.putConstraint(SpringLayout.WEST, modeSelectionPanel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, modeSelectionPanel, 10, SpringLayout.SOUTH, txtDeckName);
-
-		springLayout.putConstraint(SpringLayout.WEST, lblCard, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblCard, 0, SpringLayout.VERTICAL_CENTER, txtCardValue);
-
-		springLayout.putConstraint(SpringLayout.WEST, txtCardValue, 0, SpringLayout.EAST, lblCard);
-		springLayout.putConstraint(SpringLayout.NORTH, txtCardValue, 10, SpringLayout.SOUTH, modeSelectionPanel);
-
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddCard, 0, SpringLayout.VERTICAL_CENTER, txtCardValue);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 10, SpringLayout.EAST, txtCardValue);		
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, btnAddCard);
-		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, btnAddCard);
-
-		springLayout.putConstraint(SpringLayout.EAST, cardScrollPane, 0, SpringLayout.EAST, txtCardValue);
-		springLayout.putConstraint(SpringLayout.NORTH, cardScrollPane, 10, SpringLayout.SOUTH, txtCardValue);
-		springLayout.putConstraint(SpringLayout.SOUTH, cardScrollPane, 150, SpringLayout.NORTH, cardScrollPane);
-
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnRemoveAll, -25, SpringLayout.VERTICAL_CENTER, cardScrollPane);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, cardArea, 20, SpringLayout.SOUTH, modeSelectionPanel);
+		springLayout.putConstraint(SpringLayout.WEST, cardArea, 10, SpringLayout.WEST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, cardScrollPane, 10, SpringLayout.SOUTH, cardArea);
+		springLayout.putConstraint(SpringLayout.WEST, cardScrollPane, 25, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, cardScrollPane, -10, SpringLayout.NORTH, btnCancel);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, txtCardValue, -30, SpringLayout.VERTICAL_CENTER, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, txtCardValue, 10, SpringLayout.EAST, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, txtCardValue, 50, SpringLayout.WEST, txtCardValue);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, lblCard, -10, SpringLayout.NORTH, txtCardValue);
+		springLayout.putConstraint(SpringLayout.WEST, lblCard, 10, SpringLayout.EAST, cardScrollPane);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, btnRemove, 30, SpringLayout.VERTICAL_CENTER, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, btnRemove, 10, SpringLayout.EAST, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, btnRemove, 0, SpringLayout.EAST, btnRemoveAll);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 10, SpringLayout.SOUTH, btnRemove);
 		springLayout.putConstraint(SpringLayout.WEST, btnRemoveAll, 10, SpringLayout.EAST, cardScrollPane);
-
-		springLayout.putConstraint(SpringLayout.WEST, btnRemove, 0, SpringLayout.WEST, btnRemoveAll);
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemove, 5, SpringLayout.SOUTH, btnRemoveAll);
+		springLayout.putConstraint(SpringLayout.EAST, btnRemoveAll, 0, SpringLayout.EAST, btnAddCard);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 0, SpringLayout.NORTH, txtCardValue);
+		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 10, SpringLayout.EAST, txtCardValue);
+		
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, lblCard);
+		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, lblCard);
 
 		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 10, SpringLayout.SOUTH, cardScrollPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, this);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnCreate, 10, SpringLayout.EAST, btnCancel);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnCreate, 00, SpringLayout.VERTICAL_CENTER, btnCancel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnCreate, 0, SpringLayout.VERTICAL_CENTER, btnCancel);
+		
 		springLayout.putConstraint(SpringLayout.WEST, lblNoCardsError, 10, SpringLayout.EAST, btnCreate);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblNoCardsError, 0, SpringLayout.VERTICAL_CENTER, btnCreate);
 		
@@ -247,6 +255,7 @@ public class CreateDeck extends JPanel {
 		add(btnCreate);
 		add(btnCancel);
 		add(lblNoCardsError);
+		add(cardArea);
 		
 		refresh();
 	}
@@ -259,7 +268,6 @@ public class CreateDeck extends JPanel {
 		cardTable.setModel(cardTableModel);
 		cardTable.setToolTipText("List of cards already added to the deck");
 		cardTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		cardTable.setDragEnabled(true);
 		cardTable.setDropMode(DropMode.ON);
 		cardTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		cardTable.setPreferredScrollableViewportSize(new Dimension(75, 100));
@@ -282,7 +290,7 @@ public class CreateDeck extends JPanel {
 	/**
 	 * Adds the input value to the list of cards
 	 */
-	private void addCard(int cardValue) {
+	public void addCard(int cardValue) {
 		listOfCards.add(cardValue);
 		Collections.sort(listOfCards);
 	}
@@ -290,22 +298,30 @@ public class CreateDeck extends JPanel {
 	/**
 	 * Removes the input value from the list of cards
 	 */
-	private void removeCard(int cardValue) {
+	public void removeCard(int cardValue) {
 		listOfCards.remove(new Integer(cardValue));
 	}
 
 	/**
 	 * Removes all cards from the list
 	 */
-	private void removeAllCards() {
+	public void removeAllCards() {
 		listOfCards = new ArrayList<Integer>();
+	}
+	
+	/**
+	 * Getter for the list of cards to be added to the deck
+	 * @return	The list of cards that have been added
+	 */
+	public ArrayList<Integer> getListOfCards() {
+		return listOfCards;
 	}
 
 	/**
 	 *  Enables the valid buttons and disables all other buttons
 	 */
 	private void validateButtons() {
-		// Only display remove all button and create buton if there are cards in the deck
+		// Only display remove all button and create button if there are cards in the deck
 		btnCreate.setEnabled(true);
 		if (listOfCards.size() > 0) {
 			btnRemoveAll.setEnabled(true);
@@ -389,10 +405,18 @@ public class CreateDeck extends JPanel {
 		modeBtnPanel.add(rbtnSingle);
 		modeBtnPanel.add(rbtnMulti);
 
-		final JPanel modePanel = new JPanel(new BorderLayout());
+		final JPanel modePanel = new JPanel();
 		final JLabel lblMode = new JLabel("Card Selection Mode: ");
-		modePanel.add(lblMode, BorderLayout.LINE_START);
-		modePanel.add(modeBtnPanel, BorderLayout.CENTER);
+		modePanel.setLayout(modePanelLayout);
+		
+		modePanelLayout.putConstraint(SpringLayout.NORTH, lblMode, 0, SpringLayout.NORTH, modePanel);
+		modePanelLayout.putConstraint(SpringLayout.WEST, lblMode, 0, SpringLayout.WEST, modePanel);
+		
+		modePanelLayout.putConstraint(SpringLayout.NORTH, modeBtnPanel, 6, SpringLayout.SOUTH, lblMode);
+		modePanelLayout.putConstraint(SpringLayout.WEST, modeBtnPanel, 10, SpringLayout.WEST, modePanel);
+		
+		modePanel.add(lblMode);
+		modePanel.add(modeBtnPanel);
 
 		return modePanel;
 	}
@@ -411,7 +435,7 @@ public class CreateDeck extends JPanel {
 				}
 				else {
 					btnAddCard.setEnabled(false);
-					lblAddCardError.setVisible(true);					
+					lblAddCardError.setVisible(true);	
 				}
 				// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {

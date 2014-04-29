@@ -31,6 +31,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.PreferencesPanel;
@@ -53,6 +54,8 @@ public class MainView extends JTabbedPane {
 	private final JPopupMenu popup = new JPopupMenu();
 	private final JMenuItem closeAll = new JMenuItem("Close All Tabs");
 	private final JMenuItem closeOthers = new JMenuItem("Close Others");
+	
+	private Component currentTab = null; 
 
 	OverviewDetailPanel detailPanel;
 
@@ -133,7 +136,19 @@ public class MainView extends JTabbedPane {
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				if(e.isPopupTrigger()) popup.show(e.getComponent(), e.getX(), e.getY());
+				if(e.isPopupTrigger()) {
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+				
+				/**
+				 * Disable the statistics button once a tab other than Current Sessions is selected.
+				 * Statistics button will never be enabled except for when a closed/ended session is
+				 * selected in the Current Sessions tab. 
+				 */
+				setCurrentTab(); 
+				if (!currentTab.equals(overviewPanel)) {
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton(); 	
+				}
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -175,6 +190,7 @@ public class MainView extends JTabbedPane {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
+		TimingManager.getInstance().start();
 		// Are we dragging?
 		if(dragging && currentMouseLocation != null && tabImage != null) {
 			// Draw the dragged tab
@@ -253,5 +269,9 @@ public class MainView extends JTabbedPane {
 	 */
 	public JMenuItem getCloseOthers() {
 		return closeOthers;
+	}
+	
+	private void setCurrentTab() {
+		currentTab = this.getSelectedComponent();
 	}
 }

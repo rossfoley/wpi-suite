@@ -68,13 +68,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
-		/*submitFinalEstimatesBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				StatisticsReqTable reqTable = 
-				//reqTable.updateFinalEstimates(currentSession);
-			}
-		});*/
-		
+
+
 		
 		reqOverviewTablePanel.add(tablePanel);
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
@@ -84,8 +79,6 @@ public class StatisticsDetailPanel extends JSplitPane {
 		this.setRightComponent(reqOverviewTablePanel);
 		this.setResizeWeight(0.5); 
 
-		ViewEventController.getInstance().setStatisticsInfoPanel(infoPanel);
-		ViewEventController.getInstance().setStatisticsUserTable(userTable);
 		
 		// Makes the split pane divide 50/50 for each portion
 		final Dimension d = new Dimension(100, 100);
