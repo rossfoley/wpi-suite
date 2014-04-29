@@ -157,8 +157,8 @@ public class StatisticsReqTable extends JTable {
 			// add error message for nonnegative integers only
 		}
 		if (isInteger) {
-			if (numberEst >= 0){
-				int reqID = tableRows.get(editingRow);
+			if (numberEst >= 0) {
+				int reqID = tableRows.get(editingRow + 1);
 				//currentSession.addFinalEstimate(reqID, numberEst);
 			}
 		}
