@@ -8,7 +8,7 @@
  * Contributors: The Team8s
  ******************************************************************************/
 
-package view.updateestimates;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +46,6 @@ public class SelectRequirementToUpdateTableTest {
 		DefaultTableModel testDefaultTableModel = new DefaultTableModel();
 		assertEquals(Boolean.class, testTable.getColumnClass(0));
 		assertEquals(testDefaultTableModel.getColumnClass(2), testTable.getColumnClass(2));
-		assertNotEquals(testDefaultTableModel.getColumnClass(0), testTable.getColumnClass(0));
 	}
 	
 	@Test
