@@ -80,7 +80,7 @@ public class CreateDeck extends JPanel {
 		setPreferredSize(new Dimension(390, 350));
 
 		final JLabel lblDeckName = new JLabel("Deck Name:* ");
-		//lblDeckName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
 		final Deck tempDeck = new Deck();
 		txtDeckName.setText(tempDeck.getDeckName());
 		txtDeckName.getDocument().addDocumentListener(new DocumentListener() {
@@ -102,7 +102,6 @@ public class CreateDeck extends JPanel {
 
 		final JLabel lblCard = new JLabel("New Card Value: ");
 		final JLabel cardArea = new JLabel("Add/Remove Cards:");
-		//lblCard.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		// Radio button group for multiple vs. single selection mode
 		JPanel modeSelectionPanel = createModeSelectionPanel();
