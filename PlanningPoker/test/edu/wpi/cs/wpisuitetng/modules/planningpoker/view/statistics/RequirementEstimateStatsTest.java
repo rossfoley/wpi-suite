@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
-public class TestRequirementEstimateStats {
+public class RequirementEstimateStatsTest {
 	ArrayList<Estimate> testEstimates = new ArrayList<Estimate>();
 	
 	RequirementEstimateStats testStats = new RequirementEstimateStats(0, testEstimates);
@@ -27,6 +27,8 @@ public class TestRequirementEstimateStats {
 	public void testCalculateMean() {
 		assertEquals(0, testStats.getMean(), 0.1);
 		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(1, testStats.getMean(), 0.1);
 		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
 		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
 		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
@@ -40,6 +42,8 @@ public class TestRequirementEstimateStats {
 	public void testCalculateMedian() {
 		assertEquals(0, testStats.getMedian(), 0.1);
 		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(1, testStats.getMedian(), 0.1);
 		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
 		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
 		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
@@ -53,8 +57,10 @@ public class TestRequirementEstimateStats {
 	
 	@Test
 	public void testCalculateStdDev() {
-		assertEquals(0, testStats.getStdDev(), 0.1); 
+		assertEquals(0, testStats.getStdDev(), 0.1);
 		testStats.add(new Estimate(1, 1, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(0, testStats.getStdDev(), 0.1); 
 		testStats.add(new Estimate(2, 2, UUID.randomUUID()));
 		testStats.add(new Estimate(3, 3, UUID.randomUUID()));
 		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
