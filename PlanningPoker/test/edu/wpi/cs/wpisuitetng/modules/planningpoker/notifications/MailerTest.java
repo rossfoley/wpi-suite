@@ -10,7 +10,7 @@
  *    Kevin J. Barry
  *******************************************************************************/
 
-package notifications;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications;
 
 import static org.junit.Assert.*;
 
