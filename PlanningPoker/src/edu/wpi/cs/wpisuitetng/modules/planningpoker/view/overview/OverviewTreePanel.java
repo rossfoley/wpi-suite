@@ -110,7 +110,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         tree.addMouseListener(this); //add a listener to check for clicking
         tree.addTreeSelectionListener(this);
         
-        tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON);
         
         this.setViewportView(tree); //make panel display the tree
