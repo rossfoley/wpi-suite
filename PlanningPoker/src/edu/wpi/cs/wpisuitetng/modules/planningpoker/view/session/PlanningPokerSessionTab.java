@@ -330,6 +330,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		
 		firstPanelLayout.putConstraint(SpringLayout.WEST, btnCreateDeck, 0, SpringLayout.WEST, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, btnCreateDeck, 10, SpringLayout.SOUTH, comboDeck);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, btnCreateDeck, 0, SpringLayout.EAST, comboDeck);
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
