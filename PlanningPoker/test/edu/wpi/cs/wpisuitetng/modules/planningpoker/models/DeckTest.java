@@ -49,8 +49,9 @@ public class DeckTest {
 	
 	@Test
 	public void testgetAllowMultipleSelections() {
+		boolean t = true;
 		
-		assertEquals(mult, testDeck.getAllowMultipleSelections());
+		assertEquals(t, testDeck.getAllowMultipleSelections());
 	}
 	
 	@Test
@@ -96,5 +97,32 @@ public class DeckTest {
 		assertEquals("Hurf", testDeck.getDeckName());
 		assertEquals(mult2, testDeck.getAllowMultipleSelections());
 		assertEquals(testList2, testDeck.getNumbersInDeck());
+	}
+	
+	@Test
+	public void testconstructor() {
+		Deck construct = new Deck();
+		boolean testFalse = false;
+		
+		assertEquals("Deck 0", construct.getDeckName());
+		assertEquals(testFalse, construct.getAllowMultipleSelections());
+	}
+	
+	@Test
+	public void testchangeNumbersToString() {
+		List<Integer> testList2 = new ArrayList<Integer>();
+		testList2.add(1);
+		testList2.add(2);
+		testList2.add(3);
+		boolean trueboolean = true;
+		Deck testDeckChange = new Deck(testList2, trueboolean);
+		String numString = new String("1, 2, 3");
+
+		assertEquals(numString, testDeckChange.changeNumbersToString());
+		
+	}
+	
+	@Test public void testtoJSON() {
+		
 	}
 }
