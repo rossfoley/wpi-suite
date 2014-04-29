@@ -20,7 +20,6 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 /**
  * A vote that contains the vote, requirementID, ownerID, ownername and it's own ID.
  * @author Kevin
- * 
  */
 public class Estimate implements Comparable<Estimate> {
 	private int requirementID;
@@ -30,11 +29,13 @@ public class Estimate implements Comparable<Estimate> {
 	private UUID sessionID;
 	
 	public Estimate() {
-		vote = -1;	// Initialize as an invalid vote
+		// Initialize as an invalid vote
+		vote = -1;	
 	}
 	
 	/**
-	 * detailed constructor (for testing purposes)
+	 * Detailed constructor (for testing purposes)
+	 * 
 	 * @param reqID
 	 * @param newVote
 	 * @param sessionUUID
@@ -46,7 +47,8 @@ public class Estimate implements Comparable<Estimate> {
 	}
 	
 	/**
-	 * compares this estimate to the given estimate by votes
+	 * Compares this estimate to the given estimate by votes
+	 * 
 	 * @return -1 if this estimate has a smaller vote than the given, 1 if larger, and 0 if same 
 	 */
 	public int compareTo(Estimate e) {
@@ -61,8 +63,9 @@ public class Estimate implements Comparable<Estimate> {
 		}
 	}
 	
-	//---------------Gets
+	//---------------Getters
 	/**
+	 * Gets the requirement's IDs
 	 * 
 	 * @return the requirement ID to be estimated
 	 */
@@ -71,6 +74,7 @@ public class Estimate implements Comparable<Estimate> {
 	}
 	
 	/**
+	 * Gets the User's ID
 	 * 
 	 * @return returns the ID of the estimate
 	 */
@@ -79,6 +83,7 @@ public class Estimate implements Comparable<Estimate> {
 	}
 	
 	/**
+	 * Gets the vote
 	 * 
 	 * @return the value to vote for
 	 */
@@ -87,52 +92,80 @@ public class Estimate implements Comparable<Estimate> {
 	}
 	
 	/**
+	 * Gets the owner's name
 	 * 
 	 * @return the name of the creator
 	 */
 	public String getOwnerName(){
 		return ownerName;
 	}
-	//---------------Sets
+	
 	/**
-	 * sets the requirementID
+	 * Gets the session's ID
+	 * 
+	 * @return sessionID
+	 */
+	public UUID getSessionID() {
+		return sessionID;
+	}
+	
+	//---------------Setters
+	/**
+	 * Sets the requirementID
+	 * 
 	 * @param requirementID
 	 */
 	public void setRequirementID(int requirementID){
 		this.requirementID = requirementID;
 	}
 	/**
-	 * sets the estimate's ID
+	 * Sets the estimate's ID
+	 * 
 	 * @param ID
 	 */
 	public void setID(UUID ID){
 		uuid = ID;
 	}
 	/**
-	 * sets the vote
+	 * Sets the vote
+	 * 
 	 * @param vote
 	 */
 	public void setVote(int vote){
 		this.vote = vote;
 	}
 	/**
-	 * sets the name of the owner
+	 * Sets the name of the owner
+	 * 
 	 * @param ownerName
 	 */
 	public void setOwnerName(String ownerName){
 		this.ownerName = ownerName;
 	}
 
-
+	/**
+	 * Sets the session's ID
+	 * 
+	 * @param id
+	 */
+	public void setSessionID(UUID id) {
+		sessionID = id;
+	}
 	
+	/**
+	 * Converts a String to a Json
+	 * 
+	 * @return Json
+	 */
 	public String toJSON() {
 		return new Gson().toJson(this, Estimate.class);
 	}
 	
 	/**
+	 * Converts out of Json
 	 * 
-	 * @param json json string to convert from
-	 * @return estimate parsed from the json
+	 * @param json Json string to convert from
+	 * @return estimate parsed from the Json
 	 */
 	public static Estimate fromJson(String json) {
 		final Gson parser = new Gson();
@@ -140,22 +173,13 @@ public class Estimate implements Comparable<Estimate> {
 	}
 
 	/**
-	 * returns an array of estimates from a json string
-	 * @param json string containing a JSON-encoded array of Estimate
+	 * Returns an array of estimates from a Json string
 	 * 
+	 * @param json string containing a Json-encoded array of Estimate
 	 * @return an array of Estimates deserialized from the given JSON string
 	 */
 	public static Estimate[] fromJsonArray(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, Estimate[].class);
 	}
-
-	public UUID getSessionID() {
-		return sessionID;
-	}
-	public void setSessionID(UUID id) {
-		sessionID = id;
-	}
-	
-	
 }
