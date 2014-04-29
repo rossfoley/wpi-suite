@@ -64,8 +64,6 @@ public class OverviewReqTable extends JTable {
 		this.setDragEnabled(true);
 		this.setDropMode(DropMode.ON);
 
-		ViewEventController.getInstance().setOverviewReqTable(this);
-
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);

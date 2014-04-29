@@ -512,10 +512,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
-
-		
-		final GetEmailController getEmailController = GetEmailController.getInstance();
-		getEmailController.retrieveEmails();
 		
 		final JButton btnSave = new JButton("Save");
 		final JButton btnBack = new JButton("Back");
