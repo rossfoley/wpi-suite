@@ -67,10 +67,17 @@ public class TimingManager {
 	 * @param p object that needs polling
 	 */
 	public void addPollable(IPollable p){
-		System.out.println("In addPollables");
-		if (!PollList.contains(p)){
-			PollList.add(p);
-		}
+		boolean didntRun;
+		do{
+			try {
+				if (!PollList.contains(p)){
+					PollList.add(p);
+				}
+					didntRun = false;
+				} catch (java.util.ConcurrentModificationException e){
+					didntRun = true;
+				}
+			}while(didntRun);
 	}
 	
 	/**
@@ -78,7 +85,15 @@ public class TimingManager {
 	 * @param p object that will be removed from the list
 	 */
 	public void removePollable(IPollable p){
-		PollList.remove(p);
+		boolean didntRun;
+		do{
+			try {
+				PollList.remove(p);
+				didntRun = false;
+			} catch (java.util.ConcurrentModificationException e){
+				didntRun = true;
+			}
+		}while(didntRun);
 	}
 	
 	/**
@@ -86,13 +101,21 @@ public class TimingManager {
 	 * Cycles through the list of objects that need polling and calls pollFunction()
 	 */
 	private void timedFunc() {
-		for (IPollable p: PollList) {
-			if (p != null) {
-				p.pollFunction();
-			} else {
-				removePollable(p);
+		boolean didntRun;
+		do{
+			try {
+				for (IPollable p: PollList) {
+					if (p != null) {
+						p.pollFunction();
+					} else {
+						removePollable(p);
+					}
+				}
+				didntRun = false;
+			} catch (java.util.ConcurrentModificationException e){
+				didntRun = true;
 			}
-		}
+		}while(didntRun);
 	}
 	
 	/**
