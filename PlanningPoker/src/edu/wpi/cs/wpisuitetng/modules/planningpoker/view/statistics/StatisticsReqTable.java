@@ -57,12 +57,16 @@ public class StatisticsReqTable extends JTable {
 	private int rowNumber = 0;
 	private StatisticsDetailPanel detailPanel;
 	private StatisticsInfoPanel infoPanel;
+	private PlanningPokerSession currentSession; 
+	
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill StatisticsReqTable
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
-	public StatisticsReqTable(Object[][] data, String[] columnNames) {
+	public StatisticsReqTable(Object[][] data, String[] columnNames, PlanningPokerSession aSession) {
+		currentSession = aSession; 
+		
 		tableModel = new DefaultTableModel(data, columnNames);
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
@@ -159,16 +163,16 @@ public class StatisticsReqTable extends JTable {
 		try {
 			numberEst = Integer.parseInt(((TableCellEditor) e.getSource()).getCellEditorValue().toString());
 			System.out.println("Edited value = " + numberEst);
-			super.editingStopped(e);
 		}
 		catch (NumberFormatException ne) {
 			isInteger = false;
 			// add error message for nonnegative integers only
 		}
+		super.editingStopped(e);
 		if (isInteger) {
 			if (numberEst >= 0) {
 				int reqID = tableRows.get(editingRow + 1);
-				//currentSession.addFinalEstimate(reqID, numberEst);
+				currentSession.addFinalEstimate(reqID, numberEst);
 			}
 		}
 	}
@@ -238,6 +242,10 @@ public class StatisticsReqTable extends JTable {
 	}
 	public void setInfoPanel(StatisticsInfoPanel panel) {
 		infoPanel = panel;
+	}
+	
+	public void setSession(PlanningPokerSession aSession) {
+		currentSession = aSession; 
 	}
 	
 	/**

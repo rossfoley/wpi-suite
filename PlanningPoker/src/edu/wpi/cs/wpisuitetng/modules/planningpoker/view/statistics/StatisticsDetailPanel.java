@@ -68,13 +68,6 @@ public class StatisticsDetailPanel extends JSplitPane {
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
-		/*submitFinalEstimatesBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				StatisticsReqTable reqTable = 
-				//reqTable.updateFinalEstimates(currentSession);
-			}
-		});*/
-		
 		
 		reqOverviewTablePanel.add(tablePanel);
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
