@@ -24,7 +24,7 @@ public class EmailAddressTest {
 	 * Can an EmailAddress be created and not just create a null object
 	 */
 	@Test
-	public void createEmailAddressTest() {
+	public void testCreateEmailAddress() {
 		assertNotNull(new EmailAddress());
 	}
 	/**
@@ -32,7 +32,7 @@ public class EmailAddressTest {
 	 * parse that json, yet still have the original object's information
 	 */
 	@Test
-	public void toJsonFromJsonTest() {
+	public void testToJsonFromJson() {
 		final EmailAddress emailAdressToTest = new EmailAddress();
 		emailAdressToTest.setEmail("TestEmail@TestEmail.edu");
 		emailAdressToTest.setOwnerName("Test Owner");
@@ -47,7 +47,7 @@ public class EmailAddressTest {
 	 * the other object's information
 	 */
 	@Test
-	public void copyFromTest() {
+	public void testCopyFrom() {
 		final EmailAddress email1 = new EmailAddress();
 		final EmailAddress email2 = new EmailAddress();
 		email1.setEmail("Someone@Host.url");
