@@ -26,7 +26,7 @@ import org.junit.Test;
 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
+
 
 /**
  * Tests for the Mailer class in notifications

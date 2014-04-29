@@ -32,17 +32,17 @@ public class EmailAddress extends AbstractModel {
 		userName = "";
 	}
 	/** 
-	 * converts deck object to a JSON
+	 * converts email address object to a JSON
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
 	 */
 	public String toJSON() {
 		return new Gson().toJson(this, EmailAddress.class);
 	}
 	
-	/** parses a deck object from a Json string
+	/** parses an email address object from a Json string
 	 * 
-	 * @param json json-encoded deck 
-	 * @return Deck object that was encoded in json string
+	 * @param json json-encoded email address 
+	 * @return EmailAddress object that was encoded in json string
 	 */
 	public static EmailAddress fromJson(String json) {
 		final Gson parser = new Gson();
@@ -54,7 +54,7 @@ public class EmailAddress extends AbstractModel {
 	 * string.
 	 * 
 	 * @param json
-	 *            string containing a JSON-encoded array of Deck
+	 *            string containing a JSON-encoded array of EmailAddress
 	
 	 * @return an array of Email Addresses deserialized from the given JSON string */
 	public static EmailAddress[] fromJsonArray(String json) {
