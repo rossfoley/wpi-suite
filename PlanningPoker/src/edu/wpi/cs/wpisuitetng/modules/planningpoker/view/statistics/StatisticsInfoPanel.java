@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
 import javax.swing.JScrollPane;
@@ -123,19 +124,22 @@ public class StatisticsInfoPanel extends JPanel {
 	//format estimate mean to a string
 	public String formatMean(RequirementEstimateStats stats){
 		String mean = "";
-		mean = Double.toString(stats.getMean());
+		DecimalFormat df = new DecimalFormat("0.0");
+		mean = df.format(stats.getMean());
 		return mean;
 	}
 	//format estimate median to a string
 	public String formatMedian(RequirementEstimateStats stats){
 		String median = "";
-		median = Double.toString(stats.getMedian());
+		DecimalFormat df = new DecimalFormat("0.0");
+		median = df.format(stats.getMedian());
 		return median;
 	}
 	//format estimate standard deviation to a string
 	public String formatStdDev(RequirementEstimateStats stats) {
 		String stdDev = "";
-		stdDev = Double.toString(stats.getStdDev());
+		DecimalFormat df = new DecimalFormat("0.0");
+		stdDev = df.format(stats.getStdDev());
 		return stdDev;
 	}
 	//set selected requirement ID

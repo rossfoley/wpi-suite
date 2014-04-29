@@ -108,7 +108,7 @@ public class RequirementEstimateStats {
 		}
 		else {
 			double var = 0;
-			double theStdDev; 
+			double theStdDev;
 			for (Estimate e : estimates) {
 				var += Math.pow(e.getVote() - mean, 2);
 			}
@@ -118,8 +118,8 @@ public class RequirementEstimateStats {
 			}
 			else {
 				theStdDev = Math.sqrt(var/estimates.size());
-				stdDev = theStdDev; 
-				return theStdDev; 
+				stdDev = theStdDev;
+				return theStdDev;
 			}
 		}
 	}
@@ -190,5 +190,10 @@ public class RequirementEstimateStats {
 	public void add(Estimate anEstimate) {
 		estimates.add(anEstimate);
 		isUpToDate = false; 
+	}
+	
+	public void addAndRefresh(Estimate anEstimate) {
+		add(anEstimate); 
+		refreshAll(); 
 	}
 }
