@@ -512,7 +512,7 @@ public class PlanningPokerSession extends AbstractModel {
 	 * @param estimate final estimate for the requiremend with ID
 	 */
 	public void addFinalEstimate(int ID, int estimate) {
-		if (finalEstimatesMap.containsKey(ID)) {
+		if (finalEstimatesMap.containsKey(ID) && finalEstimatesMap.get(ID) != estimate) {
 			estimateWasModified(ID); 
 		}
 		finalEstimatesMap.put(ID, estimate);
