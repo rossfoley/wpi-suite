@@ -138,12 +138,8 @@ public class StatisticsInfoPanel extends JPanel {
 	//format estimate standard deviation to a string
 	public String formatStdDev(RequirementEstimateStats stats) {
 		String stdDev = "";
-<<<<<<< HEAD
 		DecimalFormat df = new DecimalFormat("0.0");
 		stdDev = df.format(stats.getStdDev());
-=======
-		stdDev = Double.toString(stats.getStdDev());
->>>>>>> statistics page now has a standard deviation field. Refractored requirementEstimateStats and updated comments
 		return stdDev;
 	}
 	//set selected requirement ID
