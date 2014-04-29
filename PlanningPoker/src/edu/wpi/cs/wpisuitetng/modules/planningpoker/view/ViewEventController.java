@@ -19,7 +19,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
@@ -36,7 +35,6 @@ public class ViewEventController {
 	private ToolbarView toolbar = null;
 	private OverviewTreePanel overviewTreePanel = null;
 	private OverviewDetailPanel overviewDetailPanel = null;
-	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
 
@@ -92,7 +90,7 @@ public class ViewEventController {
 	 * Sets the toolbarview to the given toolbar
 	 * @param tb the toolbar to be set as active.
 	 */
-	public void setToolBar(ToolbarView tb) {
+	public void setToolbar(ToolbarView tb) {
 		toolbar = tb;
 		toolbar.repaint();
 	}
@@ -315,6 +313,15 @@ public class ViewEventController {
 		} else {
 			main.setSelectedComponent(openSessionTabHashTable.get(viewStats));
 		}
+	}
+	
+
+	/**
+	 * Getter for the hash table of tabs open for sessions
+	 * @return	The hash table mapping sessions to the display components
+	 */
+	protected Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
+		return openSessionTabHashTable;
 	}
 	
 }
