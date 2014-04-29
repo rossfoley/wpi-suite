@@ -74,7 +74,7 @@ public class Estimate implements Comparable<Estimate> {
 	}
 	
 	/**
-	 * Gets the User's ID
+	 * Gets the Estimate's ID
 	 * 
 	 * @return returns the ID of the estimate
 	 */
@@ -118,6 +118,7 @@ public class Estimate implements Comparable<Estimate> {
 	public void setRequirementID(int requirementID){
 		this.requirementID = requirementID;
 	}
+	
 	/**
 	 * Sets the estimate's ID
 	 * 
@@ -126,6 +127,7 @@ public class Estimate implements Comparable<Estimate> {
 	public void setID(UUID ID){
 		uuid = ID;
 	}
+	
 	/**
 	 * Sets the vote
 	 * 
@@ -134,6 +136,7 @@ public class Estimate implements Comparable<Estimate> {
 	public void setVote(int vote){
 		this.vote = vote;
 	}
+	
 	/**
 	 * Sets the name of the owner
 	 * 
