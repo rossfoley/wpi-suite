@@ -8,7 +8,7 @@
  * Contributors: The Team8s
  ******************************************************************************/
 
-package view.updateestimates;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates;
 
 import java.util.ArrayList;
 import java.util.HashMap;
