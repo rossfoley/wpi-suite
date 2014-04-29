@@ -25,9 +25,11 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -71,7 +73,6 @@ public class StatisticsReqTable extends JTable {
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
-
 		initialized = false;
 		
 		/* Create double-click event listener */
@@ -138,6 +139,29 @@ public class StatisticsReqTable extends JTable {
 	@Override 
 	public boolean isCellEditable(int row, int col) {
 		return col == 2;
+	}
+	
+	@Override 
+	public void editingStopped(ChangeEvent e) {
+		System.out.println("Editing Stopped");
+		String estimate = (String) tableModel.getValueAt(editingRow, editingColumn);
+		boolean isInteger = true;
+		int numberEst = -1;
+		try {
+			numberEst = Integer.parseInt(((TableCellEditor) e.getSource()).getCellEditorValue().toString());
+			System.out.println("Edited value = " + numberEst);
+			super.editingStopped(e);
+		}
+		catch (NumberFormatException ne) {
+			isInteger = false;
+			// add error message for nonnegative integers only
+		}
+		if (isInteger) {
+			if (numberEst >= 0){
+				int reqID = tableRows.get(editingRow);
+				//currentSession.addFinalEstimate(reqID, numberEst);
+			}
+		}
 	}
 	
 	/**
