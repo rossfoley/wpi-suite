@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -108,6 +109,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 			"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
 			"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" };
 	private boolean editedDescription;
+	private Set<Integer> originalReqs;
 
 
 	/**
@@ -115,6 +117,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	public PlanningPokerSessionTab() {
 		pokerSession = new PlanningPokerSession();
+		originalReqs = (Set<Integer>) new LinkedList<Integer>();
 		requirementPanel = new RequirementSelectionView(null);
 		viewMode = (ViewMode.CREATING);
 		dateHasBeenSet = false;
@@ -129,6 +132,8 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		pokerSession = existingSession;
+		//System.out.println(pokerSession.getRequirementIDs());
+		originalReqs = pokerSession.getRequirementIDs();
 		requirementPanel = new RequirementSelectionView(pokerSession);
 		viewMode = (ViewMode.EDITING);
 		// Set the end date checkbox and update fields.
@@ -560,18 +565,19 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		// Save button event handler
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final List<Requirement> requirements =  requirementPanel.getSelected();
+				
 				List<Integer> oldRequirements = new LinkedList<Integer>();
 				List<Integer> newRequirements = new LinkedList<Integer>();
-				for (Integer i : pokerSession.getRequirementIDs()) {
+				for (Integer i : originalReqs) {
 					oldRequirements.add(i);
 				}
+				final List<Requirement> requirements =  requirementPanel.getSelected();
 				for (Requirement req : requirements) {
-					oldRequirements.add(req.getId());
+					newRequirements.add(req.getId());
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				if (changes != 0) return;
+				if (changes == 1) return;
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
@@ -590,15 +596,15 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				final List<Requirement> requirements =  requirementPanel.getSelected();
 				List<Integer> oldRequirements = new LinkedList<Integer>();
 				List<Integer> newRequirements = new LinkedList<Integer>();
-				for (Integer i : pokerSession.getRequirementIDs()) {
+				for (Integer i : originalReqs) {
 					oldRequirements.add(i);
 				}
 				for (Requirement req : requirements) {
-					oldRequirements.add(req.getId());
+					newRequirements.add(req.getId());
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				if (changes != 0) return;
+				if (changes == 1) return;
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
@@ -1057,8 +1063,8 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		if (changes == null) return -1;
 		String message = "If you continue, the following requirements that were previously in this session will be removed.\n" +
 		"If you did not discard them, they have been or are being estimated in other sessions.\n\n";
-		for (int i = 0; i < changes.size(); i++) {
-			message = message + "Requirement " + Integer.toString(changes.get(i)) + "\n";
+		for (Integer i : changes) {
+			message = message + "Requirement " + Integer.toString(i) + "\n";
 		}
 		final int result = JOptionPane.showConfirmDialog(this, message , "Continue Removing Requirements?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		return result;
@@ -1070,13 +1076,12 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 * @param newReqs The requirements after the session was modified.
 	 * @return the list of requirement IDs of removed requirements, or null
 	 */
-	LinkedList<Integer> checkIfReqsChangedByConflict(List<Integer> oldReqs, List<Integer> newReqs) {
+	public LinkedList<Integer> checkIfReqsChangedByConflict(List<Integer> oldReqs, List<Integer> newReqs) {
 		if (oldReqs == null) return null;
 		if (oldReqs.size() == 0) return null;
-		if (newReqs.size() == 0) {
+		if (newReqs.size() == 0) {//fault point
 			return (LinkedList<Integer>) oldReqs;
 		}
-		
 		LinkedList<Integer> removedReqs = new LinkedList<Integer>();
 		for (int i = 0; i < oldReqs.size(); i++) {
 			if (!newReqs.contains(oldReqs.get(i)) && !removedReqs.contains(oldReqs.get(i))) {
@@ -1084,9 +1089,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 			}
 		}
 		
-		removedReqs = (removedReqs.size() == 0) ? null : removedReqs;
-		
-		return removedReqs;
+		return (removedReqs.size() == 0) ? null : removedReqs;
 
 	}
 
