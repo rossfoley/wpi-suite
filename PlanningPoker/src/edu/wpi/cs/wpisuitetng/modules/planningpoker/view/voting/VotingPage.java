@@ -302,6 +302,7 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
+					buildReqPanel(null);
 					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
 					reqsView.addSelectionListener(new SelectionListener() {
 						@Override
