@@ -25,16 +25,16 @@ import java.util.TimerTask;
  */
 public class TimingManager {
 
-	private static final TimingManager instance = new TimingManager();
-	private final List<IPollable> PollList;
-	private final long T = 5000;
-	private final Thread thread;
-	private boolean started = false;
+	protected static TimingManager instance;
+	protected final List<IPollable> PollList;
+	protected long T = 5000;
+	protected final Thread thread;
+	protected boolean started = false;
 	
 	/**
 	 * Constructor for the singleton class TimingManager
 	 */
-	private TimingManager() {
+	protected TimingManager() {
 		PollList = new ArrayList<IPollable>();
 		
 		thread = new Thread(new Runnable() {
@@ -56,6 +56,9 @@ public class TimingManager {
 	 * @return the instance of the TimingManager
 	 */
 	public static TimingManager getInstance() {
+		if (instance == null){
+			instance = new TimingManager();
+		}
 		return instance;
 	}
 	
