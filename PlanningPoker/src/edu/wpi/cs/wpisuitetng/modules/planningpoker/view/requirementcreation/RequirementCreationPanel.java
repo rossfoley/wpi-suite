@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
- * Contributors: Team Rolling Thunder
+ * Contributors: Team Rolling Thunder, The Team8s
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation;
 
@@ -25,7 +25,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 
 /**
  * @version $Revision: 1.0 $
- * @author Rolling Thunder
  */
 public class RequirementCreationPanel extends JPanel implements RequirementButtonListener
 {

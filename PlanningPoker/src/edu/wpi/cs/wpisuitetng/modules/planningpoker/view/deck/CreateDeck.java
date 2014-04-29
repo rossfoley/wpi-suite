@@ -107,7 +107,7 @@ public class CreateDeck extends JPanel {
 		// Radio button group for multiple vs. single selection mode
 		final JPanel modeSelectionPanel = createModeSelectionPanel();
 
-		btnAddCard = new JButton("Add Card:");
+		btnAddCard = new JButton("Add Card");
 		btnAddCard.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -259,7 +259,6 @@ public class CreateDeck extends JPanel {
 		cardTable.setModel(cardTableModel);
 		cardTable.setToolTipText("List of cards already added to the deck");
 		cardTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		cardTable.setDragEnabled(true);
 		cardTable.setDropMode(DropMode.ON);
 		cardTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		cardTable.setPreferredScrollableViewportSize(new Dimension(75, 100));
@@ -282,7 +281,7 @@ public class CreateDeck extends JPanel {
 	/**
 	 * Adds the input value to the list of cards
 	 */
-	private void addCard(int cardValue) {
+	public void addCard(int cardValue) {
 		listOfCards.add(cardValue);
 		Collections.sort(listOfCards);
 	}
@@ -290,15 +289,23 @@ public class CreateDeck extends JPanel {
 	/**
 	 * Removes the input value from the list of cards
 	 */
-	private void removeCard(int cardValue) {
+	public void removeCard(int cardValue) {
 		listOfCards.remove(new Integer(cardValue));
 	}
 
 	/**
 	 * Removes all cards from the list
 	 */
-	private void removeAllCards() {
+	public void removeAllCards() {
 		listOfCards = new ArrayList<Integer>();
+	}
+	
+	/**
+	 * Getter for the list of cards to be added to the deck
+	 * @return	The list of cards that have been added
+	 */
+	public ArrayList<Integer> getListOfCards() {
+		return listOfCards;
 	}
 
 	/**

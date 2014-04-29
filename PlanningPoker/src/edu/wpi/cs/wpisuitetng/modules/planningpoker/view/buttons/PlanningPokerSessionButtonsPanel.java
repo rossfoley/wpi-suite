@@ -45,6 +45,8 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private final JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
 	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
 	private final JPanel contentPanel = new JPanel();
+	
+	
 
 	public PlanningPokerSessionButtonsPanel(){
 		super("");
@@ -131,7 +133,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				for (int i = 0; i < emailRecipients.size(); i++) {
 					recipients.add(emailRecipients.get(i).getEmail());
 				}
-				
 				
 				final Thread t = new Thread(new Runnable() {
 					

@@ -17,27 +17,19 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-import java.awt.Dimension;
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -67,8 +59,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 	
 	public OverviewDetailInfoPanel() {
 
-		ViewEventController.getInstance().setOverviewDetailInfoPanel(this);
-		
 		lblSessionName = new JLabel("Session Name:");
 		sessionNameDisplay = new JLabel("");
 		lblSessionDescription = new JLabel("Session Description:");
@@ -130,7 +120,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		// Change session creator
 		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
 
-		if ((session.getGameState()==SessionState.CLOSED)||(session.getGameState()==SessionState.VOTINGENDED)){
+		if ((session.getGameState() == SessionState.CLOSED) || (session.getGameState() == SessionState.VOTINGENDED)) {
 			// restrict exportation to moderator
 			if (ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())){
 				sendEstimatesBtn.setVisible(true);
@@ -143,13 +133,13 @@ public class OverviewDetailInfoPanel extends JPanel {
 			sendEstimatesBtn.setVisible(false);
 		}
 		
-		if (session.getFinalEstimates().size()==0){
+		if (session.getFinalEstimates().size() == 0) {
 			sendEstimatesBtn.setEnabled(false);
 			
 			System.out.println("No estimates");
 		}
 		else {
-			if (areAllEstimatesSent(session)){
+			if (areAllEstimatesSent(session)) {
 				sendEstimatesBtn.setEnabled(false);
 			}
 			else {

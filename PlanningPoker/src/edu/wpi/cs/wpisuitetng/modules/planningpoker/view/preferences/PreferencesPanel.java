@@ -107,13 +107,9 @@ public class PreferencesPanel extends JPanel {
 			}
 
 			if (userHasEmail) {
-				//UpdateEmailController updateEmailController = UpdateEmailController.getInstance();
-				//updateEmailController.updateEmailAddress(newEmail);
 				EmailAddressModel.getInstance().updateEmailAddress(newEmail);
 			}
 			else {
-				//AddEmailController addEmailController = AddEmailController.getInstance();
-				//addEmailController.addEmail(newEmail);
 				EmailAddressModel.getInstance().addEmail(newEmail);
 			}
 		}
@@ -121,6 +117,7 @@ public class PreferencesPanel extends JPanel {
 			emailError = true;
 			lblEmailErrorText.setVisible(emailError);
 		}
+		
 
 
 	}

@@ -26,7 +26,7 @@ public class InfoPanel extends JPanel {
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
-		final JLabel lblRequirementname = new JLabel("RequirementName");
+		final JLabel lblRequirementname = new JLabel("Requirement Name");
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementname, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementname, 10, SpringLayout.WEST, this);
 		add(lblRequirementname);

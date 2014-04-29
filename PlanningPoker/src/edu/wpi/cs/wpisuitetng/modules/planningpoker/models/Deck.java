@@ -8,21 +8,13 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-/**
- * @author amandaadkins
- *
- */
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class Deck extends AbstractModel {
 	private String deckName;
@@ -219,7 +211,7 @@ public class Deck extends AbstractModel {
 			return false;
 		}
 		final Deck rhs = (Deck) obj;
-		return (deckName.equals(rhs.deckName) && id == rhs.id);
+		return ((deckName.equals(rhs.deckName)) && (id == rhs.id));
 		
 	}
 

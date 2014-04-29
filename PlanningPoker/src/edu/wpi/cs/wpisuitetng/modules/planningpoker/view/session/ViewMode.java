@@ -7,7 +7,7 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 /**
  * Used to check if a planning poker session is in editing mode or being created

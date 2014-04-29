@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.gui;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
 
 /**
  * This class makes up the panel that is used to create a game
@@ -21,7 +21,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -55,6 +54,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
@@ -65,9 +65,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 
 /**
  * The GUI for creating and updating Planning Poker Sessions
- * @author rossfoley and jdorich
+ * 
  */
-public class PlanningPokerSessionTab extends JPanel {
+public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private final PlanningPokerSession pokerSession;
 	private final PlanningPokerSession unmodifiedSession = new PlanningPokerSession();
 	private final SpringLayout layout = new SpringLayout();
@@ -86,7 +86,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final JTextArea textFieldDescription = new JTextArea();
 	private final JLabel dateErrorMessage = new JLabel("");
 	private final JLabel nameErrorMessage = new JLabel("");
-	private final JLabel descriptionErrorMessage = new JLabel("Please enter a description");
+	private final JLabel descriptionErrorMessage = new JLabel("");
 	private final JLabel numbers = new JLabel("Users input non-negative intergers");
 	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
 	private JDatePicker datePicker;
@@ -107,6 +107,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final String[] availableTimes = new String[] { "12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", 
 			"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
 			"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" };
+	private boolean editedDescription;
 
 
 	/**
@@ -118,6 +119,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		dateHasBeenSet = false;
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
+		editedDescription = false;
 	}
 
 	/**
@@ -136,6 +138,8 @@ public class PlanningPokerSessionTab extends JPanel {
 		
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
+		
+		editedDescription = true;
 
 		this.buildLayouts();
 		this.displayPanel(firstPanel);
@@ -393,8 +397,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		});
 		// Handle changes in description field
 		textFieldDescription.getDocument().addDocumentListener(new DocumentListener() {
+			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
+				editedDescription = true;
 				if (!validateFields()) {
 					btnNext.setEnabled(false);
 					descriptionErrorMessage.setForeground(Color.RED);
@@ -405,6 +411,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				editedDescription = true;
 				if(!validateFields()) {
 					btnNext.setEnabled(false);
 					descriptionErrorMessage.setForeground(Color.RED);
@@ -415,6 +422,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				editedDescription = true;
 				if (!validateFields()) {
 					btnNext.setEnabled(false);
 					descriptionErrorMessage.setForeground(Color.RED);
@@ -504,6 +512,10 @@ public class PlanningPokerSessionTab extends JPanel {
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
 
+		
+		final GetEmailController getEmailController = GetEmailController.getInstance();
+		getEmailController.retrieveEmails();
+		
 		final JButton btnSave = new JButton("Save");
 		final JButton btnBack = new JButton("Back");
 		final JButton btnStart = new JButton("Start");
@@ -578,8 +590,7 @@ public class PlanningPokerSessionTab extends JPanel {
 					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
 					
-					final GetEmailController getEmailController = GetEmailController.getInstance();
-					getEmailController.retrieveEmails();
+					
 					
 					final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 					try {
@@ -593,6 +604,8 @@ public class PlanningPokerSessionTab extends JPanel {
 						recipients.add(emailRecipients.get(i).getEmail());
 					}
 					
+					final Mailer mailer = new Mailer();
+					
 					final Thread t = new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -603,6 +616,8 @@ public class PlanningPokerSessionTab extends JPanel {
 					t.setDaemon(true);
 					t.start();
 				}
+				//final GetEmailController getEmailController = GetEmailController.getInstance();
+				//getEmailController.retrieveEmails();
 			}
 		});
 		
@@ -788,12 +803,13 @@ public class PlanningPokerSessionTab extends JPanel {
 		} else { 
 			// Display all error messages
 			// Handle description error
-			if (errors.contains(CreatePokerSessionErrors.NoDescription)){
-				descriptionErrorMessage.setText("Please enter a description");
-			} else {
-				descriptionErrorMessage.setText("");
+			if (editedDescription){
+				if (errors.contains(CreatePokerSessionErrors.NoDescription)){
+					descriptionErrorMessage.setText("Please enter a description");
+				} else {
+					descriptionErrorMessage.setText("");
+				}
 			}
-
 			// Handle name error
 			if (errors.contains(CreatePokerSessionErrors.NoName)){
 				nameErrorMessage.setText("Please enter a name");
