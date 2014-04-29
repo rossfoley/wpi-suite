@@ -35,6 +35,13 @@ public class RequirementSelectionView extends JSplitPane{
 		setResizeWeight(1.0);
 	}
 	
+	/**
+	 * @return the reqPanel
+	 */
+	public RequirementSelectionPanel getReqPanel() {
+		return reqPanel;
+	}
+	
 	public void openCreationPanel(){
 		setRightComponent(createPanel);
 	}
@@ -69,5 +76,7 @@ public class RequirementSelectionView extends JSplitPane{
 	synchronized public void addRequirementsSelectedListener(RequirementsSelectedListener l){
 		reqPanel.addRequirementsSelectedListener(l);
 	}
+	
+	
 	
 }

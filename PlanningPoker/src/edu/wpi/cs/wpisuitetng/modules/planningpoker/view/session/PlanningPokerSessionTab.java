@@ -577,11 +577,13 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				if (changes == 1) return;
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
-				} else { 
+				} 
+				
+				else { 
+					if (changes == 1) return;
 					submitSession = true;
 					saveFields();
 					pokerSession.setGameState(SessionState.PENDING);
@@ -604,11 +606,14 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				if (changes == 1) return;
+				
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
-				} else { 
+				} 
+				
+				else {
+					if (changes == 1) return;
 					submitSession = true;
 					saveFields();
 					pokerSession.setGameState(SessionState.OPEN);
@@ -668,6 +673,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 			@Override
 			public void setRequirementsSelected(RequirementsSelectedEvent e) {
 				// If requirements are selected, enable the start and save buttons
+				System.out.println("Are requirements selected: " + e.areRequirementsSelected());
 				if (e.areRequirementsSelected()) {
 					norequirements.setVisible(false);
 					btnStart.setEnabled(true);
@@ -681,6 +687,8 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 			}
 
 		});
+		requirementPanel.getReqPanel().fireSelectedEventCaller();
+		//
 
 
 		// Add all of the elements to the second panel

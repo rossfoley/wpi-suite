@@ -79,7 +79,8 @@ public class RequirementSelectionPanel extends JPanel{
 		requirements = new LinkedList<Requirement>();
 		populateRequirements();
 		populateBooleans();
-
+		numRequirementsAdded = getSelected().size();
+		fireRequirementsSelectedEvent();
 
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
@@ -345,7 +346,7 @@ public class RequirementSelectionPanel extends JPanel{
 				}
 			}
 
-			System.out.println("toRemove: " + toRemove);
+			//System.out.println("toRemove: " + toRemove);
 			LinkedList<Requirement> keep = new LinkedList<Requirement>();
 			for (Requirement req : reqsInBacklog){
 				if (!toRemove.contains(req.getId())){
@@ -716,6 +717,10 @@ public class RequirementSelectionPanel extends JPanel{
 		else {
 			listeners.removeElement(l);
 		}
+	}
+	
+	public void fireSelectedEventCaller() {
+		fireRequirementsSelectedEvent();
 	}
 
 	/**
