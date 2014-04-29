@@ -73,22 +73,6 @@ public class ViewEventController {
 	}
 	
 	/**
-	 * Sets the requirement table for the given view.
-	 * @param overviewReqTable	The requirement table to set
-	 */	
-	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
-		this.overviewReqTable = overviewReqTable;
-	}
-	
-	/**
-	 * Gets the requirement table for the given view.
-	 * @return The requirement table
-	 */
-	public OverviewReqTable getOverviewReqTable(){
-		return overviewReqTable;
-	}
-	
-	/**
 	 * Sets the toolbar button panel for the given view.
 	 * @param buttonsPanel	The buttons panel to set
 	 */	
