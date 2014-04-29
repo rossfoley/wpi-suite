@@ -7,7 +7,7 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-package tests;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
 import static org.junit.Assert.*;
 
