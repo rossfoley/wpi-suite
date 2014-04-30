@@ -109,12 +109,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		this.setRightComponent(detailPanel);
 		
 		this.updatePanel();
-<<<<<<< HEAD
 
-=======
-		
-	
->>>>>>> Rearranges statistics panel layout
 		// Makes the split pane divide 50/50 for each portion
 		//final Dimension d = new Dimension(300, 100);
         //detailPanel.setMinimumSize(d);
