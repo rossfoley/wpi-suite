@@ -25,12 +25,12 @@ public class Estimate implements Comparable<Estimate> {
 	private int requirementID;
 	private int vote;
 	private String ownerName;
-	private UUID uuid = UUID.randomUUID();
 	private UUID sessionID;
 	
 	public Estimate() {
 		// Initialize as an invalid vote
-		vote = -1;	
+		vote = -1;
+		sessionID = UUID.randomUUID();
 	}
 	
 	/**
@@ -74,12 +74,12 @@ public class Estimate implements Comparable<Estimate> {
 	}
 	
 	/**
-	 * Gets the User's ID
+	 * Gets the Estimate's ID
 	 * 
 	 * @return returns the ID of the estimate
 	 */
 	public UUID getID(){
-		return uuid;
+		return sessionID;
 	}
 	
 	/**
@@ -118,14 +118,16 @@ public class Estimate implements Comparable<Estimate> {
 	public void setRequirementID(int requirementID){
 		this.requirementID = requirementID;
 	}
+	
 	/**
 	 * Sets the estimate's ID
 	 * 
 	 * @param ID
 	 */
 	public void setID(UUID ID){
-		uuid = ID;
+		sessionID = ID;
 	}
+	
 	/**
 	 * Sets the vote
 	 * 
@@ -134,6 +136,7 @@ public class Estimate implements Comparable<Estimate> {
 	public void setVote(int vote){
 		this.vote = vote;
 	}
+	
 	/**
 	 * Sets the name of the owner
 	 * 
