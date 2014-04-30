@@ -7,7 +7,7 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 /**
  * Used to check if a planning poker session is in editing mode or being created
@@ -15,6 +15,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
  */
 public enum ViewMode 
 {
+	NONE,
+	CREATING,
 	EDITING,
-	CREATING;
+	VOTING,
+	STATISTICS;
 }
