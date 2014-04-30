@@ -10,7 +10,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -60,8 +62,65 @@ public class RequirementSelectionPanelTest {
 	}
 
 	
-	public void test() {
-		fail("Not yet implemented");
+	@Test
+	public void testFilterOutRequirementsInUse()
+		throws Exception {
+		RequirementModel reqs = RequirementModel.getInstance();
+		LinkedList<Requirement> data = new LinkedList<Requirement>();
+		LinkedList<Requirement> data2 = new LinkedList<Requirement>();
+		Requirement req1 = new Requirement();
+		req1.setName("Requirement 1");
+		req1.setId(0);
+		req1.setDescription("Test 1");
+		reqs.addRequirement(req1);
+		data.add(req1);
+		data2.add(req1);
+		req1 = new Requirement();
+		req1.setName("Requirement 2");
+		req1.setId(1);
+		req1.setDescription("Test 2");
+		reqs.addRequirement(req1);
+		data.add(req1);
+		req1 = new Requirement();
+		req1.setName("Requirement 3");
+		req1.setId(2);
+		req1.setDescription("Test 3");
+		reqs.addRequirement(req1);
+		req1 = new Requirement();
+		req1.setName("Requirement 4");
+		req1.setId(3);
+		req1.setDescription("Test 4");
+		reqs.addRequirement(req1);
+		data.add(req1);
+		data2.add(req1);
+		
+		PlanningPokerSession session = new PlanningPokerSession();
+		Set<Integer> requirementIDs = new HashSet<Integer>();
+		requirementIDs.add(0);
+		requirementIDs.add(1);
+		requirementIDs.add(3);
+		session.setRequirementIDs(requirementIDs);
+		
+		PlanningPokerSession session2 = new PlanningPokerSession();
+		Set<Integer> requirementIDs2 = new HashSet<Integer>();
+		requirementIDs2.add(1);
+		requirementIDs2.add(2);
+		session2.setRequirementIDs(requirementIDs2);
+		
+		RequirementSelectionView parent = new RequirementSelectionView(session);
+		RequirementSelectionPanel requirementSelectionPanel = new RequirementSelectionPanel(parent, session);
+		requirementSelectionPanel.setSelectedRequirements(requirementIDs);
+		List<Requirement> selected = requirementSelectionPanel.getSelected();
+		assertEquals(data, selected);
+		
+		PlanningPokerSessionModel sessions = PlanningPokerSessionModel.getInstance();
+		sessions.addCachedPlanningPokerSession(session);
+		sessions.addCachedPlanningPokerSession(session2);
+		
+		RequirementSelectionPanel requirementSelectionPanel2 = new RequirementSelectionPanel(parent, session);
+		requirementSelectionPanel2.setSelectedRequirements(requirementIDs);
+		List<Requirement> selected2 = requirementSelectionPanel.getSelected();
+		assertEquals(data2, selected2);
+		
 	}
-
 }
