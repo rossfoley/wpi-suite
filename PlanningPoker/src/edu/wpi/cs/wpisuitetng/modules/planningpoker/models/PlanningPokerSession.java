@@ -516,6 +516,7 @@ public class PlanningPokerSession extends AbstractModel {
 			estimateWasModified(ID); 
 		}
 		finalEstimatesMap.put(ID, estimate);
+		RequirementModel.getInstance().getRequirement(ID).setEstimate(estimate);
 	}
 	
 	/**
