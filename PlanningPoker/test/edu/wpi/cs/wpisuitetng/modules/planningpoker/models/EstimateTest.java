@@ -5,23 +5,29 @@ import static org.junit.Assert.*;
 import java.util.UUID;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.*;
 
 import org.junit.Test;
 
+import com.google.gson.Gson;
+
 public class EstimateTest {
 	
-	Requirement rec1 = new Requirement(1, "rec1", "description1");
-	Requirement rec2 = new Requirement(2, "rec2", "description2");
-	Requirement rec3 = new Requirement(3, "rec3", "description3");
+	Requirement rec1 = new Requirement();
+	Requirement rec2 = new Requirement();
+	Requirement rec3 = new Requirement();
 	
-	UUID UUID1 = UUID.randomUUID();
-	UUID UUID2 = UUID.randomUUID();
-	UUID UUID3 = UUID.randomUUID();
+	UUID UUID;
+	UUID UUID1 = java.util.UUID.randomUUID();
+	UUID UUID2 = java.util.UUID.randomUUID();
+	UUID UUID3 = java.util.UUID.randomUUID();
+	UUID UUID11 = java.util.UUID.randomUUID();
+	UUID UUID22 = java.util.UUID.randomUUID();
+	UUID UUID33 = java.util.UUID.randomUUID();
 	
-	Estimate est1 = new Estimate(1, 10, UUID1);
-	Estimate est2 = new Estimate(2, 20, UUID2);
-	Estimate est3 = new Estimate(3, 30, UUID3);
+	Estimate est1 = new Estimate(1, 10, UUID);
+	Estimate est2 = new Estimate(2, 20, UUID);
+	Estimate est3 = new Estimate(3, 30, UUID);
+	
 
 	@Test
 	public void testCompareTo() {
@@ -32,13 +38,19 @@ public class EstimateTest {
 	
 	@Test
 	public void testGetRequirementID() {
-		assertEquals(est1.getRequirementID(), 1);
-		assertEquals(est2.getRequirementID(), 2);
-		assertEquals(est3.getRequirementID(), 3);
+		est1.setRequirementID(11);
+		est2.setRequirementID(22);
+		est3.setRequirementID(33);
+		assertEquals(est1.getRequirementID(), 11);
+		assertEquals(est2.getRequirementID(), 22);
+		assertEquals(est3.getRequirementID(), 33);
 	}
 	
 	@Test
 	public void testGetID() {
+		est1.setID(UUID1);
+		est2.setID(UUID2);
+		est3.setID(UUID3);
 		assertEquals(est1.getID(), UUID1);
 		assertEquals(est2.getID(), UUID2);
 		assertEquals(est3.getID(), UUID3);
@@ -46,9 +58,57 @@ public class EstimateTest {
 	
 	@Test
 	public void testGetVote() {
-		assertEquals(est1.getVote(), 10);
-		assertEquals(est2.getVote(), 20);
-		assertEquals(est3.getVote(), 30);
+		est1.setVote(15);
+		est2.setVote(25);
+		est3.setVote(35);
+		assertEquals(est1.getVote(), 15);
+		assertEquals(est2.getVote(), 25);
+		assertEquals(est3.getVote(), 35);
+	}
+
+	@Test
+	public void testGetOwnerName() {
+		est1.setOwnerName("Cam");
+		est2.setOwnerName("Jon");
+		est3.setOwnerName("Pat");
+		assertEquals(est1.getOwnerName(), "Cam");
+		assertEquals(est2.getOwnerName(), "Jon");
+		assertEquals(est3.getOwnerName(), "Pat");
 	}
 	
+	@Test
+	public void testGetSessionID() {
+		est1.setSessionID(UUID11);
+		est2.setSessionID(UUID22);
+		est3.setSessionID(UUID33);
+		assertEquals(est1.getSessionID(), UUID11);
+		assertEquals(est2.getSessionID(), UUID22);
+		assertEquals(est3.getSessionID(), UUID33);
+	}
+	
+	@Test 
+	public void testToJSON() {
+		Gson gsontest = new Gson();
+		String jsontest = gsontest.toJson(est1);
+		
+		assertEquals(est1.toJSON(), jsontest);
+	}
+	
+	@Test 
+	public void testFromJson() {
+		Gson gsontest = new Gson();
+		String jsontest = gsontest.toJson(est1);
+		
+		assertEquals(est1.compareTo(Estimate.fromJson(jsontest)), 0);
+	}
+	
+	@Test public void testFromJsonArray() {
+		Gson gsontest = new Gson(); 
+		Estimate[] testEstimateArray = new Estimate[]{est1};
+		String jsontest = gsontest.toJson(testEstimateArray);
+		Estimate[] estimatearray = Estimate.fromJsonArray(jsontest);
+		
+		Estimate estimate = estimatearray[0];
+		assertEquals(0, est1.compareTo(estimate));
+	}
 }
