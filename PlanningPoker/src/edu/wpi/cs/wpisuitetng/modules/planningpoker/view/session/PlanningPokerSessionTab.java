@@ -62,6 +62,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementsSelectedEvent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementsSelectedListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
