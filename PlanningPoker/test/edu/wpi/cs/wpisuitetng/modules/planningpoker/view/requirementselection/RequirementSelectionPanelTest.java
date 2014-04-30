@@ -69,42 +69,42 @@ public class RequirementSelectionPanelTest {
 		LinkedList<Requirement> data = new LinkedList<Requirement>();
 		LinkedList<Requirement> data2 = new LinkedList<Requirement>();
 		Requirement req1 = new Requirement();
-		req1.setName("Requirement 1");
-		req1.setId(0);
-		req1.setDescription("Test 1");
+		req1.setName("Requirement 1-2");
+		req1.setId(4);
+		req1.setDescription("Test 2");
 		reqs.addRequirement(req1);
 		data.add(req1);
 		data2.add(req1);
 		req1 = new Requirement();
-		req1.setName("Requirement 2");
-		req1.setId(1);
+		req1.setName("Requirement 2-2");
+		req1.setId(5);
 		req1.setDescription("Test 2");
 		reqs.addRequirement(req1);
 		data.add(req1);
 		req1 = new Requirement();
-		req1.setName("Requirement 3");
-		req1.setId(2);
-		req1.setDescription("Test 3");
+		req1.setName("Requirement 3-2");
+		req1.setId(6);
+		req1.setDescription("Test 2");
 		reqs.addRequirement(req1);
 		req1 = new Requirement();
-		req1.setName("Requirement 4");
-		req1.setId(3);
-		req1.setDescription("Test 4");
+		req1.setName("Requirement 4-2");
+		req1.setId(7);
+		req1.setDescription("Test 2");
 		reqs.addRequirement(req1);
 		data.add(req1);
 		data2.add(req1);
 		
 		PlanningPokerSession session = new PlanningPokerSession();
 		Set<Integer> requirementIDs = new HashSet<Integer>();
-		requirementIDs.add(0);
-		requirementIDs.add(1);
-		requirementIDs.add(3);
+		requirementIDs.add(4);
+		requirementIDs.add(5);
+		requirementIDs.add(7);
 		session.setRequirementIDs(requirementIDs);
 		
 		PlanningPokerSession session2 = new PlanningPokerSession();
 		Set<Integer> requirementIDs2 = new HashSet<Integer>();
-		requirementIDs2.add(1);
-		requirementIDs2.add(2);
+		requirementIDs2.add(5);
+		requirementIDs2.add(6);
 		session2.setRequirementIDs(requirementIDs2);
 		
 		RequirementSelectionView parent = new RequirementSelectionView(session);
@@ -119,8 +119,15 @@ public class RequirementSelectionPanelTest {
 		
 		RequirementSelectionPanel requirementSelectionPanel2 = new RequirementSelectionPanel(parent, session);
 		requirementSelectionPanel2.setSelectedRequirements(requirementIDs);
-		List<Requirement> selected2 = requirementSelectionPanel.getSelected();
-		assertEquals(data2, selected2);
+		List<Requirement> selected2 = requirementSelectionPanel2.getSelected();
+		assertEquals(data, selected2);
+		
+		session2.setGameState(PlanningPokerSession.SessionState.OPEN);
+		
+		RequirementSelectionPanel requirementSelectionPanel3 = new RequirementSelectionPanel(parent, session);
+		requirementSelectionPanel3.setSelectedRequirements(requirementIDs);
+		List<Requirement> selected3 = requirementSelectionPanel3.getSelected();
+		assertEquals(data2, selected3);
 		
 	}
 }

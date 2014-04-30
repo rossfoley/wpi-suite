@@ -320,6 +320,7 @@ public class RequirementSelectionPanel extends JPanel{
 								if (!toRemove.contains(index)) {
 									toRemove.add(index);
 								}
+
 							}
 						}
 					}
