@@ -287,6 +287,7 @@ public class ViewEventController {
 			}
 			// Otherwise close the existing tab, and reopen as desired
 			else {
+				main.setSelectedComponent(sessionTab);
 				removeTab(sessionTab);
 				openNewSessionTab(session, tabType);
 			}
