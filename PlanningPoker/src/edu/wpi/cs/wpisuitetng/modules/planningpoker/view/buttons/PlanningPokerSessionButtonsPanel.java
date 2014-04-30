@@ -276,7 +276,10 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 
 		// If the session is ended or closed, allow the user to view statistics
 		if (session.isEnded() || session.isClosed()) {
-			enableStatisticsButton();
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
+		}
+		else if (session.isOpen() || session.isPending()) {
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
 		}
 	}
 	

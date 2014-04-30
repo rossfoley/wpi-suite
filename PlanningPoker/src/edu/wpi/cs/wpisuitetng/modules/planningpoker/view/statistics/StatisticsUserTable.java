@@ -88,7 +88,7 @@ public class StatisticsUserTable extends JTable {
 	}
 	
 	/**
-	 * updates OverviewReqTable with the contents of the requirement model
+	 * updates OverviewUserTable with the contents of the requirement model
 	 */
 	public void refresh(PlanningPokerSession session) {
 		// TODO Implement Your Vote, Estimate columns
@@ -103,7 +103,7 @@ public class StatisticsUserTable extends JTable {
 		// clear the table
 		tableModel.setRowCount(0);		
 
-		for (Integer requirementID : requirementIDs) {
+		/*for (Integer requirementID : requirementIDs) {
 			Requirement req = reqs.getRequirement(requirementID);
 			String reqName = req.getName();
 			vote = 0;
@@ -117,7 +117,7 @@ public class StatisticsUserTable extends JTable {
 					reqName,
 					vote,
 					estimate});	
-		}
+		}*/
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
 	}
