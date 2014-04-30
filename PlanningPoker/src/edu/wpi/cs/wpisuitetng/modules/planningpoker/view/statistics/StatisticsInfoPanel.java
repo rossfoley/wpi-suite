@@ -138,6 +138,7 @@ public class StatisticsInfoPanel extends JPanel {
 	//format estimate standard deviation to a string
 	public String formatStdDev(RequirementEstimateStats stats) {
 		String stdDev = "";
+
 		DecimalFormat df = new DecimalFormat("0.0");
 		stdDev = df.format(stats.getStdDev());
 		return stdDev;

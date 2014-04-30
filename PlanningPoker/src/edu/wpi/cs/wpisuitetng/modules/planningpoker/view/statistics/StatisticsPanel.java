@@ -50,6 +50,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	StatisticsReqTable reqTable;
 	JScrollPane tablePanel; 
 	StatisticsInfoPanel infoPanel;
+
 	
 	int selectedReqID;
 	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
@@ -68,6 +69,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel(activeSession);
+
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
 		tablePanel = new JScrollPane(reqTable);
 		
@@ -78,6 +80,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		//set infoPanel to get estimate information for statistics
 		reqTable.setInfoPanel(infoPanel);
 		
+
 		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
 		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
 		reqTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
@@ -108,9 +111,11 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		// Put the overview table and sidebar into the tab
 		this.setLeftComponent(tablePanel);
 		this.setRightComponent(detailPanel);
+
 		
 		this.updatePanel();
 		
+
 	
 		// Makes the split pane divide 50/50 for each portion
 		//final Dimension d = new Dimension(300, 100);
@@ -119,10 +124,11 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
        // reqTable.setMinimumSize(d);
        // reqTable.setPreferredSize(d);
 		
+
 		this.setDividerLocation(400);
-
-
         this.setEnabled(true);
+
+
 	}
 	
 	public void updatePanel()	{	

@@ -102,6 +102,7 @@ public class RequirementEstimateStats {
 	 * Assumes that the mean has already been calculated for this list of estimates 
 	 * @return the standard deviation 
 	 */
+	
 	public double getStdDev() {
 		if (isUpToDate) {
 			return stdDev;
@@ -137,6 +138,7 @@ public class RequirementEstimateStats {
 	public void printStats() {
 		System.out.println("Printing stats. ID = " + ID + ", mean = " + mean 
 				+ ", median = " + median + ", stdDev = " + stdDev );
+
 	}
 	
 	/**
@@ -191,6 +193,7 @@ public class RequirementEstimateStats {
 		estimates.add(anEstimate);
 		isUpToDate = false; 
 	}
+
 	
 	public void addAndRefresh(Estimate anEstimate) {
 		add(anEstimate); 
