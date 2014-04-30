@@ -31,6 +31,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 
 
 /**
@@ -138,6 +140,55 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				if (node.getUserObject() instanceof PlanningPokerSession) {
 					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
 					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
+					final String sessionOwner = session.getSessionCreatorName();
+
+					// Disable everything by default
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
+					
+					// If the current user is the owner of the session
+					if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
+						// Enable editing if pending					
+						if (session.isPending()) {
+							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
+							if (e.getClickCount() == 2)
+							{
+								ViewEventController.getInstance().editSession(session);
+								// go edit on it 
+							}
+						}
+						// Allow end of voting if open and editing if no estimates yet
+						else if (session.isOpen()) {
+							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEndVoteButton();
+							// If no estimates yet, allow editing
+							if (session.isEditable()) {
+								ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
+							}
+						}
+					}
+					
+					// If session is open, allow voting
+					if (session.isOpen()) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
+						//If double clicked
+						if (e.getClickCount() == 2)
+						{
+							ViewEventController.getInstance().voteOnSession(session);
+							// go vote on it 
+						}
+					}
+					
+					// If the session is ended or closed, allow the user to view statistics
+					if (session.isEnded() || session.isClosed()) {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
+						if (e.getClickCount() == 2)
+						{
+							ViewEventController.getInstance().openStatisticsTab(session);
+							// go to statistics buttons
+						}
+					}
+					
 					displaySession(session);
 				}
 			}
