@@ -26,6 +26,11 @@
         async: false,
         success: (function(_this) {
           return function(data) {
+            var requirement, _i, _len;
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              requirement = data[_i];
+              requirement['voteValue'] = 0;
+            }
             return _this.requirements = data;
           };
         })(this)
@@ -74,6 +79,31 @@
           percent = parseInt((numVotes / this.team.length) * 100);
         }
         return "" + percent + "%";
+      };
+      this.submitVote = function(voteValue, requirementID, session) {
+        var estimate, vote;
+        vote = parseInt(voteValue);
+        estimate = {
+          sessionID: session['uuid'],
+          requirementID: requirementID,
+          vote: vote
+        };
+        return $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
+          data: JSON.stringify(estimate),
+          success: (function(_this) {
+            return function(data) {
+              return console.log('We did it!');
+            };
+          })(this),
+          error: (function(_this) {
+            return function() {
+              return console.log('Error updating the estimate');
+            };
+          })(this)
+        });
       };
     }
 

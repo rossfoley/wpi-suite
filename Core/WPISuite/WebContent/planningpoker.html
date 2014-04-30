@@ -51,9 +51,8 @@
                   <div class="progress-bar progress-bar-success" role="progressbar" data-bind="style: {width: $root.widthPercent($parent, id)}, text: $root.widthPercent($parent, id)">
                   </div>
                 </div>
-                <a href="#">Vote!</a>
-                <input type="number" placeholder="Vote here!" value="Vote Here" />
-                <button type="button">Submit Vote!</button>
+                <input type="number" placeholder="Vote here!" data-bind="value: voteValue" />
+                <button type="button" data-bind="click: $root.submitVote(voteValue, id, $parent)">Submit Vote!</button>
               </li>
           </ul>
         </div>
