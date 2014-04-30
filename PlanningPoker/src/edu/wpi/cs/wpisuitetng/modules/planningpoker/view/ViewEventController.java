@@ -139,14 +139,15 @@ public class ViewEventController {
 	/**
 	 * Removes the tab for the given JComponent
 	 * @param comp the component to remove
+	 * @return	If the tab was successfully removed
 	 */
-	public void removeTab(JComponent comp)
+	public boolean removeTab(JComponent comp)
 	{
 		// Check if the tab is a PlanningPokerSession create/edit tab
 		if (comp instanceof PlanningPokerSessionTab) {
 			// Only remove if it is ready to remove
 			if(!((PlanningPokerSessionTab)comp).readyToRemove()) {
-				return;
+				return false;
 			}
 		}
 		// Check if the tab contains a planning poker session
@@ -155,6 +156,7 @@ public class ViewEventController {
 		}
 		
 		main.remove(comp);
+		return true;
 	}
 
 	/**
@@ -285,8 +287,10 @@ public class ViewEventController {
 			main.setSelectedComponent(sessionTab);
 			// Otherwise close the existing tab, and reopen as desired
 			if (!currViewMode.equals(tabType)) {
-				removeTab(sessionTab);
-				openNewSessionTab(session, tabType);
+				// Only open the new tab if the existing tab is successfully removed
+				if (removeTab(sessionTab)) {
+					openNewSessionTab(session, tabType);
+				}
 			}
 		}
 		// Otherwise the tab does not exist yet. Create it and open
