@@ -180,10 +180,35 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	}
 
 	/**
-	 * Method geteditButton
-	 * @return JButton */
-	public JButton getEdittButton() {
-		return editButton;
+	 * Getter for the edit button
+	 * @return The edit JButton
+	 */
+	public JButton getEditButton() {
+		return this.editButton;
+	}
+	
+	/**
+	 * Getter for the vote button
+	 * @return The vote JButton
+	 */
+	public JButton getVoteButton() {
+		return this.voteButton;
+	}
+	
+	/**
+	 * Getter for the end vote button
+	 * @return The end vote JButton
+	 */
+	public JButton getEndVoteButton() {
+		return this.endVoteButton;
+	}
+	
+	/**
+	 * Getter for the statistics button
+	 * @return The end vote JButton
+	 */
+	public JButton getStatisticsButton() {
+		return this.statisticsButton;
 	}
 
 	public void disableEditButton() {

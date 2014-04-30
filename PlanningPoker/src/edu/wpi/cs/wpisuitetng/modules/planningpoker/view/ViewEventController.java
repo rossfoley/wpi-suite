@@ -282,12 +282,9 @@ public class ViewEventController {
 			JComponent sessionTab = openSessionTabHashTable.get(session);
 			ViewMode currViewMode = getComponentSessionViewMode(sessionTab);
 			// If the current and desired ViewModes are the same, open as desired
-			if (currViewMode.equals(tabType)) {
-				main.setSelectedComponent(sessionTab);
-			}
+			main.setSelectedComponent(sessionTab);
 			// Otherwise close the existing tab, and reopen as desired
-			else {
-				main.setSelectedComponent(sessionTab);
+			if (!currViewMode.equals(tabType)) {
 				removeTab(sessionTab);
 				openNewSessionTab(session, tabType);
 			}

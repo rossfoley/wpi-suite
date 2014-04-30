@@ -64,7 +64,6 @@ public class StatisticsReqTable extends JTable {
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
     
 		this.getTableHeader().setReorderingAllowed(false);

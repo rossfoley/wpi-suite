@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Map;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 
 import org.junit.Test;
 
@@ -13,6 +14,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
 
 public class ViewEventControllerTest {
 
@@ -62,6 +66,24 @@ public class ViewEventControllerTest {
 		assertEquals(toolbar, ViewEventController.getInstance().getToolbar());
 	}
 	
+	@Test
+	public void testGetComponentSessionViewMode() {
+		// Check null
+		assertEquals(ViewMode.NONE, ViewEventController.getInstance().getComponentSessionViewMode(null));
+		
+		JComponent tab0 = new PlanningPokerSessionTab();
+		assertEquals(ViewMode.EDITING, ViewEventController.getInstance().getComponentSessionViewMode(tab0));
+		
+		tab0 = new VotingPage(createTestSession());
+		assertEquals(ViewMode.VOTING, ViewEventController.getInstance().getComponentSessionViewMode(tab0));
+		
+		tab0 = new StatisticsPanel(createTestSession());
+		assertEquals(ViewMode.STATISTICS, ViewEventController.getInstance().getComponentSessionViewMode(tab0));
+		// Check non-planning Poker component
+		tab0 = new JScrollPane();
+		assertEquals(ViewMode.NONE, ViewEventController.getInstance().getComponentSessionViewMode(tab0));
+	}
+	
 	/**
 	 * Tests to ensure that only a single tab is allowed to be opened for any given session
 	 */
@@ -97,6 +119,11 @@ public class ViewEventControllerTest {
 		ViewEventController.getInstance().removeTab(sessionMap.get(sessionA));
 		assertFalse(sessionMap.containsKey(sessionA));
 		assertTrue(sessionMap.isEmpty());
+		ViewEventController.getInstance().openSessionTab(sessionA, ViewMode.VOTING);
+		assertTrue(sessionMap.containsKey(sessionA));
+		assertEquals(1, sessionMap.size());
+		
+		// Try to re-open the voting tab. Tab count should be the same
 		ViewEventController.getInstance().openSessionTab(sessionA, ViewMode.VOTING);
 		assertTrue(sessionMap.containsKey(sessionA));
 		assertEquals(1, sessionMap.size());
