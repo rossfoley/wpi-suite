@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
@@ -32,10 +33,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewMode;
 
 
 /**
- * This class contains the toolbar buttons for the planning poker module. 
+ * This class contains the tool-bar buttons for the planning poker module. 
  *
  */
 public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
@@ -45,8 +47,8 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private final JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
 	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
 	private final JPanel contentPanel = new JPanel();
-	
-	
+
+
 
 	public PlanningPokerSessionButtonsPanel(){
 		super("");
@@ -64,20 +66,20 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 
 			img = ImageIO.read(getClass().getResource("edit.png"));
 			editButton.setIcon(new ImageIcon(img));
-			
+
 			img = ImageIO.read(getClass().getResource("voting-icon.png"));
 			voteButton.setIcon(new ImageIcon(img));
-			
+
 			img = ImageIO.read(getClass().getResource("end-icon.png"));
 			endVoteButton.setIcon(new ImageIcon(img));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			endVoteButton.setIcon(new ImageIcon(img));
-			
+
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			statisticsButton.setIcon(new ImageIcon(img));
-			
+
 
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {} 
 
@@ -94,7 +96,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
-				ViewEventController.getInstance().editSession(session);
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
 			}
 		});		
 
@@ -103,7 +105,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
-				ViewEventController.getInstance().voteOnSession(session);
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
 			}
 		});	
 
@@ -115,27 +117,27 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				session.setGameState(PlanningPokerSession.SessionState.VOTINGENDED);
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(session);
 				ViewEventController.getInstance().getOverviewTreePanel().refresh();
-				
+
 				final List<String> recipients = new LinkedList<String>();
 				List<EmailAddress> emailRecipients = null;
-				
+
 				final GetEmailController getEmailController = GetEmailController.getInstance();
 				getEmailController.retrieveEmails();
-				
+
 				final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 				try {
 					emailRecipients = emailAddressModel.getEmailAddresses();
 				}
 				catch (Exception E) {
-					
+
 				}
-				
+
 				for (int i = 0; i < emailRecipients.size(); i++) {
 					recipients.add(emailRecipients.get(i).getEmail());
 				}
-				
+
 				final Thread t = new Thread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						final Mailer mailer = new Mailer();
@@ -144,20 +146,20 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 				});
 				t.setDaemon(true);
 				t.start();
-				
-				
+
+
 			}
 		});	
-		
+
 		// the action listener for the View Statistics Button
 		statisticsButton.addActionListener(new ActionListener() {
 			@Override
-			
+
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
-				ViewEventController.getInstance().openStatisticsTab(session);
-				}
-			});
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+			}
+		});
 
 
 		contentPanel.add(createButton);
@@ -180,7 +182,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	/**
 	 * Method geteditButton
 	 * @return JButton */
-	public JButton getCreateIterationButton() {
+	public JButton getEdittButton() {
 		return editButton;
 	}
 
@@ -207,12 +209,60 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	public void enableEndVoteButton() {
 		endVoteButton.setEnabled(true);
 	}
-	
+
 	public void disableStatisticsButton() {
 		statisticsButton.setEnabled(false);
 	}
-	
+
 	public void enableStatisticsButton() {
 		statisticsButton.setEnabled(true);
 	}
+
+	/**
+	 * Enables the tool-bar buttons based on the input PlanningPoker and Client session 
+	 * @param session	The planningPoker session to use
+	 */
+	public void enableButtonsForSession(PlanningPokerSession session) {
+		final String sessionOwner = session.getSessionCreatorName();
+
+		// Disable everything by default
+		disableAllButtons();
+
+		// If the current user is the owner of the session
+		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
+			// Enable editing if pending and not open or opened in editing mode
+			if (session.isPending()) {
+				enableEditButton();
+			}
+			// Allow end of voting if open and editing if no estimates yet
+			else if (session.isOpen()) {
+				enableEndVoteButton();
+				// If no estimates yet, allow editing
+				if (session.isEditable()) {
+					enableEditButton();
+				}
+			}
+		}
+
+		// If session is open, allow voting
+		if (session.isOpen()) {
+			enableVoteButton();
+		}
+
+		// If the session is ended or closed, allow the user to view statistics
+		if (session.isEnded() || session.isClosed()) {
+			enableStatisticsButton();
+		}
+	}
+	
+	/**
+	 * Disables all the buttons
+	 */
+	public void disableAllButtons() {
+		disableEditButton();
+		disableVoteButton();
+		disableEndVoteButton();
+		disableStatisticsButton();		
+	}
 }
+

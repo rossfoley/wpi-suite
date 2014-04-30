@@ -79,17 +79,17 @@ public class ViewEventControllerTest {
 		assertTrue(sessionMap.isEmpty());
 		
 		// Open session for editing
-		ViewEventController.getInstance().editSession(sessionA);
+		ViewEventController.getInstance().openSessionTab(sessionA, ViewMode.EDITING);
 		assertTrue(sessionMap.containsKey(sessionA));
 		assertEquals(1, sessionMap.size());
 		
 		// Attempt to open session for voting (it shouldn't allow it)
-		ViewEventController.getInstance().voteOnSession(sessionA);
+		ViewEventController.getInstance().openSessionTab(sessionA, ViewMode.VOTING) ;
 		assertTrue(sessionMap.containsKey(sessionA));
 		assertEquals(1, sessionMap.size());
 		
 		// Attempt to open a session for viewing (it shouldn't allow it)
-		ViewEventController.getInstance().openStatisticsTab(sessionA);
+		ViewEventController.getInstance().openSessionTab(sessionA, ViewMode.STATISTICS);
 		assertTrue(sessionMap.containsKey(sessionA));
 		assertEquals(1, sessionMap.size());		
 		
@@ -97,7 +97,7 @@ public class ViewEventControllerTest {
 		ViewEventController.getInstance().removeTab(sessionMap.get(sessionA));
 		assertFalse(sessionMap.containsKey(sessionA));
 		assertTrue(sessionMap.isEmpty());
-		ViewEventController.getInstance().voteOnSession(sessionA);
+		ViewEventController.getInstance().openSessionTab(sessionA, ViewMode.VOTING);
 		assertTrue(sessionMap.containsKey(sessionA));
 		assertEquals(1, sessionMap.size());
 	}
