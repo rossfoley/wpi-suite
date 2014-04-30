@@ -84,7 +84,7 @@ public class StatisticsReqTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					rowNumber = convertRowIndexToModel(rowAtPoint(getMousePosition()));
-					System.out.println("rowNumber = " + rowNumber);
+					//System.out.println("rowNumber = " + rowNumber);
 					//infoPanel.currentReqID = tableRows.get(rowNumber);
 					try {
 						infoPanel.setCurrentReqID(tableRows.get(rowNumber));
@@ -92,7 +92,7 @@ public class StatisticsReqTable extends JTable {
 					catch (NullPointerException ex) {}
 				}
 				catch (IndexOutOfBoundsException obe) {
-					System.out.println("There is no row at current mouse position");
+					//System.out.println("There is no row at current mouse position");
 				}
 			}
 		});
@@ -137,13 +137,6 @@ public class StatisticsReqTable extends JTable {
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
-		// TODO remove these prints
-		System.out.println("rowNumber:reqID in tableRows HashMap:");
-		for(Integer i: tableRows.keySet()){
-			String key = i.toString();
-			String value = tableRows.get(i).toString();
-			System.out.println(key + ":" + value);
-		}
 	}
 	
 	@Override 
@@ -153,16 +146,15 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public void editingStopped(ChangeEvent e) {
-		System.out.println("Editing Stopped");
+		//System.out.println("Editing Stopped");
 		String estimate = (String) tableModel.getValueAt(editingRow, editingColumn);
-		System.out.println("Estimate = " + estimate + ", editingRow = " + editingRow 
-				+ ", editingColumn = " + editingColumn);
+		//System.out.println("Estimate = " + estimate + ", editingRow = " + editingRow + ", editingColumn = " + editingColumn);
 		super.editingStopped(e);
 		boolean isInteger = true;
 		int numberEst = -1;
 		try {
 			numberEst = Integer.parseInt(((TableCellEditor) e.getSource()).getCellEditorValue().toString());
-			System.out.println("Edited value = " + numberEst);
+			//System.out.println("Edited value = " + numberEst);
 		}
 		catch (NumberFormatException ne) {
 			isInteger = false;

@@ -199,8 +199,6 @@ public class StatisticsInfoPanel extends JPanel {
 	}
 
 	public void setCurrentReqID(int ID) {
-		// TODO remove this print
-		System.out.println("ID = " + ID);
 		currentReqID = ID;
 		aReq = RequirementModel.getInstance().getRequirement(ID);
 		refresh(session);
