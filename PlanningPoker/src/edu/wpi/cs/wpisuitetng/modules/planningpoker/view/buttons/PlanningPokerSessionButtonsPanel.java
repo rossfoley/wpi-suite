@@ -182,7 +182,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	/**
 	 * Method geteditButton
 	 * @return JButton */
-	public JButton getCreateIterationButton() {
+	public JButton getEdittButton() {
 		return editButton;
 	}
 
@@ -226,10 +226,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		final String sessionOwner = session.getSessionCreatorName();
 
 		// Disable everything by default
-		disableEditButton();
-		disableVoteButton();
-		disableEndVoteButton();
-		disableStatisticsButton();
+		disableAllButtons();
 
 		// If the current user is the owner of the session
 		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
@@ -256,6 +253,16 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		if (session.isEnded() || session.isClosed()) {
 			enableStatisticsButton();
 		}
+	}
+	
+	/**
+	 * Disables all the buttons
+	 */
+	public void disableAllButtons() {
+		disableEditButton();
+		disableVoteButton();
+		disableEndVoteButton();
+		disableStatisticsButton();		
 	}
 }
 
