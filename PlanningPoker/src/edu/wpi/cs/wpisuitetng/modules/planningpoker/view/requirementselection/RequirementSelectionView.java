@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.swing.JSplitPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementcreation.RequirementCreationPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.RequirementSelectionPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.RequirementsSelectedListener;
@@ -24,14 +25,21 @@ public class RequirementSelectionView extends JSplitPane{
 	private final RequirementSelectionPanel reqPanel;
 	private final RequirementCreationPanel createPanel;
 	
-	public RequirementSelectionView(){
-		reqPanel = new RequirementSelectionPanel(this);
+	public RequirementSelectionView(PlanningPokerSession session){
+		reqPanel = new RequirementSelectionPanel(this, session);
 		createPanel = new RequirementCreationPanel(-1, this);
 		
 		setLeftComponent(reqPanel);
 		setRightComponent(null);
 		setDividerLocation(getSize().width - getInsets().right - getDividerSize() - 500);
 		setResizeWeight(1.0);
+	}
+	
+	/**
+	 * @return the reqPanel
+	 */
+	public RequirementSelectionPanel getReqPanel() {
+		return reqPanel;
 	}
 	
 	public void openCreationPanel(){
@@ -68,5 +76,7 @@ public class RequirementSelectionView extends JSplitPane{
 	synchronized public void addRequirementsSelectedListener(RequirementsSelectedListener l){
 		reqPanel.addRequirementsSelectedListener(l);
 	}
+	
+	
 	
 }
