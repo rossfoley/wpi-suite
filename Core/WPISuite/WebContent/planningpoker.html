@@ -46,15 +46,14 @@
               <li class="list-group-item">
                 <h5><span data-bind="text: name"></span>:</h5>
                 <p data-bind="text: description"></p>
-                <!-- <span class="progress-label">Progress:</span>
-                <div class="progress-bar progress-bar-success" role="progressbar" {{bind-attr style=widthStyle}}>
-                  {{width}}
+                <span class="progress-label">Progress:</span>
+                <div class="progress requirement-progress">
+                  <div class="progress-bar progress-bar-success" role="progressbar" data-bind="style: {width: $root.widthPercent($parent, id)}, text: $root.widthPercent($parent, id)">
+                  </div>
                 </div>
-                <a {{action "startVote"}}>Vote!</a>
-                {{#if showVoteForm}}
-                  {{input type="number" placeholder="Vote here!" value=voteValue}}
-                  <button type="button" {{action "submitVote"}}>Submit Vote!</button>
-                {{/if}} -->
+                <a href="#">Vote!</a>
+                <input type="number" placeholder="Vote here!" value="Vote Here" />
+                <button type="button">Submit Vote!</button>
               </li>
           </ul>
         </div>

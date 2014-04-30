@@ -36,8 +36,6 @@ class PlanningPokerViewModel
 
     @requirementsForSession = (session) =>
       result = []
-      console.log(session)
-      console.log(@requirements)
       for requirement in @requirements
         if requirement['id'] in session['requirementIDs']
           result.push requirement
@@ -58,19 +56,16 @@ class PlanningPokerViewModel
     #       window.location.reload()
     #     error: => console.log 'Error updating the estimate'
 
-    # @width = ->
-    #   numUsers = App.Team.length
-    #   numVotes = 0
-    #   session = App.Sessions.findBy('uuid', @get('uuid'))
-    #   for estimate in session.get('estimates')
-    #     if estimate['requirementID'] == @get('requirement')['id']
-    #       numVotes++
-    #   percent = 0
-    #   if numUsers > 0
-    #     percent = parseInt((numVotes / numUsers) * 100)
-    #   "#{percent}%"
-
-    # @widthStyle = -> "width: #{@get('width')}"
+    @widthPercent = (session, requirementID) ->
+      numVotes = 0
+      for estimate in session['estimates']
+        if parseInt(estimate['requirementID']) == parseInt(requirementID)
+          numVotes++
+      percent = 0
+      if @team.length > 0
+        percent = parseInt((numVotes / @team.length) * 100)
+      "#{percent}%"
 
 $ ->
-  ko.applyBindings(new PlanningPokerViewModel())
+  window.PokerVM = new PlanningPokerViewModel()
+  ko.applyBindings(window.PokerVM)

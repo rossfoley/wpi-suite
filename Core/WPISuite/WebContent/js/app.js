@@ -49,8 +49,6 @@
         return function(session) {
           var requirement, result, _i, _len, _ref, _ref1;
           result = [];
-          console.log(session);
-          console.log(_this.requirements);
           _ref = _this.requirements;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             requirement = _ref[_i];
@@ -61,6 +59,22 @@
           return result;
         };
       })(this);
+      this.widthPercent = function(session, requirementID) {
+        var estimate, numVotes, percent, _i, _len, _ref;
+        numVotes = 0;
+        _ref = session['estimates'];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          estimate = _ref[_i];
+          if (parseInt(estimate['requirementID']) === parseInt(requirementID)) {
+            numVotes++;
+          }
+        }
+        percent = 0;
+        if (this.team.length > 0) {
+          percent = parseInt((numVotes / this.team.length) * 100);
+        }
+        return "" + percent + "%";
+      };
     }
 
     return PlanningPokerViewModel;
@@ -68,7 +82,8 @@
   })();
 
   $(function() {
-    return ko.applyBindings(new PlanningPokerViewModel());
+    window.PokerVM = new PlanningPokerViewModel();
+    return ko.applyBindings(window.PokerVM);
   });
 
 }).call(this);
