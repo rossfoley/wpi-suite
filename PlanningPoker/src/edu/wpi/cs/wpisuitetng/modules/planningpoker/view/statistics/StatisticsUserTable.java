@@ -58,7 +58,6 @@ public class StatisticsUserTable extends JTable {
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
         
     	//ViewEventController.getInstance().setStatisticsUserTable(this);
