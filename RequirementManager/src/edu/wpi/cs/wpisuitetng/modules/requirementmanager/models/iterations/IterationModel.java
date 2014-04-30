@@ -242,7 +242,7 @@ public class IterationModel extends AbstractListModel {
 		for(Iteration it : listOfIterations)
 		{
 			if(it == backlog) continue;
-			
+		
 			boolean startValid = it.getStart().getDate().before(date) || it.getStart().getDate().equals(date);
 			boolean endValid = it.getEnd().getDate().after(date) || it.getEnd().getDate().equals(date);
 

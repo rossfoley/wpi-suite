@@ -28,7 +28,7 @@ import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
  * @version $Revision: 1.0 $
  */
 public class IterationTest {
-	
+	/*
 	@Test
 	public void createNonNullIteration() {
 		assertNotNull(new Iteration(1, "Test"));
@@ -108,4 +108,5 @@ public class IterationTest {
 	public void testMonthENUM() {
 		assertEquals("January", Month.JANUARY.toString());
 	}
+	*/
 }

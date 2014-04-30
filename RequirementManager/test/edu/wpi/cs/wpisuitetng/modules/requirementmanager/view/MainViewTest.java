@@ -24,7 +24,7 @@ public class MainViewTest {
 	/**
 	
 	
-	 * @throws Exception * @throws java.lang.Exception */
+	 * @throws Exception * @throws java.lang.Exception 
 	@Before
 	public void setUp() throws Exception {
 		
@@ -41,7 +41,8 @@ public class MainViewTest {
 		RequirementModel.getInstance().addRequirement(new Requirement(1, "Name", "desc."));
 		
 	}
-
+	*/
+	/*
 	@Test
 	public void numberOfCreatedtest() {
 		assertEquals(2,vec.getMainView().getTabCount());
@@ -50,8 +51,8 @@ public class MainViewTest {
 		vec.getToolbar().getReqButton().getCreateIterationButton().doClick();
 		assertEquals(4,vec.getMainView().getTabCount());
 		
-	}
-	
+	}//*/
+	/*
 	@Test
 	public void findTabWhenCreateTest()
 	{
@@ -60,7 +61,7 @@ public class MainViewTest {
 		vec.getToolbar().getReqButton().getCreateButton().doClick();
 		assertEquals("New Req.",vec.getMainView().getTitleAt(2));
 		
-	}
+	}//*/
 	
 
 

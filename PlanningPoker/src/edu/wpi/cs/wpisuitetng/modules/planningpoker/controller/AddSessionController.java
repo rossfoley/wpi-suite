@@ -1,0 +1,56 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+
+
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+
+
+/**
+ * This controller responds when the user clicks the Update button by
+ * adding the contents of the Session text fields to the model as a new
+ * Session.
+ * @version $Revision: 1.0 $
+ * @author randyacheson and kevinbarry
+ */
+public class AddSessionController {
+	
+	private static final AddSessionController instance = new AddSessionController();
+	private final AddSessionRequestObserver observer;
+	
+	/**
+	 * Construct an AddSessionController for the given model, view pair
+	 */
+	private AddSessionController() {
+		observer = new AddSessionRequestObserver(this);
+	}
+	
+	/**
+	 * @return the instance of the AddSessionController
+	 * */
+	public static AddSessionController getInstance() {
+		return instance;
+	}
+
+	/**
+	 * This method adds a Session to the server.
+	 * @param newSession is the PlanningPokerSession to be added to the server.
+	 */
+	public void addPlanningPokerSession(PlanningPokerSession newSession) {
+		final Request request = Network.getInstance()
+				.makeRequest("planningpoker/planningpokersession", HttpMethod.PUT); // PUT is create
+		request.setBody(newSession.toJSON()); // put the session in the body of the request
+		request.addObserver(observer); // add an observer to process the response
+		request.send(); 
+	}
+}

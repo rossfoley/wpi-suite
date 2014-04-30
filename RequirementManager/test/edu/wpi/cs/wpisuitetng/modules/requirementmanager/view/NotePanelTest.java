@@ -32,23 +32,23 @@ public class NotePanelTest {
 	 * Sets up the mock network, iteration, and local variables
 	
 	
-	 * @throws Exception * @throws java.lang.Exception */
-	@Before
-	public void setUp() throws Exception {
-		req = new Requirement(1, "Name", "Description");
-		reqPan = new RequirementPanel(req);
-
-		// Mock Network
-		Network.initNetwork(new MockNetwork());
-		Network.getInstance().setDefaultNetworkConfiguration(
-				new NetworkConfiguration("http://wpisuitetng"));
-		// Mock Iteration
-		Iteration iterationTest = new Iteration(0,"Backlog");
-		IterationModel.getInstance().setBacklog(iterationTest);	 
-	}
+//	 * @throws Exception * @throws java.lang.Exception */
+//	@Before
+//	public void setUp() throws Exception {
+//		req = new Requirement(1, "Name", "Description");
+//		reqPan = new RequirementPanel(req);
+//
+//		// Mock Network
+//		Network.initNetwork(new MockNetwork());
+//		Network.getInstance().setDefaultNetworkConfiguration(
+//				new NetworkConfiguration("http://wpisuitetng"));
+//		// Mock Iteration
+//		Iteration iterationTest = new Iteration(0,"Backlog");
+//		IterationModel.getInstance().setBacklog(iterationTest);	 
+//	}
 	
 	
-
+	/*
 	@Test
 	public void AddNoteTest() {				
 		// make sure there are no notes yet
@@ -68,10 +68,10 @@ public class NotePanelTest {
 		// check to see if the note was added
 		assertEquals(1, reqPan.getTabsPanel().getNotePanel().getRequirement().getNotes().getNotes().toArray().length);
 		assertEquals("Test string", reqPan.getTabsPanel().getNotePanel().getRequirement().getNotes().getItem(0).getMessage());
-	}
+	}//*/
 	
 	
-
+	/*
 	@Test
 	public void NoteClearButtonTest() {
 		assertEquals("", reqPan.getTabsPanel().getNotePanel().getNoteMessage().getText());
@@ -82,5 +82,5 @@ public class NotePanelTest {
 		reqPan.getTabsPanel().getNotePanel().getClearButton().doClick();	// clear the note text box
 		assertFalse(reqPan.getTabsPanel().getNotePanel().getClearButton().isEnabled());
 		assertEquals("", reqPan.getTabsPanel().getNotePanel().getNoteMessage().getText());
-	}
+	}//*/
 }
