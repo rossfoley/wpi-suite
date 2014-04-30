@@ -1,6 +1,7 @@
 $ ->
   # Create our Ember app
   window.App = Ember.Application.create()
+  App.Session = Ember.Object.extend(Ember.Copyable)
 
   # Load in the planning poker sessions
   $.ajax
@@ -12,8 +13,8 @@ $ ->
       for session in data
         session['requirements'] = []
         if session['gameState'] == 'OPEN'
-          openSessions.push session
-      App.Sessions = openSessions
+          openSessions.push App.Session.create(session)
+      App.Sessions = Ember.A(openSessions)
 
   # Load in the requirements
   $.ajax
@@ -26,7 +27,7 @@ $ ->
         for session in App.Sessions
           # Also add each requirement to the session they belong to
           if requirement['id'] in session['requirementIDs']
-            session['requirements'].push requirement
+            session.get('requirements').push requirement
 
             # Add the requirement object to each estimate
             for estimate in session['estimates']
@@ -53,7 +54,7 @@ $ ->
   # Route for an individual session
   App.SessionRoute = Ember.Route.extend
     serialize: (session) ->
-      session_uuid: session['uuid']
+      session_uuid: session.get('uuid')
     model: (params) ->
       App.Sessions.findBy('uuid', params.session_uuid)
 
@@ -64,7 +65,7 @@ $ ->
       numUsers = App.Team.length
       numVotes = 0
       session = App.Sessions.findBy('uuid', @get('uuid'))
-      for estimate in session['estimates']
+      for estimate in session.get('estimates')
         if estimate['requirementID'] == @get('requirement')['id']
           numVotes++
       percent = 0
@@ -95,5 +96,6 @@ $ ->
           dataType: 'json'
           url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
           data: JSON.stringify(estimate)
-          success: => @toggleProperty 'showVoteForm'
+          success: (data) => 
+            window.location.reload()
           error: => console.log 'Error updating the estimate'

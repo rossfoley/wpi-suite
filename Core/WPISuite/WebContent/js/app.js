@@ -4,6 +4,7 @@
 
   $(function() {
     window.App = Ember.Application.create();
+    App.Session = Ember.Object.extend(Ember.Copyable);
     $.ajax({
       dataType: 'json',
       url: 'API/planningpoker/planningpokersession',
@@ -16,10 +17,10 @@
             session = data[_i];
             session['requirements'] = [];
             if (session['gameState'] === 'OPEN') {
-              openSessions.push(session);
+              openSessions.push(App.Session.create(session));
             }
           }
-          return App.Sessions = openSessions;
+          return App.Sessions = Ember.A(openSessions);
         };
       })(this)
     });
@@ -41,7 +42,7 @@
               for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
                 session = _ref[_j];
                 if (_ref1 = requirement['id'], __indexOf.call(session['requirementIDs'], _ref1) >= 0) {
-                  session['requirements'].push(requirement);
+                  session.get('requirements').push(requirement);
                   _results1.push((function() {
                     var _k, _len2, _ref2, _results2;
                     _ref2 = session['estimates'];
@@ -94,7 +95,7 @@
     App.SessionRoute = Ember.Route.extend({
       serialize: function(session) {
         return {
-          session_uuid: session['uuid']
+          session_uuid: session.get('uuid')
         };
       },
       model: function(params) {
@@ -108,7 +109,7 @@
         numUsers = App.Team.length;
         numVotes = 0;
         session = App.Sessions.findBy('uuid', this.get('uuid'));
-        _ref = session['estimates'];
+        _ref = session.get('estimates');
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           estimate = _ref[_i];
           if (estimate['requirementID'] === this.get('requirement')['id']) {
@@ -147,8 +148,8 @@
             url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
             data: JSON.stringify(estimate),
             success: (function(_this) {
-              return function() {
-                return _this.toggleProperty('showVoteForm');
+              return function(data) {
+                return window.location.reload();
               };
             })(this),
             error: (function(_this) {

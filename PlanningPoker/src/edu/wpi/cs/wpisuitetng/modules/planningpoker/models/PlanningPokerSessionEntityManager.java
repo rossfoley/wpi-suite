@@ -201,10 +201,10 @@ public class PlanningPokerSessionEntityManager implements EntityManager<Planning
 					session.addEstimate(e);
 					update(s, session.toJSON());
 					addClientUpdate(session, s);
+					return e.toJSON();
 				} else {
 					return "Voting for this session has ended!";
 				}
-				break;
 			default:
 				System.out.println(string);
 				break;
