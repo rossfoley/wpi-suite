@@ -46,3 +46,7 @@ Janeway/janeway.conf
 RequirementManager/build
 RequirementManager/bin
 *.orig
+
+# temporary gui test files
+/PlanningPoker/tests
+/PlanningPoker/tests/*
