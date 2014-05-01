@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -37,14 +38,16 @@ public class CardFactory {
 		    	xloc = 6;
 		    }
 		    g.drawString(Integer.toString(cardNum), xloc, 35);
+
+		    g.setFont(g.getFont().deriveFont(50f));
+		    
+		    drawCenteredString(Integer.toString(cardNum), curImage.getWidth(), curImage.getHeight(), g);
 		    
 		    g.rotate(Math.PI, curImage.getWidth()/2, curImage.getHeight()/2);
 		    
-		    g.drawString(Integer.toString(cardNum), xloc, 35);
-
-		    //g.drawString(Integer.toString(cardNum), xloc, 105);
+		    g.setFont(g.getFont().deriveFont(25f));
 		    
-		   // g.rotate(180);
+		    g.drawString(Integer.toString(cardNum), xloc, 35);
 		    
 		    g.dispose();
 	}
@@ -55,5 +58,12 @@ public class CardFactory {
 		}
 		return curImage;
 	}
+	
+	public void drawCenteredString(String s, int w, int h, Graphics g){
+		FontMetrics fm = g.getFontMetrics();
+		int x = (w-fm.stringWidth(s))/2;
+		int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent()))/2);
+		g.drawString(s, x, y);
+	}  
 	
 }
