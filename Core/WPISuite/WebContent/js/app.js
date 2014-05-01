@@ -185,6 +185,24 @@
           return "" + percent + "%";
         };
       })(this));
+      this.totalValue = ko.computed((function(_this) {
+        return function() {
+          var card, total, _j, _len1, _ref1;
+          if (_this.usingDeck()) {
+            total = 0;
+            _ref1 = _this.cards();
+            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+              card = _ref1[_j];
+              if (card.selected()) {
+                total += card.value();
+              }
+            }
+            return total;
+          } else {
+            return _this.voteValue();
+          }
+        };
+      })(this));
       this.submitVote = (function(_this) {
         return function() {
           _this[_this.username]().vote(parseInt(_this.voteValue()));

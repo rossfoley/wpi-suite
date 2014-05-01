@@ -139,6 +139,16 @@ class EstimateViewModel
         percent = parseInt((numVotes / @team().length) * 100)
       "#{percent}%"
 
+    @totalValue = ko.computed =>
+      if @usingDeck()
+        total = 0
+        for card in @cards()
+          if card.selected()
+            total += card.value()
+        total 
+      else
+        @voteValue()
+
     @submitVote = =>
       @[@username]().vote(parseInt(@voteValue()))
       $.ajax
