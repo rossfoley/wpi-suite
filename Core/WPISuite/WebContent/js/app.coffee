@@ -42,6 +42,10 @@ class PlanningPokerViewModel
             username: @username
           @planningPokerSessions.push(new SessionViewModel(session, params))
 
+    @openSessions = ko.computed =>
+      @planningPokerSessions().filter (session) =>
+        session.gameState() == 'OPEN'
+
     @setActiveSession = (session) =>
       @activeSession(session)
 

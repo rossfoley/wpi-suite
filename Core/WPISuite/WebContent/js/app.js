@@ -56,6 +56,13 @@
           };
         })(this)
       });
+      this.openSessions = ko.computed((function(_this) {
+        return function() {
+          return _this.planningPokerSessions().filter(function(session) {
+            return session.gameState() === 'OPEN';
+          });
+        };
+      })(this));
       this.setActiveSession = (function(_this) {
         return function(session) {
           return _this.activeSession(session);
