@@ -122,12 +122,12 @@ class EstimateViewModel
       "#{percent}%"
 
     @submitVote = =>
-      @[@username]().vote(parseInt(@voteValue))
+      @[@username]().vote(parseInt(@voteValue()))
       $.ajax
         type: 'POST'
         dataType: 'json'
         url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
-        data: JSON.stringify(@[@username]())
+        data: ko.toJSON(@[@username]())
         success: (data) => console.log('Vote successfully submitted')
         error: => console.log 'Error updating the estimate'
 

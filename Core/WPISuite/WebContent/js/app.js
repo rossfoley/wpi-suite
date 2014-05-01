@@ -164,12 +164,12 @@
       })(this);
       this.submitVote = (function(_this) {
         return function() {
-          _this[_this.username]().vote(parseInt(_this.voteValue));
+          _this[_this.username]().vote(parseInt(_this.voteValue()));
           return $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
-            data: JSON.stringify(_this[_this.username]()),
+            data: ko.toJSON(_this[_this.username]()),
             success: function(data) {
               return console.log('Vote successfully submitted');
             },
