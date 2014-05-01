@@ -1,3 +1,6 @@
+###################
+# Main View Model #
+###################
 
 class PlanningPokerViewModel
   constructor: ->
@@ -67,6 +70,21 @@ class PlanningPokerViewModel
         success: (data) => 
           console.log('We did it!')
         error: => console.log 'Error updating the estimate'
+
+
+
+#################################
+# Individual Session View Model #
+#################################
+
+class SessionViewModel
+  constructor: (parent) ->
+    @parent = parent
+
+
+############################################
+# Initialize all the bindings on page load #
+############################################
 
 $ ->
   window.PokerVM = new PlanningPokerViewModel()
