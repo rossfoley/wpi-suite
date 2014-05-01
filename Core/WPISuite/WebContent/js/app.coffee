@@ -9,15 +9,6 @@ class PlanningPokerViewModel
     @team = []
     @activeSession = ko.observable()
 
-    # Load in the planning poker sessions
-    $.ajax
-      dataType: 'json'
-      url: 'API/planningpoker/planningpokersession'
-      async: no
-      success: (data) =>
-        for session in data
-          @planningPokerSessions.push(new SessionViewModel(session, this))
-
     # Load in the requirements
     $.ajax
       dataType: 'json'
@@ -36,30 +27,54 @@ class PlanningPokerViewModel
       success: (data) => 
         @team = data
 
+    # Load in the planning poker sessions
+    $.ajax
+      dataType: 'json'
+      url: 'API/planningpoker/planningpokersession'
+      async: no
+      success: (data) =>
+        for session in data
+          @planningPokerSessions.push(new SessionViewModel(session, @requirements, @team))
+
     @setActiveSession = (session) =>
       @activeSession(session)
 
-    @requirementsForSession = (session) =>
-      result = []
-      for requirement in @requirements
-        if requirement['id'] in session.requirementIDs()
-          result.push requirement
-      result
 
-    @widthPercent = (session, requirementID) ->
+
+#################################
+# Individual Session View Model #
+#################################
+
+class SessionViewModel
+  constructor: (data, requirements, team) ->
+    @parent = parent
+    @allRequirements = ko.observableArray(requirements)
+    @team = ko.observableArray(team)
+    # Set up the session fields as observable fields
+    for field, value of data
+      @[field] = ko.observable(value)
+
+    @requirements = =>
+        result = []
+        for requirement in @allRequirements()
+          if requirement['id'] in @requirementIDs()
+            result.push requirement
+        result
+
+    @widthPercent = (requirementID) =>
       numVotes = 0
-      for estimate in session.estimates()
+      for estimate in @estimates()
         if parseInt(estimate['requirementID']) == parseInt(requirementID)
           numVotes++
       percent = 0
-      if @team.length > 0
-        percent = parseInt((numVotes / @team.length) * 100)
+      if @team().length > 0
+        percent = parseInt((numVotes / @team().length) * 100)
       "#{percent}%"
 
-    @submitVote = (voteValue, requirementID, session) ->
+    @submitVote = (voteValue, requirementID) =>
       vote = parseInt(voteValue)
       estimate = 
-        sessionID: session.uuid()
+        sessionID: @uuid()
         requirementID: requirementID
         vote: vote
       $.ajax
@@ -70,19 +85,6 @@ class PlanningPokerViewModel
         success: (data) => 
           console.log('We did it!')
         error: => console.log 'Error updating the estimate'
-
-
-
-#################################
-# Individual Session View Model #
-#################################
-
-class SessionViewModel
-  constructor: (data, parent) ->
-    @parent = parent
-    # Set up the session fields as observable fields
-    for field, value of data
-      @[field] = ko.observable(value)
 
 
 ############################################

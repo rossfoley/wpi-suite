@@ -11,22 +11,6 @@
       this.activeSession = ko.observable();
       $.ajax({
         dataType: 'json',
-        url: 'API/planningpoker/planningpokersession',
-        async: false,
-        success: (function(_this) {
-          return function(data) {
-            var session, _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = data.length; _i < _len; _i++) {
-              session = data[_i];
-              _results.push(_this.planningPokerSessions.push(new SessionViewModel(session, _this)));
-            }
-            return _results;
-          };
-        })(this)
-      });
-      $.ajax({
-        dataType: 'json',
         url: 'API/requirementmanager/requirement',
         async: false,
         success: (function(_this) {
@@ -50,66 +34,27 @@
           };
         })(this)
       });
+      $.ajax({
+        dataType: 'json',
+        url: 'API/planningpoker/planningpokersession',
+        async: false,
+        success: (function(_this) {
+          return function(data) {
+            var session, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              session = data[_i];
+              _results.push(_this.planningPokerSessions.push(new SessionViewModel(session, _this.requirements, _this.team)));
+            }
+            return _results;
+          };
+        })(this)
+      });
       this.setActiveSession = (function(_this) {
         return function(session) {
           return _this.activeSession(session);
         };
       })(this);
-      this.requirementsForSession = (function(_this) {
-        return function(session) {
-          var requirement, result, _i, _len, _ref, _ref1;
-          result = [];
-          _ref = _this.requirements;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            requirement = _ref[_i];
-            if (_ref1 = requirement['id'], __indexOf.call(session.requirementIDs(), _ref1) >= 0) {
-              result.push(requirement);
-            }
-          }
-          return result;
-        };
-      })(this);
-      this.widthPercent = function(session, requirementID) {
-        var estimate, numVotes, percent, _i, _len, _ref;
-        numVotes = 0;
-        _ref = session.estimates();
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          estimate = _ref[_i];
-          if (parseInt(estimate['requirementID']) === parseInt(requirementID)) {
-            numVotes++;
-          }
-        }
-        percent = 0;
-        if (this.team.length > 0) {
-          percent = parseInt((numVotes / this.team.length) * 100);
-        }
-        return "" + percent + "%";
-      };
-      this.submitVote = function(voteValue, requirementID, session) {
-        var estimate, vote;
-        vote = parseInt(voteValue);
-        estimate = {
-          sessionID: session.uuid(),
-          requirementID: requirementID,
-          vote: vote
-        };
-        return $.ajax({
-          type: 'POST',
-          dataType: 'json',
-          url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
-          data: JSON.stringify(estimate),
-          success: (function(_this) {
-            return function(data) {
-              return console.log('We did it!');
-            };
-          })(this),
-          error: (function(_this) {
-            return function() {
-              return console.log('Error updating the estimate');
-            };
-          })(this)
-        });
-      };
     }
 
     return PlanningPokerViewModel;
@@ -117,13 +62,70 @@
   })();
 
   SessionViewModel = (function() {
-    function SessionViewModel(data, parent) {
+    function SessionViewModel(data, requirements, team) {
       var field, value;
       this.parent = parent;
+      this.allRequirements = ko.observableArray(requirements);
+      this.team = ko.observableArray(team);
       for (field in data) {
         value = data[field];
         this[field] = ko.observable(value);
       }
+      this.requirements = (function(_this) {
+        return function() {
+          var requirement, result, _i, _len, _ref, _ref1;
+          result = [];
+          _ref = _this.allRequirements();
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            requirement = _ref[_i];
+            if (_ref1 = requirement['id'], __indexOf.call(_this.requirementIDs(), _ref1) >= 0) {
+              result.push(requirement);
+            }
+          }
+          return result;
+        };
+      })(this);
+      this.widthPercent = (function(_this) {
+        return function(requirementID) {
+          var estimate, numVotes, percent, _i, _len, _ref;
+          numVotes = 0;
+          _ref = _this.estimates();
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            estimate = _ref[_i];
+            if (parseInt(estimate['requirementID']) === parseInt(requirementID)) {
+              numVotes++;
+            }
+          }
+          percent = 0;
+          if (_this.team().length > 0) {
+            percent = parseInt((numVotes / _this.team().length) * 100);
+          }
+          return "" + percent + "%";
+        };
+      })(this);
+      this.submitVote = (function(_this) {
+        return function(voteValue, requirementID) {
+          var estimate, vote;
+          vote = parseInt(voteValue);
+          estimate = {
+            sessionID: _this.uuid(),
+            requirementID: requirementID,
+            vote: vote
+          };
+          return $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
+            data: JSON.stringify(estimate),
+            success: function(data) {
+              return console.log('We did it!');
+            },
+            error: function() {
+              return console.log('Error updating the estimate');
+            }
+          });
+        };
+      })(this);
     }
 
     return SessionViewModel;
