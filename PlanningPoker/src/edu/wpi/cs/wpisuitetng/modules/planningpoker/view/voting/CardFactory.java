@@ -31,21 +31,21 @@ public class CardFactory {
 		}
 
 		    Graphics2D g = curImage.createGraphics();
-		    g.setFont(g.getFont().deriveFont(25f));
+		    g.setFont(g.getFont().deriveFont(30f));
 		    g.setColor(Color.RED);
-		    int xloc = 12;
+		    int xloc = 13;
 		    if (cardNum>9){
 		    	xloc = 6;
 		    }
 		    g.drawString(Integer.toString(cardNum), xloc, 35);
 
-		    g.setFont(g.getFont().deriveFont(50f));
+		    g.setFont(g.getFont().deriveFont(70f));
 		    
 		    drawCenteredString(Integer.toString(cardNum), curImage.getWidth(), curImage.getHeight(), g);
 		    
 		    g.rotate(Math.PI, curImage.getWidth()/2, curImage.getHeight()/2);
 		    
-		    g.setFont(g.getFont().deriveFont(25f));
+		    g.setFont(g.getFont().deriveFont(30f));
 		    
 		    g.drawString(Integer.toString(cardNum), xloc, 35);
 		    

@@ -335,14 +335,16 @@ public class DeckVotingPanel extends JPanel
 	private JButton createCardButtons(int cardValue, Point origin, boolean selected) {
 		final JButton card = new JButton();
 		// Try to load the corresponding playing card
-		try {
+		/*try {
 			final String fileName = new String("cards/" + Integer.toString(cardValue) + "-of-Diamonds.png");
 			final Image img = ImageIO.read(getClass().getResource(fileName));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			card.setIcon(new ImageIcon(img.getScaledInstance(112, 140, 0)));
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
 			card.setText("\t  " + Integer.toString(cardValue));
-		}
+		}*/
+		CardFactory cardGen = new CardFactory(cardValue);
+		card.setIcon(new ImageIcon(cardGen.getCard().getScaledInstance(112, 140, 0)));
 		card.setName(String.valueOf(cardValue));
 		card.setVerticalAlignment(JLabel.CENTER);
 		card.setHorizontalAlignment(JLabel.LEFT);
