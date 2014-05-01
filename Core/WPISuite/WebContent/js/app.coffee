@@ -15,8 +15,8 @@ class PlanningPokerViewModel
       url: 'API/planningpoker/planningpokersession'
       async: no
       success: (data) =>
-        @planningPokerSessions(ko.mapping.fromJS(data))
-        @planningPokerSessions(data)
+        for session in data
+          @planningPokerSessions.push(new SessionViewModel(session, this))
 
     # Load in the requirements
     $.ajax
@@ -42,13 +42,13 @@ class PlanningPokerViewModel
     @requirementsForSession = (session) =>
       result = []
       for requirement in @requirements
-        if requirement['id'] in session['requirementIDs']
+        if requirement['id'] in session.requirementIDs()
           result.push requirement
       result
 
     @widthPercent = (session, requirementID) ->
       numVotes = 0
-      for estimate in session['estimates']
+      for estimate in session.estimates()
         if parseInt(estimate['requirementID']) == parseInt(requirementID)
           numVotes++
       percent = 0
@@ -59,7 +59,7 @@ class PlanningPokerViewModel
     @submitVote = (voteValue, requirementID, session) ->
       vote = parseInt(voteValue)
       estimate = 
-        sessionID: session['uuid']
+        sessionID: session.uuid()
         requirementID: requirementID
         vote: vote
       $.ajax
@@ -78,8 +78,11 @@ class PlanningPokerViewModel
 #################################
 
 class SessionViewModel
-  constructor: (parent) ->
+  constructor: (data, parent) ->
     @parent = parent
+    # Set up the session fields as observable fields
+    for field, value of data
+      @[field] = ko.observable(value)
 
 
 ############################################

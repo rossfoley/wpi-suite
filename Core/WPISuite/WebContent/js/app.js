@@ -15,8 +15,13 @@
         async: false,
         success: (function(_this) {
           return function(data) {
-            _this.planningPokerSessions(ko.mapping.fromJS(data));
-            return _this.planningPokerSessions(data);
+            var session, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              session = data[_i];
+              _results.push(_this.planningPokerSessions.push(new SessionViewModel(session, _this)));
+            }
+            return _results;
           };
         })(this)
       });
@@ -57,7 +62,7 @@
           _ref = _this.requirements;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             requirement = _ref[_i];
-            if (_ref1 = requirement['id'], __indexOf.call(session['requirementIDs'], _ref1) >= 0) {
+            if (_ref1 = requirement['id'], __indexOf.call(session.requirementIDs(), _ref1) >= 0) {
               result.push(requirement);
             }
           }
@@ -67,7 +72,7 @@
       this.widthPercent = function(session, requirementID) {
         var estimate, numVotes, percent, _i, _len, _ref;
         numVotes = 0;
-        _ref = session['estimates'];
+        _ref = session.estimates();
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           estimate = _ref[_i];
           if (parseInt(estimate['requirementID']) === parseInt(requirementID)) {
@@ -84,7 +89,7 @@
         var estimate, vote;
         vote = parseInt(voteValue);
         estimate = {
-          sessionID: session['uuid'],
+          sessionID: session.uuid(),
           requirementID: requirementID,
           vote: vote
         };
@@ -112,8 +117,13 @@
   })();
 
   SessionViewModel = (function() {
-    function SessionViewModel(parent) {
+    function SessionViewModel(data, parent) {
+      var field, value;
       this.parent = parent;
+      for (field in data) {
+        value = data[field];
+        this[field] = ko.observable(value);
+      }
     }
 
     return SessionViewModel;
