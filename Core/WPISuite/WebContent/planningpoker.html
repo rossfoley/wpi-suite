@@ -48,11 +48,18 @@
                 <p data-bind="text: requirement().description"></p>
                 <span class="progress-label">Progress:</span>
                 <div class="progress requirement-progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" data-bind="style: {width: widthPercent()}, text: widthPercent()">
+                  <div class="progress-bar progress-bar-success" role="progressbar" data-bind="style: {width: widthPercent}, text: widthPercent">
                   </div>
                 </div>
-                <input type="number" placeholder="Vote here!" data-bind="value: voteValue" />
-                <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                <div class="no-deck-vote" data-bind="ifnot: usingDeck">
+                  <input type="number" placeholder="Vote here!" data-bind="value: voteValue" />
+                  <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                </div>
+                <div class="deck-vote" data-bind="if: usingDeck">
+                  <ul data-bind="foreach: cards">
+                    <li data-bind="text: value, click: function() {cardClicked()}, css: { 'card-selected': selected }"></li>
+                  </ul>
+                </div>
               </li>
           </ul>
         </div>
