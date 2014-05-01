@@ -42,17 +42,17 @@
             </h3>
           </div>
           <div class="panel-body" data-bind="text: description"></div>
-            <ul class="list-group" data-bind="foreach: requirements()">
+            <ul class="list-group" data-bind="foreach: requirementEstimates">
               <li class="list-group-item">
-                <h5><span data-bind="text: name"></span>:</h5>
-                <p data-bind="text: description"></p>
+                <h5><span data-bind="text: requirement().name"></span>:</h5>
+                <p data-bind="text: requirement().description"></p>
                 <span class="progress-label">Progress:</span>
                 <div class="progress requirement-progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" data-bind="style: {width: $parent.widthPercent(id)}, text: $parent.widthPercent(id)">
+                  <div class="progress-bar progress-bar-success" role="progressbar" data-bind="style: {width: widthPercent()}, text: widthPercent()">
                   </div>
                 </div>
                 <input type="number" placeholder="Vote here!" data-bind="value: voteValue" />
-                <button type="button" data-bind="click: function() {$parent.submitVote(voteValue, id)}">Submit Vote!</button>
+                <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
               </li>
           </ul>
         </div>

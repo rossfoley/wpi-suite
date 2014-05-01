@@ -8,6 +8,8 @@ class PlanningPokerViewModel
     @requirements = []
     @team = []
     @activeSession = ko.observable()
+    # Get the current username
+    @username = window.location.search.split('=')[1]
 
     # Load in the requirements
     $.ajax
@@ -34,7 +36,11 @@ class PlanningPokerViewModel
       async: no
       success: (data) =>
         for session in data
-          @planningPokerSessions.push(new SessionViewModel(session, @requirements, @team))
+          params = 
+            requirements: @requirements
+            team: @team
+            username: @username
+          @planningPokerSessions.push(new SessionViewModel(session, params))
 
     @setActiveSession = (session) =>
       @activeSession(session)
@@ -46,44 +52,83 @@ class PlanningPokerViewModel
 #################################
 
 class SessionViewModel
-  constructor: (data, requirements, team) ->
+  constructor: (data, params) ->
     @parent = parent
-    @allRequirements = ko.observableArray(requirements)
-    @team = ko.observableArray(team)
+    @allRequirements = ko.observableArray(params.requirements)
+    @team = ko.observableArray(params.team)
+    @username = params.username
+    @params = params
+
     # Set up the session fields as observable fields
     for field, value of data
       @[field] = ko.observable(value)
 
-    @requirements = =>
-        result = []
-        for requirement in @allRequirements()
-          if requirement['id'] in @requirementIDs()
-            result.push requirement
-        result
+    # Set up the estimate view models
+    @requirementEstimates = ko.observableArray([])
+    for requirement in @allRequirements()
+      if requirement['id'] in @requirementIDs()
+        reqEstimates = []
+        for user in @team()
+          reqEstimates[user['username']] = 
+            sessionID: @uuid()
+            requirementID: requirement['id']
+            ownerName: user['username']
+            vote: 0
+            isSaved: no
 
-    @widthPercent = (requirementID) =>
+        for estimate in @estimates()
+          if estimate['requirementID'] == requirement['id']
+            estimate['isSaved'] = yes
+            reqEstimates[estimate['ownerName']] = estimate
+        @requirementEstimates.push(new EstimateViewModel(reqEstimates, requirement, @params))
+
+
+    @requirements = ko.computed =>
+      result = []
+      for requirement in @allRequirements()
+        if requirement['id'] in @requirementIDs()
+          result.push requirement
+      result
+
+
+#################################
+# Individual Session View Model #
+#################################
+
+class EstimateViewModel
+  constructor: (estimatesObject, req, params) ->
+    @requirement = ko.observable(req)
+    @requirements = ko.observable(params.requirements)
+    @team = ko.observable(params.team)
+    @username = params.username
+
+    # Load in the estimates as observable fields
+    for user, estimate of estimatesObject
+      observableEstimate = {}
+      for key, value of estimate
+        observableEstimate[key] = ko.observable(value)
+      @[user] = ko.observable(observableEstimate)
+
+    @voteValue = ko.observable(@[@username]().vote())
+
+    @widthPercent = =>
       numVotes = 0
-      for estimate in @estimates()
-        if parseInt(estimate['requirementID']) == parseInt(requirementID)
+      for user in @team()
+        if @[user['username']]().isSaved()
           numVotes++
       percent = 0
       if @team().length > 0
         percent = parseInt((numVotes / @team().length) * 100)
       "#{percent}%"
 
-    @submitVote = (voteValue, requirementID) =>
-      vote = parseInt(voteValue)
-      estimate = 
-        sessionID: @uuid()
-        requirementID: requirementID
-        vote: vote
+    @submitVote = =>
+      @[@username]().vote(parseInt(@voteValue))
       $.ajax
         type: 'POST'
         dataType: 'json'
         url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
-        data: JSON.stringify(estimate)
-        success: (data) => 
-          console.log('We did it!')
+        data: JSON.stringify(@[@username]())
+        success: (data) => console.log('Vote successfully submitted')
         error: => console.log 'Error updating the estimate'
 
 

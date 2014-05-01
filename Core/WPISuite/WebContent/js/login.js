@@ -30,7 +30,7 @@
           if (window.location.port) {
             url += ":" + window.location.port;
           }
-          url += '/WPISuite/planningpoker.html';
+          url += "/WPISuite/planningpoker.html?username=" + ($('#username').val());
           return window.location = url;
         }
       });

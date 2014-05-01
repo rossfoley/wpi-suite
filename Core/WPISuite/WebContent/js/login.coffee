@@ -21,7 +21,7 @@ $ ->
       success: ->
         url = "#{window.location.protocol}//#{window.location.hostname}"
         url += ":#{window.location.port}" if window.location.port
-        url += '/WPISuite/planningpoker.html'
+        url += "/WPISuite/planningpoker.html?username=#{$('#username').val()}"
         window.location = url
 
     off
