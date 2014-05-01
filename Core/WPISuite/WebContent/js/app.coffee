@@ -115,7 +115,7 @@ class EstimateViewModel
 
     @voteValue = ko.observable(@[@username]().vote())
 
-    @widthPercent = =>
+    @widthPercent = ko.computed =>
       numVotes = 0
       for user in @team()
         if @[user['username']]().isSaved()
@@ -132,7 +132,9 @@ class EstimateViewModel
         dataType: 'json'
         url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
         data: ko.toJSON(@[@username]())
-        success: (data) => console.log('Vote successfully submitted')
+        success: (data) => 
+          console.log('Vote successfully submitted')
+          @[@username]().isSaved(yes)
         error: => console.log 'Error updating the estimate'
 
 

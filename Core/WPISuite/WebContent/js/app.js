@@ -151,7 +151,7 @@
         this[user] = ko.observable(observableEstimate);
       }
       this.voteValue = ko.observable(this[this.username]().vote());
-      this.widthPercent = (function(_this) {
+      this.widthPercent = ko.computed((function(_this) {
         return function() {
           var numVotes, percent, _i, _len, _ref;
           numVotes = 0;
@@ -168,7 +168,7 @@
           }
           return "" + percent + "%";
         };
-      })(this);
+      })(this));
       this.submitVote = (function(_this) {
         return function() {
           _this[_this.username]().vote(parseInt(_this.voteValue()));
@@ -178,7 +178,8 @@
             url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
             data: ko.toJSON(_this[_this.username]()),
             success: function(data) {
-              return console.log('Vote successfully submitted');
+              console.log('Vote successfully submitted');
+              return _this[_this.username]().isSaved(true);
             },
             error: function() {
               return console.log('Error updating the estimate');
