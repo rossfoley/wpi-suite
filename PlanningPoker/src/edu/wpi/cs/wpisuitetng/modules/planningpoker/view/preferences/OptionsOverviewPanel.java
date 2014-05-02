@@ -41,8 +41,9 @@ public class OptionsOverviewPanel extends JPanel {
 		
 		buildComboPanel();
 		setBottomPanel(helpPanel);
+		buildOptionsPanel();
 	}
-	
+
 	public void buildComboPanel(){
 		comboPanel.setLayout(comboLayout);
 		
@@ -70,6 +71,11 @@ public class OptionsOverviewPanel extends JPanel {
 		optionsLayout.putConstraint(SpringLayout.NORTH, comboPanel, 10, SpringLayout.NORTH, this);
 		optionsLayout.putConstraint(SpringLayout.EAST, comboPanel, -10, SpringLayout.EAST, this);
 		optionsLayout.putConstraint(SpringLayout.WEST, comboPanel, 10, SpringLayout.WEST, this);
+		
+		optionsLayout.putConstraint(SpringLayout.NORTH, lowerPanel, 10, SpringLayout.SOUTH, comboPanel);
+		optionsLayout.putConstraint(SpringLayout.SOUTH, lowerPanel, -10, SpringLayout.SOUTH, this);
+		optionsLayout.putConstraint(SpringLayout.EAST, lowerPanel, -10, SpringLayout.EAST, this);
+		optionsLayout.putConstraint(SpringLayout.WEST, lowerPanel, 10, SpringLayout.WEST, this);
 		
 		optionsLayout.putConstraint(SpringLayout.NORTH, lowerPanel, 10, SpringLayout.SOUTH, comboPanel);
 		optionsLayout.putConstraint(SpringLayout.SOUTH, lowerPanel, -10, SpringLayout.SOUTH, this);
