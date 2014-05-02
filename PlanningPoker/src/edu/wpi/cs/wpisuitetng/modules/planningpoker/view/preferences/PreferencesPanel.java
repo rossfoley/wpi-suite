@@ -45,7 +45,7 @@ import javax.swing.event.DocumentListener;
 /**
  * This class implements an interface to manage user preferences.
  */
-public class PreferencesPanel extends JPanel implements FocusListener {
+public class PreferencesPanel extends JPanel {
 	private final JTextField txtEnterEmailHere;
 	private boolean emailError = false;
 	private boolean emailSent = false;
@@ -65,7 +65,6 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 		txtEnterEmailHere.setText("Enter Email Here...");
 		add(txtEnterEmailHere);
 		txtEnterEmailHere.setColumns(10);
-		txtEnterEmailHere.addFocusListener(this);
 
 		final JLabel lblSub = new JLabel("Subscribe To Email Notifications");
 		springLayout.putConstraint(SpringLayout.NORTH, txtEnterEmailHere, 13, SpringLayout.SOUTH, lblSub);
@@ -113,23 +112,75 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				final String email = txtEnterEmailHere.getText();
-
-				// Validate
-				if (validateEmail(email) == true) {
 				
+				// Should be a special case
+				if (email.equals("")) {
+					lblEmailErrorText.setVisible(false);
+					btnSubmit.setEnabled(false);
+				}
+
+				else if (validateEmail(email) == true) {
+					lblEmailErrorText.setText("Valid Email");
+					lblEmailErrorText.setForeground(Color.GREEN);
+					lblEmailErrorText.setVisible(true);
+					btnSubmit.setEnabled(true);
+				}
+				else {
+					lblEmailErrorText.setText("Invalid Email");
+					lblEmailErrorText.setForeground(Color.BLACK);
+					lblEmailErrorText.setVisible(true);
+					btnSubmit.setEnabled(false);
 				}
 			}
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				final String email = txtEnterEmailHere.getText();
+				// Should be a special case
+				if (email.equals("")) {
+					lblEmailErrorText.setVisible(false);
+					btnSubmit.setEnabled(false);
+				}
+
+				else if (validateEmail(email) == true) {
+					lblEmailErrorText.setText("Valid Email");
+					lblEmailErrorText.setForeground(Color.GREEN);
+					lblEmailErrorText.setVisible(true);
+					btnSubmit.setEnabled(true);
+				}
+				else {
+					lblEmailErrorText.setText("Invalid Email");
+					lblEmailErrorText.setForeground(Color.BLACK);
+					lblEmailErrorText.setVisible(true);
+					btnSubmit.setEnabled(false);
+				}
 
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				final String email = txtEnterEmailHere.getText();
+				
+				// Should be a special case
+				if (email.equals("")) {
+					lblEmailErrorText.setVisible(false);
+					btnSubmit.setEnabled(false);
+				}
+
+				else if (validateEmail(email) == true) {
+					lblEmailErrorText.setText("Valid Email");
+					lblEmailErrorText.setForeground(Color.GREEN);
+					lblEmailErrorText.setVisible(true);
+					btnSubmit.setEnabled(true);
+				}
+				else {
+					lblEmailErrorText.setText("Invalid Email");
+					lblEmailErrorText.setForeground(Color.BLACK);
+					lblEmailErrorText.setVisible(true);
+					btnSubmit.setEnabled(false);
+				}
 
 			}
 		});
-		addFocusListener(this);
 		
 		JLabel lblPreferences = new JLabel("Preferences");
 		lblPreferences.setHorizontalAlignment(SwingConstants.CENTER);
@@ -199,6 +250,8 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 	 * This function validates a given email address for form.
 	 */
 	boolean validateEmail(String email) {
+		
+		// Built in validation doesn't make sure domain 
 
 		try {
 			final InternetAddress valid = new InternetAddress(email);
