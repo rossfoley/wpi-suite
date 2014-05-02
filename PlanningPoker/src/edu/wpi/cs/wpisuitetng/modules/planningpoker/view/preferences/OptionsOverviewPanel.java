@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckViewer;
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -32,7 +34,7 @@ public class OptionsOverviewPanel extends JSplitPane {
 	private JLabel comboLabel = new JLabel("Select Option To View  ");
 	private JComboBox<String> comboBoxOptions = new JComboBox<String>();
 	private PreferencesPanel prefPanel = new PreferencesPanel();
-	private JPanel deckOverviewPanel = new JPanel();
+	private DeckViewer deckOverviewPanel = new DeckViewer();
 	private JPanel helpPanel = new JPanel();
 	private SpringLayout comboLayout = new SpringLayout();
 	private String[] availableOptions = {"Help", "View Decks", "Email Preferences"};
