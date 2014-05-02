@@ -9,12 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.util.List;
-import java.util.Set;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
@@ -24,11 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 
 public class StatisticsDetailPanel extends JSplitPane {
 	PlanningPokerSession currentSession;
@@ -50,13 +40,13 @@ public class StatisticsDetailPanel extends JSplitPane {
 		final Object[][] userData = {};
 		
 		// Create the info panel and table panel
-		userTable = new StatisticsUserTable(userData, userColumnNames);
+		userTable = new StatisticsUserTable(userData, userColumnNames, session);
 		tablePanel = new JScrollPane(userTable);
 		infoPanel = new StatisticsInfoPanel(currentSession);
 		
 		
 		userTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		userTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
+		userTable.getColumnModel().getColumn(1).setMinWidth(100); // User name
 		userTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
 
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
@@ -88,8 +78,6 @@ public class StatisticsDetailPanel extends JSplitPane {
 	}
 	
 	public void updatePanel()	{
-
-		
 		// update each part of the split panel
 		updateInfoPanel(currentSession);
 		updateReqTable(currentSession);
