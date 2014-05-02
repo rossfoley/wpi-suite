@@ -6,8 +6,6 @@ import javax.swing.JButton;
 
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-
 public class PlanningPokerSessionButtonsPanelTest {
 	PlanningPokerSessionButtonsPanel buttonsPanel = new PlanningPokerSessionButtonsPanel();
 
@@ -46,20 +44,6 @@ public class PlanningPokerSessionButtonsPanelTest {
 		assertTrue(voteButton.isEnabled());
 	}
 
-/*	@Test
-	public void testDisableEndVoteButton() {
-		buttonsPanel.disableEndVoteButton();
-		JButton endVoteButton = buttonsPanel.getEndVoteButton();
-		assertFalse(endVoteButton.isEnabled());
-	}
-
-	@Test
-	public void testEnableEndVoteButton() {
-		buttonsPanel.enableEndVoteButton();
-		JButton endVoteButton = buttonsPanel.getEndVoteButton();
-		assertTrue(endVoteButton.isEnabled());
-	}*/
-
 	@Test
 	public void testDisableStatisticsButton() {
 		buttonsPanel.disableStatisticsButton();
@@ -84,9 +68,6 @@ public class PlanningPokerSessionButtonsPanelTest {
 		
 		JButton voteButton = buttonsPanel.getVoteButton();
 		assertFalse(voteButton.isEnabled());
-		
-		//JButton endVoteButton = buttonsPanel.getEndVoteButton();
-		//assertFalse(endVoteButton.isEnabled());
 		
 		JButton statsButton = buttonsPanel.getStatisticsButton();
 		assertFalse(statsButton.isEnabled());

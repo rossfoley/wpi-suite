@@ -14,8 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -26,12 +24,7 @@ import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewMode;
 
@@ -73,7 +66,9 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			statisticsButton.setIcon(new ImageIcon(img));
 
 
-		} catch (IOException | NullPointerException | IllegalArgumentException ex) {} 
+		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
+			System.out.println("Failed to read planning poker button images");
+		} 
 
 		// the action listener for the Create Planning Poker Session Button
 		createButton.addActionListener(new ActionListener() {
@@ -147,8 +142,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		return this.voteButton;
 	}
 	
-
-	
 	/**
 	 * Getter for the statistics button
 	 * @return The end vote JButton
@@ -213,10 +206,10 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		
 		// If the session is ended or closed, allow the user to view statistics
 		if (session.isEnded() || session.isClosed()) {
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
+			enableStatisticsButton();
 		}
 		else if (session.isOpen() || session.isPending()) {
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
+			disableStatisticsButton();
 		}
 	}
 	

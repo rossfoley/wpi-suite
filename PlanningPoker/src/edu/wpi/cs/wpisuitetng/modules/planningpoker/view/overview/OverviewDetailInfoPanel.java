@@ -10,44 +10,31 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Dimension;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
 
-
-import java.util.LinkedList;
-import java.util.List;
-
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * The general information (name, description etc) for a given session
  * that's being displayed in the overview detail panel
  * 
  * Top half of the overviewDetailPanel split pane
- * @author Randy Acheson
  * @version 4/18/14
  */
 public class OverviewDetailInfoPanel extends JPanel {
@@ -107,12 +94,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(sessionCreatorDisplay);
 		add(overviewDetailButton);
 		
-		/*overviewDetailButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ViewEventController.getInstance().sendEstimatesFromSession();
-			}
-		});*/
-		
 		//open session button action listener
 		overviewDetailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,8 +109,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
 				OverviewTreePanel treePanel = ViewEventController.getInstance().getOverviewTreePanel();
 				treePanel.refresh();
-
-
 			}
 		});
 	}
@@ -184,13 +163,9 @@ public class OverviewDetailInfoPanel extends JPanel {
 				overviewDetailButton.setVisible(false);
 			}
 		}
-	
-
 		
-	
-		
-		String endDate, endTime;
 		// Change end date
+		String endDate, endTime;
 		try {
 			endDate = DateFormat.getDateInstance(DateFormat.FULL)
 					.format(session.getEndDate().getTime());
@@ -268,7 +243,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 			AM_PM = "PM";
 		}
 		return AM_PM;
-
 	}
 	
 	/**
@@ -336,7 +310,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 	 */
 	public boolean areAllEstimatesSent(PlanningPokerSession session){
 		boolean allMatched = true;
-		final RequirementModel reqs = RequirementModel.getInstance();
 		
 		for (Integer finalEstimateID:session.getFinalEstimates().keySet()){
 			boolean foundThisOne = false;

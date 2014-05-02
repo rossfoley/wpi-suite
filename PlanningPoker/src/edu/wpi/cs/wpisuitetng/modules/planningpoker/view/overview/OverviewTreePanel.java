@@ -30,13 +30,13 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionControl
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewMode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 
 /**
  * Displays all sessions in a tree for the left side of the overview panel
  * @see requirementmanager.view.overview.overviewtree
- * @author Randy Acheson
  * @version 4/18/14
  */
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
@@ -53,12 +53,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         ViewEventController.getInstance().setOverviewTree(this);
 		this.refresh();  
 		initialized = false;
-		// Disable all toolbar buttons on initialization
-		try {
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
-		} catch (NullPointerException ex) {} // Do nothing if the toolbar has not been instantiated yet
 	}
 	
 	/**
@@ -188,8 +182,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
 	/**
-	 * @return the tree */
+	 * @return the tree
+	 */
 	public JTree getTree() {
 		return tree;
 	}

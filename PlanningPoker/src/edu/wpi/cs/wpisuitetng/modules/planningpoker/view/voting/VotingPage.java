@@ -55,7 +55,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 	public VotingPage(PlanningPokerSession votingSession){
 		activeSession = votingSession;
 
-
 		buildReqPanel(null);
 
 		reqsView = new VotingManager(getSessionReqs(), activeSession, ConfigManager.getConfig().getUserName());
