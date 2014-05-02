@@ -776,6 +776,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				endHour += 12;
 			}
 		}
+		validateFields();
 	}
 
 	public void parseDeckDropdowns(){
