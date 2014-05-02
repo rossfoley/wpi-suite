@@ -77,7 +77,7 @@ public class CreateDeck extends JPanel {
 	private void buildPanel() {
 		springLayout = new SpringLayout();
 		setLayout(springLayout);
-		setPreferredSize(new Dimension(390, 350));
+		setPreferredSize(new Dimension(405, 350));
 
 		final JLabel lblDeckName = new JLabel("Deck Name:* ");
 		
@@ -426,26 +426,30 @@ public class CreateDeck extends JPanel {
 		if (txtCardValue.getText().equals("")) {
 			btnAddCard.setEnabled(false);
 			lblAddCardError.setVisible(false);
-			
 		}
 		else {
 			try {
 				if (Integer.parseInt(txtCardValue.getText()) >= 0) {
 					btnAddCard.setEnabled(true);
 					lblAddCardError.setVisible(false);
-					
 				}
+				/*
+				if (txtCardValue.getText().length() < 3){
+					btnAddCard.setEnabled(false);
+					lblAddCardError.setVisible(true);
+					lblAddCardError.setText("Enter 3 or less digits");
+				}
+				*/
 				else {
 					btnAddCard.setEnabled(false);
 					lblAddCardError.setVisible(true);
 					lblAddCardError.setText("Value must be positive");
-					
 				}
 				// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {
 				btnAddCard.setEnabled(false);
 				lblAddCardError.setVisible(true);
-				lblAddCardError.setText("Enter less than 10 digits");
+				lblAddCardError.setText("Please enter a number");
 			}
 		}
 	}
