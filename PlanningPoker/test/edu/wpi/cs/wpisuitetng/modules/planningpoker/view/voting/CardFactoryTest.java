@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Team8s
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 import static org.junit.Assert.*;
 
@@ -9,7 +19,11 @@ import javax.imageio.ImageIO;
 
 import org.junit.Test;
 
-
+/**
+ * Test Class for CardFactory
+ * @author Perry
+ * @version 1.0
+ */
 public class CardFactoryTest {
 	
 	/**
@@ -20,7 +34,7 @@ public class CardFactoryTest {
 	public void GenerateCardTest1Digit(){
 		final int number = 4;
 		
-		CardFactory cF = new CardFactory(number);
+		final CardFactory cF = new CardFactory(number);
 		
 		cF.generateCard();
 		
@@ -28,7 +42,7 @@ public class CardFactoryTest {
 		
 		assertNotNull(testCard);
 		
-		File testfile = new File("tests/TestCard1Digit.png");
+		final File testfile = new File("tests/TestCard1Digit.png");
 		
 		testfile.delete();
 		
@@ -49,7 +63,7 @@ public class CardFactoryTest {
 	public void GenerateCardTest2Digit(){
 		final int number = 44;
 		
-		CardFactory cF = new CardFactory(number);
+		final CardFactory cF = new CardFactory(number);
 		
 		cF.generateCard();
 		
@@ -57,7 +71,7 @@ public class CardFactoryTest {
 		
 		assertNotNull(testCard);
 		
-		File testfile = new File("tests/TestCard2Digit.png");
+		final File testfile = new File("tests/TestCard2Digit.png");
 		
 		testfile.delete();
 		
@@ -78,7 +92,7 @@ public class CardFactoryTest {
 	public void GenerateCardTest3Digit(){
 		final int number = 400;
 		
-		CardFactory cF = new CardFactory(number);
+		final CardFactory cF = new CardFactory(number);
 		
 		cF.generateCard();
 		
@@ -86,7 +100,7 @@ public class CardFactoryTest {
 		
 		assertNotNull(testCard);
 		
-		File testfile = new File("tests/TestCard3Digit.png");
+		final File testfile = new File("tests/TestCard3Digit.png");
 		
 		testfile.delete();
 		
@@ -105,16 +119,20 @@ public class CardFactoryTest {
 	 */
 	@Test
 	public void GenerationSpeedTest(){
-		CardFactory cF1 = new CardFactory(10);
+		final CardFactory cF1 = new CardFactory(10);
 		
 		cF1.generateCard();
 		
-		CardFactory cF2 = new CardFactory(10);
+		final CardFactory cF2 = new CardFactory(10);
 		
 		cF2.generateCard();
 		
-		CardFactory cF3 = new CardFactory(10);
+		final CardFactory cF3 = new CardFactory(10);
 		
 		cF3.generateCard();
+		
+		assertNotNull(cF1.getCard());
+		assertNotNull(cF2.getCard());
+		assertNotNull(cF3.getCard());
 	}
 }
