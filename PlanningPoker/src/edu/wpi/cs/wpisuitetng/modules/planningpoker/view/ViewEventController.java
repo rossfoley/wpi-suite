@@ -10,27 +10,19 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.OptionsOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsDetailPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsReqTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsUserTable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VoterTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
 
 /**
@@ -38,23 +30,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
  * All actions on GUI elements should be conducted through this controller.
  * @version $Revision: 1.0 $
  */
-
 public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
 	private ToolbarView toolbar = null;
 	private OverviewTreePanel overviewTreePanel = null;
 	private OverviewDetailPanel overviewDetailPanel = null;
-	private final List<PlanningPokerSessionTab> listOfEditingPanels = new ArrayList<PlanningPokerSessionTab>();
-	private OverviewDetailInfoPanel overviewDetailInfoPanel;
-	private final List<VotingPage> listOfVotingPanels = new ArrayList<VotingPage>();
-	private OverviewReqTable overviewReqTable;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
-	private StatisticsUserTable statisticsUserTable;
-	private StatisticsDetailPanel statisticsDetailPanel;
-	private StatisticsReqTable statisticsReqTable;
-	private StatisticsInfoPanel statisticsInfoPanel;	private VoterTable overviewVoterTable = null;
-	private final List<StatisticsPanel> listOfStatisticsPanels = new ArrayList<StatisticsPanel>();
+	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
+	private OptionsOverviewPanel helpPanel = null;
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -63,7 +47,8 @@ public class ViewEventController {
 
 	/**
 	 * Returns the singleton instance of the vieweventcontroller.
-	 * @return The instance of this controller. */
+	 * @return The instance of this controller.
+	 */
 	public static ViewEventController getInstance() {
 		if (instance == null) {
 			instance = new ViewEventController();
@@ -71,47 +56,30 @@ public class ViewEventController {
 		return instance;
 	}
 	
+	/**
+	 * Sets the overview tree for the given view
+	 * @param overviewTreePanel	The overview tree
+	 */
 	public void setOverviewTree(OverviewTreePanel overviewTreePanel) {
 		this.overviewTreePanel = overviewTreePanel;
 	}
 	
+	/**
+	 * Sets the OverviewDetailPanel for the given view.
+	 * @param overviewDetailPanel	The detail panel
+	 */
 	public void setOverviewDetailPanel(OverviewDetailPanel overviewDetailPanel) {
 		this.overviewDetailPanel = overviewDetailPanel;
 	}
 	
-	public void setOverviewDetailInfoPanel(OverviewDetailInfoPanel infoPanel) {
-		overviewDetailInfoPanel = infoPanel;
-	}
-	
-	public OverviewReqTable getOverviewReqTable(){
-		return overviewReqTable;
-	}
-	
-	public void setOverviewReqTable(OverviewReqTable overviewReqTable) {
-		this.overviewReqTable = overviewReqTable;
-	}
-	public void setOverviewVoterTable(VoterTable overviewVoterTable) {
-		this.overviewVoterTable  = overviewVoterTable;
-	}	
-	
+	/**
+	 * Sets the toolbar button panel for the given view.
+	 * @param buttonsPanel	The buttons panel to set
+	 */	
 	public void setPlanningPokerSessionButtonsPanel(PlanningPokerSessionButtonsPanel buttonsPanel) {
 		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
 	
-	//Statistics package set functions
-	
-	public void setStatisticsUserTable(StatisticsUserTable userTable) {
-		statisticsUserTable = userTable;
-	}
-	public void setStatisticsDetailPanel(StatisticsDetailPanel detailPanel) {
-		statisticsDetailPanel = detailPanel;
-	}
-	public void setStatisticsReqTable(StatisticsReqTable reqTable) {
-		statisticsReqTable = reqTable;
-	}
-	public void setStatisticsInfoPanel(StatisticsInfoPanel infoPanel) {
-		statisticsInfoPanel = infoPanel;		
-	}
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
@@ -124,17 +92,16 @@ public class ViewEventController {
 	 * Sets the toolbarview to the given toolbar
 	 * @param tb the toolbar to be set as active.
 	 */
-	public void setToolBar(ToolbarView tb) {
+	public void setToolbar(ToolbarView tb) {
 		toolbar = tb;
 		toolbar.repaint();
 	}
 	
 	/**
-	 * opens a new tab for creating poker session
-	 * This code is a mockup of RequirementManager.view.ViewEventController#creatRequirement
+	 * Opens a new tab for creating poker session
+	 * This code is a mock-up of RequirementManager.view.ViewEventController#creatRequirement
 	 */
 	public void createPlanningPokerSession() {
-		//SessionPanel newSession = new SessionPanel(-1); // the issue is with requirementpanel.java in package
 		final PlanningPokerSessionTab panel = new PlanningPokerSessionTab();
 		main.addTab("New Session.", null, panel, "New Session");
 		main.invalidate(); //force the tabbedpane to redraw.
@@ -143,12 +110,11 @@ public class ViewEventController {
 	}
 
 	/**
-	 * @return toolbar */
+	 * @return toolbar	The instance of the toolbar currently being displayed
+	 */
 	public ToolbarView getToolbar() {
 		return toolbar;
 	}
-	
-
 
 	/**
 	 * @return OverviewTreePanel
@@ -163,11 +129,11 @@ public class ViewEventController {
 	public OverviewDetailPanel getOverviewDetailPanel() {
 		return overviewDetailPanel;
 	}
-	/**
-	 * 
-	 * @param overviewEndVotePanel
-	 */
 	
+	/**
+	 * Getter for the buttons panel toolbar
+	 * @return	The Buttons panel toolbar
+	 */
 	public PlanningPokerSessionButtonsPanel getPlanningPokerSessionButtonsPanel() {
 		return planningPokerSessionButtonsPanel;
 	}
@@ -175,29 +141,32 @@ public class ViewEventController {
 	/**
 	 * Removes the tab for the given JComponent
 	 * @param comp the component to remove
+	 * @return	If the tab was successfully removed
 	 */
-	public void removeTab(JComponent comp)
+	public boolean removeTab(JComponent comp)
 	{
-		// Check if the tab is a planningPokerSession tab
+		// Check if the tab is a PlanningPokerSession create/edit tab
 		if (comp instanceof PlanningPokerSessionTab) {
 			// Only remove if it is ready to remove
 			if(!((PlanningPokerSessionTab)comp).readyToRemove()) {
-				return;
+				return false;
 			}
-			listOfEditingPanels.remove(comp);
+		}
+		// Check if the tab contains a planning poker session
+		if (comp instanceof ISessionTab) {
+			openSessionTabHashTable.remove(((ISessionTab)comp).getDisplaySession());
 		}
 		
-		// Check if the tab is a voteOnSession tab
-		if (comp instanceof VotingPage) {
-			listOfVotingPanels.remove(comp);
-			planningPokerSessionButtonsPanel.enableVoteButton();
-			planningPokerSessionButtonsPanel.enableEndVoteButton();
-		}		
+		if (comp instanceof OptionsOverviewPanel){
+			helpPanel = null;
+		}
 		
 		main.remove(comp);
+		return true;
 	}
 
-	/**Tells the table to update its listings based on the data in the requirement model
+	/**
+	 * Tells the table to update its listings based on the data in the requirement model
 	 * 
 	 */
 	public void refreshTable() {
@@ -206,13 +175,15 @@ public class ViewEventController {
 	
 	/**
 	 * Returns the main view
-	 * @return the main view */
+	 * @return the main view
+	 */
 	public MainView getMainView() {
 		return main;
 	}
 
 	/**
 	 * Closes all of the tabs besides the overview tab in the main view.
+	 * 
 	 */
 	public void closeAllTabs() {
 		final int tabCount = main.getTabCount();
@@ -220,9 +191,13 @@ public class ViewEventController {
 		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
 			if(toBeRemoved instanceof OverviewPanel) continue;
+			if (toBeRemoved instanceof OptionsOverviewPanel){
+				helpPanel = null;
+			}
 			main.removeTabAt(i);
 		}
 
+		openSessionTabHashTable = new HashMap<PlanningPokerSession, JComponent>();
 		main.repaint();
 	}
 
@@ -243,6 +218,9 @@ public class ViewEventController {
 			
 			if (toBeRemoved == selected) {
 				continue;
+			}
+			if (toBeRemoved instanceof OptionsOverviewPanel){
+				helpPanel = null;
 			}
 
 			main.removeTabAt(i);
@@ -266,112 +244,118 @@ public class ViewEventController {
 	public void sendEstimatesFromSession(){
 		overviewDetailPanel.replaceTable();
 	}
-
+	
 	/**
-	 * Opens a new tab for the editing of a session
-	 * @param toEdit the session to edit
+	 * Opens the input session for the specified operation
+	 * @param session	The session to open
+	 * @param tabType	The desired tab type
 	 */
-	public void editSession(PlanningPokerSession toEdit)
-	{
-		PlanningPokerSessionTab exists = null;
-		
-		// Check if the session is already open in a tab
-		for(PlanningPokerSessionTab panel : listOfEditingPanels)
-		{
-			if(panel.getDisplaySession() == toEdit)
-			{
-				exists = panel;
+	private void openNewSessionTab(PlanningPokerSession session, ViewMode tabType) {
+		final JComponent sessionComp;
+		// Create the panel based on the input ViewMode
+		switch(tabType) {
+			case EDITING:
+				sessionComp = new PlanningPokerSessionTab(session);
 				break;
-			}
-		}
-		
-		if (exists == null)
-		{
-			// eventually want to add session to edit as an argument
-			final PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
-			
-			final StringBuilder tabName = new StringBuilder();
-			final int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
-			tabName.append(toEdit.getName().substring(0,subStringLength));
-			if(toEdit.getName().length() > 6) tabName.append("..");
-			
-			main.addTab(tabName.toString(), null, editPanel, toEdit.getName());
-			listOfEditingPanels.add(editPanel);
-			main.invalidate();
-			main.repaint();
-			main.setSelectedComponent(editPanel);
-		}
-		else
-		{
-			main.setSelectedComponent(exists);
-		}		
-			
-	}
-
-	/**
-	 * this opens the voting page for the given session
-	 * @param toVoteOn session that has been selected to vote in
-	 */
-	public void voteOnSession(PlanningPokerSession toVoteOn){
-		VotingPage exists = null;
-		
-		// Check if the session is already open in a tab
-		for(VotingPage panel : listOfVotingPanels)
-		{
-			if(panel.getDisplaySession() == toVoteOn)
-			{
-				exists = panel;
+			case VOTING:
+				sessionComp = new VotingPage(session);
 				break;
-			}
+			case STATISTICS:
+				sessionComp = new StatisticsPanel(session);
+				break;
+			default:	// The view type is invalid,
+				throw new IllegalArgumentException("Cannot create session tab. ViewMode is invalid");
 		}
-		if (exists == null)
-		{
-			final VotingPage votingPanel = new VotingPage(toVoteOn);
-			
-			final StringBuilder tabName = new StringBuilder();
-			final int subStringLength = toVoteOn.getName().length() > 6 ? 7 : toVoteOn.getName().length();
-			tabName.append(toVoteOn.getName().substring(0,subStringLength));
-			if(toVoteOn.getName().length() > 6) tabName.append("..");
-			
-			main.addTab(tabName.toString(), null, votingPanel, toVoteOn.getName());
-			listOfVotingPanels.add(votingPanel);
-			main.invalidate();
-			main.repaint();
-			main.setSelectedComponent(votingPanel);
+		
+		final StringBuilder tabName = new StringBuilder();
+		final int subStringLength = session.getName().length() > 6 ? 7 : session.getName().length();
+		tabName.append(session.getName().substring(0,subStringLength));
+		if (session.getName().length() > 6) {
+			tabName.append("..");
 		}
-		else
-		{
-			main.setSelectedComponent(exists);
-		}
+		
+		main.addTab(tabName.toString(), null, sessionComp, session.getName());
+		openSessionTabHashTable.put(((ISessionTab) sessionComp).getDisplaySession(), sessionComp);
+		main.invalidate(); //force the tabbedpane to redraw.
+		main.repaint();
+		main.setSelectedComponent(sessionComp);
+		
 	}
 	
-	public void openStatisticsTab(PlanningPokerSession viewStats){
-		StatisticsPanel exists = null;
-		
-		// Check if the session is already open in a tab
-		for (StatisticsPanel statsPanel : listOfStatisticsPanels) {
-			if (statsPanel.getDisplaySession() == viewStats) {
-				exists = statsPanel;
-				break;
+	/**
+	 * Opens the input session for the specified operation
+	 * This will close the existing tab if it is of a different ViewMode.
+	 * If they are the same ViewMode, it will simply set that tab as the selected component
+	 * @param session	The session to open
+	 * @param tabType	The desired tab type
+	 */
+	public void openSessionTab(PlanningPokerSession session, ViewMode tabType) {
+		// If the session is already opened
+		if (openSessionTabHashTable.containsKey(session)) {
+			// Retrieve the current JComponent and ViewMode for this session
+			JComponent sessionTab = openSessionTabHashTable.get(session);
+			ViewMode currViewMode = getComponentSessionViewMode(sessionTab);
+			// If the current and desired ViewModes are the same, open as desired
+			main.setSelectedComponent(sessionTab);
+			// Otherwise close the existing tab, and reopen as desired
+			if (!currViewMode.equals(tabType)) {
+				// Only open the new tab if the existing tab is successfully removed
+				if (removeTab(sessionTab)) {
+					openNewSessionTab(session, tabType);
+				}
 			}
 		}
-		
-		if (exists == null) {
-			final StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
-			
-			final StringBuilder tabName = new StringBuilder();
-			final int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
-			tabName.append(viewStats.getName().substring(0,subStringLength));
-			if (viewStats.getName().length() > 6) {
-				tabName.append("..");
-			}
-			
-			main.addTab(tabName.toString(), null, statisticsPanel, viewStats.getName());
-			main.invalidate(); //force the tabbedpane to redraw.
-			main.repaint();
-			main.setSelectedComponent(statisticsPanel);
-		} else {
-			main.setSelectedComponent(exists);
+		// Otherwise the tab does not exist yet. Create it and open
+		else {
+			openNewSessionTab(session, tabType);
 		}
 	}
+
+	/**
+	 * Getter for the hash table of tabs open for sessions
+	 * @return	The hash table mapping sessions to the display components
+	 */
+	protected Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
+		return openSessionTabHashTable;
+	}
+	
+	/**
+	 * Returns what type of tab a session is open as
+	 * @param comp	The JComponent to check
+	 * @return	The session ViewMode of the component
+	 */
+	public ViewMode getComponentSessionViewMode(JComponent comp) {
+		// Make sure the component exists
+		if (comp == null) {
+			return ViewMode.NONE;
+		}
+		// If the session is open for editing 
+		if (comp instanceof PlanningPokerSessionTab) {
+			return ViewMode.EDITING;
+		}
+		// If the session is open for voting 
+		if (comp instanceof VotingPage) {
+			return ViewMode.VOTING;
+		}
+		// If the session is open for statistics viewing 
+		if (comp instanceof StatisticsPanel) {
+			return ViewMode.STATISTICS;
+		}
+		// Otherwise it is not a planning poker session related component!
+		return ViewMode.NONE;
+	}
+
+	public void openOptionsAndHelpScreen() {
+		if (helpPanel != null){
+			main.setSelectedComponent(helpPanel);
+		}
+		else {
+			helpPanel = new OptionsOverviewPanel();
+			JComponent comp = helpPanel;
+			main.addTab("Options", null, comp, "Options and Help");
+			main.setSelectedComponent(helpPanel);
+		}
+		
+	}
+	
 }

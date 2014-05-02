@@ -14,6 +14,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Field;
+
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -52,34 +55,42 @@ public class TimingManagerTest {
 	}
 	
 	/**
+	 * Resets the Mock Timing Manager before every test
+	 */
+	@Before
+	public void resetTimingManager()throws SecurityException,
+    NoSuchFieldException, IllegalArgumentException,
+    IllegalAccessException {
+			Field instance = MockTimingManager.class.getDeclaredField("instance");
+			instance.setAccessible(true);
+			instance.set(null, null);
+		
+	}
+	
+	/**
 	 * Tests basic polling functionality
 	 */
 	@Test
 	public void TimerCallTest(){
 		
+		assertFalse(MockTimingManager.getInstance().getStarted());
+		
 		final mockPollable mock1 = new mockPollable();
 		
-		TimingManager.getInstance().addPollable(mock1);
-		TimingManager.getInstance().start();
-		assertTrue(mock1.getNumTimesPolled() == 0); //mock1.pollFunction has not been called
+		MockTimingManager.getInstance().addPollable(mock1);
+		
+		assertEquals(0, mock1.getNumTimesPolled()); //mock1.pollFunction has not been called
+
+		MockTimingManager.getInstance().start();
 
 		try {
-			Thread.sleep(TimingManager.getInstance().getTimerInterval());
+			Thread.sleep(MockTimingManager.getInstance().getTimerInterval()*2);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
-		//After the interval of the timer, has mock1.pollFunction been called
+		//After at least the interval of the timer, has mock1.pollFunction been called
 		assertTrue(mock1.getNumTimesPolled() > 0);
-
-		try {
-			Thread.sleep(TimingManager.getInstance().getTimerInterval());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	
-		//After the interval of the timer, has mock1.pollFunction been called
-		assertTrue(mock1.getNumTimesPolled() > 1);
 		
 	}
 	
@@ -89,18 +100,22 @@ public class TimingManagerTest {
 	@Test
 	public void TimerRemoveTest(){
 		
+		assertFalse(MockTimingManager.getInstance().getStarted());
+		
 		final mockPollable mock1 = new mockPollable();
 		final mockPollable mock2 = new mockPollable();
 		
-		TimingManager.getInstance().addPollable(mock1);
-		TimingManager.getInstance().addPollable(mock2);
-		assertTrue(mock1.getNumTimesPolled() == 0);
-		assertTrue(mock2.getNumTimesPolled() == 0);
+		MockTimingManager.getInstance().addPollable(mock1);
+		MockTimingManager.getInstance().addPollable(mock2);
+		assertEquals(0, mock1.getNumTimesPolled());
+		assertEquals(0, mock2.getNumTimesPolled());
 		
-		TimingManager.getInstance().start();
+		assertEquals(2, MockTimingManager.getInstance().getPollList().size());
+		
+		MockTimingManager.getInstance().start();
 
 		try {
-			Thread.sleep(TimingManager.getInstance().getTimerInterval());
+			Thread.sleep(MockTimingManager.getInstance().getTimerInterval()*2);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -109,10 +124,12 @@ public class TimingManagerTest {
 		assertTrue(mock1.getNumTimesPolled() > 0);
 		assertTrue(mock2.getNumTimesPolled() > 0);
 		
-		TimingManager.getInstance().removePollable(mock2);
+		MockTimingManager.getInstance().removePollable(mock2);
+		
+		assertEquals(1, MockTimingManager.getInstance().getPollList().size());
 
 		try {
-			Thread.sleep(TimingManager.getInstance().getTimerInterval());
+			Thread.sleep(MockTimingManager.getInstance().getTimerInterval()*2);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -122,4 +139,54 @@ public class TimingManagerTest {
 		
 	}
 	
+	/**
+	 * Tests trying to add a single object multiple times
+	 */
+	@Test
+	public void TimerDuplicateTest(){
+		
+		assertFalse(MockTimingManager.getInstance().getStarted());
+		
+		final mockPollable mock1 = new mockPollable();
+
+		MockTimingManager.getInstance().addPollable(mock1);
+		MockTimingManager.getInstance().addPollable(mock1);
+		MockTimingManager.getInstance().addPollable(mock1);
+		MockTimingManager.getInstance().addPollable(mock1);
+
+		assertEquals(1, MockTimingManager.getInstance().getPollList().size());
+	}
+	
+	/**
+	 * Tests trying to add a null object
+	 */
+	@Test
+	public void TimerNullTest(){
+		
+		assertFalse(MockTimingManager.getInstance().getStarted());
+		
+		mockPollable mock1 = null;
+		
+		MockTimingManager.getInstance().addPollable(mock1);		
+
+		MockTimingManager.getInstance().start();
+		
+		try {
+			Thread.sleep(MockTimingManager.getInstance().getTimerInterval()*2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		//At this point, the null object should have been cleared from the list
+		assertEquals(0, MockTimingManager.getInstance().getPollList().size());
+	}
+	
+	/**
+	 * Tests the actual Timing Manager's getInstance() function
+	 * Is just a check for exceptions when creating the singleton object
+	 */
+	@Test //DO NOT USE THIS AS A TEMPLATE FOR FURTHER TESTS
+	public void ActualTimerGetInstance(){
+		TimingManager.getInstance();
+	}
 }

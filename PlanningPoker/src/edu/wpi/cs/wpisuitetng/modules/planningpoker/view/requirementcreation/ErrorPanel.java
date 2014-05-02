@@ -17,7 +17,6 @@ import java.util.List;
 import javax.swing.JLabel;
 
 /**
- * @author justinhess
  * @version $Revision: 1.0 $
  */
 public class ErrorPanel extends JLabel {

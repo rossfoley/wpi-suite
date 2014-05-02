@@ -16,16 +16,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.DropMode;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.Border;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -38,7 +34,6 @@ public class SelectRequirementToUpdateTable extends JTable {
 	private DefaultTableModel tableModel = null;
 	private final boolean initialized;
 	private boolean changedByRefresh = false;
-	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
 	private final List<Integer> requirementsToDisplay;
 	private final HashMap<Integer, Integer> finalEstimates;
 	private final HashMap<Integer, Integer> requirementRowRelation = new HashMap<Integer, Integer>();
@@ -56,7 +51,6 @@ public class SelectRequirementToUpdateTable extends JTable {
 		this.setModel(tableModel);
 		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		this.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		this.setDragEnabled(true);
 		this.setDropMode(DropMode.ON);
 		requirementsToDisplay = displayRequirementIDs;
 		this.finalEstimates = finalEstimates;
@@ -138,14 +132,6 @@ public class SelectRequirementToUpdateTable extends JTable {
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return col == 0;
-	}
-	
-	/**
-	 * @return returns a list of the ids of the requirements 
-	 * that have been selected to update in requirement manager
-	 */
-	public List<Integer> getSelectedRequirements(){
-		return new ArrayList<Integer>();
 	}
 	
 	@Override

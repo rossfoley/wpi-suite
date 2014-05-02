@@ -15,6 +15,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -172,6 +174,26 @@ public class DeckVotingPanel extends JPanel
 			}
 		});
 
+		estimateField.addKeyListener(
+				new KeyListener(){
+					@Override
+					public void keyPressed(KeyEvent e){
+
+						if(e.getKeyChar() == KeyEvent.VK_ENTER){
+							if (validateEstimate()){
+								fireEstimateEvent();
+							}
+						}       
+				}
+
+					@Override
+					public void keyTyped(KeyEvent e) {
+					}
+					@Override
+					public void keyReleased(KeyEvent e) {
+					}
+       });
+		
 		// Setup error message display
 		estimateFieldErrorMessage.setForeground(Color.RED);
 
@@ -335,14 +357,16 @@ public class DeckVotingPanel extends JPanel
 	private JButton createCardButtons(int cardValue, Point origin, boolean selected) {
 		final JButton card = new JButton();
 		// Try to load the corresponding playing card
-		try {
+		/*try {
 			final String fileName = new String("cards/" + Integer.toString(cardValue) + "-of-Diamonds.png");
 			final Image img = ImageIO.read(getClass().getResource(fileName));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			card.setIcon(new ImageIcon(img.getScaledInstance(112, 140, 0)));
 		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
 			card.setText("\t  " + Integer.toString(cardValue));
-		}
+		}*/
+		CardFactory cardGen = new CardFactory(cardValue);
+		card.setIcon(new ImageIcon(cardGen.getCard().getScaledInstance(112, 140, 0)));
 		card.setName(String.valueOf(cardValue));
 		card.setVerticalAlignment(JLabel.CENTER);
 		card.setHorizontalAlignment(JLabel.LEFT);

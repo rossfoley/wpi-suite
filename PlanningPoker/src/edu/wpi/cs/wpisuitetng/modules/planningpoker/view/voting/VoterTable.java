@@ -23,7 +23,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class VoterTable extends JTable {
@@ -45,13 +44,11 @@ public class VoterTable extends JTable {
 		setModel(tableModel);
 		setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		setDragEnabled(true);
         setDropMode(DropMode.ON);
 		getTableHeader().setReorderingAllowed(false);
 		setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
 		
-		ViewEventController.getInstance().setOverviewVoterTable(this);
 	}
 
 	public void populateVotePanel() {

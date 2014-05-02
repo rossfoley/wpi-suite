@@ -21,11 +21,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -55,6 +56,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
@@ -65,9 +67,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 
 /**
  * The GUI for creating and updating Planning Poker Sessions
- * @author rossfoley and jdorich
+ * 
  */
-public class PlanningPokerSessionTab extends JPanel {
+public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private final PlanningPokerSession pokerSession;
 	private final PlanningPokerSession unmodifiedSession = new PlanningPokerSession();
 	private final SpringLayout layout = new SpringLayout();
@@ -88,7 +90,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	private final JLabel nameErrorMessage = new JLabel("");
 	private final JLabel descriptionErrorMessage = new JLabel("");
 	private final JLabel numbers = new JLabel("Users input non-negative intergers");
-	private final RequirementSelectionView requirementPanel = new RequirementSelectionView();
+	private final RequirementSelectionView requirementPanel;
 	private JDatePicker datePicker;
 	private final JCheckBox endDateCheckBox = new JCheckBox("End Date and Time?");
 	JLabel norequirements = new JLabel("Please select requirements before creating the session.");
@@ -108,6 +110,7 @@ public class PlanningPokerSessionTab extends JPanel {
 			"4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", 
 			"8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30" };
 	private boolean editedDescription;
+	private Set<Integer> originalReqs;
 
 
 	/**
@@ -115,6 +118,8 @@ public class PlanningPokerSessionTab extends JPanel {
 	 */
 	public PlanningPokerSessionTab() {
 		pokerSession = new PlanningPokerSession();
+		originalReqs = new HashSet<Integer>();
+		requirementPanel = new RequirementSelectionView(null);
 		viewMode = (ViewMode.CREATING);
 		dateHasBeenSet = false;
 		this.buildLayouts();
@@ -128,6 +133,9 @@ public class PlanningPokerSessionTab extends JPanel {
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		pokerSession = existingSession;
+		//System.out.println(pokerSession.getRequirementIDs());
+		originalReqs = pokerSession.getRequirementIDs();
+		requirementPanel = new RequirementSelectionView(pokerSession);
 		viewMode = (ViewMode.EDITING);
 		// Set the end date checkbox and update fields.
 		dateHasBeenSet = (existingSession.getEndDate() != null);
@@ -135,10 +143,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Update the fields current deck being used
 		isUsingDeck = existingSession.isUsingDeck();
 		sessionDeck = existingSession.getSessionDeck();
-		
+
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
-		
+
 		editedDescription = true;
 
 		this.buildLayouts();
@@ -157,7 +165,7 @@ public class PlanningPokerSessionTab extends JPanel {
 	 */
 	private void buildFirstPanel() {
 		buildSessionDetailPanel();
-		
+
 		createDeckPanel = new CreateDeck();
 		createDeckPanel.addDeckListener(new DeckListener() {
 			@Override
@@ -170,7 +178,7 @@ public class PlanningPokerSessionTab extends JPanel {
 				}
 			}
 		});
-		
+
 		firstPanel.setLeftComponent(sessionDetailPanel);
 		firstPanel.setRightComponent(null);
 		final int dividerLocation = firstPanel.getSize().width - 
@@ -178,7 +186,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.setDividerLocation(dividerLocation);
 		firstPanel.setResizeWeight(1.0);
 	}
-	
+
 	/**
 	 * Opens the Create Deck panel in the right divider of the first panel 
 	 */
@@ -187,10 +195,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		final int dividerLocation = firstPanel.getSize().width - 
 				firstPanel.getInsets().right - firstPanel.getDividerSize() - createDeckPanel.getPreferredSize().width;
 		firstPanel.setDividerLocation(dividerLocation);
-		
+
 		btnCreateDeck.setEnabled(false);
 	}
-	
+
 	/**
 	 * Close the right divider of the first panel after a new deck has been created
 	 */
@@ -214,10 +222,10 @@ public class PlanningPokerSessionTab extends JPanel {
 			comboDeck.setSelectedItem(newDeck.getDeckName());
 			parseDeckDropdowns();
 		} catch (NullPointerException ex) {} // if the session is being created
-		
+
 		closeCreateDeckPanel();
 	}
-	
+
 	/**
 	 * Closes the create deck panel
 	 */
@@ -225,7 +233,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanel.setRightComponent(null);
 		btnCreateDeck.setEnabled(true);
 	}
-	
+
 	/**
 	 * Builds the panel for setting the session name, description, endDate, and deck
 	 */
@@ -276,7 +284,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		nameErrorMessage.setForeground(Color.RED);
 		dateErrorMessage.setForeground(Color.RED);
 		requirementPanel.setSelectedRequirements(pokerSession.getRequirementIDs());
-		
+
 		// Button to create a deck
 		btnCreateDeck = new JButton("Create New Deck");
 		btnCreateDeck.addActionListener(new ActionListener() {
@@ -327,9 +335,10 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, comboDeck, 6, SpringLayout.SOUTH, lblDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, comboDeck, 0, SpringLayout.WEST, lblDeck);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, comboDeck, 0, SpringLayout.EAST, comboAMPM);
-		
+
 		firstPanelLayout.putConstraint(SpringLayout.WEST, btnCreateDeck, 0, SpringLayout.WEST, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, btnCreateDeck, 10, SpringLayout.SOUTH, comboDeck);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, btnCreateDeck, 0, SpringLayout.EAST, comboDeck);
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, numbers, 6, SpringLayout.NORTH, comboDeck);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, numbers, 6, SpringLayout.EAST, comboDeck);
@@ -342,7 +351,7 @@ public class PlanningPokerSessionTab extends JPanel {
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, dateErrorMessage, 0, SpringLayout.NORTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, dateErrorMessage, 20, SpringLayout.EAST, lblEndDate);
-		
+
 		// Position the cancel button
 		firstPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnNext);
 		firstPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -85, SpringLayout.EAST, btnNext);
@@ -364,7 +373,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		if ((viewMode == ViewMode.EDITING) && (pokerSession.hasEndDate())) {
 			setTimeDropdown();
 		}
-		
+
 		// Handle changes in session name field
 		textFieldSessionField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
@@ -397,7 +406,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		});
 		// Handle changes in description field
 		textFieldDescription.getDocument().addDocumentListener(new DocumentListener() {
-			
+
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				editedDescription = true;
@@ -475,14 +484,14 @@ public class PlanningPokerSessionTab extends JPanel {
 				}
 			}
 		});
-		
+
 		// Cancel button event handler
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				closePanel();
 			}
 		});
-		
+
 		// Add all of the elements to the first panel
 		sessionDetailPanel.add(btnNext);
 		sessionDetailPanel.add(btnCancel);
@@ -511,12 +520,12 @@ public class PlanningPokerSessionTab extends JPanel {
 	 */
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
-
+		
 		final JButton btnSave = new JButton("Save");
 		final JButton btnBack = new JButton("Back");
 		final JButton btnStart = new JButton("Start");
 		final JButton btnCancel = new JButton("Cancel");
-		
+
 		// Disable buttons if in creating mode (since no requirements are selected yet) 
 		if (viewMode == ViewMode.CREATING) {
 			btnStart.setEnabled(false);
@@ -539,7 +548,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Position the save button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnSave, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.EAST, btnSave, -10, SpringLayout.EAST, secondPanel);
-		
+
 		//Position the Start button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnStart, 0, SpringLayout.SOUTH, btnSave);
 		secondPanelLayout.putConstraint(SpringLayout.EAST, btnStart, -70, SpringLayout.EAST, btnSave);
@@ -547,7 +556,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Position the back button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
 		secondPanelLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, secondPanel);
-		
+
 		// Position the cancel button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnStart);
 		secondPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -70, SpringLayout.EAST, btnStart);
@@ -557,11 +566,25 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Save button event handler
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				List<Integer> oldRequirements = new LinkedList<Integer>();
+				List<Integer> newRequirements = new LinkedList<Integer>();
+				for (Integer i : originalReqs) {
+					oldRequirements.add(i);
+				}
 				final List<Requirement> requirements =  requirementPanel.getSelected();
+				for (Requirement req : requirements) {
+					newRequirements.add(req.getId());
+				}
+				
+				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
-				} else { 
+				} 
+				
+				else { 
+					if (changes == 1) return;
 					submitSession = true;
 					saveFields();
 					pokerSession.setGameState(SessionState.PENDING);
@@ -574,10 +597,24 @@ public class PlanningPokerSessionTab extends JPanel {
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final List<Requirement> requirements =  requirementPanel.getSelected();
+				List<Integer> oldRequirements = new LinkedList<Integer>();
+				List<Integer> newRequirements = new LinkedList<Integer>();
+				for (Integer i : originalReqs) {
+					oldRequirements.add(i);
+				}
+				for (Requirement req : requirements) {
+					newRequirements.add(req.getId());
+				}
+				
+				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
+				
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
-				} else { 
+				} 
+				
+				else {
+					if (changes == 1) return;
 					submitSession = true;
 					saveFields();
 					pokerSession.setGameState(SessionState.OPEN);
@@ -585,21 +622,22 @@ public class PlanningPokerSessionTab extends JPanel {
 
 					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
-					
+
 					final GetEmailController getEmailController = GetEmailController.getInstance();
 					getEmailController.retrieveEmails();
-					
+
 					final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
 					try {
 						emailRecipients = emailAddressModel.getEmailAddresses();
 					}
 					catch (Exception E) {
-						
+
 					}
-					
+
 					for (int i = 0; i < emailRecipients.size(); i++) {
 						recipients.add(emailRecipients.get(i).getEmail());
 					}
+					final Mailer mailer = new Mailer();
 					
 					final Thread t = new Thread(new Runnable() {
 						@Override
@@ -611,9 +649,11 @@ public class PlanningPokerSessionTab extends JPanel {
 					t.setDaemon(true);
 					t.start();
 				}
+				//final GetEmailController getEmailController = GetEmailController.getInstance();
+				//getEmailController.retrieveEmails();
 			}
 		});
-		
+
 		// Back button event handler
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -621,19 +661,20 @@ public class PlanningPokerSessionTab extends JPanel {
 				displayPanel(firstPanel);
 			}
 		});
-		
+
 		// Cancel button event handler
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				closePanel();
-					}
-				});
-		
+			}
+		});
+
 		// setup action listener for the requirement selection
 		requirementPanel.addRequirementsSelectedListener(new RequirementsSelectedListener() {
 			@Override
 			public void setRequirementsSelected(RequirementsSelectedEvent e) {
 				// If requirements are selected, enable the start and save buttons
+				System.out.println("Are requirements selected: " + e.areRequirementsSelected());
 				if (e.areRequirementsSelected()) {
 					norequirements.setVisible(false);
 					btnStart.setEnabled(true);
@@ -645,9 +686,11 @@ public class PlanningPokerSessionTab extends JPanel {
 					btnSave.setEnabled(false);
 				}
 			}
-			
+
 		});
-				
+		requirementPanel.getReqPanel().fireSelectedEventCaller();
+		//
+
 
 		// Add all of the elements to the second panel
 		secondPanel.add(btnSave);
@@ -733,6 +776,7 @@ public class PlanningPokerSessionTab extends JPanel {
 				endHour += 12;
 			}
 		}
+		validateFields();
 	}
 
 	public void parseDeckDropdowns(){
@@ -877,14 +921,14 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Remove the datePicker from the layout
 		firstPanelLayout.removeLayoutComponent((Component) datePicker);
 		sessionDetailPanel.remove((JPanel) datePicker);
-		
+
 		// Add a disabled button in place of the datePicker
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, disabledDatePicker, 6, SpringLayout.SOUTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, disabledDatePicker, 0, SpringLayout.WEST, lblEndDate);	
 		firstPanelLayout.putConstraint(SpringLayout.EAST, disabledDatePicker, 0, SpringLayout.EAST, comboAMPM);
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, disabledDatePicker);
 		sessionDetailPanel.add(disabledDatePicker);
-		
+
 
 	}
 
@@ -895,7 +939,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		// Remve the datePicker placeholder
 		firstPanelLayout.removeLayoutComponent(disabledDatePicker);
 		sessionDetailPanel.remove(disabledDatePicker);
-		
+
 		// Re-add the datePicker
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, (JPanel) datePicker, 6, SpringLayout.SOUTH, lblEndDate);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, (JPanel) datePicker, 0, SpringLayout.WEST, lblEndDate);	
@@ -903,7 +947,7 @@ public class PlanningPokerSessionTab extends JPanel {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionEndTime, 6, SpringLayout.SOUTH, (JPanel) datePicker);
 		sessionDetailPanel.add((JPanel) datePicker);
 	}
-	
+
 
 	/**
 	 * @return Returns if no fields in the panel have been changed
@@ -935,10 +979,10 @@ public class PlanningPokerSessionTab extends JPanel {
 			}
 			return false;
 		}
-		
+
 	}
 
-	
+
 	/**
 	 * 
 	 * @return Returns whether any fields in the panel have been changed when creating a session
@@ -965,14 +1009,14 @@ public class PlanningPokerSessionTab extends JPanel {
 		return false;
 	}
 
-	
+
 	/**
 	 * 
 	 * @return whether any fields have been changed.
 	 */
 	private boolean anythingChangedEditing() {
 		saveFields();
-		
+
 		// Check if the user has changed the session name
 		if (!unmodifiedSession.getName().equals(pokerSession.getName())) {
 			return true;
@@ -1003,17 +1047,60 @@ public class PlanningPokerSessionTab extends JPanel {
 		}
 		return false;
 	}
-	
+
 	//closes this panel
 	public void closePanel() {
 		ViewEventController.getInstance().removeTab(this);
 	}
-	
+
 	/**
 	 * restores the original session 
 	 * used for if edits have been made, but cancel has been hit
 	 */
-	public void restoreInformation(){
+	public void restoreInformation() {
 		pokerSession.copyFrom(unmodifiedSession);
 	}
+	
+	/**
+	 * Notifies user if reqs were removed due to being in other sessions.
+	 * @param oldReqs The requirements before session was modified.
+	 * @param newReqs The requirements after the session was modified.
+	 * @return the user's response to the dialog box (cancel or continue)
+	 */
+	
+	public int notifyUserOfReqChanges(List<Integer> oldReqs, List<Integer> newReqs) {
+		LinkedList<Integer> changes = checkIfReqsChangedByConflict(oldReqs, newReqs);
+		if (changes == null) return -1;
+		String message = "If you continue, the following requirements that were previously in this session will be removed.\n" +
+		"If you did not discard them, they have been or are being estimated in other sessions.\n\n";
+		for (Integer i : changes) {
+			message = message + "Requirement " + Integer.toString(i) + "\n";
+		}
+		final int result = JOptionPane.showConfirmDialog(this, message , "Continue Removing Requirements?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		return result;
+	}
+
+	/**
+	 * Checks what if any requirements were removed due to conflict.
+	 * @param oldReqs The requirements before the session was modified.
+	 * @param newReqs The requirements after the session was modified.
+	 * @return the list of requirement IDs of removed requirements, or null
+	 */
+	public LinkedList<Integer> checkIfReqsChangedByConflict(List<Integer> oldReqs, List<Integer> newReqs) {
+		if (oldReqs == null) return null;
+		if (oldReqs.size() == 0) return null;
+		if (newReqs.size() == 0) {//fault point
+			return (LinkedList<Integer>) oldReqs;
+		}
+		LinkedList<Integer> removedReqs = new LinkedList<Integer>();
+		for (int i = 0; i < oldReqs.size(); i++) {
+			if (!newReqs.contains(oldReqs.get(i)) && !removedReqs.contains(oldReqs.get(i))) {
+				removedReqs.add(oldReqs.get(i));
+			}
+		}
+		
+		return (removedReqs.size() == 0) ? null : removedReqs;
+
+	}
+
 }

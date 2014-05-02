@@ -18,33 +18,22 @@ import java.util.Set;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUserController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdatePlanningPokerSessionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.UserModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewReqTable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.database.*;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
 /** 
- *  This class is the panel that is shown when the user goes to vote
- *  @author amandaadkins
+ *  This class is the panel that is shown when the user goes to vote  
  */
-
-public class VotingPage extends JSplitPane {
+public class VotingPage extends JSplitPane implements ISessionTab {
 	private final JPanel voteOnReqPanel = new JPanel();
 
 	private VotingManager reqsView;
@@ -67,12 +56,9 @@ public class VotingPage extends JSplitPane {
 		activeSession = votingSession;
 
 		// Disable the vote button in the planning poker module toolbar
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
-
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableAllButtons();
 
 		buildReqPanel(null);
-
 
 		reqsView = new VotingManager(getSessionReqs(), activeSession, ConfigManager.getConfig().getUserName());
 		reqsView.addSelectionListener(new SelectionListener() {
@@ -188,6 +174,8 @@ public class VotingPage extends JSplitPane {
 		
 		sl_reqDetails.putConstraint(SpringLayout.WEST, thetablePanel, 10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, thetablePanel, -10, SpringLayout.EAST, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.NORTH, thetablePanel, 10, SpringLayout.NORTH, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.SOUTH, thetablePanel, -10, SpringLayout.SOUTH, reqDetails);
 		
 		
 		System.out.println("currently displayed description:" + descriptionField.getText());
@@ -268,19 +256,6 @@ public class VotingPage extends JSplitPane {
 		name.toLowerCase();
 		return name;
 	}
-	
-	public List<String> getAllVoterNamesList() {
-		final List<String> allVoters = new ArrayList<String>();
-		GetUserController.getInstance().retrieveUsers();
-		final List<User> user = UserModel.getInstance().getUsers();
-		
-		for(User u : user) {
-			try {
-				allVoters.add(u.getUsername());
-			} catch (Exception E) {}
-		}
-		return allVoters;
-	}
 
 	/**
 	 * build the part of the panel that is specific to the selected requirement
@@ -326,6 +301,7 @@ public class VotingPage extends JSplitPane {
 
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
+					buildReqPanel(null);
 					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
 					reqsView.addSelectionListener(new SelectionListener() {
 						@Override

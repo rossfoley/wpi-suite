@@ -25,16 +25,16 @@ import java.util.TimerTask;
  */
 public class TimingManager {
 
-	private static final TimingManager instance = new TimingManager();
-	private final List<IPollable> PollList;
-	private final long T = 5000;
-	private final Thread thread;
-	private boolean started = false;
+	protected static TimingManager instance;
+	protected final List<IPollable> PollList;
+	protected long T = 5000;
+	protected final Thread thread;
+	protected boolean started = false;
 	
 	/**
 	 * Constructor for the singleton class TimingManager
 	 */
-	private TimingManager() {
+	protected TimingManager() {
 		PollList = new ArrayList<IPollable>();
 		
 		thread = new Thread(new Runnable() {
@@ -56,6 +56,9 @@ public class TimingManager {
 	 * @return the instance of the TimingManager
 	 */
 	public static TimingManager getInstance() {
+		if (instance == null){
+			instance = new TimingManager();
+		}
 		return instance;
 	}
 	
@@ -64,9 +67,17 @@ public class TimingManager {
 	 * @param p object that needs polling
 	 */
 	public void addPollable(IPollable p){
-		if (!PollList.contains(p)){
-			PollList.add(p);
-		}
+		boolean didntRun;
+		do{
+			try {
+				if (!PollList.contains(p)){
+					PollList.add(p);
+				}
+					didntRun = false;
+				} catch (java.util.ConcurrentModificationException e){
+					didntRun = true;
+				}
+			}while(didntRun);
 	}
 	
 	/**
@@ -74,7 +85,15 @@ public class TimingManager {
 	 * @param p object that will be removed from the list
 	 */
 	public void removePollable(IPollable p){
-		PollList.remove(p);
+		boolean didntRun;
+		do{
+			try {
+				PollList.remove(p);
+				didntRun = false;
+			} catch (java.util.ConcurrentModificationException e){
+				didntRun = true;
+			}
+		}while(didntRun);
 	}
 	
 	/**
@@ -82,13 +101,21 @@ public class TimingManager {
 	 * Cycles through the list of objects that need polling and calls pollFunction()
 	 */
 	private void timedFunc() {
-		for (IPollable p: PollList) {
-			if (p != null) {
-				p.pollFunction();
-			} else {
-				removePollable(p);
+		boolean didntRun;
+		do{
+			try {
+				for (IPollable p: PollList) {
+					if (p != null) {
+						p.pollFunction();
+					} else {
+						removePollable(p);
+					}
+				}
+				didntRun = false;
+			} catch (java.util.ConcurrentModificationException e){
+				didntRun = true;
 			}
-		}
+		}while(didntRun);
 	}
 	
 	/**

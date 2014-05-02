@@ -92,9 +92,8 @@ public class RequirementTest {
 	
 	/**
 	 * Test the setting methods in the Requirement class in the src package
-	 * 
-	
-	 *//*
+	 *
+	 */
 	@Test
 	public void settingRequirementFieldsTest () {
 		Requirement object = new Requirement(5, "Test", "This is a test");
@@ -172,7 +171,7 @@ public class RequirementTest {
 		
 		// TODO: setIteration
 		
-	}//*/
+	}
 	
 	@Test
 	public void testCopyFromRequirement() {

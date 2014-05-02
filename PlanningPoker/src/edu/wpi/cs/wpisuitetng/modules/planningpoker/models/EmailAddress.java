@@ -9,12 +9,17 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.util.ArrayList;
+
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
+/**
+ * Class for email adresses. It contains two strings: an emailAdress and a userName
+ * @author theTeam8s
+ * @version 1.0
+ *
+ */
 public class EmailAddress extends AbstractModel {
 	private String emailAddress;
 	private String userName;
@@ -27,17 +32,17 @@ public class EmailAddress extends AbstractModel {
 		userName = "";
 	}
 	/** 
-	 * converts deck object to a JSON
+	 * converts email address object to a JSON
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
 	 */
 	public String toJSON() {
 		return new Gson().toJson(this, EmailAddress.class);
 	}
 	
-	/** parses a deck object from a Json string
+	/** parses an email address object from a Json string
 	 * 
-	 * @param json json-encoded deck 
-	 * @return Deck object that was encoded in json string
+	 * @param json json-encoded email address 
+	 * @return EmailAddress object that was encoded in json string
 	 */
 	public static EmailAddress fromJson(String json) {
 		final Gson parser = new Gson();
@@ -49,7 +54,7 @@ public class EmailAddress extends AbstractModel {
 	 * string.
 	 * 
 	 * @param json
-	 *            string containing a JSON-encoded array of Deck
+	 *            string containing a JSON-encoded array of EmailAddress
 	
 	 * @return an array of Email Addresses deserialized from the given JSON string */
 	public static EmailAddress[] fromJsonArray(String json) {
@@ -105,6 +110,10 @@ public class EmailAddress extends AbstractModel {
 	public void setOwnerName(String name) {
 		userName = name;
 	}
+	/**
+	 * Takes an email address and changes the values of this to the given EmailAddress
+	 * @param updatedEmail Email to copy from
+	 */
 	public void copyFrom(EmailAddress updatedEmail) {
 		emailAddress = updatedEmail.getEmail();
 		userName = updatedEmail.getOwnerName();

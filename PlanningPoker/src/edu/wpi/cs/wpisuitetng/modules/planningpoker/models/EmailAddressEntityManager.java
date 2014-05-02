@@ -9,13 +9,11 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
-import com.google.gson.Gson;
+import java.util.List;
+
+
+
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -24,12 +22,19 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
-
+/**
+ * Works with the database and manages emailAdresses from it.
+ * @author Kevin
+ * @version 1.0
+ */
 public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 
 	Data db;
-	//HashMap<String, ArrayList<EmailAddress>> clientsUpdated = new HashMap<String, ArrayList<EmailAddress>>();
 
+	/**
+	 * Manages email address entities by accessing the database
+	 * @param db database being used.
+	 */
 	public EmailAddressEntityManager(Data db) {
 		this.db = db;
 	}
@@ -85,7 +90,7 @@ public class EmailAddressEntityManager  implements EntityManager<EmailAddress> {
 			throw new BadRequestException("EmailAddress with email address does not exist.");
 		}
 
-		final EmailAddress existingEmail = (EmailAddress)oldEmails.get(0);		
+		final EmailAddress existingEmail = (EmailAddress)oldEmails.get(0);	
 		existingEmail.copyFrom(updatedEmail);
 
 		if(!db.save(existingEmail, session.getProject())) {
