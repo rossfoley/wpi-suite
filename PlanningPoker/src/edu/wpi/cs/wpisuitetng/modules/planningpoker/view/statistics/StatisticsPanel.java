@@ -25,24 +25,21 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
  *  This class is the panel that is shown when viewing statistics on a session
  */
 public class StatisticsPanel extends JSplitPane implements ISessionTab {
-
-	/**
-	 * Sets up directory tree of all planning poker sessions
-	 */
-	private StatisticsDetailPanel detailPanel;
 	private StatisticsReqTable reqTable;
 	private JScrollPane tablePanel;
+	private JPanel reqOverviewTablePanel = new JPanel();
+	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
 	
-	int selectedReqID;
-	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
-	JPanel reqOverviewTablePanel = new JPanel();
-	SpringLayout reqOverviewLayout = new SpringLayout();
-	
-	private final PlanningPokerSession activeSession;
-	
-	public StatisticsPanel(PlanningPokerSession statisticsSession)
-	{
-		activeSession = statisticsSession;
+	private StatisticsDetailPanel detailPanel;
+	private SpringLayout reqOverviewLayout = new SpringLayout();
+	private PlanningPokerSession activeSession;
+
+	/**
+	 * Constructor for the statistics panel
+	 * @param ppSession	The session to display statistics for
+	 */
+	public StatisticsPanel(PlanningPokerSession ppSession) {
+		activeSession = ppSession;
 		
 		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		final String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
@@ -66,7 +63,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		
 		tablePanel = new JScrollPane(reqTable);
 		
-
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
 		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
@@ -90,18 +86,10 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		setLeftComponent(tablePanel);
 		setRightComponent(detailPanel);
 		
-		updatePanel();
 		setDividerLocation(400);
         setEnabled(true);
-	}
-	
-	public void updatePanel()	{	
-		// update each part of the split panel
-		updateReqTable(activeSession);
-	}
-
-	private void updateReqTable(PlanningPokerSession session) {
-		reqTable.refresh(session);
+        
+        reqTable.refresh(activeSession);
 	}
 	
 	/**
