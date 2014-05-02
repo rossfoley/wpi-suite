@@ -44,7 +44,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private final JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
 	private final JButton endVoteButton = new JButton("<html>End Session<br />Voting</html>");
 	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
-	private final JButton helpButton = new JButton("<html>Help</html>");
+	private final JButton helpButton = new JButton("<html>Help &<br /> Options</html>");
 	private final JPanel contentPanel = new JPanel();
 
 	public PlanningPokerSessionButtonsPanel(){
@@ -78,8 +78,9 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			statisticsButton.setIcon(new ImageIcon(img));
 			
 			img = ImageIO.read(
-					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/help.png"));
-			// This help icon was a free icon from "http://findicons.com/icon/199583/help"
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/options-and-help-icon.png"));
+			// This help icon was a free icon from "http://findicons.com/" 
+			// Combined a help icon and an options icon that can both be found on the site.
 			helpButton.setIcon(new ImageIcon(img));
 			
 
