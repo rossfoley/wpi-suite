@@ -125,17 +125,8 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	
 	public void updatePanel()	{	
 		// update each part of the split panel
-		//updateInfoPanel(activeSession);
 		updateReqTable(activeSession);
-		
-		// change the visibility of the top buttons
-		//setButtonVisibility(activeSession);
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
 	}
-	
-	//private void updateInfoPanel(PlanningPokerSession session) {
-	//	infoPanel.refresh(session);
-	//}
 
 	private void updateReqTable(PlanningPokerSession session) {
 		reqTable.refresh(session);

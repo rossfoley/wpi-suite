@@ -55,9 +55,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 	public VotingPage(PlanningPokerSession votingSession){
 		activeSession = votingSession;
 
-		// Disable the vote button in the planning poker module toolbar
-		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableAllButtons();
-
 		buildReqPanel(null);
 
 		reqsView = new VotingManager(getSessionReqs(), activeSession, ConfigManager.getConfig().getUserName());

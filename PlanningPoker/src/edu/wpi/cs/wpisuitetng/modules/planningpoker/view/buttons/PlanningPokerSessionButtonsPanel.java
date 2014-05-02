@@ -55,7 +55,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 
 		ViewEventController.getInstance().setPlanningPokerSessionButtonsPanel(this);
 
-		disableEditButton();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		setPreferredWidth(1000);
 		createButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -161,7 +160,9 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			}
 		});
 
-
+		// Disable all buttons on initialization
+		disableAllButtons();
+		
 		contentPanel.add(createButton);
 		contentPanel.add(editButton);
 		contentPanel.add(voteButton);
