@@ -35,22 +35,22 @@
           };
         })(this)
       });
+      this.params = {
+        requirements: this.requirements,
+        team: this.team,
+        username: this.username
+      };
       $.ajax({
         dataType: 'json',
         url: 'API/planningpoker/planningpokersession',
         async: false,
         success: (function(_this) {
           return function(data) {
-            var params, session, _i, _len, _results;
+            var session, _i, _len, _results;
             _results = [];
             for (_i = 0, _len = data.length; _i < _len; _i++) {
               session = data[_i];
-              params = {
-                requirements: _this.requirements,
-                team: _this.team,
-                username: _this.username
-              };
-              _results.push(_this.planningPokerSessions.push(new SessionViewModel(session, params)));
+              _results.push(_this.planningPokerSessions.push(new SessionViewModel(session, _this.params)));
             }
             return _results;
           };
@@ -68,6 +68,54 @@
           return _this.activeSession(session);
         };
       })(this);
+      this.checkForUpdates = (function(_this) {
+        return function() {
+          return $.ajax({
+            dataType: 'json',
+            url: 'API/requirementmanager/requirement',
+            success: function(data) {
+              var requirement, _i, _len;
+              for (_i = 0, _len = data.length; _i < _len; _i++) {
+                requirement = data[_i];
+                requirement['voteValue'] = 0;
+              }
+              _this.requirements = data;
+              _this.params.requirements = data;
+              return $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates',
+                success: _this.applyUpdates
+              });
+            }
+          });
+        };
+      })(this);
+      this.applyUpdates = (function(_this) {
+        return function(updates) {
+          var changedSession, newSession, session, _i, _j, _len, _len1, _ref, _results;
+          _results = [];
+          for (_i = 0, _len = updates.length; _i < _len; _i++) {
+            changedSession = updates[_i];
+            newSession = true;
+            _ref = _this.planningPokerSessions();
+            for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+              session = _ref[_j];
+              if (changedSession['uuid'] === session.uuid()) {
+                newSession = false;
+                session.applyUpdate(changedSession);
+              }
+            }
+            if (newSession) {
+              _results.push(_this.planningPokerSessions.push(new SessionViewModel(changedSession, _this.params)));
+            } else {
+              _results.push(void 0);
+            }
+          }
+          return _results;
+        };
+      })(this);
+      setInterval(this.checkForUpdates, 5000);
     }
 
     return PlanningPokerViewModel;
@@ -131,6 +179,31 @@
           return result;
         };
       })(this));
+      this.applyUpdate = (function(_this) {
+        return function(update) {
+          var changedEstimate, requirementEstimate, _k, _len2, _ref3, _results;
+          _ref3 = update['estimates'];
+          _results = [];
+          for (_k = 0, _len2 = _ref3.length; _k < _len2; _k++) {
+            changedEstimate = _ref3[_k];
+            _results.push((function() {
+              var _l, _len3, _ref4, _results1;
+              _ref4 = this.requirementEstimates();
+              _results1 = [];
+              for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
+                requirementEstimate = _ref4[_l];
+                if (changedEstimate['requirementID'] === requirementEstimate.requirement()['id']) {
+                  _results1.push(requirementEstimate.applyUpdate(changedEstimate));
+                } else {
+                  _results1.push(void 0);
+                }
+              }
+              return _results1;
+            }).call(_this));
+          }
+          return _results;
+        };
+      })(this);
     }
 
     return SessionViewModel;
@@ -255,15 +328,19 @@
             data: ko.toJSON(_this.estimate()),
             success: function(data) {
               var _ref1;
-              console.log('Vote successfully submitted');
               if (_ref1 = _this.username, __indexOf.call(_this.voted(), _ref1) < 0) {
                 return _this.voted.push(_this.username);
               }
-            },
-            error: function() {
-              return console.log('Error updating the estimate');
             }
           });
+        };
+      })(this);
+      this.applyUpdate = (function(_this) {
+        return function(update) {
+          var _ref1;
+          if (_ref1 = update['ownerName'], __indexOf.call(_this.voted(), _ref1) < 0) {
+            return _this.voted.push(update['ownerName']);
+          }
         };
       })(this);
     }
