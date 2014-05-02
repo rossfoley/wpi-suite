@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -42,8 +41,6 @@ public class OptionsOverviewPanel extends JPanel {
 		
 		buildComboPanel();
 		setBottomPanel(helpPanel);
-		buildOptionsPanel();
-		
 	}
 	
 	public void buildComboPanel(){
@@ -93,6 +90,6 @@ public class OptionsOverviewPanel extends JPanel {
 		optionsLayout.putConstraint(SpringLayout.EAST, newBottomPanel, -10, SpringLayout.EAST, lowerPanel);
 		optionsLayout.putConstraint(SpringLayout.WEST, newBottomPanel, 10, SpringLayout.WEST, lowerPanel);
 		
-		lowerPanel.add(newBottomPanel);
+		lowerPanel.add(newBottomPanel);		
 	}
 }
