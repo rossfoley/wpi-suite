@@ -46,7 +46,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		final Object[][] reqData = {};
 
 		// Create the user table panel and detail panel
-		detailPanel = new StatisticsDetailPanel(activeSession, null);
+		detailPanel = new StatisticsDetailPanel(activeSession);
 		
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
 		reqTable.addSelectedRequirementListener(new SelectedRequirementListener() {

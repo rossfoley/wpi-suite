@@ -18,37 +18,28 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
 public class StatisticsDetailPanel extends JSplitPane {
-	PlanningPokerSession currentSession;
-	StatisticsUserTable userTable;
-	StatisticsInfoPanel infoPanel;
-	JScrollPane tablePanel;
+	private PlanningPokerSession currentSession;
+	private StatisticsUserTable userTable;
+	private JScrollPane tablePanel;
+	private StatisticsInfoPanel infoPanel;
 
-	int selectedReqID;
-	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
-	JPanel reqOverviewTablePanel = new JPanel();
-	SpringLayout reqOverviewLayout = new SpringLayout();
+	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
+	private JPanel reqOverviewTablePanel = new JPanel();
+	private SpringLayout reqOverviewLayout = new SpringLayout();
 
-	public StatisticsDetailPanel (PlanningPokerSession session, Requirement requirement) {
+	public StatisticsDetailPanel (PlanningPokerSession session) {
 
 		currentSession = session;
 		setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
-		// Create the info panel and table panel
-		if (requirement != null) {
-			userTable = new StatisticsUserTable(currentSession, requirement.getId());
-		}
-		else {
-			userTable = new StatisticsUserTable(currentSession, -1);
-		}
-		tablePanel = new JScrollPane(userTable);
-		infoPanel = new StatisticsInfoPanel(currentSession);
-		
+		// Create the voted user table
+		userTable = new StatisticsUserTable(currentSession, -1);
 		userTable.getColumnModel().getColumn(0).setMinWidth(200); // User name
 		userTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
+		tablePanel = new JScrollPane(userTable);
 
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
@@ -59,34 +50,35 @@ public class StatisticsDetailPanel extends JSplitPane {
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
-		
 		reqOverviewTablePanel.add(tablePanel);
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
+		
+		// Create the info panel (display requirement details and voting statistics
+		infoPanel = new StatisticsInfoPanel(currentSession);
 	
 		// Put the info panel and table panel into the split pane
-		this.setLeftComponent(infoPanel);
-		this.setRightComponent(reqOverviewTablePanel);
-		this.setResizeWeight(0.5); 
+		setLeftComponent(infoPanel);
+		setRightComponent(reqOverviewTablePanel);
+		setResizeWeight(0.5); 
 		
 		// Makes the split pane divide 50/50 for each portion
-		final Dimension d = new Dimension(100, 100);
+		Dimension d = new Dimension(100, 100);
         infoPanel.setMinimumSize(d);
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
         
-        updatePanel(-1);
-        
+        updatePanel(-1);	// Initialize with no requirement selected
 	}
 	
+	/**
+	 * Updates all panels with details for the input requirement
+	 * @param requirementID	The ID of the requirement to display details for
+	 */
 	public void updatePanel(int requirementID)	{
 		// update each part of the split panel
 		infoPanel.refresh(currentSession);
 		infoPanel.setRequirementID(requirementID);
 		userTable.updateRequirement(requirementID);
-	}
-
-	public StatisticsInfoPanel getInfoPanel() {
-		return infoPanel;
 	}
 	
 }
