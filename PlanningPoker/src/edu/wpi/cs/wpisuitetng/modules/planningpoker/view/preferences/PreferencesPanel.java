@@ -47,8 +47,6 @@ import javax.swing.event.DocumentListener;
  */
 public class PreferencesPanel extends JPanel {
 	private final JTextField txtEnterEmailHere;
-	private boolean emailError = false;
-	private boolean emailSent = false;
 	JLabel lblEmailErrorText;
 	JLabel lblEmailSubmitted;
 	long emailLastSubmitted;
@@ -96,8 +94,8 @@ public class PreferencesPanel extends JPanel {
 		add(lblEmailSubmitted);
 
 
-		lblEmailErrorText.setVisible(emailError);
-		lblEmailSubmitted.setVisible(emailSent);
+		lblEmailErrorText.setVisible(false);
+		lblEmailSubmitted.setVisible(false);
 
 		// Add functionality to submit
 		btnSubmit.addActionListener(new ActionListener() {
@@ -105,14 +103,14 @@ public class PreferencesPanel extends JPanel {
 				submitEmail();
 			}
 		});
-		
+
 		// Add live listener to input text field for live validation
 		txtEnterEmailHere.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				final String email = txtEnterEmailHere.getText();
-				
+
 				// Should be a special case
 				if (email.equals("")) {
 					lblEmailErrorText.setVisible(false);
@@ -132,7 +130,7 @@ public class PreferencesPanel extends JPanel {
 					btnSubmit.setEnabled(false);
 				}
 			}
-			
+
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				final String email = txtEnterEmailHere.getText();
@@ -159,7 +157,7 @@ public class PreferencesPanel extends JPanel {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				final String email = txtEnterEmailHere.getText();
-				
+
 				// Should be a special case
 				if (email.equals("")) {
 					lblEmailErrorText.setVisible(false);
@@ -181,7 +179,7 @@ public class PreferencesPanel extends JPanel {
 
 			}
 		});
-		
+
 		JLabel lblPreferences = new JLabel("Preferences");
 		lblPreferences.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPreferences.setFont(new Font("Tahoma", Font.PLAIN, 30));
@@ -195,62 +193,53 @@ public class PreferencesPanel extends JPanel {
 	 * This method contains all the functionality of user hitting the submit button for the email box.
 	 */
 	void submitEmail() {
+		// Give immediate user feedback
+		lblEmailSubmitted.setVisible(true);
+		
+		// Grab input and make new email address
 		final String email = txtEnterEmailHere.getText();
+		final EmailAddress newEmail = new EmailAddress();
+		newEmail.setEmail(email);
+		ConfigManager.getInstance();
+		newEmail.setOwnerName(ConfigManager.getConfig().getUserName());
 
-		// Validate
-		if (validateEmail(email) == true) {
-			emailError = false;
-			emailSent = true;
-			lblEmailErrorText.setVisible(emailError);
-			lblEmailSubmitted.setVisible(emailSent);
-			final EmailAddress newEmail = new EmailAddress();
-			newEmail.setEmail(email);
-			newEmail.setOwnerName(ConfigManager.getInstance().getConfig().getUserName());
+		// Check if user already has email address in system
+		final GetEmailController getEmailController = GetEmailController.getInstance();
+		getEmailController.retrieveEmails();
+		List<EmailAddress> emailRecipients = null;
+		boolean userHasEmail = false;
 
-
-			final GetEmailController getEmailController = GetEmailController.getInstance();
-			getEmailController.retrieveEmails();
-			List<EmailAddress> emailRecipients = null;
-			boolean userHasEmail = false;
-
-			final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
-			try {
-				emailRecipients = emailAddressModel.getEmailAddresses();
-			}
-			catch (Exception E) {
-
-			}
-			final String userName = ConfigManager.getInstance().getConfig().getUserName();
-			for (int i = 0; i < emailRecipients.size(); i++) {
-				if (userName.equals(emailRecipients.get(i).getOwnerName())) {
-					userHasEmail = true;
-				}
-			}
-
-			if (userHasEmail) {
-				EmailAddressModel.getInstance().updateEmailAddress(newEmail);
-			}
-			else {
-				EmailAddressModel.getInstance().addEmail(newEmail);
-			}
-			emailLastSubmitted = System.currentTimeMillis();
+		final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+		try {
+			emailRecipients = emailAddressModel.getEmailAddresses();
 		}
-		else {
-			emailError = true;
-			emailSent = false;
-			lblEmailErrorText.setVisible(emailError);
-			lblEmailSubmitted.setVisible(emailSent);
+		catch (Exception E) {
+
 		}
 		
+		final String userName = ConfigManager.getConfig().getUserName();
+		for (int i = 0; i < emailRecipients.size(); i++) {
+			if (userName.equals(emailRecipients.get(i).getOwnerName())) {
+				userHasEmail = true;
+			}
+		}
 
-
+		// Depending on whether the user already has an email, the call gets modified.
+		if (userHasEmail) {
+			EmailAddressModel.getInstance().updateEmailAddress(newEmail);
+		}
+		else {
+			EmailAddressModel.getInstance().addEmail(newEmail);
+		}
+		// Save when this happened so the success message can go away in 10 mins, not sticking around indefinitely
+		emailLastSubmitted = System.currentTimeMillis();
 	}
 
 	/**
 	 * This function validates a given email address for form.
 	 */
 	boolean validateEmail(String email) {
-		
+
 		// Built in validation doesn't make sure domain 
 
 		try {
@@ -271,15 +260,9 @@ public class PreferencesPanel extends JPanel {
 	 * @param g
 	 */
 	public void repaint(Graphics g) {
-		if (txtEnterEmailHere.getText().equals("")) {
-			emailError = false;
-			lblEmailErrorText.setVisible(emailError);
-		}
-		
 		super.repaint();
 		if (System.currentTimeMillis() > emailLastSubmitted + 1000*60*10) {
-			emailSent = false;
-			lblEmailSubmitted.setVisible(emailSent);
+			lblEmailSubmitted.setVisible(false);
 		}
 	}
 }
