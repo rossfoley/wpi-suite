@@ -11,12 +11,10 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -26,7 +24,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.RowSorterEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -39,7 +36,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
 /**
@@ -56,7 +52,6 @@ public class StatisticsReqTable extends JTable {
 	private final HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
 	private int rowNumber = 0;
 	private StatisticsDetailPanel detailPanel;
-	private StatisticsInfoPanel infoPanel;
 	private PlanningPokerSession currentSession; 
 	
 	/**
@@ -83,10 +78,8 @@ public class StatisticsReqTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					rowNumber = convertRowIndexToModel(rowAtPoint(getMousePosition()));
-					//System.out.println("rowNumber = " + rowNumber);
-					//infoPanel.currentReqID = tableRows.get(rowNumber);
 					try {
-						infoPanel.setCurrentReqID(tableRows.get(rowNumber));
+						detailPanel.setRequirementID(tableRows.get(rowNumber));
 					}
 					catch (NullPointerException ex) {}
 				}
@@ -145,15 +138,12 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public void editingStopped(ChangeEvent e) {
-		//System.out.println("Editing Stopped");
 		String estimate = (String) tableModel.getValueAt(editingRow, editingColumn);
-		//System.out.println("Estimate = " + estimate + ", editingRow = " + editingRow + ", editingColumn = " + editingColumn);
 		super.editingStopped(e);
 		boolean isInteger = true;
 		int numberEst = -1;
 		try {
 			numberEst = Integer.parseInt(((TableCellEditor) e.getSource()).getCellEditorValue().toString());
-			//System.out.println("Edited value = " + numberEst);
 		}
 		catch (NumberFormatException ne) {
 			isInteger = false;
@@ -231,9 +221,6 @@ public class StatisticsReqTable extends JTable {
 	public int getSelectedReq() {
 		return tableRows.get(rowNumber);
 	}
-	public void setInfoPanel(StatisticsInfoPanel panel) {
-		infoPanel = panel;
-	}
 	
 	public void setSession(PlanningPokerSession aSession) {
 		currentSession = aSession; 
@@ -268,4 +255,13 @@ public class StatisticsReqTable extends JTable {
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
 		refresh(currentSession);
 	}
+
+	/**
+	 * Setter for the detail panel
+	 * @param detailPanel	The stats. detail panel to ste
+	 */
+	public void setDetailPanel(StatisticsDetailPanel detailPanel) {
+		this.detailPanel = detailPanel; 
+	}
+	
 }

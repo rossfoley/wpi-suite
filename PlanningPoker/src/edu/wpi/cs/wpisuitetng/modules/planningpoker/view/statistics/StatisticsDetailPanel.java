@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
 public class StatisticsDetailPanel extends JSplitPane {
@@ -31,22 +32,17 @@ public class StatisticsDetailPanel extends JSplitPane {
 	JPanel reqOverviewTablePanel = new JPanel();
 	SpringLayout reqOverviewLayout = new SpringLayout();
 
-	public StatisticsDetailPanel (PlanningPokerSession session) {
+	public StatisticsDetailPanel (PlanningPokerSession session, Requirement requirement) {
 
 		currentSession = session;
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
-		final String[] userColumnNames = {"User", "Estimate"};
-		final Object[][] userData = {};
-		
 		// Create the info panel and table panel
-		userTable = new StatisticsUserTable(userData, userColumnNames, session);
+		userTable = new StatisticsUserTable(session, requirement);
 		tablePanel = new JScrollPane(userTable);
 		infoPanel = new StatisticsInfoPanel(currentSession);
 		
-		
-		userTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		userTable.getColumnModel().getColumn(1).setMinWidth(100); // User name
+		userTable.getColumnModel().getColumn(0).setMinWidth(200); // User name
 		userTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
 
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
@@ -81,9 +77,6 @@ public class StatisticsDetailPanel extends JSplitPane {
 		// update each part of the split panel
 		updateInfoPanel(currentSession);
 		updateReqTable(currentSession);
-		
-		// change the visibility of the top buttons
-		setButtonVisibility(currentSession);
 	}	
 	
 	private void updateInfoPanel(PlanningPokerSession session) {
@@ -91,24 +84,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 	}
 
 	private void updateReqTable(PlanningPokerSession session) {
-		userTable.refresh(session);
+//		userTable.updateRequirement(requirement);
 		
-	}
-
-	private void setButtonVisibility(PlanningPokerSession session) {
-		// TODO
-		// Check if the buttons should appear
-		/*
-			btnEdit.isVisible(false);
-			if (session.isEditable()) {
-				btnEdit.isVisible(true);
-			}
-		*/
-	}
-	
-	public PlanningPokerSession getCurrentSession() {
-		
-		return currentSession;
 	}
 	
 	public void setRequirementID(int ID) {
@@ -118,6 +95,5 @@ public class StatisticsDetailPanel extends JSplitPane {
 	public StatisticsInfoPanel getInfoPanel() {
 		return infoPanel;
 	}
-	
 	
 }

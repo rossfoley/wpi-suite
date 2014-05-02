@@ -9,34 +9,17 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
 
-import javax.swing.BorderFactory;
-import javax.swing.DropMode;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /** 
  *  This class is the panel that is shown when viewing statistics on a session
@@ -48,8 +31,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	 */
 	private StatisticsDetailPanel detailPanel;
 	private StatisticsReqTable reqTable;
-	private JScrollPane tablePanel; 
-	private StatisticsInfoPanel infoPanel;
+	private JScrollPane tablePanel;
 	
 	int selectedReqID;
 	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
@@ -67,15 +49,12 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		final Object[][] reqData = {};
 
 		// Create the user table panel and detail panel
-		detailPanel = new StatisticsDetailPanel(activeSession);
+		detailPanel = new StatisticsDetailPanel(activeSession, null);
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
 		tablePanel = new JScrollPane(reqTable);
 		
-		// initialize infoPanel
-		infoPanel = detailPanel.getInfoPanel();
-		
 		//set infoPanel to get estimate information for statistics
-		reqTable.setInfoPanel(infoPanel);
+		reqTable.setDetailPanel(detailPanel);
 		
 		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
 		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
@@ -83,7 +62,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 
-		//
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
 		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
@@ -95,7 +73,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		
 		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//StatisticsReqTable reqTable = 
 				reqTable.updateFinalEstimates(activeSession);
 			}
 		});
@@ -105,22 +82,12 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 		
 		// Put the overview table and sidebar into the tab
-		this.setLeftComponent(tablePanel);
-		this.setRightComponent(detailPanel);
+		setLeftComponent(tablePanel);
+		setRightComponent(detailPanel);
 		
-		this.updatePanel();
-
-		// Makes the split pane divide 50/50 for each portion
-		//final Dimension d = new Dimension(300, 100);
-        //detailPanel.setMinimumSize(d);
-       // detailPanel.setPreferredSize(d);
-       // reqTable.setMinimumSize(d);
-       // reqTable.setPreferredSize(d);
-		
-		this.setDividerLocation(400);
-
-
-        this.setEnabled(true);
+		updatePanel();
+		setDividerLocation(400);
+        setEnabled(true);
 	}
 	
 	public void updatePanel()	{	
