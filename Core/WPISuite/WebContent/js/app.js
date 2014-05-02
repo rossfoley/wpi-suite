@@ -159,7 +159,7 @@
         _ref = this.deck().numbersInDeck;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           cardValue = _ref[_i];
-          this.cards.push(new CardViewModel(cardValue, false));
+          this.cards.push(new CardViewModel(cardValue, false, this));
         }
       }
       this.widthPercent = ko.computed((function(_this) {
@@ -224,6 +224,19 @@
         };
       })(this);
       this.setVoteValue(this.estimate().vote());
+      this.notifySelection = (function(_this) {
+        return function(cardViewModel) {
+          var card, _j, _len1, _ref1;
+          if (!_this.deck().allowMultipleSelections) {
+            _ref1 = _this.cards();
+            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+              card = _ref1[_j];
+              card.selected(false);
+            }
+            return cardViewModel.selected(true);
+          }
+        };
+      })(this);
       this.submitVote = (function(_this) {
         return function() {
           _this.estimate().vote(parseInt(_this.totalValue()));
@@ -252,15 +265,17 @@
   })();
 
   CardViewModel = (function() {
-    function CardViewModel(value, selected) {
+    function CardViewModel(value, selected, parentViewModel) {
       this.value = ko.observable(value);
       this.selected = ko.observable(selected);
+      this.parent = parentViewModel;
       this.cardClicked = (function(_this) {
         return function() {
           if (_this.selected()) {
             return _this.selected(false);
           } else {
-            return _this.selected(true);
+            _this.selected(true);
+            return _this.parent.notifySelection(_this);
           }
         };
       })(this);

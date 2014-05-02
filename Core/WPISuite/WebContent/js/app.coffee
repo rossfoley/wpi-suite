@@ -132,7 +132,7 @@ class EstimateViewModel
     if @usingDeck()
       @cards = ko.observableArray([])
       for cardValue in @deck().numbersInDeck
-        @cards.push(new CardViewModel(cardValue, no))
+        @cards.push(new CardViewModel(cardValue, no, @))
 
     @widthPercent = ko.computed =>
       numVotes = @voted().length
@@ -174,6 +174,12 @@ class EstimateViewModel
     # Load in the existing vote
     @setVoteValue(@estimate().vote())
 
+    @notifySelection = (cardViewModel) =>
+      unless @deck().allowMultipleSelections
+        for card in @cards()
+          card.selected(no)
+        cardViewModel.selected(yes)
+
     @submitVote = =>
       @estimate().vote(parseInt(@totalValue()))
       $.ajax
@@ -193,15 +199,17 @@ class EstimateViewModel
 #####################################
 
 class CardViewModel
-  constructor: (value, selected) ->
+  constructor: (value, selected, parentViewModel) ->
     @value = ko.observable(value)
     @selected = ko.observable(selected)
+    @parent = parentViewModel
 
     @cardClicked = =>
       if @selected()
         @selected(no)
       else
         @selected(yes)
+        @parent.notifySelection(@)
 
 
 
