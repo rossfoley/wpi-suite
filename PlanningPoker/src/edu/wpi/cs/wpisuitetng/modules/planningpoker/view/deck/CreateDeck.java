@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -111,12 +113,7 @@ public class CreateDeck extends JPanel {
 		btnAddCard.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					final int value = Integer.parseInt(txtCardValue.getText());
-					addCard(value);
-					txtCardValue.setText("");
-					refresh();
-				} catch (NumberFormatException ex) {}
+				addCardPressed();
 			}
 		});
 		lblAddCardError.setVisible(false);
@@ -141,6 +138,24 @@ public class CreateDeck extends JPanel {
 		});
 		txtCardValue.setText("0");
 		txtCardValue.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		txtCardValue.addKeyListener(
+				new KeyListener(){
+					@Override
+					public void keyPressed(KeyEvent e){
+
+						if(e.getKeyChar() == KeyEvent.VK_ENTER){
+							addCardPressed();
+						}
+					}
+
+					@Override
+					public void keyTyped(KeyEvent e) {
+					}
+					@Override
+					public void keyReleased(KeyEvent e) {
+					}
+       });
 
 		buildCardTable();
 
@@ -490,6 +505,20 @@ public class CreateDeck extends JPanel {
 				DeckListener l = e.nextElement();
 				l.deckSubmitted(event);
 			}
+		}
+	}
+	
+	/**
+	 * Adds a card based on the number currently in txtCardValue
+	 */
+	public void addCardPressed(){
+		try {
+			final int value = Integer.parseInt(txtCardValue.getText());
+			addCard(value);
+			txtCardValue.setText("");
+			refresh();
+		} catch (NumberFormatException ex) {
+			System.out.print(ex.getMessage());
 		}
 	}
 
