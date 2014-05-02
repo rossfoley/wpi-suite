@@ -28,7 +28,7 @@ import java.awt.Font;
  */
 public class OptionsOverviewPanel extends JSplitPane {
 	private JPanel comboPanel = new JPanel();
-	private JLabel comboLabel = new JLabel("Select Option To View");
+	private JLabel comboLabel = new JLabel("Select Option To View  ");
 	private JComboBox<String> comboBoxOptions = new JComboBox<String>();
 	private PreferencesPanel prefPanel = new PreferencesPanel();
 	private JPanel deckOverviewPanel = new JPanel();
