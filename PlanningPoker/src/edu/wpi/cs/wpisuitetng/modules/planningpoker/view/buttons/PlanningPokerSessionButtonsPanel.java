@@ -163,10 +163,10 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
-<<<<<<< HEAD
+
 				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
-=======
-				ViewEventController.getInstance().openStatisticsTab(session);
+
+				//ViewEventController.getInstance().openStatisticsTab(session);
 				}
 			});
 		
@@ -176,7 +176,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			
 			public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().createPlanningPokerSession();
->>>>>>> Click Help button on button selection panel to open a new tab, Brian Flynn ' button does not currently have correct functionality, but a rebase is needed as an important file has been changed by another member. '
 			}
 		});
 
@@ -262,7 +261,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	public void enableStatisticsButton() {
 		statisticsButton.setEnabled(true);
 	}
-<<<<<<< HEAD
+
 
 	/**
 	 * Enables the tool-bar buttons based on the input PlanningPoker and Client session 
@@ -312,7 +311,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		disableVoteButton();
 		disableEndVoteButton();
 		disableStatisticsButton();		
-=======
+	}
 	
 	public void disableHelpButton() {
 		helpButton.setEnabled(false);
@@ -320,7 +319,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	
 	public void enableHelpButton() {
 		helpButton.setEnabled(true);
->>>>>>> Click Help button on button selection panel to open a new tab, Brian Flynn ' button does not currently have correct functionality, but a rebase is needed as an important file has been changed by another member. '
 	}
 }
 
