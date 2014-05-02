@@ -30,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionControl
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewMode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 
@@ -137,8 +138,12 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				// If the node is a PlanningPokerSession
 				if (node.getUserObject() instanceof PlanningPokerSession) {
 					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
-					displaySession(session);
+					if(e.getClickCount() == 2) {
+						doubleClickOpenSession(session);
+					} else {
+						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
+						displaySession(session);
+					}
 				}
 			}
 		}
@@ -204,5 +209,27 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		}
 
 		super.paintComponent(g);
+	}
+	
+	/**
+	 * in case of double click, opens up the appropriate panel
+	 * @param session	The planningPoker session to use
+	 */
+	public void doubleClickOpenSession(PlanningPokerSession session) {
+		final String sessionOwner = session.getSessionCreatorName();
+		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
+			if (session.isPending()) {
+				//if doubleclick and session is pending, open up an editing panel
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
+			}
+		}
+		if (session.isOpen()) {
+			// If doubleclick and session is open, open up a voting panel
+			ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
+		}
+			// If doubleclick and session is ended or closed , open up a statistics panel
+		if (session.isEnded() || session.isClosed()) {
+			ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+		}
 	}
 }
