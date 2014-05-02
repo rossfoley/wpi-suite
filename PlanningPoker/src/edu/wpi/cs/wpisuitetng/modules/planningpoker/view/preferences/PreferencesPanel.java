@@ -31,7 +31,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.List;
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * 
@@ -76,13 +79,14 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, 100, SpringLayout.EAST, txtEnterEmailHere);
 		add(btnSubmit);
+		btnSubmit.setEnabled(false);
 
 		lblEmailErrorText = new JLabel("Invalid Email");
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmailErrorText, 6, SpringLayout.SOUTH, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, lblEmailErrorText, 31, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblEmailErrorText, -187, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, lblEmailErrorText, -129, SpringLayout.EAST, this);
-		lblEmailErrorText.setForeground(Color.RED);
+		lblEmailErrorText.setForeground(Color.BLACK);
 		add(lblEmailErrorText);
 
 		lblEmailSubmitted = new JLabel("Submitted Email!");
@@ -102,7 +106,29 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 				submitEmail();
 			}
 		});
+		
+		// Add live listener to input text field for live validation
+		txtEnterEmailHere.getDocument().addDocumentListener(new DocumentListener() {
 
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				final String email = txtEnterEmailHere.getText();
+
+				// Validate
+				if (validateEmail(email) == true) {
+				
+				}
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+
+			}
+		});
 		addFocusListener(this);
 		
 		JLabel lblPreferences = new JLabel("Preferences");
@@ -185,24 +211,6 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 		return true;
 	}
 
-	/**
-	 * Focus listen function for describing what happens when this panel comes into focus.
-	 */
-	@Override
-	public void focusGained(FocusEvent e) {
-		emailSent = false;
-		lblEmailSubmitted.setVisible(emailSent);
-	}
-
-	/**
-	 * Focus listen function for describing what happens when this panel comes out of focus.
-	 */
-	@Override
-	public void focusLost(FocusEvent e) {
-		emailSent = false;
-		lblEmailSubmitted.setVisible(emailSent);
-
-	}
 
 	/**
 	 * Calls the super classes repaint and them implements a timeout for email submission
