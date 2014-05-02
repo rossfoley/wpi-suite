@@ -10,5 +10,26 @@
 
 .card-selected {
   font-weight: bold;
-  border: 1px solid green;
+  border-color: lime !important;
+}
+
+.card-container {
+  width: 204px;
+  height: 254px;
+  background-image: url('../images/card_background.png');
+  border: 2px solid white;
+  border-radius: 13px;
+  float: left;
+}
+
+.card-value {
+  padding: 105px 0;
+  width: 200px;
+  text-align: center;
+  font-size: 30px;
+}
+
+.deck {
+  clear: both;
+  overflow: hidden;
 }
