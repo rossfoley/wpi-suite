@@ -26,6 +26,11 @@ import javax.swing.table.TableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
+/**
+ * The table containing all the votes for the input requirement and session.
+ * A vote consists of the voter name and their estimate
+ *
+ */
 public class StatisticsUserTable extends JTable {
 	private DefaultTableModel tableModel;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
