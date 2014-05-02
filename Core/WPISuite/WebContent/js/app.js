@@ -114,7 +114,8 @@
             estimate = _ref3[_k];
             if (estimate['requirementID'] === requirement['id']) {
               estimate['isSaved'] = true;
-              reqEstimates[estimate['ownerName']] = estimate;
+              reqEstimates[estimate['ownerName']]['vote'] = estimate['vote'];
+              reqEstimates[estimate['ownerName']]['isSaved'] = true;
             }
           }
           this.requirementEstimates.push(new EstimateViewModel(reqEstimates, requirement, this.params));
@@ -205,7 +206,7 @@
       })(this));
       this.submitVote = (function(_this) {
         return function() {
-          _this[_this.username]().vote(parseInt(_this.voteValue()));
+          _this[_this.username]().vote(parseInt(_this.totalValue()));
           return $.ajax({
             type: 'POST',
             dataType: 'json',

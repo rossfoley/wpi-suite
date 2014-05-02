@@ -57,7 +57,7 @@
                   <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
                 </div>
                 <div class="deck-vote" data-bind="if: usingDeck">
-                Total: <span data-bind="text: totalValue"></span>
+                Total: <span data-bind="text: totalValue"></span> <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
                   <div class="deck" data-bind="foreach: cards">
                     <div class="card-container" data-bind="click: function() {cardClicked()}, css: { 'card-selected': selected }">
                       <div class="card-value" data-bind="text: value"></div>

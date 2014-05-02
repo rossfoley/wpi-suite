@@ -89,7 +89,8 @@ class SessionViewModel
         for estimate in @estimates()
           if estimate['requirementID'] == requirement['id']
             estimate['isSaved'] = yes
-            reqEstimates[estimate['ownerName']] = estimate
+            reqEstimates[estimate['ownerName']]['vote'] = estimate['vote']
+            reqEstimates[estimate['ownerName']]['isSaved'] = yes
         @requirementEstimates.push(new EstimateViewModel(reqEstimates, requirement, @params))
 
 
@@ -150,7 +151,7 @@ class EstimateViewModel
         @voteValue()
 
     @submitVote = =>
-      @[@username]().vote(parseInt(@voteValue()))
+      @[@username]().vote(parseInt(@totalValue()))
       $.ajax
         type: 'POST'
         dataType: 'json'
