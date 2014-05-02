@@ -247,7 +247,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	 * Enables the tool-bar buttons based on the input PlanningPoker and Client session 
 	 * @param session	The planningPoker session to use
 	 */
-	public void enableButtonsForSession(PlanningPokerSession session) {
+	public void enableButtonsForSession(PlanningPokerSession session, boolean isdoubleclick) {
 		final String sessionOwner = session.getSessionCreatorName();
 
 		// Disable everything by default
@@ -257,7 +257,12 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
 			// Enable editing if pending and not open or opened in editing mode
 			if (session.isPending()) {
-				enableEditButton();
+				//if doubleclick open up an editing panel
+				if (isdoubleclick) {
+					ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
+				} else {
+					enableEditButton();
+				}
 			}
 			// Allow end of voting if open and editing if no estimates yet
 			else if (session.isOpen()) {
@@ -271,12 +276,20 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 
 		// If session is open, allow voting
 		if (session.isOpen()) {
-			enableVoteButton();
+			if (isdoubleclick) {
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
+			} else {
+				enableVoteButton();
+			}
 		}
 
 		// If the session is ended or closed, allow the user to view statistics
 		if (session.isEnded() || session.isClosed()) {
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
+			if (isdoubleclick) {
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+			} else {
+				ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
+			}
 		}
 		else if (session.isOpen() || session.isPending()) {
 			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
