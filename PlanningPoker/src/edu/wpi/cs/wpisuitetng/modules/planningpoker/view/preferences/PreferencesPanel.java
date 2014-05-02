@@ -30,6 +30,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.List;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 /**
  * 
@@ -102,6 +104,13 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 		});
 
 		addFocusListener(this);
+		
+		JLabel lblPreferences = new JLabel("Preferences");
+		lblPreferences.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPreferences.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 10, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblPreferences, 0, SpringLayout.EAST, lblSub);
+		add(lblPreferences);
 	}
 
 
@@ -201,6 +210,11 @@ public class PreferencesPanel extends JPanel implements FocusListener {
 	 * @param g
 	 */
 	public void repaint(Graphics g) {
+		if (txtEnterEmailHere.getText().equals("")) {
+			emailError = false;
+			lblEmailErrorText.setVisible(emailError);
+		}
+		
 		super.repaint();
 		if (System.currentTimeMillis() > emailLastSubmitted + 1000*60*10) {
 			emailSent = false;
