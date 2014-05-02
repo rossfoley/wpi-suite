@@ -134,41 +134,12 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				// If the node is a PlanningPokerSession
 				if (node.getUserObject() instanceof PlanningPokerSession) {
 					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
+
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
 					if(e.getClickCount() == 2) {
 						doubleClickOpenSession(session);
 					} else {
-=======
-					final String sessionOwner = session.getSessionCreatorName();
 
-					// Disable everything by default
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-					
-					
-					// If the current user is the owner of the session
-					if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
-						// Enable editing if pending					
-						if (session.isPending()) {
-							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
-						}
-						// Allow end of voting if open and editing if no estimates yet
-						else if (session.isEditable()) {
-								ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
-							}
-						}
-					
-					
-					// If session is open, allow voting
-					if (session.isOpen()) {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
-					}
-					
-					// If the session is ended or closed, allow the user to view statistics
-					if (session.isEnded() || session.isClosed()) {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
-					}
-					
->>>>>>> Removes end voting button from planning poker button panel
 						displaySession(session);
 					}
 				}

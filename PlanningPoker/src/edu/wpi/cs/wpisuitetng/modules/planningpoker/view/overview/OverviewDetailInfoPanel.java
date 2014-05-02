@@ -20,14 +20,23 @@ import java.text.DateFormat;
 import java.util.GregorianCalendar;
 
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.event.ActionEvent;
@@ -56,7 +65,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 	JLabel sessionCreatorDisplay;
 	SpringLayout springLayout;
 	JButton overviewDetailButton = new JButton("button");
-	
+	PlanningPokerSession currentSession;
 	public OverviewDetailInfoPanel() {
 
 		lblSessionName = new JLabel("Session Name:");
@@ -98,9 +107,29 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(sessionCreatorDisplay);
 		add(overviewDetailButton);
 		
-		overviewDetailButton.addActionListener(new ActionListener() {
+		/*overviewDetailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().sendEstimatesFromSession();
+			}
+		});*/
+		
+		//open session button action listener
+		overviewDetailButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (currentSession.getGameState() == SessionState.PENDING){
+					currentSession.setGameState(SessionState.OPEN);
+				}
+				else if (currentSession.getGameState() == SessionState.OPEN){
+					currentSession.setGameState(SessionState.VOTINGENDED);
+				}
+				else if (currentSession.getGameState() == SessionState.VOTINGENDED){
+					currentSession.setGameState(SessionState.CLOSED);
+				}
+				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
+				OverviewTreePanel treePanel = ViewEventController.getInstance().getOverviewTreePanel();
+				treePanel.refresh();
+
+
 			}
 		});
 	}
@@ -110,7 +139,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 	 * @param session The session to display information about
 	 */
 	public void refresh(PlanningPokerSession session) {
-
+		currentSession = session;
 		// Change session name
 		sessionNameDisplay.setText(session.getName());
 		
@@ -130,28 +159,25 @@ public class OverviewDetailInfoPanel extends JPanel {
 			// Set button to open session button for pending sessions
 			if(session.getGameState() == SessionState.PENDING) {
 				overviewDetailButton.setText("Open Session for Voting");
+				overviewDetailButton.setEnabled(true);
 			}
 			
 			// Set button to end session button for open sessions 
 			else if(session.getGameState() == SessionState.OPEN) {
 				overviewDetailButton.setText("End Session Voting");
+				overviewDetailButton.setEnabled(true);
 			}
 			// Set button to close session for ended sessions
 			else if (session.getGameState() == SessionState.VOTINGENDED) {
-				overviewDetailButton.setText("Close Session");
+				overviewDetailButton.setText("Archive Session");
 				//Check if there are final estimates 
-				if (session.getFinalEstimates().size() == 0) {
+				int finalEstimateSize = session.getFinalEstimates().size();
+				System.out.println(finalEstimateSize);
+				if (session.getFinalEstimates().size() != session.requirementsGetSize()) {
 					overviewDetailButton.setEnabled(false);
-					System.out.println("No estimates");
 				}
-				//if there are final estimates, check if they've already been sent
 				else {
-					if (areAllEstimatesSent(session)) {
-						overviewDetailButton.setEnabled(false);
-					}
-					else {
-						overviewDetailButton.setEnabled(true);
-					}
+					overviewDetailButton.setEnabled(true);
 				}
 			}
 		else {
