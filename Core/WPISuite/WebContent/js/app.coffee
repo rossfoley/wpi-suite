@@ -120,7 +120,12 @@ class EstimateViewModel
     @deck = ko.observable(params.deck)
     @username = params.username
     @voted = ko.observableArray(voterList)
-    @voteValue = ko.observable(0)
+    @voteValue = ko.observable(0).extend
+      required:
+        message: 'Please enter a vote!'
+      pattern:
+        message: 'Please enter a positive integer!'
+        params: '^\\d+$'
 
     # Load in the user's estimate as observable fields
     observableEstimate = {}

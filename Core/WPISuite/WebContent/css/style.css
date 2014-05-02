@@ -34,3 +34,8 @@
   clear: both;
   overflow: hidden;
 }
+
+.no-deck-input {
+  width: 100px;
+  display: inline;
+}

@@ -147,7 +147,15 @@
       this.deck = ko.observable(params.deck);
       this.username = params.username;
       this.voted = ko.observableArray(voterList);
-      this.voteValue = ko.observable(0);
+      this.voteValue = ko.observable(0).extend({
+        required: {
+          message: 'Please enter a vote!'
+        },
+        pattern: {
+          message: 'Please enter a positive integer!',
+          params: '^\\d+$'
+        }
+      });
       observableEstimate = {};
       for (key in userEstimate) {
         value = userEstimate[key];

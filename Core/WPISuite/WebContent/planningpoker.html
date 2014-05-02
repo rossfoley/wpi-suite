@@ -53,7 +53,8 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="no-deck-vote" data-bind="ifnot: usingDeck">
-                  <input type="number" placeholder="Vote here!" data-bind="value: voteValue" />
+                  Vote:
+                  <input type="number" placeholder="Vote" data-bind="value: voteValue" required pattern="^\d+$" class="form-control no-deck-input"/>
                   <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
                 </div>
                 <div class="deck-vote" data-bind="if: usingDeck">
@@ -73,7 +74,7 @@
 
   <script src="js/libs/jquery-2.1.0.js"></script>
   <script src="js/libs/knockout-3.1.0.js"></script>
-  <script src="js/libs/knockout.mapping-latest.js"></script>
+  <script src="js/libs/knockout.validation.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
