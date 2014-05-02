@@ -1,8 +1,3 @@
-/* Put your CSS here */
-.ember-application {
-    margin: 20px;
-}
-
 .requirement-progress {
   width: 75%;
 }
@@ -11,4 +6,38 @@
   display: block;
   float: left;
   margin-right: 10px;
+}
+
+.card-selected {
+  font-weight: bold;
+  border-color: lime !important;
+}
+
+.card-container {
+  width: 140px;
+  height: 174px;
+  background-image: url('../images/card_background.png');
+  background-size: contain;
+  border: 2px solid white;
+  border-radius: 10px;
+  float: left;
+  margin-right: 10px;
+}
+
+.card-value {
+  padding: 67px 0;
+  width: 140px;
+  text-align: center;
+  font-size: 30px;
+  color: red;
+}
+
+.deck {
+  clear: both;
+  overflow: hidden;
+}
+
+.no-deck-input {
+  width: 100px;
+  display: inline;
 }

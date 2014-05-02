@@ -30,7 +30,6 @@ public class Estimate implements Comparable<Estimate> {
 	public Estimate() {
 		// Initialize as an invalid vote
 		vote = -1;
-		sessionID = UUID.randomUUID();
 	}
 	
 	/**

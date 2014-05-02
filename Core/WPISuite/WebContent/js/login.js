@@ -13,7 +13,10 @@
         },
         async: false,
         error: function() {
-          return console.log('Error logging in!');
+          $('#badPassAlert').css({
+            display: 'block'
+          });
+          return $('#badPassAlert').html('ERROR: Invalid Details Provided!');
         }
       });
       $.ajax({
@@ -30,7 +33,7 @@
           if (window.location.port) {
             url += ":" + window.location.port;
           }
-          url += '/WPISuite/planningpoker.html';
+          url += "/WPISuite/planningpoker.html?username=" + ($('#username').val());
           return window.location = url;
         }
       });
