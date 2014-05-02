@@ -244,10 +244,35 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	}
 
 	/**
+	 * in case of double click, opens up the appropriate panel
+	 * @param session
+	 */
+	public void doubleClickShortCutSession(PlanningPokerSession session) {
+		final String sessionOwner = session.getSessionCreatorName();
+
+		// Disable everything by default
+		disableAllButtons();
+		
+		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
+			if (session.isPending()) {
+				//if doubleclick open up an editing panel
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
+			}
+		}
+		// If session is open, allow voting
+		if (session.isOpen()) {
+			ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
+		}
+		// If the session is ended or closed, allow the user to view statistics
+		if (session.isEnded() || session.isClosed()) {
+			ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+		}
+	}
+	/**
 	 * Enables the tool-bar buttons based on the input PlanningPoker and Client session 
 	 * @param session	The planningPoker session to use
 	 */
-	public void enableButtonsForSession(PlanningPokerSession session, boolean isdoubleclick) {
+	public void enableButtonsForSession(PlanningPokerSession session) {
 		final String sessionOwner = session.getSessionCreatorName();
 
 		// Disable everything by default
@@ -257,12 +282,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
 			// Enable editing if pending and not open or opened in editing mode
 			if (session.isPending()) {
-				//if doubleclick open up an editing panel
-				if (isdoubleclick) {
-					ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
-				} else {
-					enableEditButton();
-				}
+				enableEditButton();
 			}
 			// Allow end of voting if open and editing if no estimates yet
 			else if (session.isOpen()) {
@@ -276,20 +296,12 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 
 		// If session is open, allow voting
 		if (session.isOpen()) {
-			if (isdoubleclick) {
-				ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
-			} else {
-				enableVoteButton();
-			}
+			enableVoteButton();
 		}
-
+		
 		// If the session is ended or closed, allow the user to view statistics
 		if (session.isEnded() || session.isClosed()) {
-			if (isdoubleclick) {
-				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
-			} else {
-				ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
-			}
+			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
 		}
 		else if (session.isOpen() || session.isPending()) {
 			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
