@@ -427,19 +427,17 @@ public class CreateDeck extends JPanel {
 			btnAddCard.setEnabled(false);
 			lblAddCardError.setVisible(false);
 		}
+		if (txtCardValue.getText().length() > 3 && !txtCardValue.getText().equals("")){
+			btnAddCard.setEnabled(false);
+			lblAddCardError.setVisible(true);
+			lblAddCardError.setText("Enter 3 or less digits");
+		}
 		else {
 			try {
 				if (Integer.parseInt(txtCardValue.getText()) >= 0) {
 					btnAddCard.setEnabled(true);
 					lblAddCardError.setVisible(false);
 				}
-				/*
-				if (txtCardValue.getText().length() < 3){
-					btnAddCard.setEnabled(false);
-					lblAddCardError.setVisible(true);
-					lblAddCardError.setText("Enter 3 or less digits");
-				}
-				*/
 				else {
 					btnAddCard.setEnabled(false);
 					lblAddCardError.setVisible(true);
