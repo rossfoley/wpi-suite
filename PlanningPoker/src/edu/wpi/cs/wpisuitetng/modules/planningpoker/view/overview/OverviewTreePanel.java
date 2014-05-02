@@ -37,7 +37,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
 /**
  * Displays all sessions in a tree for the left side of the overview panel
  * @see requirementmanager.view.overview.overviewtree
- * @author Randy Acheson
  * @version 4/18/14
  */
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
@@ -129,9 +128,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				// If the node is a PlanningPokerSession
 				if (node.getUserObject() instanceof PlanningPokerSession) {
 					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
+
 					if(e.getClickCount() == 2) {
 						doubleClickOpenSession(session);
 					} else {
+
 						displaySession(session);
 					}
 				}
@@ -180,8 +181,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
 	/**
-	 * @return the tree */
+	 * @return the tree
+	 */
 	public JTree getTree() {
 		return tree;
 	}

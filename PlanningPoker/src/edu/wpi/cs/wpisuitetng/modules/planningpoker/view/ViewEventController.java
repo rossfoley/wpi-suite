@@ -186,10 +186,6 @@ public class ViewEventController {
 		overviewDetailPanel.updatePanel(displaySession);
 	}
 	
-	public void sendEstimatesFromSession(){
-		overviewDetailPanel.replaceTable();
-	}
-	
 	/**
 	 * Opens the input session for the specified operation
 	 * @param session	The session to open
