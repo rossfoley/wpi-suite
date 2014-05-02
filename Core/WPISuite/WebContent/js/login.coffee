@@ -10,9 +10,8 @@ $ ->
         'Authorization': authString
       async: no
       error: ->
-      	document.getElementById("badPassAlert").style.display = 'block'
-      	document.getElementById("badPassAlert").innerHTML = "ERROR: Invalid Details Provided!" 
-      	console.log 'Error logging in!'
+      	$('#badPassAlert').css display: 'block'
+      	$('#badPassAlert').html 'ERROR: Invalid Details Provided!'
 
     # Now we need to set the project that we will be using
     $.ajax
