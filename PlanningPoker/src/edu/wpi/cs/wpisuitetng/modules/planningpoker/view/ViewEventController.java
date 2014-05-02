@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
@@ -159,6 +161,7 @@ public class ViewEventController {
 		
 		if (comp instanceof OptionsOverviewPanel){
 			helpPanel = null;
+			TimingManager.getInstance().removePollable((IPollable) comp);
 		}
 		
 		main.remove(comp);
@@ -193,6 +196,7 @@ public class ViewEventController {
 			if(toBeRemoved instanceof OverviewPanel) continue;
 			if (toBeRemoved instanceof OptionsOverviewPanel){
 				helpPanel = null;
+				TimingManager.getInstance().removePollable((IPollable) toBeRemoved);
 			}
 			main.removeTabAt(i);
 		}
@@ -221,6 +225,8 @@ public class ViewEventController {
 			}
 			if (toBeRemoved instanceof OptionsOverviewPanel){
 				helpPanel = null;
+				TimingManager.getInstance().removePollable((IPollable) toBeRemoved);
+				
 			}
 
 			main.removeTabAt(i);

@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckViewer;
 
 import java.awt.Color;
@@ -29,7 +31,7 @@ import java.awt.Font;
  * @author amandaadkins
  *
  */
-public class OptionsOverviewPanel extends JSplitPane {
+public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 	private JPanel comboPanel = new JPanel();
 	private JLabel comboLabel = new JLabel("Select Option To View  ");
 	private JComboBox<String> comboBoxOptions = new JComboBox<String>();
@@ -45,6 +47,7 @@ public class OptionsOverviewPanel extends JSplitPane {
 	 *  builds initial panel
 	 */
 	public OptionsOverviewPanel(){
+		TimingManager.getInstance().addPollable(this);
 		setOrientation(VERTICAL_SPLIT);
 		setEnabled(false);
 		setDividerLocation(50);
@@ -111,5 +114,11 @@ public class OptionsOverviewPanel extends JSplitPane {
 			}
 			setDividerLocation(dividerLocation);
 		}
+	}
+
+	@Override
+	public void pollFunction() {
+		deckOverviewPanel.refresh();
+		
 	}
 }

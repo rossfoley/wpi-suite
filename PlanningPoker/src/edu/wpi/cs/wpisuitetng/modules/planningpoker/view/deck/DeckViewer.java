@@ -29,12 +29,13 @@ public class DeckViewer extends JSplitPane {
 	private final JPanel viewDeckPanel = new JPanel();
 	private JPanel deckDetailsPanel;
 	private DeckVotingPanel cardDisplayPanel;
+	private List<Deck> decks;
 
 	/**
 	 * 	Constructor for creating the deck viewer panel
 	 */
 	public DeckViewer() {
-		final List<Deck> decks = DeckListModel.getInstance().getDecks();
+		decks = DeckListModel.getInstance().getDecks();
 		final String[] deckNames = new String[decks.size()];
 		int i = 0;
 		for (Deck d : decks) {
@@ -165,6 +166,17 @@ public class DeckViewer extends JSplitPane {
 		}
 		viewDeckPanel.add(deckDetailsPanel);
 		viewDeckPanel.add(cardDisplayPanel);
+	}
+	
+	/**
+	 * if new decks have been added, update the decklistpanel to reflect this
+	 */
+	public void refresh(){
+		final List<Deck> newDecks = DeckListModel.getInstance().getDecks();
+		if (!(decks.containsAll(newDecks))){
+			decks = newDecks;
+			deckListPanel = new DeckListPanel(decks);
+		}
 	}
 
 }
