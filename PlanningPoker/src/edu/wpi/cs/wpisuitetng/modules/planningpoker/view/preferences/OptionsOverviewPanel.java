@@ -20,6 +20,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 
 import java.awt.Color;
+import java.awt.Font;
 
 /**
  * @author amandaadkins
@@ -73,6 +74,7 @@ public class OptionsOverviewPanel extends JSplitPane {
 		});
 
 		comboBoxOptions.setBackground(Color.WHITE);
+		comboLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		
 		comboPanel.add(comboLabel);
 		comboPanel.add(comboBoxOptions);
