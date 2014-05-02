@@ -29,6 +29,11 @@ class PlanningPokerViewModel
       success: (data) => 
         @team = data
 
+    @params = 
+      requirements: @requirements
+      team: @team
+      username: @username
+
     # Load in the planning poker sessions
     $.ajax
       dataType: 'json'
@@ -36,11 +41,7 @@ class PlanningPokerViewModel
       async: no
       success: (data) =>
         for session in data
-          params = 
-            requirements: @requirements
-            team: @team
-            username: @username
-          @planningPokerSessions.push(new SessionViewModel(session, params))
+          @planningPokerSessions.push(new SessionViewModel(session, @params))
 
     @openSessions = ko.computed =>
       @planningPokerSessions().filter (session) =>
@@ -49,6 +50,34 @@ class PlanningPokerViewModel
     @setActiveSession = (session) =>
       @activeSession(session)
 
+    @checkForUpdates = =>
+      $.ajax
+        dataType: 'json'
+        url: 'API/requirementmanager/requirement'
+        success: (data) =>
+          for requirement in data
+            requirement['voteValue'] = 0
+          @requirements = data
+          @params.requirements = data
+          $.ajax
+            type: 'GET'
+            dataType: 'json'
+            url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates'
+            success: @applyUpdates
+
+    @applyUpdates = (updates) =>
+      for changedSession in updates
+        newSession = yes
+        for session in @planningPokerSessions()
+          if changedSession['uuid'] == session.uuid()
+            # The session exists, so apply the changes
+            newSession = no
+            session.applyUpdate(changedSession)
+        if newSession
+          @planningPokerSessions.push(new SessionViewModel(changedSession, @params))
+
+    # Check for new updates every 5 seconds
+    setInterval @checkForUpdates, 5000
 
 
 #################################
@@ -105,6 +134,14 @@ class SessionViewModel
         if requirement['id'] in @requirementIDs()
           result.push requirement
       result
+
+    # Apply an update received from the server
+    @applyUpdate = (update) =>
+      for changedEstimate in update['estimates']
+        for requirementEstimate in @requirementEstimates()
+          if changedEstimate['requirementID'] == requirementEstimate.requirement()['id']
+            requirementEstimate.applyUpdate(changedEstimate)
+
 
 
 #####################################
@@ -193,10 +230,12 @@ class EstimateViewModel
         url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
         data: ko.toJSON(@estimate())
         success: (data) => 
-          console.log('Vote successfully submitted')
           unless @username in @voted()
             @voted.push @username
-        error: => console.log 'Error updating the estimate'
+
+    @applyUpdate = (update) =>
+      unless update['ownerName'] in @voted()
+        @voted.push update['ownerName']
 
 
 #####################################
