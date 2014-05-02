@@ -55,7 +55,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 	JLabel deckDisplay;
 	JLabel sessionCreatorDisplay;
 	SpringLayout springLayout;
-	JButton sendEstimatesBtn = new JButton("Send Final Estimates To Requirement Manager");
+	JButton overviewDetailButton = new JButton("button");
 	
 	public OverviewDetailInfoPanel() {
 
@@ -81,7 +81,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		sessionDescriptionDisplay.setWrapStyleWord(true);
 		sessionDescriptionDisplay.setLineWrap(true);
 		sessionDescriptionDisplay.setEditable(false);
-		sendEstimatesBtn.setVisible(false);
+		overviewDetailButton.setVisible(false);
 		
 		createConstraints();
 		
@@ -96,9 +96,9 @@ public class OverviewDetailInfoPanel extends JPanel {
 		add(endTimeDisplay);
 		add(deckDisplay);
 		add(sessionCreatorDisplay);
-		add(sendEstimatesBtn);
+		add(overviewDetailButton);
 		
-		sendEstimatesBtn.addActionListener(new ActionListener() {
+		overviewDetailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().sendEstimatesFromSession();
 			}
@@ -119,33 +119,47 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		// Change session creator
 		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
-
-		if ((session.getGameState() == SessionState.CLOSED) || (session.getGameState() == SessionState.VOTINGENDED)) {
-			// restrict exportation to moderator
-			if (ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())){
-				sendEstimatesBtn.setVisible(true);
-			}
-			else {
-				sendEstimatesBtn.setVisible(false);
-			}
-		}
-		else {
-			sendEstimatesBtn.setVisible(false);
-		}
 		
-		if (session.getFinalEstimates().size() == 0) {
-			sendEstimatesBtn.setEnabled(false);
+	
+		
+		//restrict ability to open/end voting on/close a session to session creator
+		if ((ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())) && ((session.getGameState() == SessionState.PENDING) || 
+				(session.getGameState() == SessionState.OPEN) || (session.getGameState() == SessionState.VOTINGENDED)) || (session.getGameState() == SessionState.CLOSED)){
+			overviewDetailButton.setVisible(true);
+
+			// Set button to open session button for pending sessions
+			if(session.getGameState() == SessionState.PENDING) {
+				overviewDetailButton.setText("Open Session for Voting");
+			}
 			
-			System.out.println("No estimates");
-		}
+			// Set button to end session button for open sessions 
+			else if(session.getGameState() == SessionState.OPEN) {
+				overviewDetailButton.setText("End Session Voting");
+			}
+			// Set button to close session for ended sessions
+			else if (session.getGameState() == SessionState.VOTINGENDED) {
+				overviewDetailButton.setText("Close Session");
+				//Check if there are final estimates 
+				if (session.getFinalEstimates().size() == 0) {
+					overviewDetailButton.setEnabled(false);
+					System.out.println("No estimates");
+				}
+				//if there are final estimates, check if they've already been sent
+				else {
+					if (areAllEstimatesSent(session)) {
+						overviewDetailButton.setEnabled(false);
+					}
+					else {
+						overviewDetailButton.setEnabled(true);
+					}
+				}
+			}
 		else {
-			if (areAllEstimatesSent(session)) {
-				sendEstimatesBtn.setEnabled(false);
-			}
-			else {
-				sendEstimatesBtn.setEnabled(true);
+				overviewDetailButton.setVisible(false);
 			}
 		}
+	
+
 		
 	
 		
@@ -284,8 +298,8 @@ public class OverviewDetailInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, sessionCreatorDisplay, 0, SpringLayout.SOUTH, lblSessionName);
 		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);
 		
-		springLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesBtn, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesBtn, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, overviewDetailButton, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, overviewDetailButton, -10, SpringLayout.EAST, this);
 
 	}
 	
