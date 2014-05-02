@@ -14,20 +14,22 @@
 }
 
 .card-container {
-  width: 204px;
-  height: 254px;
+  width: 140px;
+  height: 174px;
   background-image: url('../images/card_background.png');
+  background-size: contain;
   border: 2px solid white;
-  border-radius: 13px;
+  border-radius: 10px;
   float: left;
   margin-right: 10px;
 }
 
 .card-value {
-  padding: 105px 0;
-  width: 200px;
+  padding: 67px 0;
+  width: 140px;
   text-align: center;
   font-size: 30px;
+  color: red;
 }
 
 .deck {
