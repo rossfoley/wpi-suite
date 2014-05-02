@@ -68,7 +68,6 @@ public class StatisticsUserTable extends JTable {
 		// Only populate if their is a requirement and session passed in
 		if ((requirementID >= 0) && (planningPokerSession != null)) {
 			List<Estimate> estimates = planningPokerSession.getEstimates();
-
 			// Loop through all estimates in this session
 			for (Estimate el : estimates) {
 				// If the estimate is for this requirement
@@ -111,8 +110,9 @@ public class StatisticsUserTable extends JTable {
 	 * Refreshes the table to display votes for the input requirement
 	 * @param requirementID	The requirement to display votes for
 	 */
-	public void updateRequirement(int requirementID) {
+	public void updateTable(int requirementID) {
 		this.requirementID = requirementID;
 		populateVotePanel();
 	}
+	
 }

@@ -19,7 +19,10 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
-
+/**
+ * Panel for displaying details and statistics on requirements that have been voted on.
+ * Details include: name, description, mean, std. deviation, who voted, and their votes.
+ */
 public class StatisticsDetailPanel extends JSplitPane {
 	private PlanningPokerSession currentSession;
 	private StatisticsUserTable userTable;
@@ -66,8 +69,6 @@ public class StatisticsDetailPanel extends JSplitPane {
         infoPanel.setMinimumSize(d);
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
-        
-        updatePanel(-1);	// Initialize with no requirement selected
 	}
 	
 	/**
@@ -75,10 +76,9 @@ public class StatisticsDetailPanel extends JSplitPane {
 	 * @param requirementID	The ID of the requirement to display details for
 	 */
 	public void updatePanel(int requirementID)	{
-		// update each part of the split panel
+		infoPanel.setCurrentReqID(requirementID);
 		infoPanel.refresh(currentSession);
-		infoPanel.setRequirementID(requirementID);
-		userTable.updateRequirement(requirementID);
+		userTable.updateTable(requirementID);
 	}
 	
 }
