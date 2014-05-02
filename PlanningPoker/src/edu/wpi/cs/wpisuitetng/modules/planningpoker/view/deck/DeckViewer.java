@@ -26,7 +26,8 @@ import java.awt.Dimension;
 public class DeckViewer extends JSplitPane {
 	private final SpringLayout layout = new SpringLayout();
 	private DeckListPanel deckListPanel;
-	private final JPanel viewDeckPanel = new JPanel();
+	private final JSplitPane viewDeckPanel = new JSplitPane();
+	//private JSplitPane deckSpecificPane;
 	private JPanel deckDetailsPanel;
 	private DeckVotingPanel cardDisplayPanel;
 	private List<Deck> decks;
@@ -80,9 +81,8 @@ public class DeckViewer extends JSplitPane {
 	 * @return	The created panel
 	 */
 	public JPanel makeDeckDetailPanel(Deck deckToView) {
-		setDividerSize(0);
 		deckDetailsPanel = new JPanel();
-		deckDetailsPanel.setMinimumSize(new Dimension(100, 150));
+		deckDetailsPanel.setMinimumSize(new Dimension(100, 125));
 		final SpringLayout sl_reqDetails = new SpringLayout();
 		deckDetailsPanel.setLayout(sl_reqDetails);
 		final JLabel nameLabel = new JLabel("Deck Name:");
@@ -146,7 +146,7 @@ public class DeckViewer extends JSplitPane {
 		cardDisplayPanel = new DeckVotingPanel(deckToView);
 		cardDisplayPanel.setSubmitButtonVisible(false);
 
-		viewDeckPanel.setLayout(layout);
+		/*viewDeckPanel.setLayout(layout);
 
 		layout.putConstraint(SpringLayout.NORTH, deckDetailsPanel, 5, SpringLayout.NORTH, viewDeckPanel);
 		layout.putConstraint(SpringLayout.WEST, deckDetailsPanel, 5, SpringLayout.WEST, viewDeckPanel);
@@ -157,15 +157,22 @@ public class DeckViewer extends JSplitPane {
 		layout.putConstraint(SpringLayout.EAST, cardDisplayPanel, 0, SpringLayout.EAST, deckDetailsPanel);
 
 		layout.putConstraint(SpringLayout.SOUTH, deckDetailsPanel, -10, SpringLayout.NORTH, cardDisplayPanel);
-
+		 */
 		if (deckToView == null) {
 			cardDisplayPanel.setVisible(false);
 		}
 		else {
 			cardDisplayPanel.setVisible(true);
 		}
-		viewDeckPanel.add(deckDetailsPanel);
-		viewDeckPanel.add(cardDisplayPanel);
+		viewDeckPanel.setOrientation(VERTICAL_SPLIT);
+		viewDeckPanel.setDividerSize(0);
+		viewDeckPanel.setDividerLocation(viewDeckPanel.getSize().height-200);
+		cardDisplayPanel.setMinimumSize(new Dimension(100, 225));
+		
+		viewDeckPanel.setEnabled(false);
+
+		viewDeckPanel.setTopComponent(deckDetailsPanel);
+		viewDeckPanel.setBottomComponent(cardDisplayPanel);
 	}
 	
 	/**
