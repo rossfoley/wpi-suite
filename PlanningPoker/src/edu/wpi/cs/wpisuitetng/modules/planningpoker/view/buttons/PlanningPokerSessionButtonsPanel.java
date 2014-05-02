@@ -182,7 +182,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			@Override
 			
 			public void actionPerformed(ActionEvent e) {
-				ViewEventController.getInstance().createPlanningPokerSession();
+				ViewEventController.getInstance().openOptionsAndHelpScreen();
 			}
 		});
 

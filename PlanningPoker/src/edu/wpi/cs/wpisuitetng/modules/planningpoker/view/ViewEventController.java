@@ -20,6 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSe
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.OptionsOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
@@ -37,6 +38,7 @@ public class ViewEventController {
 	private OverviewDetailPanel overviewDetailPanel = null;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
+	private OptionsOverviewPanel helpPanel = null;
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -155,6 +157,10 @@ public class ViewEventController {
 			openSessionTabHashTable.remove(((ISessionTab)comp).getDisplaySession());
 		}
 		
+		if (comp instanceof OptionsOverviewPanel){
+			helpPanel = null;
+		}
+		
 		main.remove(comp);
 		return true;
 	}
@@ -185,6 +191,9 @@ public class ViewEventController {
 		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
 			if(toBeRemoved instanceof OverviewPanel) continue;
+			if (toBeRemoved instanceof OptionsOverviewPanel){
+				helpPanel = null;
+			}
 			main.removeTabAt(i);
 		}
 
@@ -209,6 +218,9 @@ public class ViewEventController {
 			
 			if (toBeRemoved == selected) {
 				continue;
+			}
+			if (toBeRemoved instanceof OptionsOverviewPanel){
+				helpPanel = null;
 			}
 
 			main.removeTabAt(i);
@@ -331,6 +343,19 @@ public class ViewEventController {
 		}
 		// Otherwise it is not a planning poker session related component!
 		return ViewMode.NONE;
+	}
+
+	public void openOptionsAndHelpScreen() {
+		if (helpPanel != null){
+			main.setSelectedComponent(helpPanel);
+		}
+		else {
+			helpPanel = new OptionsOverviewPanel();
+			JComponent comp = helpPanel;
+			main.addTab("Options", null, comp, "Options and Help");
+			main.setSelectedComponent(helpPanel);
+		}
+		
 	}
 	
 }
