@@ -80,6 +80,13 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
 			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
 			statisticsButton.setIcon(new ImageIcon(img));
+		
+			img = ImageIO.read(
+					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/options-and-help-icon.png"));
+			// This help icon was a free icon from "http://findicons.com/" 
+			// Combined a help icon and an options icon that can both be found on the site.
+			helpButton.setIcon(new ImageIcon(img));
+
 
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/options-and-help-icon.png"));
@@ -312,7 +319,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		disableEndVoteButton();
 		disableStatisticsButton();		
 	}
-	
+
 	public void disableHelpButton() {
 		helpButton.setEnabled(false);
 	}
