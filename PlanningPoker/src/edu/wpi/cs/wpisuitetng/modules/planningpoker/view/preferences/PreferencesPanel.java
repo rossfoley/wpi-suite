@@ -109,8 +109,9 @@ public class PreferencesPanel extends JPanel {
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
+				// Get rid of submission message if necessary
+				lblEmailSubmitted.setVisible(false);
 				final String email = txtEnterEmailHere.getText();
-
 				// Should be a special case
 				if (email.equals("")) {
 					lblEmailErrorText.setVisible(false);
@@ -133,6 +134,8 @@ public class PreferencesPanel extends JPanel {
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				// Get rid of submission message if necessary
+				lblEmailSubmitted.setVisible(false);
 				final String email = txtEnterEmailHere.getText();
 				// Should be a special case
 				if (email.equals("")) {
@@ -156,6 +159,8 @@ public class PreferencesPanel extends JPanel {
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				// Get rid of submission message if necessary
+				lblEmailSubmitted.setVisible(false);
 				final String email = txtEnterEmailHere.getText();
 
 				// Should be a special case
@@ -239,16 +244,26 @@ public class PreferencesPanel extends JPanel {
 	 * This function validates a given email address for form.
 	 */
 	boolean validateEmail(String email) {
-
-		// Built in validation doesn't make sure domain 
-
-		try {
-			final InternetAddress valid = new InternetAddress(email);
-			valid.validate();
-		}
-		catch (AddressException e) {
-			return false;
-		}
+		String localEmailCopy = new String (email);
+		
+		// Built in validation has bugs, re-implementing myself
+		
+		//Split into substrings
+		int atPos = localEmailCopy.indexOf('@');
+		
+		if (atPos == -1) return false;
+		
+		
+		// make sure first part has size
+		String part1 = new String(localEmailCopy.substring(0, atPos));
+		if (part1.length() < 1) return false;
+		
+		// test if second part is at last a.a
+		String part2 = new String (localEmailCopy.substring(atPos+1));
+		
+		if (part2.length() < 3) return false;
+		if (part2.indexOf('.') == -1) return false;
+		if (part2.indexOf('.') ==  part2.length() - 1) return false;
 
 		return true;
 	}
