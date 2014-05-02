@@ -76,7 +76,7 @@
 
   SessionViewModel = (function() {
     function SessionViewModel(data, params) {
-      var estimate, field, reqEstimates, requirement, user, value, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3;
+      var estimate, field, requirement, userEstimate, value, voterList, _i, _j, _len, _len1, _ref, _ref1, _ref2;
       this.parent = parent;
       this.allRequirements = ko.observableArray(params.requirements);
       this.team = ko.observableArray(params.team);
@@ -97,38 +97,34 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         requirement = _ref[_i];
         if (_ref1 = requirement['id'], __indexOf.call(this.requirementIDs(), _ref1) >= 0) {
-          reqEstimates = [];
-          _ref2 = this.team();
+          userEstimate = {
+            sessionID: this.uuid(),
+            requirementID: requirement['id'],
+            ownerName: this.username,
+            vote: 0
+          };
+          voterList = [];
+          _ref2 = this.estimates();
           for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-            user = _ref2[_j];
-            reqEstimates[user['username']] = {
-              sessionID: this.uuid(),
-              requirementID: requirement['id'],
-              ownerName: user['username'],
-              vote: 0,
-              isSaved: false
-            };
-          }
-          _ref3 = this.estimates();
-          for (_k = 0, _len2 = _ref3.length; _k < _len2; _k++) {
-            estimate = _ref3[_k];
+            estimate = _ref2[_j];
             if (estimate['requirementID'] === requirement['id']) {
-              estimate['isSaved'] = true;
-              reqEstimates[estimate['ownerName']]['vote'] = estimate['vote'];
-              reqEstimates[estimate['ownerName']]['isSaved'] = true;
+              voterList.push(estimate['ownerName']);
+              if (estimate['ownerName'] === this.username) {
+                userEstimate['vote'] === estimate['vote'];
+              }
             }
           }
-          this.requirementEstimates.push(new EstimateViewModel(reqEstimates, requirement, this.params));
+          this.requirementEstimates.push(new EstimateViewModel(userEstimate, voterList, requirement, this.params));
         }
       }
       this.requirements = ko.computed((function(_this) {
         return function() {
-          var result, _l, _len3, _ref4, _ref5;
+          var result, _k, _len2, _ref3, _ref4;
           result = [];
-          _ref4 = _this.allRequirements();
-          for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
-            requirement = _ref4[_l];
-            if (_ref5 = requirement['id'], __indexOf.call(_this.requirementIDs(), _ref5) >= 0) {
+          _ref3 = _this.allRequirements();
+          for (_k = 0, _len2 = _ref3.length; _k < _len2; _k++) {
+            requirement = _ref3[_k];
+            if (_ref4 = requirement['id'], __indexOf.call(_this.requirementIDs(), _ref4) >= 0) {
               result.push(requirement);
             }
           }
@@ -142,23 +138,21 @@
   })();
 
   EstimateViewModel = (function() {
-    function EstimateViewModel(estimatesObject, req, params) {
-      var cardValue, estimate, key, observableEstimate, user, value, _i, _len, _ref;
+    function EstimateViewModel(userEstimate, voterList, req, params) {
+      var cardValue, key, observableEstimate, value, _i, _len, _ref;
       this.requirement = ko.observable(req);
       this.requirements = ko.observable(params.requirements);
       this.team = ko.observable(params.team);
       this.usingDeck = ko.observable(params.usingDeck);
       this.deck = ko.observable(params.deck);
       this.username = params.username;
-      for (user in estimatesObject) {
-        estimate = estimatesObject[user];
-        observableEstimate = {};
-        for (key in estimate) {
-          value = estimate[key];
-          observableEstimate[key] = ko.observable(value);
-        }
-        this[user] = ko.observable(observableEstimate);
+      this.voted = ko.observableArray(voterList);
+      observableEstimate = {};
+      for (key in userEstimate) {
+        value = userEstimate[key];
+        observableEstimate[key] = ko.observable(value);
       }
+      this.estimate = ko.observable(observableEstimate);
       if (this.usingDeck()) {
         this.cards = ko.observableArray([]);
         _ref = this.deck().numbersInDeck;
@@ -167,21 +161,15 @@
           this.cards.push(new CardViewModel(cardValue, false));
         }
       }
-      this.voteValue = ko.observable(this[this.username]().vote());
+      this.voteValue = ko.observable(this.estimate().vote());
       this.widthPercent = ko.computed((function(_this) {
         return function() {
-          var numVotes, percent, _j, _len1, _ref1;
-          numVotes = 0;
-          _ref1 = _this.team();
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            user = _ref1[_j];
-            if (_this[user['username']]().isSaved()) {
-              numVotes++;
-            }
-          }
+          var numVotes, percent, teamSize;
+          numVotes = _this.voted().length;
+          teamSize = _this.team().length;
           percent = 0;
-          if (_this.team().length > 0) {
-            percent = parseInt((numVotes / _this.team().length) * 100);
+          if (teamSize > 0) {
+            percent = parseInt((numVotes / teamSize) * 100);
           }
           return "" + percent + "%";
         };
@@ -206,15 +194,18 @@
       })(this));
       this.submitVote = (function(_this) {
         return function() {
-          _this[_this.username]().vote(parseInt(_this.totalValue()));
+          _this.estimate().vote(parseInt(_this.totalValue()));
           return $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
-            data: ko.toJSON(_this[_this.username]()),
+            data: ko.toJSON(_this.estimate()),
             success: function(data) {
+              var _ref1;
               console.log('Vote successfully submitted');
-              return _this[_this.username]().isSaved(true);
+              if (_ref1 = _this.username, __indexOf.call(_this.voted(), _ref1) < 0) {
+                return _this.voted.push(_this.username);
+              }
             },
             error: function() {
               return console.log('Error updating the estimate');

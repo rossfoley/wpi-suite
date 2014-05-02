@@ -77,21 +77,26 @@ class SessionViewModel
     @requirementEstimates = ko.observableArray([])
     for requirement in @allRequirements()
       if requirement['id'] in @requirementIDs()
-        reqEstimates = []
-        for user in @team()
-          reqEstimates[user['username']] = 
-            sessionID: @uuid()
-            requirementID: requirement['id']
-            ownerName: user['username']
-            vote: 0
-            isSaved: no
+        # Set up a blank estimate for the current user
+        userEstimate = 
+          sessionID: @uuid()
+          requirementID: requirement['id']
+          ownerName: @username
+          vote: 0
 
+        # Create a list of people who have already voted
+        voterList = [] 
         for estimate in @estimates()
           if estimate['requirementID'] == requirement['id']
-            estimate['isSaved'] = yes
-            reqEstimates[estimate['ownerName']]['vote'] = estimate['vote']
-            reqEstimates[estimate['ownerName']]['isSaved'] = yes
-        @requirementEstimates.push(new EstimateViewModel(reqEstimates, requirement, @params))
+            # If a person already has an estimate, add them to voterList
+            voterList.push estimate['ownerName']
+
+            # If the current user has an estimate, update the vote in userEstimate
+            if estimate['ownerName'] == @username
+              userEstimate['vote'] == estimate['vote']
+
+        # Create the view model for this requirement estimate
+        @requirementEstimates.push(new EstimateViewModel(userEstimate, voterList, requirement, @params))
 
 
     @requirements = ko.computed =>
@@ -107,20 +112,20 @@ class SessionViewModel
 #####################################
 
 class EstimateViewModel
-  constructor: (estimatesObject, req, params) ->
+  constructor: (userEstimate, voterList, req, params) ->
     @requirement = ko.observable(req)
     @requirements = ko.observable(params.requirements)
     @team = ko.observable(params.team)
     @usingDeck = ko.observable(params.usingDeck)
     @deck = ko.observable(params.deck)
     @username = params.username
+    @voted = ko.observableArray(voterList)
 
-    # Load in the estimates as observable fields
-    for user, estimate of estimatesObject
-      observableEstimate = {}
-      for key, value of estimate
-        observableEstimate[key] = ko.observable(value)
-      @[user] = ko.observable(observableEstimate)
+    # Load in the user's estimate as observable fields
+    observableEstimate = {}
+    for key, value of userEstimate
+      observableEstimate[key] = ko.observable(value)
+    @estimate = ko.observable(observableEstimate)
 
     # Setup the cards for selection
     if @usingDeck()
@@ -128,16 +133,14 @@ class EstimateViewModel
       for cardValue in @deck().numbersInDeck
         @cards.push(new CardViewModel(cardValue, no))
 
-    @voteValue = ko.observable(@[@username]().vote())
+    @voteValue = ko.observable(@estimate().vote())
 
     @widthPercent = ko.computed =>
-      numVotes = 0
-      for user in @team()
-        if @[user['username']]().isSaved()
-          numVotes++
+      numVotes = @voted().length
+      teamSize = @team().length
       percent = 0
-      if @team().length > 0
-        percent = parseInt((numVotes / @team().length) * 100)
+      if teamSize > 0
+        percent = parseInt((numVotes / teamSize) * 100)
       "#{percent}%"
 
     @totalValue = ko.computed =>
@@ -151,15 +154,16 @@ class EstimateViewModel
         @voteValue()
 
     @submitVote = =>
-      @[@username]().vote(parseInt(@totalValue()))
+      @estimate().vote(parseInt(@totalValue()))
       $.ajax
         type: 'POST'
         dataType: 'json'
         url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
-        data: ko.toJSON(@[@username]())
+        data: ko.toJSON(@estimate())
         success: (data) => 
           console.log('Vote successfully submitted')
-          @[@username]().isSaved(yes)
+          unless @username in @voted()
+            @voted.push @username
         error: => console.log 'Error updating the estimate'
 
 
