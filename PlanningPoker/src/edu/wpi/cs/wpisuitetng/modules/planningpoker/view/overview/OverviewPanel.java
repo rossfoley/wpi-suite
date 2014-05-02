@@ -21,6 +21,20 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class OverviewPanel extends JSplitPane {
 
 	private final OverviewTreePanel treePanel;
+	/**
+	 * @return the treePanel
+	 */
+	public OverviewTreePanel getTreePanel() {
+		return treePanel;
+	}
+
+	/**
+	 * @return the detailPanel
+	 */
+	public OverviewDetailPanel getDetailPanel() {
+		return detailPanel;
+	}
+
 	private final OverviewDetailPanel detailPanel;
 	
 	public OverviewPanel() {
