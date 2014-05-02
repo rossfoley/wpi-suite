@@ -110,7 +110,7 @@
             if (estimate['requirementID'] === requirement['id']) {
               voterList.push(estimate['ownerName']);
               if (estimate['ownerName'] === this.username) {
-                userEstimate['vote'] === estimate['vote'];
+                userEstimate['vote'] = estimate['vote'];
               }
             }
           }
@@ -147,6 +147,7 @@
       this.deck = ko.observable(params.deck);
       this.username = params.username;
       this.voted = ko.observableArray(voterList);
+      this.voteValue = ko.observable(0);
       observableEstimate = {};
       for (key in userEstimate) {
         value = userEstimate[key];
@@ -161,7 +162,6 @@
           this.cards.push(new CardViewModel(cardValue, false));
         }
       }
-      this.voteValue = ko.observable(this.estimate().vote());
       this.widthPercent = ko.computed((function(_this) {
         return function() {
           var numVotes, percent, teamSize;
@@ -192,6 +192,38 @@
           }
         };
       })(this));
+      this.setVoteValue = (function(_this) {
+        return function(value) {
+          var card, deckNumbers, remaining, selectedCards, _j, _k, _len1, _len2, _ref1, _ref2, _results;
+          if (_this.usingDeck()) {
+            deckNumbers = _this.deck().numbersInDeck.slice(0);
+            deckNumbers = deckNumbers.sort().reverse();
+            selectedCards = [];
+            remaining = value;
+            for (_j = 0, _len1 = deckNumbers.length; _j < _len1; _j++) {
+              cardValue = deckNumbers[_j];
+              if (remaining >= cardValue) {
+                selectedCards.push(cardValue);
+                remaining -= cardValue;
+              }
+            }
+            _ref1 = _this.cards();
+            _results = [];
+            for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+              card = _ref1[_k];
+              if (_ref2 = card.value(), __indexOf.call(selectedCards, _ref2) >= 0) {
+                _results.push(card.selected(true));
+              } else {
+                _results.push(void 0);
+              }
+            }
+            return _results;
+          } else {
+            return _this.voteValue(value);
+          }
+        };
+      })(this);
+      this.setVoteValue(this.estimate().vote());
       this.submitVote = (function(_this) {
         return function() {
           _this.estimate().vote(parseInt(_this.totalValue()));

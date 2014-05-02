@@ -93,7 +93,7 @@ class SessionViewModel
 
             # If the current user has an estimate, update the vote in userEstimate
             if estimate['ownerName'] == @username
-              userEstimate['vote'] == estimate['vote']
+              userEstimate['vote'] = estimate['vote']
 
         # Create the view model for this requirement estimate
         @requirementEstimates.push(new EstimateViewModel(userEstimate, voterList, requirement, @params))
@@ -120,6 +120,7 @@ class EstimateViewModel
     @deck = ko.observable(params.deck)
     @username = params.username
     @voted = ko.observableArray(voterList)
+    @voteValue = ko.observable(0)
 
     # Load in the user's estimate as observable fields
     observableEstimate = {}
@@ -132,8 +133,6 @@ class EstimateViewModel
       @cards = ko.observableArray([])
       for cardValue in @deck().numbersInDeck
         @cards.push(new CardViewModel(cardValue, no))
-
-    @voteValue = ko.observable(@estimate().vote())
 
     @widthPercent = ko.computed =>
       numVotes = @voted().length
@@ -152,6 +151,28 @@ class EstimateViewModel
         total 
       else
         @voteValue()
+
+    @setVoteValue = (value) =>
+      if @usingDeck()
+        deckNumbers = @deck().numbersInDeck.slice(0) # Copy the deck array
+        deckNumbers = deckNumbers.sort().reverse()
+        selectedCards = []
+        remaining = value
+        # Starting with the largest card, select cards until the value is reached
+        for cardValue in deckNumbers
+          if remaining >= cardValue
+            selectedCards.push cardValue
+            remaining -= cardValue
+        # Now mark the cards as selected
+        for card in @cards()
+          if card.value() in selectedCards
+            card.selected(yes)
+      else
+        # If there is no deck, then just set the value of the input
+        @voteValue(value)
+
+    # Load in the existing vote
+    @setVoteValue(@estimate().vote())
 
     @submitVote = =>
       @estimate().vote(parseInt(@totalValue()))
