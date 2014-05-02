@@ -76,17 +76,12 @@ public class StatisticsReqTable extends JTable {
 		initialized = false;
 		
 		/* Create double-click event listener */
-		this.addMouseListener(new MouseAdapter() {
+		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				try {
-					rowNumber = convertRowIndexToModel(rowAtPoint(getMousePosition()));
-					// If the row exists
-					if (tableRows.containsKey(rowNumber)) {
-						fireSelectedRequirementEvent(tableRows.get(rowNumber));
-					}
-				}
-				catch (IndexOutOfBoundsException obe) {
-					System.out.println("StatsReqTable: There is no row at current mouse position");
+				int rowNumber = rowAtPoint(getMousePosition());
+				// If the row exists
+				if (tableRows.containsKey(rowNumber)) {
+					fireSelectedRequirementEvent(tableRows.get(rowNumber));
 				}
 			}
 		});
