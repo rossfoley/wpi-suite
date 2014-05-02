@@ -87,17 +87,21 @@ public class DeckViewer extends JSplitPane {
 
 		final JTextField nameField = new JTextField();
 		nameField.setBackground(Color.WHITE);
-		nameField.setText(deckToView.getDeckName());
+		if (deckToView != null) {
+			nameField.setText(deckToView.getDeckName());
+		}
 		nameField.setEditable(false);
 
 		final JTextField selectionModeField = new JTextField("");
 		selectionModeField.setBackground(Color.WHITE);
-		// If it allows multiple card selection
-		if (deckToView.getAllowMultipleSelections()) {
-			selectionModeField.setText("Multiple card selection mode");
-		}
-		else {
-			selectionModeField.setText("Single card selection mode");
+		if (deckToView != null) {
+			// If it allows multiple card selection
+			if (deckToView.getAllowMultipleSelections()) {
+				selectionModeField.setText("Multiple card selection mode");
+			}
+			else {
+				selectionModeField.setText("Single card selection mode");
+			}
 		}
 		selectionModeField.setEditable(false);
 
@@ -153,7 +157,7 @@ public class DeckViewer extends JSplitPane {
 
 		layout.putConstraint(SpringLayout.SOUTH, deckDetailsPanel, -10, SpringLayout.NORTH, cardDisplayPanel);
 
-		layout.putConstraint(SpringLayout.NORTH, cardDisplayPanel, -100, SpringLayout.SOUTH, viewDeckPanel);
+		layout.putConstraint(SpringLayout.NORTH, cardDisplayPanel, -10, SpringLayout.SOUTH, deckDetailsPanel);
 
 		if (deckToView == null) {
 			cardDisplayPanel.setVisible(false);
