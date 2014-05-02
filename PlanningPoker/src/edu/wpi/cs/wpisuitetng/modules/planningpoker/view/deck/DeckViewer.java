@@ -34,8 +34,6 @@ public class DeckViewer extends JSplitPane {
 	 * 	Constructor for creating the deck viewer panel
 	 */
 	public DeckViewer() {
-		buildDeckPanel(null);
-		
 		final List<Deck> decks = DeckListModel.getInstance().getDecks();
 		final String[] deckNames = new String[decks.size()];
 		int i = 0;
@@ -43,6 +41,8 @@ public class DeckViewer extends JSplitPane {
 			deckNames[i] = d.getDeckName();
 			i++;
 		}
+		
+		buildDeckPanel(decks.get(0));
 
 		deckListPanel = new DeckListPanel(decks);
 		deckListPanel.addDeckListener(new DeckListener() {
@@ -156,8 +156,6 @@ public class DeckViewer extends JSplitPane {
 		layout.putConstraint(SpringLayout.EAST, cardDisplayPanel, 0, SpringLayout.EAST, deckDetailsPanel);
 
 		layout.putConstraint(SpringLayout.SOUTH, deckDetailsPanel, -10, SpringLayout.NORTH, cardDisplayPanel);
-
-		layout.putConstraint(SpringLayout.NORTH, cardDisplayPanel, -10, SpringLayout.SOUTH, deckDetailsPanel);
 
 		if (deckToView == null) {
 			cardDisplayPanel.setVisible(false);
