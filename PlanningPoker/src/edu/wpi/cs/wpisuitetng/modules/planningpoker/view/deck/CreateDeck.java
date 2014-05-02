@@ -63,7 +63,6 @@ public class CreateDeck extends JPanel {
 	private JButton btnCreate;
 	private JButton btnCancel;
 	private final JLabel lblNoCardsError = new JLabel("Please add cards to the deck");
-	private final JLabel lblTooManyDigitsError = new JLabel("Please enter less than 10 digits");
 	private JTable cardTable;
 	private DefaultTableModel cardTableModel;
 	private SpringLayout springLayout;
@@ -122,8 +121,6 @@ public class CreateDeck extends JPanel {
 		});
 		lblAddCardError.setVisible(false);
 		lblAddCardError.setForeground(Color.RED);
-		lblTooManyDigitsError.setVisible(false);
-		lblTooManyDigitsError.setForeground(Color.RED);
 
 		txtCardValue = new JTextField();
 		txtCardValue.setPreferredSize(new Dimension(26, 26));
@@ -233,9 +230,6 @@ public class CreateDeck extends JPanel {
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, lblCard);
 		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, lblCard);
 		
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblTooManyDigitsError, 0, SpringLayout.VERTICAL_CENTER, lblCard);
-		springLayout.putConstraint(SpringLayout.WEST, lblTooManyDigitsError, 10, SpringLayout.EAST, lblCard);
-
 		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, this);
 		
@@ -262,8 +256,7 @@ public class CreateDeck extends JPanel {
 		add(btnCancel);
 		add(lblNoCardsError);
 		add(cardArea);
-		add(lblTooManyDigitsError);
-		
+
 		refresh();
 	}
 
@@ -433,25 +426,26 @@ public class CreateDeck extends JPanel {
 		if (txtCardValue.getText().equals("")) {
 			btnAddCard.setEnabled(false);
 			lblAddCardError.setVisible(false);
-			lblTooManyDigitsError.setVisible(false);
+			
 		}
 		else {
 			try {
 				if (Integer.parseInt(txtCardValue.getText()) >= 0) {
 					btnAddCard.setEnabled(true);
 					lblAddCardError.setVisible(false);
-					lblTooManyDigitsError.setVisible(false);
+					
 				}
 				else {
 					btnAddCard.setEnabled(false);
-					lblAddCardError.setVisible(true);	
-					lblTooManyDigitsError.setVisible(false);
+					lblAddCardError.setVisible(true);
+					lblAddCardError.setText("Value must be positive");
+					
 				}
 				// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {
 				btnAddCard.setEnabled(false);
-				lblAddCardError.setVisible(false);
-				lblTooManyDigitsError.setVisible(true);
+				lblAddCardError.setVisible(true);
+				lblAddCardError.setText("Enter less than 10 digits");
 			}
 		}
 	}
