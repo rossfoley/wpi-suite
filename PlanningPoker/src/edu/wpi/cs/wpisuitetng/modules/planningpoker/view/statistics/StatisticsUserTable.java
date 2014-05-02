@@ -66,14 +66,17 @@ public class StatisticsUserTable extends JTable {
 	private void populateVotePanel() {
 		tableModel.setRowCount(0);
 
-		List<Estimate> estimates = planningPokerSession.getEstimates();
+		// Only populate if their is a requirement and session passed in
+		if ((requirement != null) && (planningPokerSession != null)) {
+			List<Estimate> estimates = planningPokerSession.getEstimates();
 
-		// Loop through all estimates in this session
-		for (Estimate el : estimates) {
-			// If the estimate is for this requirement
-			if (el.getRequirementID() == requirement.getId()) {
-				// Get the requirement name
-				tableModel.addRow(new Object[] {el.getOwnerName(), el.getVote()});
+			// Loop through all estimates in this session
+			for (Estimate el : estimates) {
+				// If the estimate is for this requirement
+				if (el.getRequirementID() == requirement.getId()) {
+					// Get the requirement name
+					tableModel.addRow(new Object[] {el.getOwnerName(), el.getVote()});
+				}
 			}
 		}
 	}
