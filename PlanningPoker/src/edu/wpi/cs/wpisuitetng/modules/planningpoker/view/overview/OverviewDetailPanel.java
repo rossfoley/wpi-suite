@@ -28,7 +28,6 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectRequirementToUpdateTable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -233,8 +232,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		sendEstimatesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final ArrayList<Integer> selectedReqIDs = selectToUpdateTable.getSelectedReqs();
-				final RequirementModel reqs = RequirementModel.getInstance();
-				if (selectedReqIDs.size() == 0){
+				if (selectedReqIDs.size() == 0) {
 					sendErrorMessage.setVisible(true);
 				}
 				else {

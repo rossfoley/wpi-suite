@@ -14,8 +14,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -23,16 +21,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.PreferencesPanel;
 
@@ -51,13 +45,6 @@ public class MainView extends JTabbedPane {
 	private int draggedTabIndex = 0;
 	private final OverviewPanel overviewPanel = new OverviewPanel();
 	private Component lastTab = null;
-	private final JPopupMenu popup = new JPopupMenu();
-	private final JMenuItem closeAll = new JMenuItem("Close All Tabs");
-	private final JMenuItem closeOthers = new JMenuItem("Close Others");
-	
-	private Component currentTab = null; 
-
-	OverviewDetailPanel detailPanel;
 
 	/**
 	 * Adds main subtab when user goes to RequirementManager
@@ -66,30 +53,6 @@ public class MainView extends JTabbedPane {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		this.addTab("Current Sessions", overviewPanel);
 		this.addTab("Preferences", new PreferencesPanel());
-		
-		closeAll.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ViewEventController.getInstance().closeAllTabs();
-
-			}	
-		});
-		
-		closeOthers.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ViewEventController.getInstance().closeOthers();
-
-			}	
-		});
-
-		
-		
-		popup.add(closeAll);
-		popup.add(closeOthers);
-
 
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
@@ -133,24 +96,6 @@ public class MainView extends JTabbedPane {
 
 		this.addMouseListener(new MouseAdapter()
 		{
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				if(e.isPopupTrigger()) {
-					popup.show(e.getComponent(), e.getX(), e.getY());
-				}
-				
-				/**
-				 * Disable the statistics button once a tab other than Current Sessions is selected.
-				 * Statistics button will never be enabled except for when a closed/ended session is
-				 * selected in the Current Sessions tab. 
-				 */
-				setCurrentTab(); 
-				if (!currentTab.equals(overviewPanel)) {
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton(); 	
-				}
-			}
-
 			public void mouseReleased(MouseEvent e) {
 				if(dragging) {
 					final int tabNumber = getUI().tabForCoordinate(MainView.this, e.getX(), e.getY());
@@ -164,20 +109,28 @@ public class MainView extends JTabbedPane {
 						}
 					}
 				}
-
 				dragging = false;
 				tabImage = null;
 			}
 		});
-		final MainView panel = this;
 		this.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				
-				final JComponent selected = (JComponent) MainView.this.getSelectedComponent();
-
-				ViewEventController.getInstance().getOverviewTreePanel().refresh();
-				overviewPanel.revalidate();
-				overviewPanel.repaint();
+				final JComponent selected = (JComponent) getSelectedComponent();
+				// If the selected tab is the session overview panel, refresh the tree and
+				// correctly enable the tool-bar buttons
+				if (selected instanceof OverviewPanel) {
+					ViewEventController.getInstance().getOverviewTreePanel().refresh();
+					overviewPanel.revalidate();
+					overviewPanel.repaint();
+					PlanningPokerSession session = 
+							ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
+				}
+				// Otherwise, disable all buttons
+				else {
+					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableAllButtons();
+				}
 			}
 		});
 	}
@@ -229,7 +182,7 @@ public class MainView extends JTabbedPane {
 	 * @param c Component
 	 */
 	@Override
-	public void setSelectedComponent(Component c){
+	public void setSelectedComponent(Component c) {
 		lastTab = this.getSelectedComponent();
 		super.setSelectedComponent(c);
 	}
@@ -247,31 +200,4 @@ public class MainView extends JTabbedPane {
 		} catch (IllegalArgumentException e){}
 	}
 	
-	/**
-	 * Method getPopup.
-	 * @return JPopupMenu
-	 */
-	public JPopupMenu getPopup() {
-		return popup;
-	}
-	/**
-	 * Method getCloseAll.
-	 * @return JMenuItem
-	 */
-	public JMenuItem getCloseAll() {
-		return closeAll;
-	}
-
-
-	/**
-	 * Method getCloseOthers.
-	 * @return JMenuItem
-	 */
-	public JMenuItem getCloseOthers() {
-		return closeOthers;
-	}
-	
-	private void setCurrentTab() {
-		currentTab = this.getSelectedComponent();
-	}
 }
