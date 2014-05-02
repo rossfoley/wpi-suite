@@ -174,6 +174,8 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		
 		sl_reqDetails.putConstraint(SpringLayout.WEST, thetablePanel, 10, SpringLayout.HORIZONTAL_CENTER, reqDetails);
 		sl_reqDetails.putConstraint(SpringLayout.EAST, thetablePanel, -10, SpringLayout.EAST, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.NORTH, thetablePanel, 10, SpringLayout.NORTH, reqDetails);
+		sl_reqDetails.putConstraint(SpringLayout.SOUTH, thetablePanel, -10, SpringLayout.SOUTH, reqDetails);
 		
 		
 		System.out.println("currently displayed description:" + descriptionField.getText());
