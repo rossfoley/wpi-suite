@@ -244,27 +244,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	}
 
 	/**
-	 * in case of double click, opens up the appropriate panel
-	 * @param session	The planningPoker session to use
-	 */
-	public void doubleClickShortCutSession(PlanningPokerSession session) {
-		final String sessionOwner = session.getSessionCreatorName();
-		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
-			if (session.isPending()) {
-				//if doubleclick and session is pending, open up an editing panel
-				ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
-			}
-		}
-		if (session.isOpen()) {
-			// If doubleclick and session is open, open up a voting panel
-			ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
-		}
-			// If doubleclick and session is ended or closed , open up a statistics panel
-		if (session.isEnded() || session.isClosed()) {
-			ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
-		}
-	}
-	/**
 	 * Enables the tool-bar buttons based on the input PlanningPoker and Client session 
 	 * @param session	The planningPoker session to use
 	 */
