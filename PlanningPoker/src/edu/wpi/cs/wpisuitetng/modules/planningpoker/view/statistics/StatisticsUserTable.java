@@ -24,7 +24,6 @@ import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * The table containing all the votes for the input requirement and session.
@@ -35,18 +34,18 @@ public class StatisticsUserTable extends JTable {
 	private DefaultTableModel tableModel;
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	private PlanningPokerSession planningPokerSession;
-	private Requirement requirement;
+	private int requirementID;
 
 	/**
 	 * Sets initial table view
 	 * @param session	The planning poker session to display
 	 * @param requirement	The requirement to display voter names and votes for
 	 */
-	public StatisticsUserTable(PlanningPokerSession session, Requirement requirement) {
+	public StatisticsUserTable(PlanningPokerSession session, int requirementID) {
 		String[] columnNames = {"User", "Estimate"};
 		Object[][] data = {};
 		planningPokerSession = session;
-		this.requirement = requirement;
+		this.requirementID = requirementID;
 		tableModel = new DefaultTableModel(data, columnNames);
 
 		setModel(tableModel);
@@ -67,13 +66,13 @@ public class StatisticsUserTable extends JTable {
 		tableModel.setRowCount(0);
 
 		// Only populate if their is a requirement and session passed in
-		if ((requirement != null) && (planningPokerSession != null)) {
+		if ((requirementID >= 0) && (planningPokerSession != null)) {
 			List<Estimate> estimates = planningPokerSession.getEstimates();
 
 			// Loop through all estimates in this session
 			for (Estimate el : estimates) {
 				// If the estimate is for this requirement
-				if (el.getRequirementID() == requirement.getId()) {
+				if (el.getRequirementID() == requirementID) {
 					// Get the requirement name
 					tableModel.addRow(new Object[] {el.getOwnerName(), el.getVote()});
 				}
@@ -110,10 +109,10 @@ public class StatisticsUserTable extends JTable {
 
 	/**
 	 * Refreshes the table to display votes for the input requirement
-	 * @param requirement	The requirement to display votes for
+	 * @param requirementID	The requirement to display votes for
 	 */
-	public void updateRequirement(Requirement requirement) {
-		this.requirement = requirement;
+	public void updateRequirement(int requirementID) {
+		this.requirementID = requirementID;
 		populateVotePanel();
 	}
 }

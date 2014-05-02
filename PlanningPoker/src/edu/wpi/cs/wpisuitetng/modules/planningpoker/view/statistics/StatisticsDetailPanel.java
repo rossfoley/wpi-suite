@@ -35,10 +35,15 @@ public class StatisticsDetailPanel extends JSplitPane {
 	public StatisticsDetailPanel (PlanningPokerSession session, Requirement requirement) {
 
 		currentSession = session;
-		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		// Create the info panel and table panel
-		userTable = new StatisticsUserTable(session, requirement);
+		if (requirement != null) {
+			userTable = new StatisticsUserTable(currentSession, requirement.getId());
+		}
+		else {
+			userTable = new StatisticsUserTable(currentSession, -1);
+		}
 		tablePanel = new JScrollPane(userTable);
 		infoPanel = new StatisticsInfoPanel(currentSession);
 		
@@ -69,27 +74,15 @@ public class StatisticsDetailPanel extends JSplitPane {
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
         
-        this.updatePanel();
+        updatePanel(-1);
         
 	}
 	
-	public void updatePanel()	{
+	public void updatePanel(int requirementID)	{
 		// update each part of the split panel
-		updateInfoPanel(currentSession);
-		updateReqTable(currentSession);
-	}	
-	
-	private void updateInfoPanel(PlanningPokerSession session) {
-		infoPanel.refresh(session);
-	}
-
-	private void updateReqTable(PlanningPokerSession session) {
-//		userTable.updateRequirement(requirement);
-		
-	}
-	
-	public void setRequirementID(int ID) {
-		infoPanel.setRequirementID(ID);
+		infoPanel.refresh(currentSession);
+		infoPanel.setRequirementID(requirementID);
+		userTable.updateRequirement(requirementID);
 	}
 
 	public StatisticsInfoPanel getInfoPanel() {

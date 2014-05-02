@@ -50,17 +50,22 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel(activeSession, null);
+		
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
-		tablePanel = new JScrollPane(reqTable);
-		
-		//set infoPanel to get estimate information for statistics
-		reqTable.setDetailPanel(detailPanel);
-		
+		reqTable.addSelectedRequirementListener(new SelectedRequirementListener() {
+			@Override
+			public void setSelectedRequirement(SelectedRequirementEvent e) {
+				detailPanel.updatePanel(e.getSelectedRequirement());
+			}
+		});
 		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
 		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
 		reqTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
 		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
+		
+		tablePanel = new JScrollPane(reqTable);
+		
 
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
