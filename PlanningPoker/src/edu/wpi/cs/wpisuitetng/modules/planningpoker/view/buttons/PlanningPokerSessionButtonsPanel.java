@@ -249,10 +249,6 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	 */
 	public void doubleClickShortCutSession(PlanningPokerSession session) {
 		final String sessionOwner = session.getSessionCreatorName();
-
-		// Disable everything by default
-		disableAllButtons();
-		
 		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
 			if (session.isPending()) {
 				//if doubleclick and session is pending, open up an editing panel
