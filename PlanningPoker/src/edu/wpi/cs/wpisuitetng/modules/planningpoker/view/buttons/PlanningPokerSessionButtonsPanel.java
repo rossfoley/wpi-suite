@@ -108,9 +108,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
-
 				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
-//				ViewEventController.getInstance().openStatisticsTab(session);
 				}
 			});
 		
