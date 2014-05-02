@@ -103,6 +103,7 @@ public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 				break;
 			case 1: 
 				setBottomComponent(deckOverviewPanel);
+				deckOverviewPanel.refresh();
 				break;
 			case 2: 
 				setBottomComponent(prefPanel);
@@ -119,6 +120,6 @@ public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 	@Override
 	public void pollFunction() {
 		deckOverviewPanel.refresh();
-		
+		System.out.println("refreshing deck overview");
 	}
 }

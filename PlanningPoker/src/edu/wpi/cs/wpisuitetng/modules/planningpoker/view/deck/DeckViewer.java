@@ -80,7 +80,9 @@ public class DeckViewer extends JSplitPane {
 	 * @return	The created panel
 	 */
 	public JPanel makeDeckDetailPanel(Deck deckToView) {
+		setDividerSize(0);
 		deckDetailsPanel = new JPanel();
+		deckDetailsPanel.setMinimumSize(new Dimension(100, 150));
 		final SpringLayout sl_reqDetails = new SpringLayout();
 		deckDetailsPanel.setLayout(sl_reqDetails);
 		final JLabel nameLabel = new JLabel("Deck Name:");
@@ -105,7 +107,7 @@ public class DeckViewer extends JSplitPane {
 			}
 		}
 		selectionModeField.setEditable(false);
-
+		
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.NORTH, deckDetailsPanel);
 		sl_reqDetails.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, deckDetailsPanel);	
 
@@ -118,8 +120,6 @@ public class DeckViewer extends JSplitPane {
 
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, selectionModeField, 6, SpringLayout.SOUTH, selectionModeLabel);
 		sl_reqDetails.putConstraint(SpringLayout.WEST, selectionModeField, 0, SpringLayout.WEST, nameLabel);
-		sl_reqDetails.putConstraint(SpringLayout.EAST, selectionModeField, 0, SpringLayout.EAST, nameField);
-		sl_reqDetails.putConstraint(SpringLayout.SOUTH, selectionModeField, -10, SpringLayout.SOUTH, deckDetailsPanel);
 
 		deckDetailsPanel.add(nameLabel);
 		deckDetailsPanel.add(selectionModeLabel);
@@ -177,6 +177,7 @@ public class DeckViewer extends JSplitPane {
 			decks = newDecks;
 			deckListPanel = new DeckListPanel(decks);
 		}
+		System.out.println("refreshing");
 	}
 
 }
