@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck;
 
 import java.util.List;
+
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
@@ -18,6 +19,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.DeckVotingPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Deck viewer tab that allows users to select a deck and view how it would look like
@@ -31,9 +34,10 @@ public class DeckViewer extends JSplitPane {
 	private JPanel deckDetailsPanel;
 	private DeckVotingPanel cardDisplayPanel;
 	private List<Deck> decks;
-	private JSplitPane deckOverviewPane = new JSplitPane();
+	private JPanel deckOverviewPanel = new JPanel();
 	private JPanel createDeckButtonPanel = new JPanel();
 	private JButton createDeckButton = new JButton("Create New Deck");
+	private SpringLayout deckOverviewLayout = new SpringLayout();
 
 	/**
 	 * 	Constructor for creating the deck viewer panel
@@ -57,10 +61,22 @@ public class DeckViewer extends JSplitPane {
 				final JScrollPane tablePanel = new JScrollPane();
 				tablePanel.setViewportView(deckListPanel);
 
-				tablePanel.setMinimumSize(new Dimension(200, 300));
+				tablePanel.setMinimumSize(new Dimension(200, 400));
 				viewDeckPanel.setMinimumSize(new Dimension(300, 300));
-
-				setLeftComponent(tablePanel);
+				
+				deckOverviewPanel.setLayout(deckOverviewLayout);
+				
+				deckOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 0, SpringLayout.NORTH, deckOverviewPanel);
+				deckOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 0, SpringLayout.WEST, deckOverviewPanel);
+				deckOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, 0, SpringLayout.EAST, deckOverviewPanel);
+				deckOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, createDeckButton);
+				deckOverviewLayout.putConstraint(SpringLayout.SOUTH, createDeckButton, -10, SpringLayout.SOUTH, deckOverviewPanel);
+				deckOverviewLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, createDeckButton, 0, SpringLayout.HORIZONTAL_CENTER, deckOverviewPanel);
+						
+				deckOverviewPanel.add(tablePanel);
+				deckOverviewPanel.add(createDeckButton);
+				
+				setLeftComponent(deckOverviewPanel);
 				setRightComponent(viewDeckPanel);
 				setDividerLocation(225);
 			}
@@ -68,20 +84,30 @@ public class DeckViewer extends JSplitPane {
 		});
 		final JScrollPane tablePanel = new JScrollPane();
 		tablePanel.setViewportView(deckListPanel);
+		tablePanel.setMinimumSize(new Dimension(0, 400));
 		
-		buildCreateDeckButtonPanel();
-		
-		deckOverviewPane.setOrientation(VERTICAL_SPLIT);
-		deckOverviewPane.setTopComponent(tablePanel);
-		deckOverviewPane.setBottomComponent(createDeckButtonPanel);
-		deckOverviewPane.setEnabled(false);
-		deckOverviewPane.setDividerLocation(deckOverviewPane.getSize().height - deckOverviewPane.getDividerSize()-75);
-		
-		//tablePanel.setMinimumSize(new Dimension(200, 300));
 		viewDeckPanel.setMinimumSize(new Dimension(300, 300));
 		 
+		deckOverviewPanel.setLayout(deckOverviewLayout);
 		
-		setLeftComponent(deckOverviewPane);
+		createDeckButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openCreateDeckPanel();
+			}
+		});
+		
+		deckOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 0, SpringLayout.NORTH, deckOverviewPanel);
+		deckOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 0, SpringLayout.WEST, deckOverviewPanel);
+		deckOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, 0, SpringLayout.EAST, deckOverviewPanel);
+		deckOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, createDeckButton);
+		deckOverviewLayout.putConstraint(SpringLayout.SOUTH, createDeckButton, -10, SpringLayout.SOUTH, deckOverviewPanel);
+		deckOverviewLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, createDeckButton, 0, SpringLayout.HORIZONTAL_CENTER, deckOverviewPanel);
+				
+		deckOverviewPanel.add(tablePanel);
+		deckOverviewPanel.add(createDeckButton);
+		
+		setLeftComponent(deckOverviewPanel);
 		setRightComponent(viewDeckPanel);
 		setDividerLocation(225);
 	}
