@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -20,6 +21,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 
 /**
@@ -36,7 +38,9 @@ public class OptionsOverviewPanel extends JSplitPane {
 	private SpringLayout comboLayout = new SpringLayout();
 	private String[] availableOptions = {"Help", "View Decks", "Email Preferences"};
 	private int previousLowerScreenIndex;
-	
+	private SpringLayout optionsLayout;
+	private JPanel lowerPanel = new JPanel();
+ 	
 	/**
 	 *  constructor for OptionsOverviewPanel
 	 *  builds initial panel
@@ -80,29 +84,28 @@ public class OptionsOverviewPanel extends JSplitPane {
 		comboPanel.add(comboBoxOptions);
 	}
 	
-//	public void buildOptionsPanel(){
-//		optionsLayout.putConstraint(SpringLayout.NORTH, comboPanel, 10, SpringLayout.NORTH, this);
-//		optionsLayout.putConstraint(SpringLayout.EAST, comboPanel, -10, SpringLayout.EAST, this);
-//		optionsLayout.putConstraint(SpringLayout.WEST, comboPanel, 10, SpringLayout.WEST, this);
-//		
-//		optionsLayout.putConstraint(SpringLayout.NORTH, lowerPanel, 10, SpringLayout.SOUTH, comboPanel);
-//		optionsLayout.putConstraint(SpringLayout.SOUTH, lowerPanel, -10, SpringLayout.SOUTH, this);
-//		optionsLayout.putConstraint(SpringLayout.EAST, lowerPanel, -10, SpringLayout.EAST, this);
-//		optionsLayout.putConstraint(SpringLayout.WEST, lowerPanel, 10, SpringLayout.WEST, this);
-//		
-//		add(comboPanel);
-//		add(lowerPanel);
-//	}
-//
-//	
-//	public void setBottomPanel(JPanel newBottomPanel){
-//		optionsLayout.putConstraint(SpringLayout.NORTH, newBottomPanel, 10, SpringLayout.NORTH, lowerPanel);
-//		optionsLayout.putConstraint(SpringLayout.SOUTH, newBottomPanel, -10, SpringLayout.SOUTH, lowerPanel);
-//		optionsLayout.putConstraint(SpringLayout.EAST, newBottomPanel, -10, SpringLayout.EAST, lowerPanel);
-//		optionsLayout.putConstraint(SpringLayout.WEST, newBottomPanel, 10, SpringLayout.WEST, lowerPanel);
-//		
-//		lowerPanel.add(newBottomPanel);	
-//	}
+	public void buildOptionsPanel(){
+		optionsLayout.putConstraint(SpringLayout.NORTH, comboPanel, 10, SpringLayout.NORTH, this);
+		optionsLayout.putConstraint(SpringLayout.EAST, comboPanel, -10, SpringLayout.EAST, this);
+		optionsLayout.putConstraint(SpringLayout.WEST, comboPanel, 10, SpringLayout.WEST, this);
+		
+		optionsLayout.putConstraint(SpringLayout.NORTH, lowerPanel, 10, SpringLayout.SOUTH, comboPanel);
+		optionsLayout.putConstraint(SpringLayout.SOUTH, lowerPanel, -10, SpringLayout.SOUTH, this);
+		optionsLayout.putConstraint(SpringLayout.EAST, lowerPanel, -10, SpringLayout.EAST, this);
+		optionsLayout.putConstraint(SpringLayout.WEST, lowerPanel, 10, SpringLayout.WEST, this);
+		
+		add(comboPanel);
+		add(lowerPanel);
+	}
+	
+	public void setBottomPanel(JPanel newBottomPanel){
+		optionsLayout.putConstraint(SpringLayout.NORTH, newBottomPanel, 10, SpringLayout.NORTH, lowerPanel);
+		optionsLayout.putConstraint(SpringLayout.SOUTH, newBottomPanel, -10, SpringLayout.SOUTH, lowerPanel);
+		optionsLayout.putConstraint(SpringLayout.EAST, newBottomPanel, -10, SpringLayout.EAST, lowerPanel);
+		optionsLayout.putConstraint(SpringLayout.WEST, newBottomPanel, 10, SpringLayout.WEST, lowerPanel);
+		
+		lowerPanel.add(newBottomPanel);	
+	}
 
 	/**
 	 * gets the information from the combo box used for selecting what 

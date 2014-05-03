@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
@@ -40,7 +39,7 @@ public class ViewEventController {
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
 	private OptionsOverviewPanel helpPanel = null;
-	private HelpTextPanel helpTextPanel = null;
+	private HelpTextPanel helpTextPanel;
 	private HelpTreePanel helpListPanel;
 
 	/**
