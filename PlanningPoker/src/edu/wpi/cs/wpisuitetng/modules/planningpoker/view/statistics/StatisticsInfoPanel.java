@@ -90,7 +90,7 @@ public class StatisticsInfoPanel extends JPanel {
 		reqDescriptionDisplay.setLineWrap(true);
 		reqDescriptionDisplay.setEditable(false);
 		
-		buildSubmitEstimateBox();
+		buildSubmitEstimateField();
 		
 		setConstraints();
 		
@@ -146,7 +146,7 @@ public class StatisticsInfoPanel extends JPanel {
 	/**
 	 * Create the text box to submit estimates
 	 */
-	public void buildSubmitEstimateBox() {
+	public void buildSubmitEstimateField() {
 		estimateFieldErrorMessage.setForeground(Color.RED); 
 		estimateSubmittedMessage.setForeground(Color.BLUE);
 		estimateSubmittedMessage.setVisible(false);
