@@ -9,58 +9,37 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
 
-import javax.swing.BorderFactory;
-import javax.swing.DropMode;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /** 
  *  This class is the panel that is shown when viewing statistics on a session
  */
 public class StatisticsPanel extends JSplitPane implements ISessionTab {
+	private StatisticsReqTable reqTable;
+	private JScrollPane tablePanel;
+	private JPanel reqOverviewTablePanel = new JPanel();
+	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
+	
+	private StatisticsDetailPanel detailPanel;
+	private SpringLayout reqOverviewLayout = new SpringLayout();
+	private PlanningPokerSession activeSession;
 
 	/**
-	 * Sets up directory tree of all planning poker sessions
+	 * Constructor for the statistics panel
+	 * @param ppSession	The session to display statistics for
 	 */
-	private StatisticsDetailPanel detailPanel;
-	private StatisticsReqTable reqTable;
-	private JScrollPane tablePanel; 
-	private StatisticsInfoPanel infoPanel;
-	
-	int selectedReqID;
-	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
-	JPanel reqOverviewTablePanel = new JPanel();
-	SpringLayout reqOverviewLayout = new SpringLayout();
-	
-	private final PlanningPokerSession activeSession;
-	
-	public StatisticsPanel(PlanningPokerSession statisticsSession)
-	{
-		activeSession = statisticsSession;
+	public StatisticsPanel(PlanningPokerSession ppSession) {
+		activeSession = ppSession;
 		
 		this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		final String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
@@ -68,22 +47,22 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel(activeSession);
+		
 		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
-		tablePanel = new JScrollPane(reqTable);
-		
-		// initialize infoPanel
-		infoPanel = detailPanel.getInfoPanel();
-		
-		//set infoPanel to get estimate information for statistics
-		reqTable.setInfoPanel(infoPanel);
-		
+		reqTable.addSelectedRequirementListener(new SelectedRequirementListener() {
+			@Override
+			public void setSelectedRequirement(SelectedRequirementEvent e) {
+				detailPanel.updatePanel(e.getSelectedRequirement());
+			}
+		});
 		reqTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
 		reqTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
 		reqTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
 		reqTable.getColumnModel().getColumn(2).setMinWidth(100); // Final Estimate
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
-
-		//
+		
+		tablePanel = new JScrollPane(reqTable);
+		
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
 		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
@@ -95,7 +74,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		
 		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//StatisticsReqTable reqTable = 
 				reqTable.updateFinalEstimates(activeSession);
 			}
 		});
@@ -105,59 +83,13 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 		
 		// Put the overview table and sidebar into the tab
-		this.setLeftComponent(tablePanel);
-		this.setRightComponent(detailPanel);
+		setLeftComponent(tablePanel);
+		setRightComponent(detailPanel);
 		
-		this.updatePanel();
-
-		// Makes the split pane divide 50/50 for each portion
-		//final Dimension d = new Dimension(300, 100);
-        //detailPanel.setMinimumSize(d);
-       // detailPanel.setPreferredSize(d);
-       // reqTable.setMinimumSize(d);
-       // reqTable.setPreferredSize(d);
-		
-		this.setDividerLocation(400);
-
-
-        this.setEnabled(true);
-	}
-	
-	public void updatePanel()	{	
-		// update each part of the split panel
-		updateReqTable(activeSession);
-	}
-
-	private void updateReqTable(PlanningPokerSession session) {
-		reqTable.refresh(session);
-	}
-	
-	/**
-	 * @return the detailPanel
-	 */
-	public StatisticsDetailPanel getDetailPanel() {
-		return detailPanel;
-	}
-	
-	/**
-	 * @param detailPanel the detailPanel to set
-	 */
-	public void setDetailPanel(StatisticsDetailPanel detailPanel) {
-		this.detailPanel = detailPanel;
-	}
-	
-	/**
-	 * @return the statistics user tree panel
-	 */
-	public StatisticsReqTable getStatisticsReqTable() {
-		return reqTable;
-	}
-	
-	/**
-	 * @param endVotePanel the endVotePanel to set
-	 */
-	public void setStatisticsUserTable(StatisticsReqTable reqTable) {
-		this.reqTable = reqTable;
+		setDividerLocation(400);
+        setEnabled(true);
+        
+        reqTable.refresh(activeSession);
 	}
 	
 	/**
