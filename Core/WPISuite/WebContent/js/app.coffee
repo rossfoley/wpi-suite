@@ -157,6 +157,7 @@ class EstimateViewModel
     @deck = ko.observable(params.deck)
     @username = params.username
     @voted = ko.observableArray(voterList)
+    @showSuccessMessage = ko.observable(false)
     @voteValue = ko.observable(0).extend
       required:
         message: 'Please enter a vote!'
@@ -223,19 +224,25 @@ class EstimateViewModel
         cardViewModel.selected(yes)
 
     @submitVote = =>
-      @estimate().vote(parseInt(@totalValue()))
-      $.ajax
-        type: 'POST'
-        dataType: 'json'
-        url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
-        data: ko.toJSON(@estimate())
-        success: (data) => 
-          unless @username in @voted()
-            @voted.push @username
+      unless @voteValue.error()
+        @estimate().vote(parseInt(@totalValue()))
+        $.ajax
+          type: 'POST'
+          dataType: 'json'
+          url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
+          data: ko.toJSON(@estimate())
+          success: (data) => 
+            unless @username in @voted()
+              @voted.push @username
+            # Show a success message
+            @showSuccessMessage(true)
+            # Fade out the success message after 2 seconds
+            setTimeout (=> @showSuccessMessage(false)), 2000
 
     @applyUpdate = (update) =>
       unless update['ownerName'] in @voted()
-        @voted.push update['ownerName']
+        if update['vote'] > -1
+          @voted.push update['ownerName']
 
 
 #####################################
@@ -262,5 +269,17 @@ class CardViewModel
 ############################################
 
 $ ->
+  ko.bindingHandlers.fadeVisible =
+    init: (element, valueAccessor) ->
+        value = valueAccessor()
+        $(element).toggle(ko.utils.unwrapObservable(value))
+
+    update: (element, valueAccessor) ->
+        value = valueAccessor()
+        if ko.utils.unwrapObservable(value)
+          $(element).fadeIn('fast')
+        else
+          $(element).fadeOut('fast')
+
   window.PokerVM = new PlanningPokerViewModel()
   ko.applyBindings(window.PokerVM)
