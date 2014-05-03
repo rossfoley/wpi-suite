@@ -17,6 +17,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.IterationIcon;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.RequirementIcon;
 
@@ -29,6 +30,7 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon iterationIcon;
 
 	public CustomTreeCellRenderer() {
+		super();
 		requirementIcon = new RequirementIcon();
 		iterationIcon = new IterationIcon();
 	}
@@ -53,10 +55,16 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
 				row, hasFocus);
-		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+		
 		if (node.getUserObject() instanceof PlanningPokerSession) {
+			PlanningPokerSession nodeSession = (PlanningPokerSession) node.getUserObject();
+			if (nodeSession.getGameState() == SessionState.VOTINGENDED && (nodeSession.requirementsGetSize() == nodeSession.getFinalEstimates().size())){
+				setIcon(iterationIcon);
+			}
+			else{
 			setIcon(requirementIcon);
+			}
 		} 
 		else {
 			setIcon(iterationIcon);
