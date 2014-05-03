@@ -221,7 +221,8 @@ class EstimateViewModel
         # Now mark the cards as selected
         for card in @cards()
           if card.value() in selectedCards
-            card.selected(yes)
+            if card.value() > 0
+              card.selected(yes)
       else
         # If there is no deck, then just set the value of the input
         @voteValue(value)
