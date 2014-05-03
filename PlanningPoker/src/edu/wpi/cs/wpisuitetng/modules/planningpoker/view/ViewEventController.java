@@ -362,11 +362,11 @@ public class ViewEventController {
 		
 	}
 
-	public void setOverviewTree(HelpTreePanel treePanel) {
+	public void setHelpTree(HelpTreePanel treePanel) {
 		this.helpListPanel = treePanel;
 	}
 
-	public void setOverviewDetailPanel(HelpTextPanel helpTextPanel) {
+	public void setHelpTextPanel(HelpTextPanel helpTextPanel) {
 		this.helpTextPanel = helpTextPanel;
 	}
 	
