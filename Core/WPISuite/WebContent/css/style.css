@@ -1,5 +1,5 @@
 .requirement-progress {
-  width: 75%;
+  width: auto;
 }
 
 .progress-label {
@@ -35,17 +35,37 @@
 .deck {
   clear: both;
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .no-deck-input {
   width: 100px;
   display: inline;
+  margin-right: 10px;
 }
 
 .vote-alert {
-  display: inline;
+  float: left;
+  margin-bottom: -12px;
+  margin-top: -7px;
 }
 
 .validationMessage {
   display: none;
+}
+
+.list-session {
+  border: none !important;
+}
+
+.vote-text {
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.no-deck-vote-text {
+  float: left;
+  margin-left: 5px;
+  margin-right: 0;
+  line-height: 30px;
 }

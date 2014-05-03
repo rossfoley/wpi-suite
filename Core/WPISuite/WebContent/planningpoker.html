@@ -28,13 +28,13 @@
           </thead>
           <tbody data-bind="foreach: openSessions">
             <tr>
-              <td><a href="#" data-bind="text: name, click: $parent.setActiveSession"></a></td>
+              <td class="list-session"><a href="#" data-bind="text: name, click: $parent.setActiveSession"></a></td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="col-md-9" data-bind="with: activeSession">
-        <div class="panel panel-primary">
+        <div class="panel panel-success">
           <div class="panel-heading">
             <h3 class="panel-title">
               <span data-bind="text: name"></span> 
@@ -53,16 +53,28 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="no-deck-vote" data-bind="ifnot: usingDeck">
-                  Vote:
-                  <input type="number" placeholder="Vote" data-bind="value: voteValue" required pattern="^\d+$" class="form-control no-deck-input"/>
-                  <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                <div class="well">
+                  <div class="row">
+                  <span class="vote-text no-deck-vote-text">Vote:</span>
+                  <div class="col-lg-2">
+                  <div class="input-group">
+                    <input type="number" placeholder="Vote" data-bind="value: voteValue" required pattern="^\d+$" class="form-control no-deck-input"/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" data-bind="click: function() {submitVote()}">Vote!</button>
+                    </span>
+                  </div>
+                  </div>
                   <div class="alert alert-success vote-alert" data-bind="fadeVisible: showSuccessMessage">
                    Your vote was submitted successfully!
                   </div>
                   <div class="alert alert-danger vote-alert" data-bind="validationMessage: voteValue"></div>
+                  </div>
+                  </div>
                 </div>
                 <div class="deck-vote" data-bind="if: usingDeck">
-                  Total: <span data-bind="text: totalValue"></span> <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                <div class="well">
+                  <span class="vote-text">Total: <span data-bind="text: totalValue"></span></span>
+                  <button class="btn btn-default" type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
                   <div class="alert alert-success vote-alert" data-bind="fadeVisible: showSuccessMessage">
                    Your vote was submitted successfully!
                   </div>
@@ -71,6 +83,7 @@
                       <div class="card-value" data-bind="text: value"></div>
                     </div>
                   </div>
+                </div>
                 </div>
               </li>
           </ul>
