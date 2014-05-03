@@ -225,7 +225,7 @@ public class DeckViewer extends JSplitPane {
 	public void refresh(){
 		final List<Deck> newDecks = DeckListModel.getInstance().getDecks();
 		boolean noNewDecks = true;
-		for (Deck newDeck:newDecks){
+		/* for (Deck newDeck:newDecks){
 			boolean deckFound = false;
 			for (Deck oldDeck:decks){
 				if (oldDeck.getId() == newDeck.getId()) {
@@ -235,9 +235,9 @@ public class DeckViewer extends JSplitPane {
 			if (!deckFound){
 				noNewDecks = false;
 			}
-		}
+		} */
 		
-		if (!noNewDecks){
+		//if (!noNewDecks){
 			decks = newDecks;
 			deckListPanel = new DeckListPanel(decks);
 			tablePanel.setViewportView(deckListPanel);
@@ -276,7 +276,7 @@ public class DeckViewer extends JSplitPane {
 				}
 
 			});
-		}
+		//}
 		System.out.println("refreshing");
 	}
 	
