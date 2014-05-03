@@ -172,7 +172,9 @@
           for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
             estimate = _ref2[_j];
             if (estimate['requirementID'] === requirement['id']) {
-              voterList.push(estimate['ownerName']);
+              if (estimate['vote'] > -1) {
+                voterList.push(estimate['ownerName']);
+              }
               if (estimate['ownerName'] === this.username) {
                 userEstimate['vote'] = estimate['vote'];
               }

@@ -129,7 +129,8 @@ class SessionViewModel
         for estimate in @estimates()
           if estimate['requirementID'] == requirement['id']
             # If a person already has an estimate, add them to voterList
-            voterList.push estimate['ownerName']
+            if estimate['vote'] > -1
+              voterList.push estimate['ownerName']
 
             # If the current user has an estimate, update the vote in userEstimate
             if estimate['ownerName'] == @username
