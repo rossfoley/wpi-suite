@@ -9,7 +9,12 @@ class PlanningPokerViewModel
     @team = []
     @activeSession = ko.observable()
     # Get the current username
-    @username = window.location.search.split('=')[1]
+    firstSplit = window.location.search.split('&')
+    if firstSplit.length > 1
+      @username = firstSplit[0].split('=')[1]
+      @querySession = firstSplit[1].split('=')[1]
+    else
+      @username = window.location.search.split('=')[1]
 
     # Load in the requirements
     $.ajax
@@ -78,6 +83,12 @@ class PlanningPokerViewModel
 
     # Check for new updates every 5 seconds
     setInterval @checkForUpdates, 5000
+
+    # If the session query string was provided, make it the active session
+    if @querySession
+      for session in @planningPokerSessions()
+        if @querySession == session.uuid()
+          @activeSession(session)
 
 
 #################################

@@ -5,11 +5,18 @@
 
   PlanningPokerViewModel = (function() {
     function PlanningPokerViewModel() {
+      var firstSplit, session, _i, _len, _ref;
       this.planningPokerSessions = ko.observableArray([]);
       this.requirements = [];
       this.team = [];
       this.activeSession = ko.observable();
-      this.username = window.location.search.split('=')[1];
+      firstSplit = window.location.search.split('&');
+      if (firstSplit.length > 1) {
+        this.username = firstSplit[0].split('=')[1];
+        this.querySession = firstSplit[1].split('=')[1];
+      } else {
+        this.username = window.location.search.split('=')[1];
+      }
       $.ajax({
         dataType: 'json',
         url: 'API/requirementmanager/requirement',
@@ -116,6 +123,15 @@
         };
       })(this);
       setInterval(this.checkForUpdates, 5000);
+      if (this.querySession) {
+        _ref = this.planningPokerSessions();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          session = _ref[_i];
+          if (this.querySession === session.uuid()) {
+            this.activeSession(session);
+          }
+        }
+      }
     }
 
     return PlanningPokerViewModel;

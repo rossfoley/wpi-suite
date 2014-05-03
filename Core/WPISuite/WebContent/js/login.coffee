@@ -11,7 +11,7 @@ $ ->
       async: no
       error: ->
       	$('#badPassAlert').css display: 'block'
-      	$('#badPassAlert').html 'ERROR: Invalid Details Provided!'
+      	$('#badPassAlert').html 'Error: Invalid Details Provided!'
 
     # Now we need to set the project that we will be using
     $.ajax
@@ -24,6 +24,9 @@ $ ->
         url = "#{window.location.protocol}//#{window.location.hostname}"
         url += ":#{window.location.port}" if window.location.port
         url += "/WPISuite/planningpoker.html?username=#{$('#username').val()}"
+        queryString = window.location.search.split('=')
+        if queryString.length > 1
+          url += "&session=#{queryString[1]}"
         window.location = url
 
     off
