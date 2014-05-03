@@ -31,6 +31,9 @@ public class DeckViewer extends JSplitPane {
 	private JPanel deckDetailsPanel;
 	private DeckVotingPanel cardDisplayPanel;
 	private List<Deck> decks;
+	private JSplitPane deckOverviewPane = new JSplitPane();
+	private JPanel createDeckButtonPanel = new JPanel();
+	private JButton createDeckButton = new JButton("Create New Deck");
 
 	/**
 	 * 	Constructor for creating the deck viewer panel
@@ -65,11 +68,20 @@ public class DeckViewer extends JSplitPane {
 		});
 		final JScrollPane tablePanel = new JScrollPane();
 		tablePanel.setViewportView(deckListPanel);
-
-		tablePanel.setMinimumSize(new Dimension(200, 300));
+		
+		buildCreateDeckButtonPanel();
+		
+		deckOverviewPane.setOrientation(VERTICAL_SPLIT);
+		deckOverviewPane.setTopComponent(tablePanel);
+		deckOverviewPane.setBottomComponent(createDeckButtonPanel);
+		deckOverviewPane.setEnabled(false);
+		deckOverviewPane.setDividerLocation(deckOverviewPane.getSize().height - deckOverviewPane.getDividerSize()-75);
+		
+		//tablePanel.setMinimumSize(new Dimension(200, 300));
 		viewDeckPanel.setMinimumSize(new Dimension(300, 300));
-
-		setLeftComponent(tablePanel);
+		 
+		
+		setLeftComponent(deckOverviewPane);
 		setRightComponent(viewDeckPanel);
 		setDividerLocation(225);
 	}
@@ -145,19 +157,7 @@ public class DeckViewer extends JSplitPane {
 		deckDetailsPanel = makeDeckDetailPanel(deckToView);
 		cardDisplayPanel = new DeckVotingPanel(deckToView);
 		cardDisplayPanel.setSubmitButtonVisible(false);
-
-		/*viewDeckPanel.setLayout(layout);
-
-		layout.putConstraint(SpringLayout.NORTH, deckDetailsPanel, 5, SpringLayout.NORTH, viewDeckPanel);
-		layout.putConstraint(SpringLayout.WEST, deckDetailsPanel, 5, SpringLayout.WEST, viewDeckPanel);
-		layout.putConstraint(SpringLayout.EAST, deckDetailsPanel, -5, SpringLayout.EAST, viewDeckPanel);
-
-		layout.putConstraint(SpringLayout.SOUTH, cardDisplayPanel, -5, SpringLayout.SOUTH, viewDeckPanel);
-		layout.putConstraint(SpringLayout.WEST, cardDisplayPanel, 0, SpringLayout.WEST, deckDetailsPanel);
-		layout.putConstraint(SpringLayout.EAST, cardDisplayPanel, 0, SpringLayout.EAST, deckDetailsPanel);
-
-		layout.putConstraint(SpringLayout.SOUTH, deckDetailsPanel, -10, SpringLayout.NORTH, cardDisplayPanel);
-		 */
+		
 		if (deckToView == null) {
 			cardDisplayPanel.setVisible(false);
 		}
@@ -186,5 +186,10 @@ public class DeckViewer extends JSplitPane {
 		}
 		System.out.println("refreshing");
 	}
+	
+	public void buildCreateDeckButtonPanel(){
+		createDeckButtonPanel.add(createDeckButton);
+	}
+	
 
 }
