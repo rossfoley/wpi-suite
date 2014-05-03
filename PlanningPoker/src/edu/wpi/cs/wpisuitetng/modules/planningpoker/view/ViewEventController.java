@@ -20,6 +20,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSe
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.HelpTextPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.HelpTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.OptionsOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
@@ -39,6 +41,8 @@ public class ViewEventController {
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
 	private OptionsOverviewPanel helpPanel = null;
+	private HelpTextPanel helpTextPanel = null;
+	private HelpTreePanel helpListPanel;
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -356,6 +360,14 @@ public class ViewEventController {
 			main.setSelectedComponent(helpPanel);
 		}
 		
+	}
+
+	public void setOverviewTree(HelpTreePanel treePanel) {
+		this.helpListPanel = treePanel;
+	}
+
+	public void setOverviewDetailPanel(HelpTextPanel helpTextPanel) {
+		this.helpTextPanel = helpTextPanel;
 	}
 	
 }
