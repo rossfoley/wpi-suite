@@ -32,7 +32,7 @@ public class OptionsOverviewPanel extends JSplitPane {
 	private JComboBox<String> comboBoxOptions = new JComboBox<String>();
 	private PreferencesPanel prefPanel = new PreferencesPanel();
 	private JPanel deckOverviewPanel = new JPanel();
-	private JPanel helpPanel = new JPanel();
+	private HelpPanel helpPanel = new HelpPanel();
 	private SpringLayout comboLayout = new SpringLayout();
 	private String[] availableOptions = {"Help", "View Decks", "Email Preferences"};
 	private int previousLowerScreenIndex;
