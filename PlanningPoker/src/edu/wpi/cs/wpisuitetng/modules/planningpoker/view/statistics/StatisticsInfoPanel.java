@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -58,6 +59,7 @@ public class StatisticsInfoPanel extends JPanel {
 	private Estimate prevEstimate;
 	private int userEstimate;
 	private final JLabel estimateFieldErrorMessage = new JLabel("");
+	private JButton submitFinalEstimateButton;
 	private int currentReqID = -1;
 	private Requirement aReq; 
 	private final PlanningPokerSession session;
@@ -77,6 +79,7 @@ public class StatisticsInfoPanel extends JPanel {
 		enterEstimateLabel = new JLabel("Enter a final estimate");
 		reqDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
+		submitFinalEstimateButton = new JButton("Submit Final Estimate");
 
 
 		setLayout(springLayout);
@@ -101,6 +104,7 @@ public class StatisticsInfoPanel extends JPanel {
 		add(stdDevDisplay);
 		add(estimateField);
 		add(enterEstimateLabel);
+		add(submitFinalEstimateButton);
 	}
 	
 	public void refresh(PlanningPokerSession session) {
@@ -279,6 +283,9 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, enterEstimateLabel);
 		springLayout.putConstraint(SpringLayout.EAST, estimateField, -40, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, estimateField, -200, SpringLayout.EAST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, submitFinalEstimateButton, 10, SpringLayout.SOUTH, estimateField);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitFinalEstimateButton, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
 	}
 
 	public void setCurrentReqID(int ID) {

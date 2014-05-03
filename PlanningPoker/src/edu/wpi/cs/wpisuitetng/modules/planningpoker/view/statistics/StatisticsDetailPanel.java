@@ -29,7 +29,6 @@ public class StatisticsDetailPanel extends JSplitPane {
 	private JScrollPane tablePanel;
 	private StatisticsInfoPanel infoPanel;
 
-	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
 	private JPanel reqOverviewTablePanel = new JPanel();
 	private SpringLayout reqOverviewLayout = new SpringLayout();
 
@@ -49,15 +48,11 @@ public class StatisticsDetailPanel extends JSplitPane {
 
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.EAST, submitFinalEstimatesBtn, -10, SpringLayout.EAST, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, infoPanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
 		reqOverviewLayout.putConstraint(SpringLayout.EAST, infoPanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, infoPanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, infoPanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
 		reqOverviewTablePanel.add(tablePanel);
-		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 	
 		// Put the info panel and table panel into the split pane
 		setLeftComponent(infoPanel);
