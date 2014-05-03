@@ -28,7 +28,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * The general information (name, description etc) for a given session
@@ -110,6 +109,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 				OverviewTreePanel treePanel = ViewEventController.getInstance().getOverviewTreePanel();
 				treePanel.refresh();
 				updateOverviewButton(currentSession);
+				ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(currentSession);
 			}
 		});
 	}
