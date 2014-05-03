@@ -43,6 +43,9 @@ public class StatisticsDetailPanel extends JSplitPane {
 		userTable.getColumnModel().getColumn(0).setMinWidth(200); // User name
 		userTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
 		tablePanel = new JScrollPane(userTable);
+		
+		// Create the info panel (display requirement details and voting statistics
+		infoPanel = new StatisticsInfoPanel(currentSession);
 
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
@@ -55,9 +58,6 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		reqOverviewTablePanel.add(tablePanel);
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
-		
-		// Create the info panel (display requirement details and voting statistics
-		infoPanel = new StatisticsInfoPanel(currentSession);
 	
 		// Put the info panel and table panel into the split pane
 		setLeftComponent(infoPanel);
