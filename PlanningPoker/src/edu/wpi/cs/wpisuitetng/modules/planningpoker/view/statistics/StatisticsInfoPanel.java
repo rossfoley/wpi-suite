@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.RequirementManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -59,6 +60,7 @@ public class StatisticsInfoPanel extends JPanel {
 	private Estimate prevEstimate;
 	private int userEstimate;
 	private final JLabel estimateFieldErrorMessage = new JLabel("");
+	private final JLabel estimateSubmittedMessage = new JLabel("Your final estimate has been submitted");
 	private JButton submitFinalEstimateButton;
 	private int currentReqID = -1;
 	private Requirement aReq; 
@@ -105,6 +107,8 @@ public class StatisticsInfoPanel extends JPanel {
 		add(estimateField);
 		add(enterEstimateLabel);
 		add(submitFinalEstimateButton);
+		add(estimateFieldErrorMessage);
+		add(estimateSubmittedMessage);
 	}
 	
 	public void refresh(PlanningPokerSession session) {
@@ -143,6 +147,10 @@ public class StatisticsInfoPanel extends JPanel {
 	 * Create the text box to submit estimates
 	 */
 	public void buildSubmitEstimateBox() {
+		estimateFieldErrorMessage.setForeground(Color.RED); 
+		estimateSubmittedMessage.setForeground(Color.BLUE);
+		estimateSubmittedMessage.setVisible(false);
+		
 		estimateField = new JTextField();
 		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
@@ -278,14 +286,19 @@ public class StatisticsInfoPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.NORTH, enterEstimateLabel, 11, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, enterEstimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
-		//springLayout.putConstraint(SpringLayout.WEST, enterEstimateLabel, -200, SpringLayout.EAST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, enterEstimateLabel);
 		springLayout.putConstraint(SpringLayout.EAST, estimateField, -40, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, estimateField, -200, SpringLayout.EAST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, submitFinalEstimateButton, 10, SpringLayout.SOUTH, estimateField);
+		springLayout.putConstraint(SpringLayout.NORTH, submitFinalEstimateButton, 25, SpringLayout.SOUTH, estimateField);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitFinalEstimateButton, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
 	}
 
 	public void setCurrentReqID(int ID) {
