@@ -48,10 +48,10 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.EAST, submitFinalEstimatesBtn, -10, SpringLayout.EAST, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
-		reqOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, infoPanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
+		reqOverviewLayout.putConstraint(SpringLayout.EAST, infoPanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.NORTH, infoPanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
+		reqOverviewLayout.putConstraint(SpringLayout.WEST, infoPanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
 		reqOverviewTablePanel.add(tablePanel);
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
@@ -80,5 +80,4 @@ public class StatisticsDetailPanel extends JSplitPane {
 		infoPanel.refresh(currentSession);
 		userTable.updateTable(requirementID);
 	}
-	
 }

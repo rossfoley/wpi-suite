@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.text.DateFormat;
@@ -20,7 +21,10 @@ import java.util.GregorianCalendar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.RequirementManager;
@@ -28,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.Dimension;
+import java.awt.Font;
 
 /**
  * The general information (name, description etc) for a given session
@@ -47,7 +52,12 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel meanDisplay;
 	JLabel medianDisplay;
 	JLabel stdDevDisplay;
+	JLabel enterEstimateLabel;
 	SpringLayout springLayout;
+	private JTextField estimateField;
+	private Estimate prevEstimate;
+	private int userEstimate;
+	private final JLabel estimateFieldErrorMessage = new JLabel("");
 	private int currentReqID = -1;
 	private Requirement aReq; 
 	private final PlanningPokerSession session;
@@ -64,6 +74,7 @@ public class StatisticsInfoPanel extends JPanel {
 		meanDisplay = new JLabel();
 		medianDisplay = new JLabel();
 		stdDevDisplay = new JLabel();
+		enterEstimateLabel = new JLabel("Enter a final estimate");
 		reqDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
 
@@ -73,6 +84,8 @@ public class StatisticsInfoPanel extends JPanel {
 		reqDescriptionDisplay.setWrapStyleWord(true);
 		reqDescriptionDisplay.setLineWrap(true);
 		reqDescriptionDisplay.setEditable(false);
+		
+		buildSubmitEstimateBox();
 		
 		setConstraints();
 		
@@ -86,6 +99,8 @@ public class StatisticsInfoPanel extends JPanel {
 		add(meanDisplay);
 		add(medianDisplay);
 		add(stdDevDisplay);
+		add(estimateField);
+		add(enterEstimateLabel);
 	}
 	
 	public void refresh(PlanningPokerSession session) {
@@ -117,6 +132,68 @@ public class StatisticsInfoPanel extends JPanel {
 			 * change standard deviation display 
 			 */
 			stdDevDisplay.setText(formatStdDev(session.getReqEstimateStats().get(currentReqID)));
+		}
+	}
+	
+	/**
+	 * Create the text box to submit estimates
+	 */
+	public void buildSubmitEstimateBox() {
+		estimateField = new JTextField();
+		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
+		estimateField.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		estimateField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				estimateValueChange();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				estimateValueChange();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				estimateValueChange();
+			}
+		});
+		
+		estimateField.setPreferredSize(new Dimension(200, 150));
+	}
+	
+	/**
+	 * set the current estimate value to whatever is in the estimateField
+	 */
+	private void estimateValueChange() {
+		try {
+			userEstimate = Integer.parseInt(estimateField.getText());
+			validateEstimate();
+		}
+		catch (NumberFormatException e) {
+			// give deliberately failing value 
+			userEstimate = -1;
+			validateEstimate();
+		}
+	}
+	
+	/**
+	 * @return true if the field contains a positive integer
+	 */
+	private boolean validateEstimate() {
+		if (userEstimate < 0) {
+			estimateFieldErrorMessage.setText("Please enter a positive integer");
+			estimateFieldErrorMessage.setVisible(true);
+			estimateFieldErrorMessage.revalidate();
+			estimateFieldErrorMessage.repaint();
+			// disable submit estimates button
+			return false;
+		}
+		else {
+			estimateFieldErrorMessage.setText("");
+			estimateFieldErrorMessage.setVisible(false);
+			estimateFieldErrorMessage.revalidate();
+			estimateFieldErrorMessage.repaint();
+			// enable submit estimate button
+			return true;
 		}
 	}
 
@@ -158,7 +235,7 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblReqDescription);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -16, SpringLayout.NORTH, lblMean);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -67, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -67, SpringLayout.WEST, estimateField); // .EAST, this
 		springLayout.putConstraint(SpringLayout.EAST, lblReqDescription, 138, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblReqName, 11, SpringLayout.NORTH, this);
@@ -195,7 +272,13 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, stdDevDisplay, 187, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, 328, SpringLayout.WEST, this);
 		
+		springLayout.putConstraint(SpringLayout.NORTH, enterEstimateLabel, 11, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, enterEstimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
+		//springLayout.putConstraint(SpringLayout.WEST, enterEstimateLabel, -200, SpringLayout.EAST, this);
 		
+		springLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, enterEstimateLabel);
+		springLayout.putConstraint(SpringLayout.EAST, estimateField, -40, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, estimateField, -200, SpringLayout.EAST, this);
 	}
 
 	public void setCurrentReqID(int ID) {
