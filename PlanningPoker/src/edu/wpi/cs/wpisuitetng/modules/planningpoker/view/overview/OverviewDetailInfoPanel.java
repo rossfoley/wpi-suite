@@ -109,6 +109,9 @@ public class OverviewDetailInfoPanel extends JPanel {
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
 				OverviewTreePanel treePanel = ViewEventController.getInstance().getOverviewTreePanel();
 				treePanel.refresh();
+				updateOverviewButton(currentSession);
+				//need to refresh overviewDetailInfoPanel within this action listener but can't because it's in the same 
+				//class and can't use this. in the action listener
 			}
 		});
 	}
@@ -129,41 +132,9 @@ public class OverviewDetailInfoPanel extends JPanel {
 		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
 		
 	
+		updateOverviewButton(session);
 		
-		//restrict ability to open/end voting on/close a session to session creator
-		if ((ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())) && ((session.getGameState() == SessionState.PENDING) || 
-				(session.getGameState() == SessionState.OPEN) || (session.getGameState() == SessionState.VOTINGENDED)) || (session.getGameState() == SessionState.CLOSED)){
-			overviewDetailButton.setVisible(true);
-
-			// Set button to open session button for pending sessions
-			if(session.getGameState() == SessionState.PENDING) {
-				overviewDetailButton.setText("Open Session for Voting");
-				overviewDetailButton.setEnabled(true);
-			}
-			
-			// Set button to end session button for open sessions 
-			else if(session.getGameState() == SessionState.OPEN) {
-				overviewDetailButton.setText("End Session Voting");
-				overviewDetailButton.setEnabled(true);
-			}
-			// Set button to close session for ended sessions
-			else if (session.getGameState() == SessionState.VOTINGENDED) {
-				overviewDetailButton.setText("Archive Session");
-				//Check if there are final estimates 
-				int finalEstimateSize = session.getFinalEstimates().size();
-				System.out.println(finalEstimateSize);
-				if (session.getFinalEstimates().size() != session.requirementsGetSize()) {
-					overviewDetailButton.setEnabled(false);
-				}
-				else {
-					overviewDetailButton.setEnabled(true);
-				}
-			}
-		else {
-				overviewDetailButton.setVisible(false);
-			}
-		}
-		
+	
 		// Change end date
 		String endDate, endTime;
 		try {
@@ -194,6 +165,42 @@ public class OverviewDetailInfoPanel extends JPanel {
 		}
 		else {
 			deckDisplay.setText("None");
+		}
+	}
+	
+	public void updateOverviewButton(PlanningPokerSession session){
+		//restrict ability to open/end voting on/close a session to session creator
+		if ((ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())) && ((session.getGameState() == SessionState.PENDING) || 
+				(session.getGameState() == SessionState.OPEN) || (session.getGameState() == SessionState.VOTINGENDED)) || (session.getGameState() == SessionState.CLOSED)){
+			overviewDetailButton.setVisible(true);
+
+			// Set button to open session button for pending sessions
+			if(session.getGameState() == SessionState.PENDING) {
+				overviewDetailButton.setText("Open Session for Voting");
+				overviewDetailButton.setEnabled(true);
+			}
+			
+			// Set button to end session button for open sessions 
+			else if(session.getGameState() == SessionState.OPEN) {
+				overviewDetailButton.setText("End Session Voting");
+				overviewDetailButton.setEnabled(true);
+			}
+			// Set button to close session for ended sessions
+			else if (session.getGameState() == SessionState.VOTINGENDED) {
+				overviewDetailButton.setText("Archive Session");
+				//Check if there are final estimates 
+				int finalEstimateSize = session.getFinalEstimates().size();
+				System.out.println(finalEstimateSize);
+				if (session.getFinalEstimates().size() != session.requirementsGetSize()) {
+					overviewDetailButton.setEnabled(false);
+				}
+				else {
+					overviewDetailButton.setEnabled(true);
+				}
+		}
+		else {
+				overviewDetailButton.setVisible(false);
+			}
 		}
 	}
 	
