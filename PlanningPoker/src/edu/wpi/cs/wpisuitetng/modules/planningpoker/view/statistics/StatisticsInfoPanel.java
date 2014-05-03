@@ -196,7 +196,7 @@ public class StatisticsInfoPanel extends JPanel {
 			estimateFieldErrorMessage.setVisible(true);
 			estimateFieldErrorMessage.revalidate();
 			estimateFieldErrorMessage.repaint();
-			// disable submit estimates button
+			submitFinalEstimateButton.setEnabled(false);
 			return false;
 		}
 		else {
@@ -204,7 +204,7 @@ public class StatisticsInfoPanel extends JPanel {
 			estimateFieldErrorMessage.setVisible(false);
 			estimateFieldErrorMessage.revalidate();
 			estimateFieldErrorMessage.repaint();
-			// enable submit estimate button
+			submitFinalEstimateButton.setEnabled(true);
 			return true;
 		}
 	}
