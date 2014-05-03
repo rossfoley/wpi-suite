@@ -55,12 +55,12 @@
                 <div class="no-deck-vote" data-bind="ifnot: usingDeck">
                 <div class="well">
                   <div class="row">
-                  <span class="vote-text no-deck-vote-text">Vote:</span>
+                  <span class="vote-text no-deck-vote-text">Your Vote:</span>
                   <div class="col-lg-2">
                   <div class="input-group">
                     <input type="number" placeholder="Vote" data-bind="value: voteValue" required pattern="^\d+$" class="form-control no-deck-input"/>
                     <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" data-bind="click: function() {submitVote()}">Vote!</button>
+                      <button class="btn btn-default" type="button" data-bind="click: function() {submitVote()}, disable: voteError">Vote!</button>
                     </span>
                   </div>
                   </div>
@@ -73,8 +73,8 @@
                 </div>
                 <div class="deck-vote" data-bind="if: usingDeck">
                 <div class="well">
-                  <span class="vote-text">Total: <span data-bind="text: totalValue"></span></span>
-                  <button class="btn btn-default" type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                  <span class="vote-text">Vote Total: <span data-bind="text: totalValue"></span></span>
+                  <button class="btn btn-default" type="button" data-bind="click: function() {submitVote()}">Vote!</button>
                   <div class="alert alert-success vote-alert" data-bind="fadeVisible: showSuccessMessage">
                    Your vote was submitted successfully!
                   </div>

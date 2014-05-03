@@ -257,6 +257,10 @@ class EstimateViewModel
         if update['vote'] > -1
           @voted.push update['ownerName']
 
+    @voteError = ko.computed =>
+      vote = @voteValue() # Access voteValue to ensure this updates correctly
+      @voteValue.error() != null
+
 
 #####################################
 # Individual Requirement View Model #

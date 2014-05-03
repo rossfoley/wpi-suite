@@ -374,6 +374,13 @@
           }
         };
       })(this);
+      this.voteError = ko.computed((function(_this) {
+        return function() {
+          var vote;
+          vote = _this.voteValue();
+          return _this.voteValue.error() !== null;
+        };
+      })(this));
     }
 
     return EstimateViewModel;
