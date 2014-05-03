@@ -141,7 +141,7 @@ public class StatisticsInfoPanel extends JPanel {
 				estimateField.setText(existingReqEstimate.toString());
 			}
 			else {
-				estimateField.setText("");
+				estimateField.setText(formatMeanAsInt(session.getReqEstimateStats().get(currentReqID)));
 			}
 			
 			/**
