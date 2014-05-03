@@ -56,9 +56,16 @@
                   Vote:
                   <input type="number" placeholder="Vote" data-bind="value: voteValue" required pattern="^\d+$" class="form-control no-deck-input"/>
                   <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                  <div class="alert alert-success vote-alert" data-bind="fadeVisible: showSuccessMessage">
+                   Your vote was submitted successfully!
+                  </div>
+                  <div class="alert alert-danger vote-alert" data-bind="validationMessage: voteValue"></div>
                 </div>
                 <div class="deck-vote" data-bind="if: usingDeck">
-                Total: <span data-bind="text: totalValue"></span> <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                  Total: <span data-bind="text: totalValue"></span> <button type="button" data-bind="click: function() {submitVote()}">Submit Vote!</button>
+                  <div class="alert alert-success vote-alert" data-bind="fadeVisible: showSuccessMessage">
+                   Your vote was submitted successfully!
+                  </div>
                   <div class="deck" data-bind="foreach: cards">
                     <div class="card-container" data-bind="click: function() {cardClicked()}, css: { 'card-selected': selected }">
                       <div class="card-value" data-bind="text: value"></div>

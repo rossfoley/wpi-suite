@@ -9,7 +9,12 @@ class PlanningPokerViewModel
     @team = []
     @activeSession = ko.observable()
     # Get the current username
-    @username = window.location.search.split('=')[1]
+    firstSplit = window.location.search.split('&')
+    if firstSplit.length > 1
+      @username = firstSplit[0].split('=')[1]
+      @querySession = firstSplit[1].split('=')[1]
+    else
+      @username = window.location.search.split('=')[1]
 
     # Load in the requirements
     $.ajax
@@ -79,6 +84,12 @@ class PlanningPokerViewModel
     # Check for new updates every 5 seconds
     setInterval @checkForUpdates, 5000
 
+    # If the session query string was provided, make it the active session
+    if @querySession
+      for session in @planningPokerSessions()
+        if @querySession == session.uuid()
+          @activeSession(session)
+
 
 #################################
 # Individual Session View Model #
@@ -118,7 +129,8 @@ class SessionViewModel
         for estimate in @estimates()
           if estimate['requirementID'] == requirement['id']
             # If a person already has an estimate, add them to voterList
-            voterList.push estimate['ownerName']
+            if estimate['vote'] > -1
+              voterList.push estimate['ownerName']
 
             # If the current user has an estimate, update the vote in userEstimate
             if estimate['ownerName'] == @username
@@ -157,6 +169,7 @@ class EstimateViewModel
     @deck = ko.observable(params.deck)
     @username = params.username
     @voted = ko.observableArray(voterList)
+    @showSuccessMessage = ko.observable(false)
     @voteValue = ko.observable(0).extend
       required:
         message: 'Please enter a vote!'
@@ -223,19 +236,25 @@ class EstimateViewModel
         cardViewModel.selected(yes)
 
     @submitVote = =>
-      @estimate().vote(parseInt(@totalValue()))
-      $.ajax
-        type: 'POST'
-        dataType: 'json'
-        url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
-        data: ko.toJSON(@estimate())
-        success: (data) => 
-          unless @username in @voted()
-            @voted.push @username
+      unless @voteValue.error()
+        @estimate().vote(parseInt(@totalValue()))
+        $.ajax
+          type: 'POST'
+          dataType: 'json'
+          url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
+          data: ko.toJSON(@estimate())
+          success: (data) => 
+            unless @username in @voted()
+              @voted.push @username
+            # Show a success message
+            @showSuccessMessage(true)
+            # Fade out the success message after 2 seconds
+            setTimeout (=> @showSuccessMessage(false)), 2000
 
     @applyUpdate = (update) =>
       unless update['ownerName'] in @voted()
-        @voted.push update['ownerName']
+        if update['vote'] > -1
+          @voted.push update['ownerName']
 
 
 #####################################
@@ -262,5 +281,17 @@ class CardViewModel
 ############################################
 
 $ ->
+  ko.bindingHandlers.fadeVisible =
+    init: (element, valueAccessor) ->
+        value = valueAccessor()
+        $(element).toggle(ko.utils.unwrapObservable(value))
+
+    update: (element, valueAccessor) ->
+        value = valueAccessor()
+        if ko.utils.unwrapObservable(value)
+          $(element).fadeIn('fast')
+        else
+          $(element).fadeOut('fast')
+
   window.PokerVM = new PlanningPokerViewModel()
   ko.applyBindings(window.PokerVM)

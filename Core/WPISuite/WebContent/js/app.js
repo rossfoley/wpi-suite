@@ -5,11 +5,18 @@
 
   PlanningPokerViewModel = (function() {
     function PlanningPokerViewModel() {
+      var firstSplit, session, _i, _len, _ref;
       this.planningPokerSessions = ko.observableArray([]);
       this.requirements = [];
       this.team = [];
       this.activeSession = ko.observable();
-      this.username = window.location.search.split('=')[1];
+      firstSplit = window.location.search.split('&');
+      if (firstSplit.length > 1) {
+        this.username = firstSplit[0].split('=')[1];
+        this.querySession = firstSplit[1].split('=')[1];
+      } else {
+        this.username = window.location.search.split('=')[1];
+      }
       $.ajax({
         dataType: 'json',
         url: 'API/requirementmanager/requirement',
@@ -116,6 +123,15 @@
         };
       })(this);
       setInterval(this.checkForUpdates, 5000);
+      if (this.querySession) {
+        _ref = this.planningPokerSessions();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          session = _ref[_i];
+          if (this.querySession === session.uuid()) {
+            this.activeSession(session);
+          }
+        }
+      }
     }
 
     return PlanningPokerViewModel;
@@ -156,7 +172,9 @@
           for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
             estimate = _ref2[_j];
             if (estimate['requirementID'] === requirement['id']) {
-              voterList.push(estimate['ownerName']);
+              if (estimate['vote'] > -1) {
+                voterList.push(estimate['ownerName']);
+              }
               if (estimate['ownerName'] === this.username) {
                 userEstimate['vote'] = estimate['vote'];
               }
@@ -220,6 +238,7 @@
       this.deck = ko.observable(params.deck);
       this.username = params.username;
       this.voted = ko.observableArray(voterList);
+      this.showSuccessMessage = ko.observable(false);
       this.voteValue = ko.observable(0).extend({
         required: {
           message: 'Please enter a vote!'
@@ -320,26 +339,34 @@
       })(this);
       this.submitVote = (function(_this) {
         return function() {
-          _this.estimate().vote(parseInt(_this.totalValue()));
-          return $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
-            data: ko.toJSON(_this.estimate()),
-            success: function(data) {
-              var _ref1;
-              if (_ref1 = _this.username, __indexOf.call(_this.voted(), _ref1) < 0) {
-                return _this.voted.push(_this.username);
+          if (!_this.voteValue.error()) {
+            _this.estimate().vote(parseInt(_this.totalValue()));
+            return $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
+              data: ko.toJSON(_this.estimate()),
+              success: function(data) {
+                var _ref1;
+                if (_ref1 = _this.username, __indexOf.call(_this.voted(), _ref1) < 0) {
+                  _this.voted.push(_this.username);
+                }
+                _this.showSuccessMessage(true);
+                return setTimeout((function() {
+                  return _this.showSuccessMessage(false);
+                }), 2000);
               }
-            }
-          });
+            });
+          }
         };
       })(this);
       this.applyUpdate = (function(_this) {
         return function(update) {
           var _ref1;
           if (_ref1 = update['ownerName'], __indexOf.call(_this.voted(), _ref1) < 0) {
-            return _this.voted.push(update['ownerName']);
+            if (update['vote'] > -1) {
+              return _this.voted.push(update['ownerName']);
+            }
           }
         };
       })(this);
@@ -371,6 +398,22 @@
   })();
 
   $(function() {
+    ko.bindingHandlers.fadeVisible = {
+      init: function(element, valueAccessor) {
+        var value;
+        value = valueAccessor();
+        return $(element).toggle(ko.utils.unwrapObservable(value));
+      },
+      update: function(element, valueAccessor) {
+        var value;
+        value = valueAccessor();
+        if (ko.utils.unwrapObservable(value)) {
+          return $(element).fadeIn('fast');
+        } else {
+          return $(element).fadeOut('fast');
+        }
+      }
+    };
     window.PokerVM = new PlanningPokerViewModel();
     return ko.applyBindings(window.PokerVM);
   });
