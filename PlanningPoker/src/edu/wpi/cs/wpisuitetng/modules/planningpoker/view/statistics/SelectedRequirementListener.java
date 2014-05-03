@@ -15,7 +15,7 @@ import java.util.EventListener;
  * A contract between a SelectedRequirement source and listener classes
  */
 public class SelectedRequirementListener implements EventListener {
-	private int selectedRequirement;
+	private int selectedRequirement = -1;
 	
 	/**
 	 *  Called whenever a requirement has been selected by a

@@ -127,7 +127,7 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public boolean isCellEditable(int row, int col) {
-		return col == 2;
+		return (col == 2);
 	}
 	
 	@Override 
