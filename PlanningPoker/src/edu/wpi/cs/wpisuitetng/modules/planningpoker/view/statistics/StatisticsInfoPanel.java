@@ -135,9 +135,8 @@ public class StatisticsInfoPanel extends JPanel {
 			submitFinalEstimateButton.setEnabled(true);
 			estimateField.setEnabled(true);
 			
-			//TODO possibly check submitted estimates for this session instead
-			Integer existingReqEstimate = RequirementModel.getInstance().getRequirement(currentReqID).getEstimate();
-			if (existingReqEstimate != 0) {
+			if (!(session.getReqsWithExportedEstimatesList().contains(aReq))) {
+				Integer existingReqEstimate = RequirementModel.getInstance().getRequirement(currentReqID).getEstimate();
 				estimateField.setText(existingReqEstimate.toString());
 			}
 			else {
@@ -195,8 +194,13 @@ public class StatisticsInfoPanel extends JPanel {
 			}
 		});
 		
-		// TODO change to "Modify Final Estimate" when appropriate
-		submitFinalEstimateButton = new JButton("Submit Final Estimate");
+		if (!(session.getReqsWithExportedEstimatesList().contains(aReq))) {
+			submitFinalEstimateButton = new JButton("Submit Final Estimate");
+		}
+		else {
+			submitFinalEstimateButton = new JButton("Resubmit Final Estimate");
+		}
+		
 		if (currentReqID < 0) {
 			submitFinalEstimateButton.setEnabled(false);
 			estimateField.setEnabled(false);
@@ -365,15 +369,15 @@ public class StatisticsInfoPanel extends JPanel {
 	}
 	
 	public void sendFinalEstimate(Requirement reqToSendFinalEstimate) {
-		// if the requirement's estimate has not yet been sent
-		if (!(session.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate))) {
-			reqToSendFinalEstimate.setEstimate(session.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
-			session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
-			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
-			ViewEventController.getInstance().refreshTable();
-			estimateSubmittedMessage.setVisible(true);
+		reqToSendFinalEstimate.setEstimate(session.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
+		session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
+		UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
+		ViewEventController.getInstance().refreshTable();
+		
+		if (session.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate)) {
+			//TODO ask for and record explanation
 		}
-		//TODO modify an existing final estimate 
+		estimateSubmittedMessage.setVisible(true);
 	}
 
 
