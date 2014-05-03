@@ -27,11 +27,11 @@ import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.RequirementManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -62,7 +62,6 @@ public class StatisticsInfoPanel extends JPanel {
 	JLabel enterEstimateLabel;
 	SpringLayout springLayout;
 	private JTextField estimateField;
-	private Estimate prevEstimate;
 	private int userEstimate;
 	private final JLabel estimateFieldErrorMessage = new JLabel("");
 	private final JLabel estimateSubmittedMessage = new JLabel("Your final estimate has been submitted");
@@ -124,10 +123,25 @@ public class StatisticsInfoPanel extends JPanel {
 			// Change session description
 			reqDescriptionDisplay.setText(aReq.getDescription());
 		}
+		else {
+			estimateField.setText("");
+		}
 		
 		if (currentReqID != -1) {
 			if (session.isEnded() || session.isClosed()) {
 				session.addReqEstimateStats(currentReqID);
+			}
+			
+			submitFinalEstimateButton.setEnabled(true);
+			estimateField.setEnabled(true);
+			
+			//TODO possibly check submitted estimates for this session instead
+			Integer existingReqEstimate = RequirementModel.getInstance().getRequirement(currentReqID).getEstimate();
+			if (existingReqEstimate != 0) {
+				estimateField.setText(existingReqEstimate.toString());
+			}
+			else {
+				estimateField.setText("");
 			}
 			
 			/**
@@ -183,6 +197,10 @@ public class StatisticsInfoPanel extends JPanel {
 		
 		// TODO change to "Modify Final Estimate" when appropriate
 		submitFinalEstimateButton = new JButton("Submit Final Estimate");
+		if (currentReqID < 0) {
+			submitFinalEstimateButton.setEnabled(false);
+			estimateField.setEnabled(false);
+		}
 		
 		submitFinalEstimateButton.addActionListener(new ActionListener() {
 			@Override
@@ -192,7 +210,6 @@ public class StatisticsInfoPanel extends JPanel {
 					if (validateEstimate()) {
 						session.addFinalEstimate(currentReqID, userEstimate);
 						sendFinalEstimate(aReq);
-						estimateSubmittedMessage.setVisible(true);
 					}
 				}
 				catch (NumberFormatException ne) {
@@ -245,24 +262,32 @@ public class StatisticsInfoPanel extends JPanel {
 	//format estimate mean to a string
 	public String formatMean(RequirementEstimateStats stats){
 		String mean = "";
-		DecimalFormat df = new DecimalFormat("0.0");
+		DecimalFormat df = new DecimalFormat("##0.0");
 		mean = df.format(stats.getMean());
 		return mean;
 	}
 	//format estimate median to a string
 	public String formatMedian(RequirementEstimateStats stats){
 		String median = "";
-		DecimalFormat df = new DecimalFormat("0.0");
+		DecimalFormat df = new DecimalFormat("##0.0");
 		median = df.format(stats.getMedian());
 		return median;
 	}
 	//format estimate standard deviation to a string
 	public String formatStdDev(RequirementEstimateStats stats) {
 		String stdDev = "";
-		DecimalFormat df = new DecimalFormat("0.0");
+		DecimalFormat df = new DecimalFormat("##0.0");
 		stdDev = df.format(stats.getStdDev());
 		return stdDev;
 	}
+	
+	public String formatMeanAsInt(RequirementEstimateStats stats) {
+		String mean = "";
+		DecimalFormat df = new DecimalFormat("##0");
+		mean = df.format(stats.getMean());
+		return mean;
+	}
+	
 	//set selected requirement ID
 	public void setRequirementID(int ID) {
 		reqNameDisplay.setText(Integer.toString(ID));
@@ -345,8 +370,10 @@ public class StatisticsInfoPanel extends JPanel {
 			reqToSendFinalEstimate.setEstimate(session.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
 			session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
 			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
+			ViewEventController.getInstance().refreshTable();
+			estimateSubmittedMessage.setVisible(true);
 		}
-		// otherwise, do nothing.
+		//TODO modify an existing final estimate 
 	}
 
 
