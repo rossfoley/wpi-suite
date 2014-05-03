@@ -637,7 +637,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 					for (int i = 0; i < emailRecipients.size(); i++) {
 						recipients.add(emailRecipients.get(i).getEmail());
 					}
-					final Mailer mailer = new Mailer();
 					
 					final Thread t = new Thread(new Runnable() {
 						@Override
@@ -649,8 +648,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 					t.setDaemon(true);
 					t.start();
 				}
-				//final GetEmailController getEmailController = GetEmailController.getInstance();
-				//getEmailController.retrieveEmails();
 			}
 		});
 

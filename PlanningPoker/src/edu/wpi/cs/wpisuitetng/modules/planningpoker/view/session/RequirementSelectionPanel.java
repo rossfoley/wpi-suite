@@ -27,11 +27,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.InfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-import java.awt.Component;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,8 +48,8 @@ public class RequirementSelectionPanel extends JPanel{
 	private final PlanningPokerSession currentSession;
 	private LinkedList<Requirement> requirements;
 	private LinkedList<Boolean> selection;
-	private final JList selectedListGui;
-	private final JList unselectedListGui;
+	private final JList<Requirement> selectedListGui;
+	private final JList<Requirement> unselectedListGui;
 	private AbstractListModel unSelectedListModel;
 	private AbstractListModel selectedListModel;
 	protected String[] unSelectedListData;
@@ -221,8 +219,6 @@ public class RequirementSelectionPanel extends JPanel{
 				unselectAll();
 			}
 		});
-		//sl_btnPanel.putConstraint(SpringLayout.NORTH, btnNewReq, 6, SpringLayout.SOUTH, btnRemoveAll);
-		//sl_btnPanel.putConstraint(SpringLayout.NORTH, horizontalStrut, 24, SpringLayout.SOUTH, btnRemoveAll);
 
 		final JPanel panelNewReq = new JPanel();
 		verticalBox.add(panelNewReq);
@@ -240,7 +236,6 @@ public class RequirementSelectionPanel extends JPanel{
 		panelNewReq.add(btnNewReq);
 
 		final JPanel panelSpace2 = new JPanel();
-		//verticalBox.add(panelSpace2);
 		panelSpace2.setLayout(new SpringLayout());
 		btnNewReq.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -265,7 +260,7 @@ public class RequirementSelectionPanel extends JPanel{
 		sl_selectedPanel.putConstraint(SpringLayout.EAST, selectedScrollPane, -10, SpringLayout.EAST, selectedPanel);
 		selectedPanel.add(selectedScrollPane);
 
-		selectedListGui = new JList();
+		selectedListGui = new JList<>();
 		selectedListGui.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -322,10 +317,9 @@ public class RequirementSelectionPanel extends JPanel{
 						for (Requirement req : reqsInBacklog) {
 							if (IDs.contains(req.getId())) {
 								int index = req.getId();
-								System.out.println("Removing ID: " + Integer.toString(index));
-								//reqsInBacklog.remove(index);
-								if (!toRemove.contains(index)) {toRemove.add(index);}
-								//System.out.println("Removing requirement: " + Integer.toString(req.getId()));
+								if (!toRemove.contains(index)) {
+									toRemove.add(index);
+								}
 							}
 						}
 					}
@@ -336,60 +330,24 @@ public class RequirementSelectionPanel extends JPanel{
 						for (Requirement req : reqsInBacklog) {
 							if (IDs.contains(req.getId())) {
 								int index = req.getId();
-								System.out.println("Removing ID: " + Integer.toString(index));
-								//reqsInBacklog.remove(index);
-								if (!toRemove.contains(index)) {toRemove.add(index);}
-								//System.out.println("Removing requirement: " + Integer.toString(req.getId()));
+								if (!toRemove.contains(index)) {
+									toRemove.add(index);
+								}
 							}
 						}
 					}
 				}
 			}
 
-			//System.out.println("toRemove: " + toRemove);
 			LinkedList<Requirement> keep = new LinkedList<Requirement>();
 			for (Requirement req : reqsInBacklog){
 				if (!toRemove.contains(req.getId())){
 					keep.add(req);
 				}
 			}
-			/*for (int i = toRemove.size() -1; i >= 0 ; i--) {
-				int index = toRemove.get(i);
-				//System.out.println("Removing index: " + Integer.toString(index));
-				reqsInBacklog.remove(index);
-			}*/
-
-
 			requirements = (LinkedList<Requirement>)keep;
-
-			//requirements = (LinkedList<Requirement>)filterRequirements(reqsList);
-
 		}
 		catch (Exception e) {}
-	}
-
-	private List<Requirement> filterRequirements(List<Requirement> requirements){
-		List<Requirement> requirementsList = new LinkedList<Requirement>();
-
-		for (Requirement req : requirements) {
-			boolean valid = true;
-			if (!req.getIteration().equals("BackLog")) valid = false;
-			if (req.getEstimate() > 0) valid = false;
-			if (valid) requirementsList.add(req); 
-		}
-
-		List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
-		for (PlanningPokerSession session : sessions){
-			if (!session.isPending()){
-				Set<Integer> IDs = session.getRequirementIDs();
-				for (Requirement req : requirementsList){
-					if (IDs.contains(req.getId())){
-						requirementsList.remove(req);
-					}
-				}
-			}
-		}
-		return requirementsList;
 	}
 
 	/**
@@ -516,14 +474,12 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	private void selectAll(){
 		final List<Integer> pos = getUnselectedPos();
-		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
 			selection.remove(n);
 			selection.add(n, true);
 		}
 		numRequirementsAdded = selection.size();
 		update();
-
 	}
 
 	/**
@@ -531,7 +487,6 @@ public class RequirementSelectionPanel extends JPanel{
 	 */
 	private void unselectAll(){
 		final List<Integer> pos = getSelectedPos();
-		//int selected[] = unselectedListGui.getSelectedIndices();
 		for(int n : pos){
 			selection.remove(n);
 			selection.add(n, false);
@@ -637,8 +592,6 @@ public class RequirementSelectionPanel extends JPanel{
 
 		infoPanel.setRequirement(visibleRequirement);
 		selectedIndicesOld = selectedIndicesCurrent;
-		//remove(infoPanel);
-		//add(infoPanel);
 	}
 
 	/**
