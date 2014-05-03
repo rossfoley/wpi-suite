@@ -93,34 +93,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	}
 	
 	/**
-	 * @return the detailPanel
-	 */
-	public StatisticsDetailPanel getDetailPanel() {
-		return detailPanel;
-	}
-	
-	/**
-	 * @param detailPanel the detailPanel to set
-	 */
-	public void setDetailPanel(StatisticsDetailPanel detailPanel) {
-		this.detailPanel = detailPanel;
-	}
-	
-	/**
-	 * @return the statistics user tree panel
-	 */
-	public StatisticsReqTable getStatisticsReqTable() {
-		return reqTable;
-	}
-	
-	/**
-	 * @param endVotePanel the endVotePanel to set
-	 */
-	public void setStatisticsUserTable(StatisticsReqTable reqTable) {
-		this.reqTable = reqTable;
-	}
-	
-	/**
 	 * Get the session that is being viewed 
 	 * @return the session being voted on in this panel
 	 */
