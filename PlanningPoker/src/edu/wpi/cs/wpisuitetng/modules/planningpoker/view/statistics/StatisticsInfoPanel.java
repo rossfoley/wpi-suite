@@ -29,12 +29,17 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.RequirementManager;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * The general information (name, description etc) for a given session
@@ -66,8 +71,8 @@ public class StatisticsInfoPanel extends JPanel {
 	private Requirement aReq; 
 	private final PlanningPokerSession session;
 	
-	public StatisticsInfoPanel(PlanningPokerSession session) {
-		this.session = session; 
+	public StatisticsInfoPanel(PlanningPokerSession aSession) {
+		session = aSession; 
 		lblReqName = new JLabel("Name:");
 		reqNameDisplay = new JLabel("");
 		lblReqDescription = new JLabel("Description:");
@@ -81,7 +86,6 @@ public class StatisticsInfoPanel extends JPanel {
 		enterEstimateLabel = new JLabel("Enter a final estimate");
 		reqDescriptionDisplay = new JTextArea();
 		springLayout = new SpringLayout();
-		submitFinalEstimateButton = new JButton("Submit Final Estimate");
 
 
 		setLayout(springLayout);
@@ -170,6 +174,34 @@ public class StatisticsInfoPanel extends JPanel {
 		});
 		
 		estimateField.setPreferredSize(new Dimension(200, 150));
+		estimateField.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				estimateSubmittedMessage.setVisible(false);
+			}
+		});
+		
+		// TODO change to "Modify Final Estimate" when appropriate
+		submitFinalEstimateButton = new JButton("Submit Final Estimate");
+		
+		submitFinalEstimateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					userEstimate = Integer.parseInt(estimateField.getText());
+					if (validateEstimate()) {
+						session.addFinalEstimate(currentReqID, userEstimate);
+						sendFinalEstimate(aReq);
+						estimateSubmittedMessage.setVisible(true);
+					}
+				}
+				catch (NumberFormatException ne) {
+					// give deliberately failing value to produce an error message
+					userEstimate = -1;
+					validateEstimate();
+				}
+			}
+		});
 	}
 	
 	/**
@@ -305,6 +337,16 @@ public class StatisticsInfoPanel extends JPanel {
 		currentReqID = ID;
 		aReq = RequirementModel.getInstance().getRequirement(ID);
 		refresh(session);
+	}
+	
+	public void sendFinalEstimate(Requirement reqToSendFinalEstimate) {
+		// if the requirement's estimate has not yet been sent
+		if (!(session.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate))) {
+			reqToSendFinalEstimate.setEstimate(session.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
+			session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
+			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
+		}
+		// otherwise, do nothing.
 	}
 
 
