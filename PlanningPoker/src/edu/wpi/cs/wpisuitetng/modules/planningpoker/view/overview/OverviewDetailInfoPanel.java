@@ -110,8 +110,6 @@ public class OverviewDetailInfoPanel extends JPanel {
 				OverviewTreePanel treePanel = ViewEventController.getInstance().getOverviewTreePanel();
 				treePanel.refresh();
 				updateOverviewButton(currentSession);
-				//need to refresh overviewDetailInfoPanel within this action listener but can't because it's in the same 
-				//class and can't use this. in the action listener
 			}
 		});
 	}
