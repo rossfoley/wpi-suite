@@ -52,7 +52,7 @@ public class MainView extends JTabbedPane {
 	public MainView() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		this.addTab("Current Sessions", overviewPanel);
-		this.addTab("Preferences", new PreferencesPanel());
+//		this.addTab("Preferences", new PreferencesPanel());
 
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {

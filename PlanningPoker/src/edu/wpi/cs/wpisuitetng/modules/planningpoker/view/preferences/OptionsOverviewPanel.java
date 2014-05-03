@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2014 WPI-Suite
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: The Team8s
- ******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences;
 
 import java.awt.event.ActionEvent;
@@ -20,15 +10,18 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckViewer;
+
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 
 /**
  * @author amandaadkins
  *
  */
-public class OptionsOverviewPanel extends JSplitPane {
+public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 	private JPanel comboPanel = new JPanel();
 	private JLabel comboLabel = new JLabel("Select Option To View  ");
 	private JComboBox<String> comboBoxOptions = new JComboBox<String>();
@@ -38,22 +31,23 @@ public class OptionsOverviewPanel extends JSplitPane {
 	private SpringLayout comboLayout = new SpringLayout();
 	private String[] availableOptions = {"Help", "View Decks", "Email Preferences"};
 	private int previousLowerScreenIndex;
-	private SpringLayout optionsLayout;
-	private JPanel lowerPanel = new JPanel();
- 	
+	
 	/**
 	 *  constructor for OptionsOverviewPanel
 	 *  builds initial panel
 	 */
 	public OptionsOverviewPanel(){
+		TimingManager.getInstance().addPollable(this);
 		setOrientation(VERTICAL_SPLIT);
 		setEnabled(false);
 		setDividerLocation(50);
-
+		
+		buildComboPanel();
 		setTopComponent(comboPanel);
 		setBottomComponent(helpPanel);
 		comboBoxOptions.setSelectedIndex(0);
 		previousLowerScreenIndex = 0;
+		
 	}
 	
 	/**
@@ -83,29 +77,6 @@ public class OptionsOverviewPanel extends JSplitPane {
 		comboPanel.add(comboLabel);
 		comboPanel.add(comboBoxOptions);
 	}
-	
-	public void buildOptionsPanel(){
-		optionsLayout.putConstraint(SpringLayout.NORTH, comboPanel, 10, SpringLayout.NORTH, this);
-		optionsLayout.putConstraint(SpringLayout.EAST, comboPanel, -10, SpringLayout.EAST, this);
-		optionsLayout.putConstraint(SpringLayout.WEST, comboPanel, 10, SpringLayout.WEST, this);
-		
-		optionsLayout.putConstraint(SpringLayout.NORTH, lowerPanel, 10, SpringLayout.SOUTH, comboPanel);
-		optionsLayout.putConstraint(SpringLayout.SOUTH, lowerPanel, -10, SpringLayout.SOUTH, this);
-		optionsLayout.putConstraint(SpringLayout.EAST, lowerPanel, -10, SpringLayout.EAST, this);
-		optionsLayout.putConstraint(SpringLayout.WEST, lowerPanel, 10, SpringLayout.WEST, this);
-		
-		add(comboPanel);
-		add(lowerPanel);
-	}
-	
-	public void setBottomPanel(JPanel newBottomPanel){
-		optionsLayout.putConstraint(SpringLayout.NORTH, newBottomPanel, 10, SpringLayout.NORTH, lowerPanel);
-		optionsLayout.putConstraint(SpringLayout.SOUTH, newBottomPanel, -10, SpringLayout.SOUTH, lowerPanel);
-		optionsLayout.putConstraint(SpringLayout.EAST, newBottomPanel, -10, SpringLayout.EAST, lowerPanel);
-		optionsLayout.putConstraint(SpringLayout.WEST, newBottomPanel, 10, SpringLayout.WEST, lowerPanel);
-		
-		lowerPanel.add(newBottomPanel);	
-	}
 
 	/**
 	 * gets the information from the combo box used for selecting what 
@@ -122,6 +93,7 @@ public class OptionsOverviewPanel extends JSplitPane {
 				break;
 			case 1: 
 				setBottomComponent(deckOverviewPanel);
+//				deckOverviewPanel.refresh();
 				break;
 			case 2: 
 				setBottomComponent(prefPanel);
@@ -133,5 +105,11 @@ public class OptionsOverviewPanel extends JSplitPane {
 			}
 			setDividerLocation(dividerLocation);
 		}
+	}
+
+	@Override
+	public void pollFunction() {
+//		deckOverviewPanel.refresh();
+		System.out.println("refreshing deck overview");
 	}
 }

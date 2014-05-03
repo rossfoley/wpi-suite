@@ -12,11 +12,13 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.HelpTextPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.HelpTreePanel;
@@ -193,7 +195,10 @@ public class ViewEventController {
 
 		for (int i = tabCount - 1; i >= 0; i--) {
 			Component toBeRemoved = main.getComponentAt(i);
-			if (toBeRemoved instanceof OptionsOverviewPanel){
+			if(toBeRemoved instanceof OverviewPanel) {
+				continue;
+			}
+			if (toBeRemoved instanceof OptionsOverviewPanel) {
 				helpPanel = null;
 			}
 			main.removeTabAt(i);

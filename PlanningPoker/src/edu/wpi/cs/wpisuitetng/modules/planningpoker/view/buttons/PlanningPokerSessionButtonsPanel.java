@@ -65,7 +65,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/bar_chart.png"));
 			statisticsButton.setIcon(new ImageIcon(img));
-			
+
 			img = ImageIO.read(
 					new File("../PlanningPoker/src/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/options-and-help-icon.png"));
 			// This help icon was a free icon from "http://findicons.com/" 
@@ -109,6 +109,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 			public void actionPerformed(ActionEvent e) {
 				final PlanningPokerSession session = ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
 				ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+				//ViewEventController.getInstance().openStatisticsTab(session);
 				}
 			});
 		
@@ -189,6 +190,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		statisticsButton.setEnabled(true);
 	}
 
+
 	/**
 	 * Enables the tool-bar buttons based on the input PlanningPoker and Client session 
 	 * @param session	The planningPoker session to use
@@ -236,7 +238,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 		disableVoteButton();
 		disableStatisticsButton();		
 	}
-	
+
 	public void disableHelpButton() {
 		helpButton.setEnabled(false);
 	}
