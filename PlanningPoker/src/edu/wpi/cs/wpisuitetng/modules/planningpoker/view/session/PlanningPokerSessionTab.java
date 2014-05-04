@@ -63,6 +63,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
 /**
@@ -1071,7 +1072,8 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		String message = "If you continue, the following requirements that were previously in this session will be removed.\n" +
 		"If you did not discard them, they have been or are being estimated in other sessions.\n\n";
 		for (Integer i : changes) {
-			message = message + "Requirement " + Integer.toString(i) + "\n";
+			Requirement req = RequirementModel.getInstance().getRequirement(i);
+			message = message + req.getName() + "\n";
 		}
 		final int result = JOptionPane.showConfirmDialog(this, message , "Continue Removing Requirements?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		return result;
