@@ -30,7 +30,6 @@ public class DeckViewer extends JSplitPane {
 	private final SpringLayout layout = new SpringLayout();
 	private DeckListPanel deckListPanel;
 	private final JSplitPane viewDeckPanel = new JSplitPane();
-	//private JSplitPane deckSpecificPane;
 	private JPanel deckDetailsPanel;
 	private DeckVotingPanel cardDisplayPanel;
 	private List<Deck> decks;
@@ -61,9 +60,7 @@ public class DeckViewer extends JSplitPane {
 			public void deckSubmitted(DeckEvent e){
 				
 				buildDeckPanel(e.getDeck());
-				//deckListPanel = new DeckListPanel(decks);
 				
-				//final JScrollPane tablePanel = new JScrollPane();
 				tablePanel.setViewportView(deckListPanel);
 				tablePanel.setMinimumSize(new Dimension(0, 400));
 				
@@ -88,8 +85,6 @@ public class DeckViewer extends JSplitPane {
 						}
 					}
 				}); 
-
-				//buildDeckOverviewPanel(tablePanel);
 				
 				setLeftComponent(deckOverviewPanel);
 				setRightComponent(viewDeckPanel);
@@ -97,7 +92,6 @@ public class DeckViewer extends JSplitPane {
 			}
 
 		});
-		//final JScrollPane tablePanel = new JScrollPane();
 		tablePanel.setViewportView(deckListPanel);
 		tablePanel.setMinimumSize(new Dimension(0, 400));
 		
@@ -315,6 +309,18 @@ public class DeckViewer extends JSplitPane {
 	}
 	
 	public void closeCreateDeckPanel() {
+		createDeckPanel = new CreateDeck();
+		createDeckPanel.addDeckListener(new DeckListener() {
+			@Override
+			public void deckSubmitted(DeckEvent e) {
+				if (e.getDeck() == null) {
+					closeCreateDeckPanel();
+				}
+				else {
+					newDeckCreated(e.getDeck());
+				}
+			}
+		}); 
 		int dividerLocation = getDividerLocation();
 		setRightComponent(viewDeckPanel);
 		createDeckButton.setEnabled(true);
