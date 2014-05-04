@@ -40,7 +40,6 @@ public class VotingManager extends JPanel {
 	private transient Vector<EstimateListener> estimateListeners;
 	
 	private JTree tree = new JTree();
-	private DefaultMutableTreeNode rootNode;
 	
 	private List<Requirement> notVotedList;
 	private List<Requirement> votedList;
@@ -106,9 +105,10 @@ public class VotingManager extends JPanel {
 		});
 	}
 
+	/**
+	 * @return	The currently selected requirement or null if none selected	
+	 */
 	private Requirement getSelected(){
-		final Requirement rqt = new Requirement();
-		
 		final TreeNode node = (TreeNode)tree.getLastSelectedPathComponent();
 		if (node != null){
 			final String selected = node.toString();
@@ -118,7 +118,6 @@ public class VotingManager extends JPanel {
 				}
 			}
 		}
-		
 		return null;
 	}
 
