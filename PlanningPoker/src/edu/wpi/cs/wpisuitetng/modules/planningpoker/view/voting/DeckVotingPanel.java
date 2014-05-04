@@ -702,7 +702,7 @@ public class DeckVotingPanel extends JPanel
 		// If this function is called, then an estimate has been submitted.
 		// Thus, the submit button should be changed to resubmit, cards reset,
 		// and feedback should be given to the user
-		submitButton = new JButton("Resubmit Estimation");
+		submitButton.setText("Resubmit Estimation");
 		estimateSubmittedMessage.setVisible(true);
 		submitButton.setEnabled(false);
 	}

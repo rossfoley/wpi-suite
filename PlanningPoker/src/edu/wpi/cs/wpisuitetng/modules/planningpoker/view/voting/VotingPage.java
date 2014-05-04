@@ -300,36 +300,35 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
-					reqsView.update();
-//					= new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
-//					reqsView.addSelectionListener(new SelectionListener() {
-//						@Override
-//						public void selectionMade(SelectionEvent e){
-//							requirement = e.getRequirement();
-//							buildReqPanel(requirement);
-//							final JScrollPane tablePanel = new JScrollPane();
-//							tablePanel.setViewportView(reqsView);
-//
-//							tablePanel.setMinimumSize(new Dimension(200, 300));
-//							voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
-//
-//							setLeftComponent(tablePanel);
-//							setRightComponent(voteOnReqPanel);
-//
-//							setDividerLocation(225);
-//						}
-//
-//					});
-//					final JScrollPane tablePanel = new JScrollPane();
-//					tablePanel.setViewportView(reqsView);
-//
-//					tablePanel.setMinimumSize(new Dimension(200, 300));
-//					voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
-//
-//					setLeftComponent(tablePanel);
-//					setRightComponent(voteOnReqPanel);
-//
-//					setDividerLocation(225);
+					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
+					reqsView.addSelectionListener(new SelectionListener() {
+						@Override
+						public void selectionMade(SelectionEvent e){
+							requirement = e.getRequirement();
+							buildReqPanel(requirement);
+							final JScrollPane tablePanel = new JScrollPane();
+							tablePanel.setViewportView(reqsView);
+
+							tablePanel.setMinimumSize(new Dimension(200, 300));
+							voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
+
+							setLeftComponent(tablePanel);
+							setRightComponent(voteOnReqPanel);
+
+							setDividerLocation(225);
+						}
+
+					});
+					final JScrollPane tablePanel = new JScrollPane();
+					tablePanel.setViewportView(reqsView);
+
+					tablePanel.setMinimumSize(new Dimension(200, 300));
+					voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
+
+					setLeftComponent(tablePanel);
+					setRightComponent(voteOnReqPanel);
+
+					setDividerLocation(225);
 					thetable.populateVotePanel();
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 				}

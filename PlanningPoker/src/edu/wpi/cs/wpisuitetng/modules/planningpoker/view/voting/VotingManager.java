@@ -86,7 +86,7 @@ public class VotingManager extends JPanel {
 		add(tree);
 	}
 	
-	public void update() {
+	private void update() {
 		final TreeNode rootNode = createNodes();
 		
 		tree = new JTree(rootNode);
