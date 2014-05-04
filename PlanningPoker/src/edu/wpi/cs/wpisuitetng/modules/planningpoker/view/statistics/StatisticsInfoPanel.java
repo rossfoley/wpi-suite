@@ -216,9 +216,8 @@ public class StatisticsInfoPanel extends JPanel {
 					userEstimate = Integer.parseInt(estimateField.getText());
 					if (validateEstimate()) {
 						session.addFinalEstimate(currentReqID, userEstimate);
-						PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(session);
 						sendFinalEstimate(aReq);
-						ViewEventController.getInstance().
+						PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(session);
 					}
 				}
 				catch (NumberFormatException ne) {
