@@ -295,7 +295,7 @@ public class CreateDeck extends JPanel {
 
 		/* Create double-click event listener */
 		cardTable.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				validateButtons();
 			}
 		});
