@@ -30,6 +30,7 @@ public class RequirementSelectionPanelTest {
 	public void testRequirementSelectionPanel()
 		throws Exception {
 		RequirementModel reqs = RequirementModel.getInstance();
+		reqs.emptyModel();
 		LinkedList<Requirement> data = new LinkedList<Requirement>();
 		Requirement req1 = new Requirement();
 		req1.setName("Requirement 1");
@@ -65,6 +66,7 @@ public class RequirementSelectionPanelTest {
 		requirementSelectionPanel.setSelectedRequirements(requirementIDs);
 		List<Requirement> selected = requirementSelectionPanel.getSelected();
 		assertEquals(data, selected);
+		reqs.emptyModel();
 	
 	}
 
@@ -73,6 +75,7 @@ public class RequirementSelectionPanelTest {
 	public void testFilterOutRequirementsInUse()
 		throws Exception {
 		RequirementModel reqs = RequirementModel.getInstance();
+		reqs.emptyModel();
 		LinkedList<Requirement> data = new LinkedList<Requirement>();
 		LinkedList<Requirement> data2 = new LinkedList<Requirement>();
 		Requirement req1 = new Requirement();
@@ -121,6 +124,7 @@ public class RequirementSelectionPanelTest {
 		assertEquals(data, selected);
 		
 		PlanningPokerSessionModel sessions = PlanningPokerSessionModel.getInstance();
+		sessions.emptyModel();
 		sessions.addCachedPlanningPokerSession(session);
 		sessions.addCachedPlanningPokerSession(session2);
 		
@@ -135,12 +139,15 @@ public class RequirementSelectionPanelTest {
 		requirementSelectionPanel3.setSelectedRequirements(requirementIDs);
 		List<Requirement> selected3 = requirementSelectionPanel3.getSelected();
 		assertEquals(data2, selected3);
+		reqs.emptyModel();
+		sessions.emptyModel();
 		
 	}
 	
 	@Test
 	public void testAddRequirement(){
 		RequirementModel reqs = RequirementModel.getInstance();
+		reqs.emptyModel();
 		LinkedList<Requirement> data = new LinkedList<Requirement>();
 		Requirement req1 = new Requirement();
 		req1.setName("Requirement 1-3");
@@ -176,11 +183,13 @@ public class RequirementSelectionPanelTest {
 		requirementSelectionPanel.addRequirement(req1);
 		List<Requirement> selected = requirementSelectionPanel.getSelected();
 		assertEquals(data, selected);
+		reqs.emptyModel();
 	}
 	
 	@Test
 	public void testBtns(){
 		RequirementModel reqs = RequirementModel.getInstance();
+		reqs.emptyModel();
 		LinkedList<Requirement> data = new LinkedList<Requirement>();
 		Requirement req1 = new Requirement();
 		req1.setName("Requirement 1-4");
@@ -319,5 +328,6 @@ public class RequirementSelectionPanelTest {
 		}
 		selected = requirementSelectionPanel.getSelected();
 		assertEquals(dataAdd, selected);
+		reqs.emptyModel();
 	}
 }
