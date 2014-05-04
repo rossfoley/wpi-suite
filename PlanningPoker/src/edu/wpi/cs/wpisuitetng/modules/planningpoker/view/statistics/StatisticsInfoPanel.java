@@ -16,9 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.util.GregorianCalendar;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -26,10 +24,8 @@ import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.RequirementManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -397,7 +393,7 @@ public class StatisticsInfoPanel extends JPanel {
 		boolean hadValidReason = true;
 		if (session.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate)) {
 			//TODO get confirmation on popup as a valid way of asking for the explanation
-			String explanation = JOptionPane.showInputDialog(this, "Please enter the reason for this change");
+			String explanation = JOptionPane.showInputDialog(this, "Please enter the reason for this change", JOptionPane.QUESTION_MESSAGE);
 			if (explanation == null || explanation.isEmpty()) {
 				//TODO check for valid input inside the popup window
 				hadValidReason = false;
