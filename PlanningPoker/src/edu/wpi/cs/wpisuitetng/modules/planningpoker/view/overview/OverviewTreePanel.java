@@ -75,6 +75,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			tree.expandRow(i);
 		}
 		
+		OverviewDetailPanel overviewPanel = ViewEventController.getInstance().getOverviewDetailPanel();
+		if (overviewPanel != null) {
+			overviewPanel.clearPanel();
+			ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel);
+		}
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
         tree.setToggleClickCount(0);
  
