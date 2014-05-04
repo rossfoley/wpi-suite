@@ -9,7 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -69,6 +68,7 @@ public class DeckVotingPanel extends JPanel
 	private transient Vector<EstimateListener> listeners;
 	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
 	private Color selectedColor = new Color(247, 247, 247);
+	private int numCardsSelected = 0;
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -169,26 +169,23 @@ public class DeckVotingPanel extends JPanel
 			}
 		});
 
-		estimateField.addKeyListener(
-				new KeyListener(){
-					@Override
-					public void keyPressed(KeyEvent e){
-
-						if(e.getKeyChar() == KeyEvent.VK_ENTER){
-							if (validateEstimate()){
-								fireEstimateEvent();
-							}
-						}       
+		estimateField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e){
+				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+					if (validateEstimate()) {
+						fireEstimateEvent();
+					}
 				}
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+		});
 
-					@Override
-					public void keyTyped(KeyEvent e) {
-					}
-					@Override
-					public void keyReleased(KeyEvent e) {
-					}
-       });
-		
 		// Setup error message display
 		estimateFieldErrorMessage.setForeground(Color.RED);
 
@@ -196,25 +193,24 @@ public class DeckVotingPanel extends JPanel
 		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
 		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
-		setLayout(new BorderLayout(10, 10));
 
-		final SpringLayout thisLayout = new SpringLayout();
-		setLayout(thisLayout);
+		SpringLayout dpLayout = new SpringLayout();
+		setLayout(dpLayout);
 		
-		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		thisLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, this);
-		thisLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
-		thisLayout.putConstraint(SpringLayout.SOUTH, estimateField, -25, SpringLayout.NORTH, submitButton);
-		thisLayout.putConstraint(SpringLayout.WEST, submitButton, -90, SpringLayout.HORIZONTAL_CENTER, this);
-		thisLayout.putConstraint(SpringLayout.EAST, submitButton, 90, SpringLayout.HORIZONTAL_CENTER, this);
-		thisLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
+		dpLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		dpLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		dpLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 10, SpringLayout.NORTH, this);
+		dpLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, estimateLabel);
+		dpLayout.putConstraint(SpringLayout.SOUTH, estimateField, -25, SpringLayout.NORTH, submitButton);
+		dpLayout.putConstraint(SpringLayout.WEST, submitButton, -90, SpringLayout.HORIZONTAL_CENTER, this);
+		dpLayout.putConstraint(SpringLayout.EAST, submitButton, 90, SpringLayout.HORIZONTAL_CENTER, this);
+		dpLayout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
 		
-		thisLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
-		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		dpLayout.putConstraint(SpringLayout.NORTH, estimateFieldErrorMessage, 7, SpringLayout.SOUTH, estimateField);
+		dpLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateFieldErrorMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		
-		thisLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
-		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		dpLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
+		dpLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		
 		add(estimateSubmittedMessage);
 		add(estimateFieldErrorMessage);
@@ -414,6 +410,15 @@ public class DeckVotingPanel extends JPanel
 			}
 		}
 		estimateField.setText(String.valueOf(userEstimate));
+		// Enable the clear and submit buttons if at least 1 card is selected
+		if (numCardsSelected > 0) {
+			submitButton.setEnabled(true);
+			clearButton.setEnabled(true);
+		}
+		else {
+			submitButton.setEnabled(false);
+			clearButton.setEnabled(false);
+		}
 	}
 	
 	/**
@@ -424,6 +429,7 @@ public class DeckVotingPanel extends JPanel
 		for (JButton card : listOfCardButtons) {
 			if (isCardSelected(card)) {
 				userEstimate += Integer.parseInt(card.getName());
+				numCardsSelected++;
 			}
 		}
 		estimateField.setText(String.valueOf(userEstimate));
@@ -440,6 +446,8 @@ public class DeckVotingPanel extends JPanel
 		userEstimate = 0;
 		estimateField.setText("0");
 		submitButton.setEnabled(false);
+		clearButton.setEnabled(false);
+		numCardsSelected = 0;
 		
 	}
 
@@ -526,12 +534,14 @@ public class DeckVotingPanel extends JPanel
 		// Set the card to selected
 		if (cardSelected) {
 			card.setBackground(selectedColor);	// card is part of estimate
-			card.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));	
+			card.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+			numCardsSelected++;
 		}
 		else {	// Set the card to not selected
 			card.setBackground(Color.WHITE); // card is not part of estimate
 			card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			card.getBorder().equals(BorderFactory.createLineBorder(Color.GREEN, 4));
+			numCardsSelected--;
 		}	
 	}
 	
@@ -690,9 +700,12 @@ public class DeckVotingPanel extends JPanel
 			}
 		}
 		// If this function is called, then an estimate has been submitted.
-		// Thus, the submit button should be changed to resubmit and feedback should be given to the user
+		// Thus, the submit button should be changed to resubmit, cards reset,
+		// and feedback should be given to the user
 		submitButton = new JButton("Resubmit Estimation");
 		estimateSubmittedMessage.setVisible(true);
+		submitButton.setEnabled(false);
+		clearButton.setEnabled(false);
 	}
 
 }

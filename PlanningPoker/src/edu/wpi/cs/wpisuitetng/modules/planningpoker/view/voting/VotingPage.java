@@ -10,25 +10,27 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-
-import java.awt.Color;
-import java.awt.Dimension;
 
 /** 
  *  This class is the panel that is shown when the user goes to vote  
@@ -281,13 +283,13 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		votingPanel.addEstimateListener(new EstimateListener() {
 			@Override
 			public void estimateSubmitted(EstimateEvent e) {
-				System.out.println("Estimate submitted: " + e.getEstimate());
 				if (requirement != null) {
 					Estimate estimate = new Estimate();
 					
 					for (Estimate e2: estimates) {
 						if (e2.getRequirementID() == requirement.getId()) {
 							estimate = e2;
+							break;
 						}
 					}
 					estimate.setOwnerName(ConfigManager.getConfig().getUserName());
@@ -298,36 +300,36 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
-					buildReqPanel(null);
-					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
-					reqsView.addSelectionListener(new SelectionListener() {
-						@Override
-						public void selectionMade(SelectionEvent e){
-							requirement = e.getRequirement();
-							buildReqPanel(requirement);
-							final JScrollPane tablePanel = new JScrollPane();
-							tablePanel.setViewportView(reqsView);
-
-							tablePanel.setMinimumSize(new Dimension(200, 300));
-							voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
-
-							setLeftComponent(tablePanel);
-							setRightComponent(voteOnReqPanel);
-
-							setDividerLocation(225);
-						}
-
-					});
-					final JScrollPane tablePanel = new JScrollPane();
-					tablePanel.setViewportView(reqsView);
-
-					tablePanel.setMinimumSize(new Dimension(200, 300));
-					voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
-
-					setLeftComponent(tablePanel);
-					setRightComponent(voteOnReqPanel);
-
-					setDividerLocation(225);
+					reqsView.update();
+//					= new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
+//					reqsView.addSelectionListener(new SelectionListener() {
+//						@Override
+//						public void selectionMade(SelectionEvent e){
+//							requirement = e.getRequirement();
+//							buildReqPanel(requirement);
+//							final JScrollPane tablePanel = new JScrollPane();
+//							tablePanel.setViewportView(reqsView);
+//
+//							tablePanel.setMinimumSize(new Dimension(200, 300));
+//							voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
+//
+//							setLeftComponent(tablePanel);
+//							setRightComponent(voteOnReqPanel);
+//
+//							setDividerLocation(225);
+//						}
+//
+//					});
+//					final JScrollPane tablePanel = new JScrollPane();
+//					tablePanel.setViewportView(reqsView);
+//
+//					tablePanel.setMinimumSize(new Dimension(200, 300));
+//					voteOnReqPanel.setMinimumSize(new Dimension(300, 300));
+//
+//					setLeftComponent(tablePanel);
+//					setRightComponent(voteOnReqPanel);
+//
+//					setDividerLocation(225);
 					thetable.populateVotePanel();
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 				}
