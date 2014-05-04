@@ -162,6 +162,7 @@ public class ViewEventController {
 		}
 		
 		main.remove(comp);
+		disableButtons();
 		return true;
 	}
 
