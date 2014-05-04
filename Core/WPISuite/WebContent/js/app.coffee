@@ -32,7 +32,9 @@ class PlanningPokerViewModel
       url: 'API/core/user'
       async: no
       success: (data) => 
-        @team = data
+        for user in data
+          unless user['username'] in @team
+            @team.push user['username']
 
     @params = 
       requirements: @requirements
