@@ -12,7 +12,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
-//import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckViewer;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckViewer;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -26,8 +26,8 @@ public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 	private JLabel comboLabel = new JLabel("Select Option To View  ");
 	private JComboBox<String> comboBoxOptions = new JComboBox<String>();
 	private PreferencesPanel prefPanel = new PreferencesPanel();
-	private JPanel deckOverviewPanel = new JPanel();
 	private HelpPanel helpPanel = new HelpPanel();
+	private DeckViewer deckOverviewPanel = new DeckViewer();
 	private SpringLayout comboLayout = new SpringLayout();
 	private String[] availableOptions = {"Help", "View Decks", "Email Preferences"};
 	private int previousLowerScreenIndex;
@@ -93,7 +93,7 @@ public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 				break;
 			case 1: 
 				setBottomComponent(deckOverviewPanel);
-//				deckOverviewPanel.refresh();
+				deckOverviewPanel.refresh();
 				break;
 			case 2: 
 				setBottomComponent(prefPanel);
@@ -109,7 +109,7 @@ public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 
 	@Override
 	public void pollFunction() {
-//		deckOverviewPanel.refresh();
+		deckOverviewPanel.refresh();
 		System.out.println("refreshing deck overview");
 	}
 }
