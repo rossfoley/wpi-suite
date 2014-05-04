@@ -112,7 +112,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         tree.setDropMode(DropMode.ON);
         
         this.setViewportView(tree); //make panel display the tree
-        
+        ViewEventController.getInstance().disableButtons();
         ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
 	}
 	
