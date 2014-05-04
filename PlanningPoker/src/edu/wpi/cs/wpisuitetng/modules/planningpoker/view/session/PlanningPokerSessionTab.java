@@ -553,7 +553,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		//Position the Start button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnStart, 0, SpringLayout.SOUTH, btnSave);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, btnStart, -70, SpringLayout.EAST, btnSave);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnStart, -10, SpringLayout.WEST, btnSave);
 
 		// Position the back button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
@@ -561,7 +561,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		// Position the cancel button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnStart);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -70, SpringLayout.EAST, btnStart);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -10, SpringLayout.WEST, btnStart);
 
 
 
