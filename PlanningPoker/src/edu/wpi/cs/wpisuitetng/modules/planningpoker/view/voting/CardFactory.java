@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -27,7 +28,7 @@ import javax.imageio.ImageIO;
 public class CardFactory {
 	
 	private final int cardNum;
-	private final String background = "cards/default.png";
+	private final String background = "cards/small_default.png";
 	private BufferedImage curImage;
 	/**
 	 * Constructor for the CardFactory
@@ -51,13 +52,14 @@ public class CardFactory {
 		}
 
 		    final Graphics2D g = curImage.createGraphics();
-		    g.setFont(g.getFont().deriveFont(30f));
+		    //g.setFont(g.getFont().deriveFont(16f));
+		    g.setFont(new Font("Tahoma", Font.BOLD, 16));
 		    g.setColor(Color.RED);
-		    int xloc = 13;
+		    int xloc = 7;
 		    if (cardNum > 9){
-		    	xloc = 6;
+		    	xloc = 4;
 		    }
-		    g.drawString(Integer.toString(cardNum), xloc, 35);
+		    g.drawString(Integer.toString(cardNum), xloc, 21);
 
 		    g.setFont(g.getFont().deriveFont(70f));
 		    
@@ -66,9 +68,9 @@ public class CardFactory {
 		    
 		    g.rotate(Math.PI, curImage.getWidth() / 2, curImage.getHeight() / 2);
 		    
-		    g.setFont(g.getFont().deriveFont(30f));
+		    g.setFont(g.getFont().deriveFont(16f));
 		    
-		    g.drawString(Integer.toString(cardNum), xloc, 35);
+		    g.drawString(Integer.toString(cardNum), xloc, 21);
 		    
 		    g.dispose();
 	}
