@@ -53,7 +53,6 @@ public class StatisticsReqTable extends JTable {
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	private final HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
 	private int rowNumber = 0;
-	private PlanningPokerSession currentSession;
 	private transient Vector<SelectedRequirementListener> listeners;
 	
 	/**
@@ -61,8 +60,7 @@ public class StatisticsReqTable extends JTable {
 	 * @param data	Initial data to fill StatisticsReqTable
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
-	public StatisticsReqTable(Object[][] data, String[] columnNames, PlanningPokerSession aSession) {
-		currentSession = aSession; 
+	public StatisticsReqTable(Object[][] data, String[] columnNames) {
 		
 		tableModel = new DefaultTableModel(data, columnNames);
 		setModel(tableModel);
@@ -127,10 +125,10 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public boolean isCellEditable(int row, int col) {
-		return (col == 2);
+		return false; //(col == 2);
 	}
 	
-	@Override 
+	/*@Override 
 	public void editingStopped(ChangeEvent e) {
 		super.editingStopped(e);
 		boolean isInteger = true;
@@ -149,7 +147,7 @@ public class StatisticsReqTable extends JTable {
 				currentSession.addFinalEstimate(reqID, numberEst);
 			}
 		}
-	}
+	} // */
 	
 	/**
 	 * @return the changedByRefresh
@@ -213,10 +211,6 @@ public class StatisticsReqTable extends JTable {
 
 	public int getSelectedReq() {
 		return tableRows.get(rowNumber);
-	}
-	
-	public void setSession(PlanningPokerSession aSession) {
-		currentSession = aSession; 
 	}
 	
 	/**

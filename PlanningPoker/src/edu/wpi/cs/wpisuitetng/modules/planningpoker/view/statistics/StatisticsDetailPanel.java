@@ -70,7 +70,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 	 * Updates all panels with details for the input requirement
 	 * @param requirementID	The ID of the requirement to display details for
 	 */
-	public void updatePanel(int requirementID)	{
+	public void updatePanel(int requirementID) {
 		infoPanel.setCurrentReqID(requirementID);
 		infoPanel.refresh(currentSession);
 		userTable.updateTable(requirementID);

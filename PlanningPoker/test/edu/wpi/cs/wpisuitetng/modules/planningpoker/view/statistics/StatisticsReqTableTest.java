@@ -13,7 +13,7 @@ public class StatisticsReqTableTest {
 		PlanningPokerSession activeSession = new PlanningPokerSession();
 		final String[] reqColumnNames = {"Requirement Name", "Your Vote", "Final Estimate"};
 		final Object[][] reqData = {};
-		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
+		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
 	}
 
 	@Test

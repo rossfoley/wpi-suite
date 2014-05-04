@@ -116,32 +116,32 @@ public class StatisticsInfoPanel extends JPanel {
 	
 	public void refresh(PlanningPokerSession session) {
 
-		if (aReq != null) {
+		if ((aReq != null) && (currentReqID != -1)) {
+			
+			if (session.isEnded() || session.isClosed()) {
+				session.addReqEstimateStats(currentReqID);
+			}
+			
 			// Change session name
 			reqNameDisplay.setText(aReq.getName());
 			
 			// Change session description
 			reqDescriptionDisplay.setText(aReq.getDescription());
-		}
-		else {
-			estimateField.setText("");
-		}
-		
-		if (currentReqID != -1) {
-			if (session.isEnded() || session.isClosed()) {
-				session.addReqEstimateStats(currentReqID);
-			}
 			
-			submitFinalEstimateButton.setEnabled(true);
-			estimateField.setEnabled(true);
-			
-			if (!(session.getReqsWithExportedEstimatesList().contains(aReq))) {
+			// autofill final estimate submission field with current final estimate if one exists
+			// or the mean value of the votes on this estimate if there is no existing final estimate 
+			if (session.getReqsWithExportedEstimatesList().contains(aReq)) {
+				System.out.println("final estimate exists");
 				Integer existingReqEstimate = RequirementModel.getInstance().getRequirement(currentReqID).getEstimate();
 				estimateField.setText(existingReqEstimate.toString());
 			}
 			else {
+				System.out.println("No final estimate exists. reqID = " + currentReqID);
 				estimateField.setText(formatMeanAsInt(session.getReqEstimateStats().get(currentReqID)));
 			}
+			
+			submitFinalEstimateButton.setEnabled(true);
+			estimateField.setEnabled(true);
 			
 			/**
 			 *  change mean display
@@ -157,6 +157,9 @@ public class StatisticsInfoPanel extends JPanel {
 			 * change standard deviation display 
 			 */
 			stdDevDisplay.setText(formatStdDev(session.getReqEstimateStats().get(currentReqID)));
+		}
+		else {
+			estimateField.setText("");
 		}
 	}
 	
@@ -194,6 +197,7 @@ public class StatisticsInfoPanel extends JPanel {
 			}
 		});
 		
+		//TODO make this work (it doesn't)
 		if (!(session.getReqsWithExportedEstimatesList().contains(aReq))) {
 			submitFinalEstimateButton = new JButton("Submit Final Estimate");
 		}
