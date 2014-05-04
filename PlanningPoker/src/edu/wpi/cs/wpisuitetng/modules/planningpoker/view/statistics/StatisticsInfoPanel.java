@@ -131,12 +131,10 @@ public class StatisticsInfoPanel extends JPanel {
 			// autofill final estimate submission field with current final estimate if one exists
 			// or the mean value of the votes on this estimate if there is no existing final estimate 
 			if (session.getReqsWithExportedEstimatesList().contains(aReq)) {
-				System.out.println("final estimate exists");
 				Integer existingReqEstimate = RequirementModel.getInstance().getRequirement(currentReqID).getEstimate();
 				estimateField.setText(existingReqEstimate.toString());
 			}
 			else {
-				System.out.println("No final estimate exists. reqID = " + currentReqID);
 				estimateField.setText(formatMeanAsInt(session.getReqEstimateStats().get(currentReqID)));
 			}
 			
