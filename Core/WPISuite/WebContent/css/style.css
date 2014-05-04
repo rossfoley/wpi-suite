@@ -50,6 +50,10 @@
   margin-top: -7px;
 }
 
+.vote-alert-deck {
+  display: inline;
+}
+
 .validationMessage {
   display: none;
 }

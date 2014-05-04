@@ -38,7 +38,17 @@
         async: false,
         success: (function(_this) {
           return function(data) {
-            return _this.team = data;
+            var user, _i, _len, _ref, _results;
+            _results = [];
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              user = data[_i];
+              if (_ref = user['username'], __indexOf.call(_this.team, _ref) < 0) {
+                _results.push(_this.team.push(user['username']));
+              } else {
+                _results.push(void 0);
+              }
+            }
+            return _results;
           };
         })(this)
       });
