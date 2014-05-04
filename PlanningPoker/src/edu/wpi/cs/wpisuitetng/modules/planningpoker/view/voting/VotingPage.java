@@ -10,32 +10,33 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-
-import java.awt.Color;
-import java.awt.Dimension;
 
 /** 
  *  This class is the panel that is shown when the user goes to vote  
  */
 public class VotingPage extends JSplitPane implements ISessionTab {
 	private final JPanel voteOnReqPanel = new JPanel();
-
 	private VotingManager reqsView;
 
 	private final SpringLayout layout = new SpringLayout();
@@ -49,7 +50,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 	private JPanel reqDetails;
 
 	private VoterTable thetable;
-
 	private JScrollPane thetablePanel;
 
 	public VotingPage(PlanningPokerSession votingSession){
@@ -95,6 +95,11 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		return activeSession;
 	}
 
+	/**
+	 * Constructs the panel used for voting on a requirement 
+	 * @param reqToVoteOn	The requirement to vote on
+	 * @return	THe create JPanel
+	 */
 	public JPanel makeReqDetailPanel(Requirement reqToVoteOn) {
 
 		reqDetails = new JPanel();
@@ -125,7 +130,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		descriptionField.setEditable(false);
 		descrScroll.setViewportView(descriptionField);
 		descriptionField.setLineWrap(true);
-
 
 		boolean estimationComplete;
 
@@ -173,9 +177,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		sl_reqDetails.putConstraint(SpringLayout.EAST, thetablePanel, -10, SpringLayout.EAST, reqDetails);
 		sl_reqDetails.putConstraint(SpringLayout.NORTH, thetablePanel, 10, SpringLayout.NORTH, reqDetails);
 		sl_reqDetails.putConstraint(SpringLayout.SOUTH, thetablePanel, -10, SpringLayout.SOUTH, reqDetails);
-		
-		
-		System.out.println("currently displayed description:" + descriptionField.getText());
 
 		reqDetails.add(requirementEstimated);
 		reqDetails.add(nameLabel);
@@ -185,27 +186,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		reqDetails.add(descrScroll);
 
 		return reqDetails; 
-	}
-
-
-
-	/**
-	 * checks a requirement in the session to vote on to see if it has been voted on
-	 * by the current user
-	 * @param checkReq requirement to check for an estimate for
-	 * @return true if the current user estimated the requirement, false otherwise
-	 */
-	public boolean isEstimated(Requirement checkReq){
-		final List<Estimate> sessionEstimates  = activeSession.getEstimates();
-
-		final String currentUser = ConfigManager.getConfig().getUserName();
-		// match current user and given requirement
-		for (Estimate e:sessionEstimates){
-			if ((checkReq.getId()==e.getRequirementID())&&(e.getOwnerName().equals(currentUser))){
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -220,38 +200,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 			sessionReqs.add(current);			
 		}
 		return sessionReqs;
-	}
-	
-	/**
-	 * adds the user id to the voted people's list
-	 * @param id
-	 */
-	public void addVoterNameToList(String username) {
-		if (!activeSession.getVoterNameList().contains(username)) {
-			activeSession.getVoterNameList().add(username);
-		}
-		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-	}
-	
-	public void addVoterNameToEstimatesList(Estimate ev) {
-		for (Estimate e :activeSession.getEstimates()) {
-			if( e.getRequirementID() == ev.getRequirementID() && e.getOwnerName().equals(ev.getOwnerName())) {
-				e.setVote(ev.getVote());
-				return ;
-			}
-		}
-		activeSession.getEstimates().add(ev);
-		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
-	}
-	
-
-	/**
-	 * returns the list of users in a project
-	 */
-	public String getVoterName() {
-		final String name = ConfigManager.getInstance().getConfig().getUserName();
-		name.toLowerCase();
-		return name;
 	}
 
 	/**
@@ -281,24 +229,23 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 		votingPanel.addEstimateListener(new EstimateListener() {
 			@Override
 			public void estimateSubmitted(EstimateEvent e) {
-				System.out.println("Estimate submitted: " + e.getEstimate());
 				if (requirement != null) {
 					Estimate estimate = new Estimate();
 					
 					for (Estimate e2: estimates) {
 						if (e2.getRequirementID() == requirement.getId()) {
 							estimate = e2;
+							break;
 						}
 					}
 					estimate.setOwnerName(ConfigManager.getConfig().getUserName());
 					estimate.setRequirementID(requirement.getId());
 					estimate.setSessionID(activeSession.getID());
 					estimate.setVote((int)e.getEstimate());
-					addVoterNameToEstimatesList(estimate);
-
 					estimates.add(estimate);
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
-					buildReqPanel(null);
+					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
+					
 					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
 					reqsView.addSelectionListener(new SelectionListener() {
 						@Override
@@ -329,7 +276,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 
 					setDividerLocation(225);
 					thetable.populateVotePanel();
-					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 				}
 			}
 		});
