@@ -80,18 +80,29 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			overviewPanel.clearPanel();
 			ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel);
 		}
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
+		// Tell it that it can only select one thing at a time
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setToggleClickCount(0);
  
-        tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
-        tree.addMouseListener(this); //add a listener to check for clicking
+        // Set to custom cell renderer so that icons make sense
+        tree.setCellRenderer(new CustomTreeCellRenderer());
+        // Add a listener to check for clicking
+        tree.addMouseListener(this);
         tree.addTreeSelectionListener(this);
         
         tree.setDropMode(DropMode.ON);
         
-        this.setViewportView(tree); //make panel display the tree
-        ViewEventController.getInstance().disableButtons();
-        ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
+        setViewportView(tree); //make panel display the tree
+        // Update the ViewEventControler so it contains the right tree
+        ViewEventController.getInstance().setOverviewTree(this);
+        // Disable all buttons if nothing is selected
+        if (tree.getLastSelectedPathComponent() != null) {
+        	try {
+        		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableAllButtons();
+        	} catch (NullPointerException ex) {
+        		System.out.println("OverviewTree: Buttons panel not created yet. Cannot disable");
+        	}
+        }
 	}
 	
 	/**
