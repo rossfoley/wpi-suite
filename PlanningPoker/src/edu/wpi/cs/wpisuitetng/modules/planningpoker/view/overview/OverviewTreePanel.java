@@ -130,7 +130,13 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		
 		for(PlanningPokerSession session : sessions) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
-			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
+			boolean isOwner = false;
+			try {
+				isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
+			}
+			catch (NullPointerException e) {
+				
+			}
 
 			if (session.isClosed()) {
 				closedSessions.add(newSessionNode);
