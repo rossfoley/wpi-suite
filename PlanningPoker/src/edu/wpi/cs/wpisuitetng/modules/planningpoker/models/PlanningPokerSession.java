@@ -51,7 +51,7 @@ public class PlanningPokerSession extends AbstractModel {
 
 	private String description;
 	private String sessionCreatorName;
-	private Deck sessionDeck;
+	private int sessionDeckID;
 	private final String defaultSessionName;
 	private Set<Integer> reqsWithCompleteEstimates;
 	private HashMap<Integer, Integer> finalEstimatesMap;
@@ -362,14 +362,14 @@ public class PlanningPokerSession extends AbstractModel {
 	/**
 	 * @return the sessionDeck
 	 */
-	public Deck getSessionDeck() {
-		return sessionDeck;
+	public int getSessionDeckID() {
+		return sessionDeckID;
 	}
 	/**
 	 * @param sessionDeck the sessionDeck to set
 	 */
-	public void setSessionDeck(Deck sessionDeck) {
-		this.sessionDeck = sessionDeck;
+	public void setSessionDeckID(int sessionDeckID) {
+		this.sessionDeckID = sessionDeckID;
 	}
 	/**
 	 * Returns an array of PlanningPokerSession parsed from the given JSON-encoded
@@ -557,7 +557,7 @@ public class PlanningPokerSession extends AbstractModel {
 		estimates = toCopyFrom.estimates;
 		isUsingDeck = toCopyFrom.isUsingDeck;
 		sessionCreatorName = toCopyFrom.sessionCreatorName;
-		sessionDeck = toCopyFrom.sessionDeck;
+		sessionDeckID = toCopyFrom.getSessionDeckID();
 		finalEstimatesMap = toCopyFrom.getFinalEstimates();
 		reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
 		requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;

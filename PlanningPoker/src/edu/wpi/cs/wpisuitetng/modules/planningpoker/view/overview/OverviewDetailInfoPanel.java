@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,6 +25,8 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
@@ -159,7 +162,17 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		// Change deck name
 		if (session.isUsingDeck()) {
-			deckDisplay.setText(session.getSessionDeck().getDeckName());
+			Deck sessionDeck = null;
+			List<Deck> allDecks = DeckListModel.getInstance().getDecks();
+			boolean foundSessionDeck = false;
+			for (Deck deck:allDecks){
+				if (!foundSessionDeck){
+					if (session.getSessionDeckID() == deck.getId()) {
+						sessionDeck = deck;
+					}
+				}
+			}	
+			deckDisplay.setText(sessionDeck.getDeckName());
 		}
 		else {
 			deckDisplay.setText("None");
