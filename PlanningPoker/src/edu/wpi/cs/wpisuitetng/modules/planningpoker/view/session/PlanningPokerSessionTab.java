@@ -523,7 +523,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
 		
-		final JButton btnSave = new JButton("Save");
+		final JButton btnSave = new JButton("Save as Pending");
 		final JButton btnBack = new JButton("Back");
 		final JButton btnStart = new JButton("Start");
 		final JButton btnCancel = new JButton("Cancel");
