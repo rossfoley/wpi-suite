@@ -28,6 +28,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.updateestimates.SelectRequirementToUpdateTable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -305,6 +306,15 @@ public class OverviewDetailPanel extends JSplitPane {
 	 */
 	public boolean isOnSelectionTable(){
 		return onSelectionTable; 
+	}
+	
+	/**
+	 * clears the overview detail panel of all session specific information
+	 */
+	public void clearPanel(){
+		reqTable.clearTable();
+		infoPanel.clearPanel();
+		ViewEventController.getInstance().disableButtons();
 	}
 }
 

@@ -75,6 +75,12 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
 		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Archived Sessions");
 		
+		OverviewDetailPanel overviewPanel = ViewEventController.getInstance().getOverviewDetailPanel();
+		if (overviewPanel != null) {
+			overviewPanel.clearPanel();
+			ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel);
+		}
+		
 		for(PlanningPokerSession session : sessions) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
 			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
@@ -135,6 +141,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 
 						displaySession(session);
 					}
+				}
+				else {
+					OverviewDetailPanel overviewDetails = ViewEventController.getInstance().getOverviewDetailPanel();
+					overviewDetails.clearPanel();
+					ViewEventController.getInstance().setOverviewDetailPanel(overviewDetails);
 				}
 			}
 		}

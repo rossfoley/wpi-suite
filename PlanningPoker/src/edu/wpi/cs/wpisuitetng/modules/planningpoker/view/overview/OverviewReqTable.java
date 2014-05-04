@@ -197,4 +197,11 @@ public class OverviewReqTable extends JTable {
 		}
 		return "-";	
 	}
+	
+	/** 
+	 * clear all information from the table
+	 */
+	public void clearTable() {
+		tableModel.setRowCount(0);
+	}
 }
