@@ -328,4 +328,17 @@ public class OverviewDetailInfoPanel extends JPanel {
 		return allMatched;
 	}
 	
+	/**
+	 * clear all information from the table
+	 */
+	public void clearPanel(){
+		overviewDetailButton.setVisible(false);
+		sessionNameDisplay.setText("");
+		sessionDescriptionDisplay.setText("");
+		endDateDisplay.setText("");
+		endTimeDisplay.setText("");
+		deckDisplay.setText("");
+		sessionCreatorDisplay.setText("");
+	}
+	
 }

@@ -76,6 +76,13 @@ public class ViewEventController {
 		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
 	
+	/** 
+	 * disable all session specific buttons
+	 */
+	public void disableButtons(){
+		planningPokerSessionButtonsPanel.disableAllButtons();
+	}
+	
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
