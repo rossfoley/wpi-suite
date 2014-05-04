@@ -518,7 +518,7 @@ public class CreateDeck extends JPanel {
 	/**
 	 * Adds a card based on the number currently in txtCardValue
 	 */
-	public void addCardPressed(){
+	private void addCardPressed(){
 		if(btnAddCard.isEnabled()){
 			try {
 				final int value = Integer.parseInt(txtCardValue.getText());
