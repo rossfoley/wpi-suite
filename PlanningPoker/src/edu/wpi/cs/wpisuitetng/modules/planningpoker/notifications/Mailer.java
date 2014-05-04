@@ -80,7 +80,6 @@ public class Mailer {
 	 * @return True if email was sent successfully, false otherwise.
 	 */
 	public boolean mailTo(String recipient, String subject, String body){
-		//System.out.println("starting to mail");
 
 		if (recipient == null || subject == null || body == null) {
 			return false;
@@ -124,14 +123,8 @@ public class Mailer {
 				// Send message
 				Transport.send(message);
 			}catch (MessagingException mex) {
-				mex.printStackTrace();
+				System.out.println(mex.getMessage());
 			}
-		}
-		if (!isValidSender){
-			System.out.println(username + " is not a valid email address");	
-		}
-		if (!isValidReciever){
-			System.out.println(recipient + " is not a valid email address");
 		}
 
 		return isValidSender && isValidReciever;
