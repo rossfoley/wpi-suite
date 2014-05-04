@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
@@ -133,22 +132,16 @@ public class DeckVotingPanel extends JPanel
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				estimateSubmittedMessage.setVisible(false);
 				estimateValueChange();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				estimateSubmittedMessage.setVisible(false);
 				estimateValueChange();
 			}
 		});
-
 		estimateField.setPreferredSize(new Dimension(200, 100));
-		
-		estimateField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				estimateSubmittedMessage.setVisible(false);
-			}
-		});
 		
 		// Set default values if this is the first vote
 		if (prevEstimate.getVote() < 0) {
@@ -618,10 +611,11 @@ public class DeckVotingPanel extends JPanel
 	 */
 	private boolean validateEstimate() {
 		if (userEstimate < 0) {
-			estimateFieldErrorMessage.setText("Please enter a positive integer");
-			estimateFieldErrorMessage.setVisible(true);
-			estimateFieldErrorMessage.revalidate();
-			estimateFieldErrorMessage.repaint();
+			// Only display errors if the submission label is not visible
+			if (!estimateSubmittedMessage.isVisible()) {
+				estimateFieldErrorMessage.setText("Please enter a positive integer");
+				estimateFieldErrorMessage.setVisible(true);
+			}
 			try {
 				submitButton.setEnabled(false);
 			} catch (NullPointerException ex) {}
@@ -631,8 +625,6 @@ public class DeckVotingPanel extends JPanel
 		}
 		estimateFieldErrorMessage.setText("");
 		estimateFieldErrorMessage.setVisible(false);
-		estimateFieldErrorMessage.revalidate();
-		estimateFieldErrorMessage.repaint();
 		try {
 			submitButton.setEnabled(true);
 		} catch (NullPointerException ex) {}
