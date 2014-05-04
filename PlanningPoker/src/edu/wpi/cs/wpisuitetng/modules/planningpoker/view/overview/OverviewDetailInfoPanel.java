@@ -162,16 +162,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		// Change deck name
 		if (session.isUsingDeck()) {
-			Deck sessionDeck = null;
-			List<Deck> allDecks = DeckListModel.getInstance().getDecks();
-			boolean foundSessionDeck = false;
-			for (Deck deck:allDecks){
-				if (!foundSessionDeck){
-					if (session.getSessionDeckID() == deck.getId()) {
-						sessionDeck = deck;
-					}
-				}
-			}	
+			Deck sessionDeck = DeckListModel.getInstance().getDeck(session.getSessionDeckID());	
 			deckDisplay.setText(sessionDeck.getDeckName());
 		}
 		else {

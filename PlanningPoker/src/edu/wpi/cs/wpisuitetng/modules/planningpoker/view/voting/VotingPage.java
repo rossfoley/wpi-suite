@@ -227,18 +227,7 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 				}
 			}
 		}
-		Deck sessionDeck = null;
-		if (activeSession.isUsingDeck()){
-			List<Deck> allDecks = DeckListModel.getInstance().getDecks();
-			boolean foundSessionDeck = false;
-			for (Deck deck:allDecks){
-				if (!foundSessionDeck){
-					if (activeSession.getSessionDeckID() == deck.getId()) {
-						sessionDeck = deck;
-					}
-				}
-			}
-		}
+		Deck sessionDeck = DeckListModel.getInstance().getDeck(activeSession.getSessionDeckID());
 		
 		votingPanel = new DeckVotingPanel(sessionDeck, estimateFillIn);
 		votingPanel.addEstimateListener(new EstimateListener() {

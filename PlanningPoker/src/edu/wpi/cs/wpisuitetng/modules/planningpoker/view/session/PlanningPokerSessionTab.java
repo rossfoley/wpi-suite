@@ -137,7 +137,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		pokerSession = existingSession;
-		//System.out.println(pokerSession.getRequirementIDs());
 		originalReqs = pokerSession.getRequirementIDs();
 		requirementPanel = new RequirementSelectionView(pokerSession);
 		viewMode = (ViewMode.EDITING);
@@ -147,31 +146,22 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		// Update the fields current deck being used
 		isUsingDeck = existingSession.isUsingDeck();
 		sessionDeckID = existingSession.getSessionDeckID();
-		sessionDeck = null;
-		List<Deck> decks = DeckListModel.getInstance().getDecks();
-		boolean deckFound = false;
-		for (Deck deck:decks){
-			if (!deckFound){
-				if (deck.getId() == sessionDeckID) {
-					sessionDeck = deck;
-				}
-			}
-		}
+		sessionDeck = DeckListModel.getInstance().getDeck(sessionDeckID);
 
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
 
 		editedDescription = true;
 
-		this.buildLayouts();
-		this.displayPanel(firstPanel);
+		buildLayouts();
+		displayPanel(firstPanel);
 	}
 
 	private void buildLayouts() {
 		// Apply the layout and build the panels
-		this.setLayout(layout);
-		this.buildFirstPanel();
-		this.buildSecondPanel();
+		setLayout(layout);
+		buildFirstPanel();
+		buildSecondPanel();
 	}
 
 	/**
