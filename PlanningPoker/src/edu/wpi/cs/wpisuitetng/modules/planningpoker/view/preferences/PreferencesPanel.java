@@ -54,8 +54,8 @@ public class PreferencesPanel extends JPanel {
 		setLayout(springLayout);
 
 		txtEnterEmailHere = new JTextField();
-		springLayout.putConstraint(SpringLayout.WEST, txtEnterEmailHere, 31, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, txtEnterEmailHere, -200, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, txtEnterEmailHere, 30, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, txtEnterEmailHere, -120, SpringLayout.EAST, this);
 		txtEnterEmailHere.setText("Enter Email Here...");
 		add(txtEnterEmailHere);
 		txtEnterEmailHere.setColumns(10);
@@ -70,7 +70,7 @@ public class PreferencesPanel extends JPanel {
 		final JButton btnSubmit = new JButton("Submit");
 		springLayout.putConstraint(SpringLayout.NORTH, btnSubmit, -1, SpringLayout.NORTH, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
-		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, 100, SpringLayout.EAST, txtEnterEmailHere);
+		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -30, SpringLayout.EAST, this);
 		add(btnSubmit);
 		btnSubmit.setEnabled(false);
 
@@ -84,7 +84,7 @@ public class PreferencesPanel extends JPanel {
 
 		lblEmailSubmitted = new JLabel("Submitted Email!");
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmailSubmitted, 0, SpringLayout.NORTH, lblEmailErrorText);
-		springLayout.putConstraint(SpringLayout.WEST, lblEmailSubmitted, 0, SpringLayout.WEST, btnSubmit);
+		springLayout.putConstraint(SpringLayout.WEST, lblEmailSubmitted, -10, SpringLayout.WEST, btnSubmit);
 		springLayout.putConstraint(SpringLayout.EAST, lblEmailSubmitted, -26, SpringLayout.EAST, this);
 		lblEmailSubmitted.setForeground(new Color(50, 205, 50));
 		add(lblEmailSubmitted);
