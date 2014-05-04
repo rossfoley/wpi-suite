@@ -26,10 +26,10 @@ import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -407,7 +407,8 @@ public class StatisticsInfoPanel extends JPanel {
 			reqToSendFinalEstimate.setEstimate(session.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
 			session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
 			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
-			ViewEventController.getInstance().refreshTable();
+			RequirementManagerController.getInstance().refreshReqManagerTable();
+			ViewEventController.getInstance().getStatisticsPanel().refresh();
 			estimateSubmittedMessage.setVisible(true);
 		}
 	}

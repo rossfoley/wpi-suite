@@ -17,6 +17,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /** 
  *  This class is the panel that is shown when viewing statistics on a session
@@ -81,6 +82,12 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
         setEnabled(true);
         
         reqTable.refresh(activeSession);
+        
+        ViewEventController.getInstance().setStatisticsPanel(this);
+	}
+	
+	public void refresh() {
+		reqTable.refresh(activeSession);
 	}
 	
 	/**

@@ -35,6 +35,7 @@ public class ViewEventController {
 	private OverviewDetailPanel overviewDetailPanel = null;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
+	private StatisticsPanel statisticsPanel = null;
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -180,6 +181,21 @@ public class ViewEventController {
 	 */
 	public MainView getMainView() {
 		return main;
+	}
+	
+	/**
+	 * @return the statistics panel
+	 */
+	public StatisticsPanel getStatisticsPanel() {
+		return statisticsPanel;
+	}
+	
+	/**
+	 * set statisticsPanel equal to the given StatisticsPanel
+	 * @param statPanel
+	 */
+	public void setStatisticsPanel(StatisticsPanel statPanel) {
+		statisticsPanel = statPanel;
 	}
 	
 	/**
