@@ -357,15 +357,13 @@ public class DeckVotingPanelTest {
 	 */
 	@Test
 	public void testFireEstimateEventNoPrevEst() {
-		final DeckVotingPanel deckPanel = new DeckVotingPanel(testDeckSingleSelect);
+		DeckVotingPanel deckPanel = new DeckVotingPanel(testDeckSingleSelect);
 		
-		deckPanel.addEstimateListener(new EstimateListener() {
-			@Override
-			public void estimateSubmitted(EstimateEvent e) {
-				assertEquals(0, deckPanel.getEstimate());
-			}
-		});
+		EstimateListener eList = new EstimateListener();
+		deckPanel.addEstimateListener(eList);
+		
 		deckPanel.fireEstimateEvent();
+		assertEquals(0, eList.getEstimate());
 	}
 	
 	/**
@@ -377,13 +375,18 @@ public class DeckVotingPanelTest {
 		prevEst.setVote(5);
 		
 		final DeckVotingPanel deckPanel = new DeckVotingPanel(null, prevEst);
-		deckPanel.addEstimateListener(new EstimateListener() {
-			@Override
-			public void estimateSubmitted(EstimateEvent e) {
-				assertEquals(5, deckPanel.getEstimate());
-			}
-		});
+		
+		EstimateListener eList = new EstimateListener();
+		deckPanel.addEstimateListener(eList);
+		
 		deckPanel.fireEstimateEvent();
+		assertEquals(5, eList.getEstimate());
+		
+		// Remove EstimateListener
+		eList.estimateSubmitted(new EstimateEvent(this, 0));
+		deckPanel.removeEstimateListener(eList);
+		deckPanel.fireEstimateEvent();
+		assertEquals(0, eList.getEstimate());
 	}
 
 }
