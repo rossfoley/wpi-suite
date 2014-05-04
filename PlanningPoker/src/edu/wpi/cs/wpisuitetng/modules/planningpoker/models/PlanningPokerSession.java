@@ -60,7 +60,6 @@ public class PlanningPokerSession extends AbstractModel {
 
 	private List<Integer> requirementsWithExportedEstimatesIDs;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
-	private List<String> VoterNameList;
 	
 	/**
 	 * Constructor for PlanningPokerSession
@@ -77,7 +76,6 @@ public class PlanningPokerSession extends AbstractModel {
 		finalEstimatesMap = new HashMap<Integer, Integer>(); 
 		setFinalEstimatesModified(new HashMap<Integer, Boolean>()); 
 		defaultSessionName = new String(name.toString());
-		this.setVoterNameList(new ArrayList<String>());
 	}
 
 	/**
@@ -441,42 +439,6 @@ public class PlanningPokerSession extends AbstractModel {
 	}
 
 	/**
-	 * checks to see if all users in the current project have estimated the requirement assosciated with the given id
-	 * @param reqID requirement to check estimations of
-	 */
-	public void checkReqEstimationComplete(Integer reqID){
-		// get all estimates for this reqID
-		final List<Estimate> estimatesForReq = new ArrayList<Estimate>();
-		for (Estimate e: estimates){
-			if (e.getRequirementID() == reqID){
-				estimatesForReq.add(e);
-			}
-		}
-
-		boolean estimationComplete = true;
-		for (User teamMember : getProject().getTeam()) {
-			if (teamMember != null) {
-				String currentUsername = teamMember.getUsername();
-				boolean foundCurrentUserEstimate = false;
-				for (Estimate e:estimatesForReq){
-					if (currentUsername.equals(e.getOwnerName())){
-						foundCurrentUserEstimate = true;
-					}
-				}
-				if (!foundCurrentUserEstimate){
-					estimationComplete = false;
-				}
-			}
-		}
-
-		if (estimationComplete) {
-			reqsWithCompleteEstimates.add(reqID);
-			addReqEstimateStats(reqID);
-		}
-	}
-
-
-	/**
 	 * @return the reqsWithCompleteEstimates		
 	 */
 	public Set<Integer> getReqsWithCompleteEstimates() {
@@ -580,11 +542,10 @@ public class PlanningPokerSession extends AbstractModel {
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
 	}
+	
 	/**
 	 * Copies all of the values from the given planning poker session to this planning poker session.
-	 * 
-	 * @param toCopyFrom
-	 *            the planning poker session to copy from.
+	 * @param toCopyFrom	The planning poker session to copy from.
 	 */
 	public void copyFrom(PlanningPokerSession toCopyFrom) {
 		description = toCopyFrom.description;
@@ -598,7 +559,6 @@ public class PlanningPokerSession extends AbstractModel {
 		sessionCreatorName = toCopyFrom.sessionCreatorName;
 		sessionDeck = toCopyFrom.sessionDeck;
 		finalEstimatesMap = toCopyFrom.getFinalEstimates();
-		VoterNameList = toCopyFrom.VoterNameList;
 		reqsWithCompleteEstimates = toCopyFrom.reqsWithCompleteEstimates;
 		requirementsWithExportedEstimates = toCopyFrom.requirementsWithExportedEstimates;
 		requirementsWithExportedEstimatesIDs = toCopyFrom.requirementsWithExportedEstimatesIDs;
@@ -629,20 +589,6 @@ public class PlanningPokerSession extends AbstractModel {
 	 */
 	public void addRequirementToExportedList(int reqIDToAdd) {
 		requirementsWithExportedEstimatesIDs.add(reqIDToAdd);
-	}
-	
-	/**
-	 * @return the VoterNameList
-	 */
-	public List<String> getVoterNameList() {
-		return VoterNameList;
-	}
-	
-	/**
-	 * @param VoterNameList the list of people who have voted
-	 */
-	public void setVoterNameList(List<String> VoterNameList)  {
-		this.VoterNameList = VoterNameList;
 	}
 
 	/**
