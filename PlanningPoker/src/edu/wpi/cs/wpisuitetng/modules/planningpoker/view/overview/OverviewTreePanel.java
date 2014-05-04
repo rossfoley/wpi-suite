@@ -96,7 +96,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         // Update the ViewEventControler so it contains the right tree
         ViewEventController.getInstance().setOverviewTree(this);
         // Disable all buttons if nothing is selected
-        if (tree.getLastSelectedPathComponent() != null) {
+        if (tree.getLastSelectedPathComponent() == null) {
         	try {
         		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableAllButtons();
         	} catch (NullPointerException ex) {
