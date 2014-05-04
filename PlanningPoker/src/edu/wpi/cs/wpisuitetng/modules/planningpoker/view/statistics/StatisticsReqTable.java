@@ -125,29 +125,8 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public boolean isCellEditable(int row, int col) {
-		return false; //(col == 2);
+		return false;
 	}
-	
-	/*@Override 
-	public void editingStopped(ChangeEvent e) {
-		super.editingStopped(e);
-		boolean isInteger = true;
-		int numberEst = -1;
-		try {
-			numberEst = Integer.parseInt(((TableCellEditor) e.getSource()).getCellEditorValue().toString());
-		}
-		catch (NumberFormatException ne) {
-			isInteger = false;
-			// add error message for nonnegative integers only
-		}
-		super.editingStopped(e);
-		if (isInteger) {
-			if (numberEst >= 0) {
-				int reqID = tableRows.get(editingRow + 1);
-				currentSession.addFinalEstimate(reqID, numberEst);
-			}
-		}
-	} // */
 	
 	/**
 	 * @return the changedByRefresh
@@ -197,7 +176,6 @@ public class StatisticsReqTable extends JTable {
 		return comp;
 
     }
-	
 	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
 		HashMap<Integer, Integer> finalEstimates = session.getFinalEstimates();

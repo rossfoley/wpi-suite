@@ -27,6 +27,7 @@ import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.RequirementManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -215,7 +216,9 @@ public class StatisticsInfoPanel extends JPanel {
 					userEstimate = Integer.parseInt(estimateField.getText());
 					if (validateEstimate()) {
 						session.addFinalEstimate(currentReqID, userEstimate);
+						PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(session);
 						sendFinalEstimate(aReq);
+						ViewEventController.getInstance().
 					}
 				}
 				catch (NumberFormatException ne) {
@@ -286,7 +289,7 @@ public class StatisticsInfoPanel extends JPanel {
 		stdDev = df.format(stats.getStdDev());
 		return stdDev;
 	}
-	
+	//format estimate mean to a string with no decimals
 	public String formatMeanAsInt(RequirementEstimateStats stats) {
 		String mean = "";
 		DecimalFormat df = new DecimalFormat("##0");
@@ -310,7 +313,7 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblReqDescription);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -16, SpringLayout.NORTH, lblMean);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -67, SpringLayout.WEST, estimateField); // .EAST, this
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -67, SpringLayout.WEST, estimateField);
 		springLayout.putConstraint(SpringLayout.EAST, lblReqDescription, 138, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblReqName, 11, SpringLayout.NORTH, this);
