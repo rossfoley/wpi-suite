@@ -31,7 +31,7 @@ public class StatisticsReqTableTest {
 		for (int row = -1; row < 5; row++) {
 			for (int col = -1; col < 5; col++) {
 				if (col == 2) {
-					assertTrue(reqTable.isCellEditable(row, col));
+					assertFalse(reqTable.isCellEditable(row, col));
 				}
 				else {
 					assertFalse(reqTable.isCellEditable(row, col));
