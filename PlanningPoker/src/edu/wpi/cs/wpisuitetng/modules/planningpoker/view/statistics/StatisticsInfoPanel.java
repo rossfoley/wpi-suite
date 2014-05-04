@@ -134,9 +134,11 @@ public class StatisticsInfoPanel extends JPanel {
 			if (session.getReqsWithExportedEstimatesList().contains(aReq)) {
 				Integer existingReqEstimate = RequirementModel.getInstance().getRequirement(currentReqID).getEstimate();
 				estimateField.setText(existingReqEstimate.toString());
+				submitFinalEstimateButton.setText("Resubmit Final Estimate");
 			}
 			else {
 				estimateField.setText(formatMeanAsInt(session.getReqEstimateStats().get(currentReqID)));
+				submitFinalEstimateButton.setText("Submit Final Estimate");
 			}
 			
 			submitFinalEstimateButton.setEnabled(true);
