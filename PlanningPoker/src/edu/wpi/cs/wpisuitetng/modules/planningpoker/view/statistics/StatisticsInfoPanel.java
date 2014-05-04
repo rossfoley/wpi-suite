@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -198,7 +199,6 @@ public class StatisticsInfoPanel extends JPanel {
 			}
 		});
 		
-		//TODO make this work (it doesn't)
 		if (!(session.getReqsWithExportedEstimatesList().contains(aReq))) {
 			submitFinalEstimateButton = new JButton("Submit Final Estimate");
 		}
@@ -375,15 +375,24 @@ public class StatisticsInfoPanel extends JPanel {
 	}
 	
 	public void sendFinalEstimate(Requirement reqToSendFinalEstimate) {
-		reqToSendFinalEstimate.setEstimate(session.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
-		session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
-		UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
-		ViewEventController.getInstance().refreshTable();
-		
+		boolean hadValidReason = true;
 		if (session.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate)) {
-			//TODO ask for and record explanation
+			//TODO get confirmation on popup as a valid way of asking for the explanation
+			String explanation = JOptionPane.showInputDialog(this, "Please enter the reason for this change");
+			if (explanation == null) {
+				hadValidReason = false;
+			}
+			else {
+				session.addReqWithExplainedChange(reqToSendFinalEstimate.getId(), explanation);
+			}
 		}
-		estimateSubmittedMessage.setVisible(true);
+		if (hadValidReason) {
+			reqToSendFinalEstimate.setEstimate(session.getFinalEstimates().get(reqToSendFinalEstimate.getId()));
+			session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
+			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
+			ViewEventController.getInstance().refreshTable();
+			estimateSubmittedMessage.setVisible(true);
+		}
 	}
 
 

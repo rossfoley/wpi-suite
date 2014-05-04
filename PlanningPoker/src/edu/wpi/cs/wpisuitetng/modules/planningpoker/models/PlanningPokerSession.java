@@ -57,8 +57,8 @@ public class PlanningPokerSession extends AbstractModel {
 	private HashMap<Integer, Integer> finalEstimatesMap;
 	private HashMap<Integer, Boolean> finalEstimatesModified; 
 	private List<Integer> requirementsWithExportedEstimates;
-
 	private List<Integer> requirementsWithExportedEstimatesIDs;
+	private HashMap<Integer, String> reqsWithExplainedChanges;
 	private final HashMap<Integer, RequirementEstimateStats> reqEstimateStats;
 	
 	/**
@@ -73,7 +73,8 @@ public class PlanningPokerSession extends AbstractModel {
 		reqEstimateStats = new HashMap<Integer, RequirementEstimateStats>();
 		requirementsWithExportedEstimates = new ArrayList<Integer>();
 		requirementsWithExportedEstimatesIDs = new ArrayList<Integer>();
-		finalEstimatesMap = new HashMap<Integer, Integer>(); 
+		reqsWithExplainedChanges = new HashMap<Integer, String>();
+		finalEstimatesMap = new HashMap<Integer, Integer>();
 		setFinalEstimatesModified(new HashMap<Integer, Boolean>()); 
 		defaultSessionName = new String(name.toString());
 	}
@@ -610,4 +611,21 @@ public class PlanningPokerSession extends AbstractModel {
 		finalEstimatesModified.put(reqID, true);
 	}
 	
+	/**
+	 * adds the explanation for changing the final estimate of a req with ID reqID
+	 * to the hash map of explanations for changed final estimates
+	 * @param reqID
+	 * @param explanation
+	 */
+	public void addReqWithExplainedChange(int reqID, String explanation) {
+		reqsWithExplainedChanges.put(reqID, explanation);
+	}
+	
+	/**
+	 * @return the hash map containing explanations for why the final estimates 
+	 * of the requirements with these IDs were modified 
+	 */
+	public HashMap<Integer, String> getReqsWithExplainedChanges() {
+		return reqsWithExplainedChanges;
+	}
 }
