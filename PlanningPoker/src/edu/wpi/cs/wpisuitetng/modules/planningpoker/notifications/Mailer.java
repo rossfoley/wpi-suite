@@ -24,6 +24,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
 /**
@@ -167,7 +168,15 @@ public class Mailer {
 		if (recipients == null || planningPokerSession == null) {
 			return null;
 		}
-
+		
+		String url = ConfigManager.getConfig().getCoreUrl().toString();
+		int offset = 3;
+		if (url.endsWith("/API/")) {
+			offset++;
+		}
+		String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
+		
+		
 		boolean thisValid;
 		if (planningPokerSession.getEndDate() != null) { 
 			final int day = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().DAY_OF_MONTH);
@@ -181,7 +190,9 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. Its end date is: " + endTime + ".  \n\nGood Luck! \n\n --Your Development Team");
+						" has been started. Its end date is: " + endTime + ".\n\n"
+						+ finalUrl
+						+ " \n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
 				}
@@ -191,7 +202,9 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. The session doesn't currently have an end date. \n\nGood Luck! \n\n --Your Development Team");
+						" has been started. The session doesn't currently have an end date. \n\n"
+						+ finalUrl
+						+"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
 				}
@@ -212,10 +225,21 @@ public class Mailer {
 		if (recipients == null || planningPokerSession == null) {
 			return null;
 		}
+		
+		String url = ConfigManager.getConfig().getCoreUrl().toString();
+		int offset = 3;
+		if (url.endsWith("/API/")) {
+			offset++;
+		}
+		String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
+		
 
 		boolean thisValid;
 		for (int i = 0; i < recipients.size(); i++) {
-			thisValid = mailTo(recipients.get(i), "Planning Poker Session: " + planningPokerSession.getName() + " has closed", "The Session: " + planningPokerSession.getName() + " has been closed. \n\nThank you for participating! \n\n --Your Development Team");
+			thisValid = mailTo(recipients.get(i), "Planning Poker Session: " + planningPokerSession.getName() + " has closed", "The Session: " 
+			+ planningPokerSession.getName() + " has been closed. \n\nThank you for participating! \n\n"
+			+ finalUrl
+			+"\n\n --Your Development Team");
 			if (!thisValid) {
 				didNotSendTo.add(recipients.get(i));
 			}
