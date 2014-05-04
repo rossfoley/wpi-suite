@@ -20,6 +20,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -64,38 +65,16 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	}
 	
 	/**
-	 * This will wipe out the current tree and rebuild it
+	 * Clears out the current tree and rebuilds it
 	 */
 	public void refresh() {
-		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
-		
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
-		final DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
-		final DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
-		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
-		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Archived Sessions");
-		
-		for(PlanningPokerSession session : sessions) {
-			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
-			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
-
-			if (session.isClosed()) {
-				closedSessions.add(newSessionNode);
-			} else if (session.isEnded()) {
-				endedSessions.add(newSessionNode);
-			} else if (session.isOpen()) {
-				openSessions.add(newSessionNode);
-			} else if (session.isPending() && isOwner) {
-				pendingSessions.add(newSessionNode);
-			}
+		final TreeNode rootNode = createNodes();
+		tree = new JTree(rootNode);
+        
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
 		}
 		
-		top.add(pendingSessions);
-		top.add(openSessions);
-		top.add(endedSessions);
-		top.add(closedSessions);
-		
-        tree = new JTree(top); //create the tree with the top node as the top
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
         tree.setToggleClickCount(0);
  
@@ -138,6 +117,38 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				}
 			}
 		}
+	}
+	
+	private TreeNode createNodes() {
+		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
+		
+		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
+		final DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
+		final DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
+		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
+		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Archived Sessions");
+		
+		for(PlanningPokerSession session : sessions) {
+			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
+			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
+
+			if (session.isClosed()) {
+				closedSessions.add(newSessionNode);
+			} else if (session.isEnded()) {
+				endedSessions.add(newSessionNode);
+			} else if (session.isOpen()) {
+				openSessions.add(newSessionNode);
+			} else if (session.isPending() && isOwner) {
+				pendingSessions.add(newSessionNode);
+			}
+		}
+		
+		top.add(pendingSessions);
+		top.add(openSessions);
+		top.add(endedSessions);
+		top.add(closedSessions);
+		
+		return top;
 	}
 	
 	/**
