@@ -177,6 +177,14 @@ public class Mailer {
 		}
 
 		boolean thisValid;
+		
+		String url = ConfigManager.getConfig().getCoreUrl().toString();
+		int offset = 3;
+		if (url.endsWith("/API/")) {
+			offset++;
+		}
+		String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
+		
 		if (planningPokerSession.getEndDate() != null) { 
 			final int day = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().DAY_OF_MONTH);
 			final int month = (1 + planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().MONTH));
@@ -185,14 +193,8 @@ public class Mailer {
 			final String minute = formatMinute(planningPokerSession.getEndDate());
 			final String am_pm = formatAM_PM(planningPokerSession.getEndDate());
 			final String endTime = month + "/" + day + "/" + year + " at " + hour + ":" + minute + am_pm;
-
+			
 			for (String recipient : recipients) {
-				String url = ConfigManager.getConfig().getCoreUrl().toString(), strippedURL;
-				int offset = 3;
-				if (url.endsWith("/API/")) {
-					offset++;
-				}
-				String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
 						" has been started. Its end date is: " + endTime + ".  To vote on this session, you can login to Janeway or go to "
@@ -207,7 +209,9 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. The session doesn't currently have an end date. \n\nGood Luck! \n\n --Your Development Team");
+						" has been started. The session doesn't currently have an end date. To vote on this session, you can login to Janeway or go to " 
+						+ finalUrl +	
+						"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
 				}
