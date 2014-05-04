@@ -1,24 +1,19 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.AbstractSet;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JList;
 
-import org.jfree.ui.action.ActionButton;
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
