@@ -9,9 +9,10 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,27 +28,21 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.EstimateListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import java.awt.Font;
-import java.awt.BorderLayout;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
 
 /**
@@ -67,13 +61,14 @@ public class DeckVotingPanel extends JPanel
 	private int userEstimate;
 	private JLayeredPane layeredDeckPane;
 	private JButton submitButton;
+	private JButton clearButton;
 	private int cardOffset = 40; //This is the offset for computing the origin for the next label.
 	private List<JButton> listOfCardButtons;
 	private Integer lastCard = -1;
-	private final JLabel estimateFieldErrorMessage = new JLabel("");
+	private JLabel estimateFieldErrorMessage = new JLabel("");
 	private transient Vector<EstimateListener> listeners;
-	private final JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
-	private final Color selectedColor = new Color(247, 247, 247);
+	private JLabel estimateSubmittedMessage = new JLabel("Your estimate has been submitted.");
+	private Color selectedColor = new Color(247, 247, 247);
 
 	/**
 	 * Constructor for DeckVotingPanel when using a deck
@@ -198,13 +193,13 @@ public class DeckVotingPanel extends JPanel
 		estimateFieldErrorMessage.setForeground(Color.RED);
 
 		// Add Label for estimation number
-		final JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
+		JLabel estimateLabel = new JLabel("Estimation for Requirement: ");
 		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
 		setLayout(new BorderLayout(10, 10));
 
 		final SpringLayout thisLayout = new SpringLayout();
-		this.setLayout(thisLayout);
+		setLayout(thisLayout);
 		
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		thisLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateField, 0, SpringLayout.HORIZONTAL_CENTER, this);
@@ -264,7 +259,7 @@ public class DeckVotingPanel extends JPanel
 		});
 
 		// Create clear button
-		final JButton clearButton = new JButton("Clear selected cards");
+		clearButton = new JButton("Clear selected cards");
 		clearButton.setAlignmentX(CENTER_ALIGNMENT);
 		clearButton.addActionListener(new ActionListener() {
 			@Override
@@ -280,7 +275,7 @@ public class DeckVotingPanel extends JPanel
 				"Select Cards For Your Estimate: "));
 
 		//This is the origin of the first label added.
-		final Point origin = new Point(10, 20);
+		Point origin = new Point(10, 20);
 		cardOffset = 500/numbersInDeck.size();
 
 		//Add several overlapping, card buttons to the layered pane
@@ -302,8 +297,8 @@ public class DeckVotingPanel extends JPanel
 		layeredDeckPane.setPreferredSize(new Dimension(400, 250));
 
 		// Create control panel for submit, clear, etc. buttons
-		final JPanel controlPanel = new JPanel();
-		final SpringLayout controlPanelLayout = new SpringLayout();
+		JPanel controlPanel = new JPanel();
+		SpringLayout controlPanelLayout = new SpringLayout();
 		controlPanel.setLayout(controlPanelLayout);
 		controlPanel.setPreferredSize(new Dimension(400, 30));
 		controlPanelLayout.putConstraint(SpringLayout.VERTICAL_CENTER, submitButton, 0, SpringLayout.VERTICAL_CENTER, controlPanel);
@@ -322,8 +317,8 @@ public class DeckVotingPanel extends JPanel
 		controlPanel.add(clearButton);
 
 		// Create sum of cards label and field
-		final JPanel sumPane = new JPanel();
-		final JLabel estimateLabel = new JLabel("Sum of Cards: ");
+		JPanel sumPane = new JPanel();
+		JLabel estimateLabel = new JLabel("Sum of Cards: ");
 		estimateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		estimateLabel.setLabelFor(estimateField);
 		estimateField = new JTextField();
@@ -357,14 +352,6 @@ public class DeckVotingPanel extends JPanel
 	private JButton createCardButtons(int cardValue, Point origin, boolean selected) {
 		final JButton card = new JButton();
 		// Try to load the corresponding playing card
-		/*try {
-			final String fileName = new String("cards/" + Integer.toString(cardValue) + "-of-Diamonds.png");
-			final Image img = ImageIO.read(getClass().getResource(fileName));
-			//getClass().getResource("new_req.png"));	// this should work... but doesn't...
-			card.setIcon(new ImageIcon(img.getScaledInstance(112, 140, 0)));
-		} catch (IOException | NullPointerException | IllegalArgumentException ex) {
-			card.setText("\t  " + Integer.toString(cardValue));
-		}*/
 		CardFactory cardGen = new CardFactory(cardValue);
 		card.setIcon(new ImageIcon(cardGen.getCard().getScaledInstance(112, 140, 0)));
 		card.setName(String.valueOf(cardValue));
@@ -389,7 +376,7 @@ public class DeckVotingPanel extends JPanel
 				updateEstimate(card);
 			}
 		});
-		card.addMouseMotionListener(this);	// To track mouse movements and dragging
+		card.addMouseMotionListener(this);	// To track mouse movements
 		
 		return card;
 	}
@@ -452,6 +439,8 @@ public class DeckVotingPanel extends JPanel
 		}
 		userEstimate = 0;
 		estimateField.setText("0");
+		submitButton.setEnabled(false);
+		
 	}
 
 	public void mouseMoved(MouseEvent e) {
@@ -471,7 +460,7 @@ public class DeckVotingPanel extends JPanel
 		}
 		// If the source of the mouseMoved event was a card, highlight it
 		else {
-			final JButton currentCard = (JButton) e.getSource();
+			JButton currentCard = (JButton) e.getSource();
 			// Find the index of the card
 			int tempIndex = -1;
 			for (int i = 0; i < listOfCardButtons.size(); i++) {
@@ -515,8 +504,8 @@ public class DeckVotingPanel extends JPanel
 		}
 		// Highlight this card if in the index
 		if ((lastCard >= 0) && (lastCard < listOfCardButtons.size())) {
-			final Point origin = new Point(10 + cardOffset*lastCard, 50);
-			final JButton card = listOfCardButtons.get(lastCard);
+			Point origin = new Point(10 + cardOffset*lastCard, 50);
+			JButton card = listOfCardButtons.get(lastCard);
 			card.setBounds(origin.x, origin.y, 112, 140);
 			layeredDeckPane.setComponentZOrder(card, 0);
 			layeredDeckPane.moveToFront(card);
@@ -593,7 +582,7 @@ public class DeckVotingPanel extends JPanel
 		}
 		// Some decks are ony allowed to select 1 card
 		if ((!votingDeck.getAllowMultipleSelections()) && (numbersInEstimate.size() > 1)) {
-			final int highCard = numbersInEstimate.get(numbersInEstimate.size() - 1);
+			int highCard = numbersInEstimate.get(numbersInEstimate.size() - 1);
 			numbersInEstimate = new ArrayList<Integer>();
 			numbersInEstimate.add(highCard);
 		}
@@ -685,7 +674,7 @@ public class DeckVotingPanel extends JPanel
 		if (listeners != null && !listeners.isEmpty()) {
 			// Create the event object to send
 			final EstimateEvent event = 
-					new EstimateEvent(this, this.getEstimate());
+					new EstimateEvent(this, getEstimate());
 
 			// Make a copy of the listener list in case anyone adds/removes listeners
 			final Vector<EstimateListener> targets;
@@ -699,8 +688,11 @@ public class DeckVotingPanel extends JPanel
 				EstimateListener l = e.nextElement();
 				l.estimateSubmitted(event);
 			}
-			estimateSubmittedMessage.setVisible(true);
 		}
+		// If this function is called, then an estimate has been submitted.
+		// Thus, the submit button should be changed to resubmit and feedback should be given to the user
+		submitButton = new JButton("Resubmit Estimation");
+		estimateSubmittedMessage.setVisible(true);
 	}
 
 }
