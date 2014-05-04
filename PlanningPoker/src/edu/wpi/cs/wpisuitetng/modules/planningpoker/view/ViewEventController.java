@@ -9,7 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.OptionsOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
@@ -109,6 +107,7 @@ public class ViewEventController {
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
 		main.setSelectedComponent(panel);
+		planningPokerSessionButtonsPanel.disableAllButtons();
 	}
 
 	/**
@@ -188,7 +187,7 @@ public class ViewEventController {
 	 * Closes all of the tabs besides the overview tab in the main view.
 	 * 
 	 */
-	public void closeAllTabs() {
+	/*public void closeAllTabs() {
 		final int tabCount = main.getTabCount();
 
 		for (int i = tabCount - 1; i >= 0; i--) {
@@ -203,13 +202,13 @@ public class ViewEventController {
 
 		openSessionTabHashTable = new HashMap<PlanningPokerSession, JComponent>();
 		main.repaint();
-	}
+	} */
 
 	/**
 	 * Closes all the tabs except for the one that was clicked.
 	 * 
 	 */
-	public void closeOthers() {
+	/* public void closeOthers() {
 		final int tabCount = main.getTabCount();
 		final Component selected = main.getSelectedComponent();
 
@@ -233,7 +232,7 @@ public class ViewEventController {
 		}
 		main.repaint();
 
-	}
+	} */
 	
 	/**
 	 * Displays the details of the session that is clicked on 
@@ -245,10 +244,6 @@ public class ViewEventController {
 		}
 		
 		overviewDetailPanel.updatePanel(displaySession);
-	}
-	
-	public void sendEstimatesFromSession(){
-		overviewDetailPanel.replaceTable();
 	}
 	
 	/**
@@ -286,6 +281,7 @@ public class ViewEventController {
 		main.repaint();
 		main.setSelectedComponent(sessionComp);
 		
+		planningPokerSessionButtonsPanel.disableAllButtons();
 	}
 	
 	/**
@@ -308,6 +304,7 @@ public class ViewEventController {
 				// Only open the new tab if the existing tab is successfully removed
 				if (removeTab(sessionTab)) {
 					openNewSessionTab(session, tabType);
+					planningPokerSessionButtonsPanel.disableAllButtons();
 				}
 			}
 		}
@@ -339,7 +336,7 @@ public class ViewEventController {
 		if (comp instanceof PlanningPokerSessionTab) {
 			return ViewMode.EDITING;
 		}
-		// If the session is open for voting 
+		// If the session is open for voting
 		if (comp instanceof VotingPage) {
 			return ViewMode.VOTING;
 		}

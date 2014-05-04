@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -77,7 +79,7 @@ public class CreateDeck extends JPanel {
 	private void buildPanel() {
 		springLayout = new SpringLayout();
 		setLayout(springLayout);
-		setPreferredSize(new Dimension(390, 350));
+		setPreferredSize(new Dimension(405, 350));
 
 		final JLabel lblDeckName = new JLabel("Deck Name:* ");
 		
@@ -111,12 +113,7 @@ public class CreateDeck extends JPanel {
 		btnAddCard.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					final int value = Integer.parseInt(txtCardValue.getText());
-					addCard(value);
-					txtCardValue.setText("");
-					refresh();
-				} catch (NumberFormatException ex) {}
+				addCardPressed();
 			}
 		});
 		lblAddCardError.setVisible(false);
@@ -141,6 +138,24 @@ public class CreateDeck extends JPanel {
 		});
 		txtCardValue.setText("0");
 		txtCardValue.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		txtCardValue.addKeyListener(
+				new KeyListener(){
+					@Override
+					public void keyPressed(KeyEvent e){
+
+						if(e.getKeyChar() == KeyEvent.VK_ENTER){
+							addCardPressed();
+						}
+					}
+
+					@Override
+					public void keyTyped(KeyEvent e) {
+					}
+					@Override
+					public void keyReleased(KeyEvent e) {
+					}
+       });
 
 		buildCardTable();
 
@@ -229,7 +244,7 @@ public class CreateDeck extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, lblAddCardError, 0, SpringLayout.VERTICAL_CENTER, lblCard);
 		springLayout.putConstraint(SpringLayout.WEST, lblAddCardError, 10, SpringLayout.EAST, lblCard);
-
+		
 		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, this);
 		
@@ -256,7 +271,7 @@ public class CreateDeck extends JPanel {
 		add(btnCancel);
 		add(lblNoCardsError);
 		add(cardArea);
-		
+
 		refresh();
 	}
 
@@ -427,6 +442,11 @@ public class CreateDeck extends JPanel {
 			btnAddCard.setEnabled(false);
 			lblAddCardError.setVisible(false);
 		}
+		if (txtCardValue.getText().length() > 3 && !txtCardValue.getText().equals("")){
+			btnAddCard.setEnabled(false);
+			lblAddCardError.setVisible(true);
+			lblAddCardError.setText("Enter 3 or less digits");
+		}
 		else {
 			try {
 				if (Integer.parseInt(txtCardValue.getText()) >= 0) {
@@ -435,12 +455,14 @@ public class CreateDeck extends JPanel {
 				}
 				else {
 					btnAddCard.setEnabled(false);
-					lblAddCardError.setVisible(true);	
+					lblAddCardError.setVisible(true);
+					lblAddCardError.setText("Value must be positive");
 				}
 				// Disable and warn if it is not a number
 			} catch (NumberFormatException ex) {
 				btnAddCard.setEnabled(false);
 				lblAddCardError.setVisible(true);
+				lblAddCardError.setText("Please enter a number");
 			}
 		}
 	}
@@ -490,6 +512,20 @@ public class CreateDeck extends JPanel {
 				DeckListener l = e.nextElement();
 				l.deckSubmitted(event);
 			}
+		}
+	}
+	
+	/**
+	 * Adds a card based on the number currently in txtCardValue
+	 */
+	public void addCardPressed(){
+		try {
+			final int value = Integer.parseInt(txtCardValue.getText());
+			addCard(value);
+			txtCardValue.setText("");
+			refresh();
+		} catch (NumberFormatException ex) {
+			System.out.print(ex.getMessage());
 		}
 	}
 

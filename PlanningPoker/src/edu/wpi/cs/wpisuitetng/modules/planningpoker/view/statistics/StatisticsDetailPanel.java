@@ -9,12 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.util.List;
-import java.util.Set;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
@@ -24,40 +18,31 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
+/**
+ * Panel for displaying details and statistics on requirements that have been voted on.
+ * Details include: name, description, mean, std. deviation, who voted, and their votes.
+ */
 public class StatisticsDetailPanel extends JSplitPane {
-	PlanningPokerSession currentSession;
-	StatisticsUserTable userTable;
-	StatisticsInfoPanel infoPanel;
-	JScrollPane tablePanel;
+	private PlanningPokerSession currentSession;
+	private StatisticsUserTable userTable;
+	private JScrollPane tablePanel;
+	private StatisticsInfoPanel infoPanel;
 
-	int selectedReqID;
-	JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
-	JPanel reqOverviewTablePanel = new JPanel();
-	SpringLayout reqOverviewLayout = new SpringLayout();
+	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
+	private JPanel reqOverviewTablePanel = new JPanel();
+	private SpringLayout reqOverviewLayout = new SpringLayout();
 
 	public StatisticsDetailPanel (PlanningPokerSession session) {
 
 		currentSession = session;
-		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
-		final String[] userColumnNames = {"User", "Estimate"};
-		final Object[][] userData = {};
-		
-		// Create the info panel and table panel
-		userTable = new StatisticsUserTable(userData, userColumnNames);
-		tablePanel = new JScrollPane(userTable);
-		infoPanel = new StatisticsInfoPanel(currentSession);
-		
-		
-		userTable.getColumnModel().getColumn(0).setMinWidth(200); // Requirement Name
-		userTable.getColumnModel().getColumn(1).setMinWidth(100); // User Vote
+		// Create the voted user table
+		userTable = new StatisticsUserTable(currentSession, -1);
+		userTable.getColumnModel().getColumn(0).setMinWidth(200); // User name
 		userTable.getColumnModel().getColumn(1).setMaxWidth(100); // User Vote
+		tablePanel = new JScrollPane(userTable);
 
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
@@ -68,68 +53,32 @@ public class StatisticsDetailPanel extends JSplitPane {
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
-		
 		reqOverviewTablePanel.add(tablePanel);
 		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
+		
+		// Create the info panel (display requirement details and voting statistics
+		infoPanel = new StatisticsInfoPanel(currentSession);
 	
 		// Put the info panel and table panel into the split pane
-		this.setLeftComponent(infoPanel);
-		this.setRightComponent(reqOverviewTablePanel);
-		this.setResizeWeight(0.5); 
+		setLeftComponent(infoPanel);
+		setRightComponent(reqOverviewTablePanel);
+		setResizeWeight(0.5); 
 		
 		// Makes the split pane divide 50/50 for each portion
-		final Dimension d = new Dimension(100, 100);
+		Dimension d = new Dimension(100, 100);
         infoPanel.setMinimumSize(d);
         infoPanel.setPreferredSize(d);
         tablePanel.setMinimumSize(d);
-        
-        this.updatePanel();
-        
 	}
 	
-	public void updatePanel()	{
-
-		
-		// update each part of the split panel
-		updateInfoPanel(currentSession);
-		updateReqTable(currentSession);
-		
-		// change the visibility of the top buttons
-		setButtonVisibility(currentSession);
-	}	
-	
-	private void updateInfoPanel(PlanningPokerSession session) {
-		infoPanel.refresh(session);
+	/**
+	 * Updates all panels with details for the input requirement
+	 * @param requirementID	The ID of the requirement to display details for
+	 */
+	public void updatePanel(int requirementID)	{
+		infoPanel.setCurrentReqID(requirementID);
+		infoPanel.refresh(currentSession);
+		userTable.updateTable(requirementID);
 	}
-
-	private void updateReqTable(PlanningPokerSession session) {
-		userTable.refresh(session);
-		
-	}
-
-	private void setButtonVisibility(PlanningPokerSession session) {
-		// TODO
-		// Check if the buttons should appear
-		/*
-			btnEdit.isVisible(false);
-			if (session.isEditable()) {
-				btnEdit.isVisible(true);
-			}
-		*/
-	}
-	
-	public PlanningPokerSession getCurrentSession() {
-		
-		return currentSession;
-	}
-	
-	public void setRequirementID(int ID) {
-		infoPanel.setRequirementID(ID);
-	}
-
-	public StatisticsInfoPanel getInfoPanel() {
-		return infoPanel;
-	}
-	
 	
 }

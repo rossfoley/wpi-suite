@@ -37,7 +37,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
 /**
  * Displays all sessions in a tree for the left side of the overview panel
  * @see requirementmanager.view.overview.overviewtree
- * @author Randy Acheson
  * @version 4/18/14
  */
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
@@ -54,13 +53,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         ViewEventController.getInstance().setOverviewTree(this);
 		this.refresh();  
 		initialized = false;
-		// Disable all toolbar buttons on initialization
-		try {
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
-		} catch (NullPointerException ex) {} // Do nothing if the toolbar has not been instantiated yet
 	}
 	
 	/**
@@ -116,8 +108,6 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         this.setViewportView(tree); //make panel display the tree
         
         ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
-
-        //System.out.println("finished refreshing the tree");
 	}
 	
 	/**
@@ -138,10 +128,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				// If the node is a PlanningPokerSession
 				if (node.getUserObject() instanceof PlanningPokerSession) {
 					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
+
 					if(e.getClickCount() == 2) {
 						doubleClickOpenSession(session);
 					} else {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
+
 						displaySession(session);
 					}
 				}
@@ -154,6 +145,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @param session The session that has been selected
 	 */
 	protected void displaySession(PlanningPokerSession session) {
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
 		ViewEventController.getInstance().displayDetailedSession(session);
 	}
 	
@@ -189,8 +181,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
 	/**
-	 * @return the tree */
+	 * @return the tree
+	 */
 	public JTree getTree() {
 		return tree;
 	}
