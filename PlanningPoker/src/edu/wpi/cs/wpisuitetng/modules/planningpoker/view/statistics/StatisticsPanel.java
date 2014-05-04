@@ -26,7 +26,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	private StatisticsReqTable reqTable;
 	private JScrollPane tablePanel;
 	private JPanel reqOverviewTablePanel = new JPanel();
-	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
 	
 	private StatisticsDetailPanel detailPanel;
 	private SpringLayout reqOverviewLayout = new SpringLayout();
@@ -63,16 +62,12 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.EAST, submitFinalEstimatesBtn, -10, SpringLayout.EAST, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
 		reqOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
 		
 		reqOverviewTablePanel.add(tablePanel);
-		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 		
 		// Put the overview table and sidebar into the tab
 		setLeftComponent(tablePanel);
