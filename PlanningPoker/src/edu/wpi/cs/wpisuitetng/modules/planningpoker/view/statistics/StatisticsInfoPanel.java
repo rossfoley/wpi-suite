@@ -67,6 +67,7 @@ public class StatisticsInfoPanel extends JPanel {
 	private int userEstimate;
 	private final JLabel estimateFieldErrorMessage = new JLabel("");
 	private final JLabel estimateSubmittedMessage = new JLabel("Your final estimate has been submitted");
+	private final JLabel estimateUnchangedMessage = new JLabel("This is the current estimate");
 	private JButton submitFinalEstimateButton;
 	private int currentReqID = -1;
 	private Requirement aReq; 
@@ -114,6 +115,7 @@ public class StatisticsInfoPanel extends JPanel {
 		add(submitFinalEstimateButton);
 		add(estimateFieldErrorMessage);
 		add(estimateSubmittedMessage);
+		add(estimateUnchangedMessage);
 	}
 	
 	public void refresh(PlanningPokerSession session) {
@@ -163,15 +165,19 @@ public class StatisticsInfoPanel extends JPanel {
 		else {
 			estimateField.setText("");
 		}
+		
+		estimateSubmittedMessage.setVisible(false);
+		estimateUnchangedMessage.setVisible(false);
 	}
 	
 	/**
 	 * Create the text box to submit estimates
 	 */
 	public void buildSubmitEstimateField() {
-		estimateFieldErrorMessage.setForeground(Color.RED); 
+		estimateFieldErrorMessage.setForeground(Color.RED);
 		estimateSubmittedMessage.setForeground(Color.BLUE);
 		estimateSubmittedMessage.setVisible(false);
+		estimateUnchangedMessage.setVisible(false);
 		
 		estimateField = new JTextField();
 		estimateField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -196,6 +202,7 @@ public class StatisticsInfoPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				estimateSubmittedMessage.setVisible(false);
+				estimateUnchangedMessage.setVisible(false);
 			}
 		});
 		
@@ -263,8 +270,17 @@ public class StatisticsInfoPanel extends JPanel {
 			estimateFieldErrorMessage.setVisible(false);
 			estimateFieldErrorMessage.revalidate();
 			estimateFieldErrorMessage.repaint();
-			submitFinalEstimateButton.setEnabled(true);
-			return true;
+			//TODO find out if this is a worthwhile feature
+			if (RequirementModel.getInstance().getRequirement(currentReqID).getEstimate() == userEstimate) {
+				estimateUnchangedMessage.setVisible(true);
+				submitFinalEstimateButton.setEnabled(false);
+				return false;
+			}
+			else {
+				estimateUnchangedMessage.setVisible(false);
+				submitFinalEstimateButton.setEnabled(true);
+				return true;
+			}
 		}
 	}
 
@@ -366,6 +382,9 @@ public class StatisticsInfoPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.NORTH, estimateSubmittedMessage, 7, SpringLayout.SOUTH, estimateField);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateSubmittedMessage, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, estimateUnchangedMessage, 7, SpringLayout.SOUTH, estimateField);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimateUnchangedMessage, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
 	}
 
 	public void setCurrentReqID(int ID) {
@@ -379,10 +398,12 @@ public class StatisticsInfoPanel extends JPanel {
 		if (session.getReqsWithExportedEstimatesList().contains(reqToSendFinalEstimate)) {
 			//TODO get confirmation on popup as a valid way of asking for the explanation
 			String explanation = JOptionPane.showInputDialog(this, "Please enter the reason for this change");
-			if (explanation == null) {
+			if (explanation == null || explanation.isEmpty()) {
+				//TODO check for valid input inside the popup window
 				hadValidReason = false;
 			}
 			else {
+				System.out.println("explanation was: " + explanation);
 				session.addReqWithExplainedChange(reqToSendFinalEstimate.getId(), explanation);
 			}
 		}
