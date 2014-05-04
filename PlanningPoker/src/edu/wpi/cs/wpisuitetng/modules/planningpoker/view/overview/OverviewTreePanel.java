@@ -75,6 +75,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 			tree.expandRow(i);
 		}
 		
+		OverviewDetailPanel overviewPanel = ViewEventController.getInstance().getOverviewDetailPanel();
+		if (overviewPanel != null) {
+			overviewPanel.clearPanel();
+			ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel);
+		}
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
         tree.setToggleClickCount(0);
  
@@ -85,7 +90,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         tree.setDropMode(DropMode.ON);
         
         this.setViewportView(tree); //make panel display the tree
-        
+        ViewEventController.getInstance().disableButtons();
         ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
 	}
 	
@@ -115,6 +120,11 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 						displaySession(session);
 					}
 				}
+				else {
+					OverviewDetailPanel overviewDetails = ViewEventController.getInstance().getOverviewDetailPanel();
+					overviewDetails.clearPanel();
+					ViewEventController.getInstance().setOverviewDetailPanel(overviewDetails);
+				}
 			}
 		}
 	}
@@ -127,6 +137,12 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		final DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
 		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
 		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Archived Sessions");
+		
+		OverviewDetailPanel overviewPanel = ViewEventController.getInstance().getOverviewDetailPanel();
+		if (overviewPanel != null) {
+			overviewPanel.clearPanel();
+			ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel);
+		}
 		
 		for(PlanningPokerSession session : sessions) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
