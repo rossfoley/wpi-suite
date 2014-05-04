@@ -36,6 +36,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -272,11 +273,15 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		disabledDatePicker.add(disabledButton, BorderLayout.LINE_END);
 
 		// Setup colors and initial values for the panel elements
+		final JScrollPane descrScroll = new JScrollPane();		
 		textFieldDescription.setToolTipText("");
 		textFieldDescription.setText(pokerSession.getDescription());
 		textFieldSessionField.setText(pokerSession.getName());
 		textFieldSessionField.setColumns(10);
 		textFieldDescription.setColumns(10);
+		textFieldDescription.setLineWrap(true);
+		textFieldDescription.setWrapStyleWord(true);
+		descrScroll.setViewportView(textFieldDescription);
 		comboTime.setBackground(Color.WHITE);
 		comboAMPM.setBackground(Color.WHITE);
 		comboTime.setEnabled(false);
@@ -311,13 +316,13 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionDescription, 6, SpringLayout.SOUTH, textFieldSessionField);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionDescription, 0, SpringLayout.WEST, lblSessionName);
 
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, textFieldDescription, 6, SpringLayout.SOUTH, lblSessionDescription);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, textFieldDescription, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -250, SpringLayout.SOUTH, sessionDetailPanel);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldDescription, -10, SpringLayout.EAST, sessionDetailPanel);					
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, descrScroll, 6, SpringLayout.SOUTH, lblSessionDescription);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, descrScroll, 0, SpringLayout.WEST, lblSessionName);
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, descrScroll, -250, SpringLayout.SOUTH, sessionDetailPanel);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, descrScroll, -10, SpringLayout.EAST, sessionDetailPanel);					
 
 		firstPanelLayout.putConstraint(SpringLayout.WEST, endDateCheckBox, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, endDateCheckBox, 6, SpringLayout.SOUTH, textFieldDescription);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, endDateCheckBox, 6, SpringLayout.SOUTH, descrScroll);
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblEndDate, 6, SpringLayout.SOUTH, endDateCheckBox);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblEndDate, 0, SpringLayout.WEST, lblSessionName);
@@ -503,7 +508,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		sessionDetailPanel.add(lblSessionName);
 		sessionDetailPanel.add(textFieldSessionField);
 		sessionDetailPanel.add(lblSessionDescription);
-		sessionDetailPanel.add(textFieldDescription);
+		sessionDetailPanel.add(descrScroll);
 		sessionDetailPanel.add(lblEndDate);
 		sessionDetailPanel.add(comboTime);
 		sessionDetailPanel.add(comboAMPM);
