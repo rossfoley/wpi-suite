@@ -705,7 +705,6 @@ public class DeckVotingPanel extends JPanel
 		submitButton = new JButton("Resubmit Estimation");
 		estimateSubmittedMessage.setVisible(true);
 		submitButton.setEnabled(false);
-		clearButton.setEnabled(false);
 	}
 
 }
