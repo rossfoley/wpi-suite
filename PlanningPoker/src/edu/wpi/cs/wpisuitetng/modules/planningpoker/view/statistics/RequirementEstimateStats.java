@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -128,7 +129,9 @@ public class RequirementEstimateStats {
 	 * Sorts the list of estimates by vote value
 	 */
 	public void sortEstimatesByVote() {
-		  Collections.sort(estimates);
+		  if (!estimates.isEmpty()) {
+			  Collections.sort(estimates);
+		  }
 	}
 	
 	/**
@@ -156,7 +159,10 @@ public class RequirementEstimateStats {
 	 * @param givenEstimates
 	 */
 	public void setEstimates(List<Estimate> givenEstimates) {
-		estimates = givenEstimates;
+		estimates = new ArrayList<Estimate>();
+		for (Estimate e : givenEstimates) {
+			estimates.add(e);
+		}
 	}
 	
 	/**
@@ -188,8 +194,10 @@ public class RequirementEstimateStats {
 	 * @param anEstimate
 	 */
 	public void add(Estimate anEstimate) {
-		estimates.add(anEstimate);
-		isUpToDate = false; 
+		if (anEstimate.getVote() != 0) {
+			estimates.add(anEstimate);
+			isUpToDate = false;
+		}
 	}
 	
 	public void addAndRefresh(Estimate anEstimate) {
