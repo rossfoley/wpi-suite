@@ -106,6 +106,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private int endHour;
 	private int endMinutes;
 	private boolean isUsingDeck;
+	private int sessionDeckID;
 	private Deck sessionDeck;
 	private JLabel lblSessionEndTime;
 	private JLabel lblEndDate;
@@ -136,7 +137,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		pokerSession = existingSession;
-		//System.out.println(pokerSession.getRequirementIDs());
 		originalReqs = pokerSession.getRequirementIDs();
 		requirementPanel = new RequirementSelectionView(pokerSession);
 		viewMode = (ViewMode.EDITING);
@@ -145,22 +145,23 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		endDateCheckBox.setSelected(dateHasBeenSet);
 		// Update the fields current deck being used
 		isUsingDeck = existingSession.isUsingDeck();
-		sessionDeck = existingSession.getSessionDeck();
+		sessionDeckID = existingSession.getSessionDeckID();
+		sessionDeck = DeckListModel.getInstance().getDeck(sessionDeckID);
 
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
 
 		editedDescription = true;
 
-		this.buildLayouts();
-		this.displayPanel(firstPanel);
+		buildLayouts();
+		displayPanel(firstPanel);
 	}
 
 	private void buildLayouts() {
 		// Apply the layout and build the panels
-		this.setLayout(layout);
-		this.buildFirstPanel();
-		this.buildSecondPanel();
+		setLayout(layout);
+		buildFirstPanel();
+		buildSecondPanel();
 	}
 
 	/**
@@ -877,7 +878,12 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		pokerSession.setName(textFieldSessionField.getText());
 		pokerSession.setDescription(textFieldDescription.getText());
-		pokerSession.setSessionDeck(sessionDeck);
+		if (sessionDeck == null){
+			pokerSession.setSessionDeckID(-1);
+		}
+		else {
+			pokerSession.setSessionDeckID(sessionDeck.getId());
+		}
 		pokerSession.setUsingDeck(isUsingDeck);
 		pokerSession.setSessionCreatorName(ConfigManager.getConfig().getUserName());
 		pokerSession.setRequirements(requirementPanel.getSelected());
@@ -1034,12 +1040,13 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 			return true;
 		}
 		// Check if the poker deck was changed
-		if ((unmodifiedSession.getSessionDeck() == null) ^ (pokerSession.getSessionDeck() == null)) {
+		if (!(unmodifiedSession.isUsingDeck()) == (pokerSession.isUsingDeck())) {
 			return true;
 		}
-		if ((unmodifiedSession.getSessionDeck() != null) && // If one is null, both are null
-				(!unmodifiedSession.getSessionDeck().equals(pokerSession.getSessionDeck()))) {
-			return true;
+		if (unmodifiedSession.isUsingDeck()){
+			if (unmodifiedSession.getSessionDeckID() != pokerSession.getSessionDeckID()){
+				return true;
+			}
 		}
 		// Check if the requirements were changed
 		if (!unmodifiedSession.getRequirementIDs().equals(pokerSession.getRequirementIDs())) {

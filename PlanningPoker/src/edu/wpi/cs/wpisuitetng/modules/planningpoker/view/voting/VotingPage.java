@@ -25,6 +25,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
@@ -224,8 +227,9 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 				}
 			}
 		}
-
-		votingPanel = new DeckVotingPanel(activeSession.getSessionDeck(), estimateFillIn);
+		Deck sessionDeck = DeckListModel.getInstance().getDeck(activeSession.getSessionDeckID());
+		
+		votingPanel = new DeckVotingPanel(sessionDeck, estimateFillIn);
 		votingPanel.addEstimateListener(new EstimateListener() {
 			@Override
 			public void estimateSubmitted(EstimateEvent e) {
