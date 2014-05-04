@@ -7,17 +7,22 @@
  * 
  * Contributors: The Team8s
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 
-import java.util.EventObject;
+import java.util.EventListener;
 
-public class RequirementsSelectedEvent extends EventObject {
-	private final boolean areRequirementsSelected;
+/**
+ * A contract between a RequirementsSelected source and listener classes
+ */
+public class RequirementsSelectedListener implements EventListener {
+	private boolean areRequirementsSelected;
 	
-	public RequirementsSelectedEvent(Object source, boolean areRequirementsSelected) {
-		super(source);
-		
-		this.areRequirementsSelected = areRequirementsSelected;
+	/**
+	 *  Called whenever a requirement has been selected by a
+	 *  RequirementSelected source object 
+	 */
+	public void setRequirementsSelected(RequirementsSelectedEvent e) {
+		areRequirementsSelected = e.areRequirementsSelected();
 	}
 	
 	public boolean areRequirementsSelected() {

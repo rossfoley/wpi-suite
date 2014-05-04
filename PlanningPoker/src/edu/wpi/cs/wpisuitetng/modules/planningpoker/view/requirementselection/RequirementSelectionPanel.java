@@ -8,7 +8,7 @@
  * Contributors: The Team8s
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection;
 /**
  * This Class makes up the panel that handles requirement selection
  * The user can manipulate the selected requirements by selecting
@@ -275,6 +275,54 @@ public class RequirementSelectionPanel extends JPanel{
 
 		update();
 	}
+	
+	/**
+	 * Used to get the unselected list component
+	 * @return unselectedListGui
+	 */
+	public JList getUnselectedList(){
+		return unselectedListGui;
+	}
+	
+	/**
+	 * Used to get the selected list component
+	 * @return selectedListGui
+	 */
+	public JList getSelectedList(){
+		return selectedListGui;
+	}
+	
+	/**
+	 * Used to grab the add button
+	 * @return btnAdd
+	 */
+	public JButton getAddBtn(){
+		return btnAdd;
+	}
+	
+	/**
+	 * Used to get the add all button
+	 * @return btnAddAll
+	 */
+	public JButton getAddAll(){
+		return btnAddAll;
+	}
+	
+	/**
+	 * Used to get the remove button
+	 * @return btnRemove
+	 */
+	public JButton getRemoveBtn(){
+		return btnRemove;
+	}
+	
+	/**
+	 * Used to get the remove all button
+	 * @return btnRemoveAll
+	 */
+	public JButton getRemoveAll(){
+		return btnRemoveAll;
+	}
 
 	/**
 	 * This function creates a list of booleans that is the same size
@@ -320,6 +368,7 @@ public class RequirementSelectionPanel extends JPanel{
 								if (!toRemove.contains(index)) {
 									toRemove.add(index);
 								}
+
 							}
 						}
 					}
@@ -346,9 +395,11 @@ public class RequirementSelectionPanel extends JPanel{
 				}
 			}
 			requirements = (LinkedList<Requirement>)keep;
+
 		}
 		catch (Exception e) {}
 	}
+
 
 	/**
 	 * This function is used to update the lists and the state of 
@@ -409,7 +460,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * 
 	 * @return list of positions
 	 */
-	private List<Integer> getUnselectedPos(){
+	public List<Integer> getUnselectedPos(){
 		final LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : requirements){
 			int pos = requirements.indexOf(rqt);
@@ -425,7 +476,7 @@ public class RequirementSelectionPanel extends JPanel{
 	 * This function get the position of each selected requirement
 	 * @return
 	 */
-	private List<Integer> getSelectedPos(){
+	public List<Integer> getSelectedPos(){
 		final LinkedList<Integer> positions = new LinkedList<Integer>();
 		for (Requirement rqt : requirements){
 			int pos = requirements.indexOf(rqt);
