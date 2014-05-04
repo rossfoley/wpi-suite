@@ -17,9 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 
@@ -27,8 +25,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.List;
 import java.awt.Font;
 
@@ -186,10 +182,13 @@ public class PreferencesPanel extends JPanel {
 		});
 
 		JLabel lblPreferences = new JLabel("Preferences");
+		springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblPreferences, 0, SpringLayout.WEST, this);
+		//springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 10, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblPreferences, 0, SpringLayout.EAST, this);
 		lblPreferences.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPreferences.setVerticalAlignment(SwingConstants.TOP);
 		lblPreferences.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblPreferences, 0, SpringLayout.EAST, lblSub);
 		add(lblPreferences);
 	}
 
@@ -250,9 +249,25 @@ public class PreferencesPanel extends JPanel {
 		
 		//Split into substrings
 		int atPos = localEmailCopy.indexOf('@');
+		int lastAtPos = localEmailCopy.lastIndexOf('@');
 		
 		if (atPos == -1) return false;
+		if (atPos != lastAtPos) return false;
 		
+		if (localEmailCopy.indexOf(',') != - 1) return false;
+		
+		// + - * / \ [ ] | , ; : parentheses ? ^ < > # $ % &  
+		// See if built in validation checks these -- YES
+		InternetAddress internetAddress;
+		try {
+			internetAddress = new InternetAddress(localEmailCopy);
+			internetAddress.validate();
+			
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			return false;
+		}
 		
 		// make sure first part has size
 		String part1 = new String(localEmailCopy.substring(0, atPos));

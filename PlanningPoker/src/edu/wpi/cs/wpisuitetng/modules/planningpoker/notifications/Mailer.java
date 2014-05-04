@@ -34,8 +34,8 @@ public class Mailer {
 	private final Properties properties;
 	private final Session session;
 
-	private final String username = "theteam8s@gmail.com";
-	private final String password = "TheTeam8";
+	private final String username = "wpisuiteplanningpoker@gmail.com";
+	private final String password = "Q1W2E3ASDF";
 
 	//Validate
 
