@@ -409,6 +409,7 @@ public class StatisticsInfoPanel extends JPanel {
 			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
 			RequirementManagerController.getInstance().refreshReqManagerTable();
 			ViewEventController.getInstance().getStatisticsPanel().refresh();
+			ViewEventController.getInstance().getOverviewDetailPanel().updatePanel(session);
 			estimateSubmittedMessage.setVisible(true);
 		}
 	}
