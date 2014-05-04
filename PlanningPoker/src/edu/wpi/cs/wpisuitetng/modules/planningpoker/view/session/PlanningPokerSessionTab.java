@@ -888,7 +888,12 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		pokerSession.setName(textFieldSessionField.getText());
 		pokerSession.setDescription(textFieldDescription.getText());
-		pokerSession.setSessionDeckID(sessionDeck.getId());
+		if (sessionDeck == null){
+			pokerSession.setSessionDeckID(-1);
+		}
+		else {
+			pokerSession.setSessionDeckID(sessionDeck.getId());
+		}
 		pokerSession.setUsingDeck(isUsingDeck);
 		pokerSession.setSessionCreatorName(ConfigManager.getConfig().getUserName());
 		pokerSession.setRequirements(requirementPanel.getSelected());
