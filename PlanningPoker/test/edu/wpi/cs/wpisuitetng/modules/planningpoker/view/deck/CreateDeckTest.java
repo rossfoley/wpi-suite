@@ -53,7 +53,7 @@ public class CreateDeckTest {
 		}
 		
 		Deck expectedDeck = new Deck(expectedCards, false);
-		expectedDeck.setDeckName("Deck 0");
+		expectedDeck.setDeckName("Deck 5");
 		
 		Deck createdDeck = deckPanel.createDeck();
 		// Check Deck name
@@ -76,7 +76,7 @@ public class CreateDeckTest {
 		}
 		
 		Deck expectedDeck = new Deck(expectedCards, false);
-		expectedDeck.setDeckName("Deck 0");
+		expectedDeck.setDeckName("Deck 3");
 		
 		// Setup the DeckListener
 		DeckListener dList = new DeckListener();

@@ -83,7 +83,7 @@ public class DeckListModelTest {
 	@Test
 	public void testGetNextID() {
 		int currentID = DeckListModel.getInstance().getNextID();
-		assertEquals(++currentID, DeckListModel.getInstance().getNextID());
+		assertEquals(currentID, DeckListModel.getInstance().getNextID());
 	}
 
 	@Test
