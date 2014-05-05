@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -357,6 +358,12 @@ public class CreateDeck extends JPanel {
 		// Disable the create button if no deck name
 		if (txtDeckName.getText().equals("")) {
 			btnCreate.setEnabled(false);
+			lblDeckNameError.setText("A deck name is required");
+			lblDeckNameError.setVisible(true);
+		}
+		else if (deckNameExist(txtDeckName.getText())) {
+			btnCreate.setEnabled(false);
+			lblDeckNameError.setText("Deck name already exists");
 			lblDeckNameError.setVisible(true);
 		}
 		else {
@@ -373,6 +380,21 @@ public class CreateDeck extends JPanel {
 
 		// Disable add card button if no text entered
 		warnCardValue();
+	}
+
+	/**
+	 * Checks whether the desired deck name is already a deck name in the model 
+	 * @return	If the deck name already exists
+	 */
+	private boolean deckNameExist(String deckName) {
+		List<Deck> decks = DeckListModel.getInstance().getDecks();
+		// Check all decks if the name is the same
+		for (Deck d : decks) {
+			if (deckName.equals(d.getDeckName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

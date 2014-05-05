@@ -14,18 +14,15 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
-/**this class manages all decks and keeps track of a list of all of them
- * 
- * 
- * @author amandaadkins
+/**
+ * This class manages all decks and keeps track of a list of all of them
  *
  */
 public class DeckListModel extends AbstractListModel {
 	
 	/** 
-	 * the list in which all the decks for a project are contained
+	 * The list in which all the decks for a project are contained
 	 */
 	private final List<Deck> existingDecks;
 	private int nextID; // the next available id for a deck
