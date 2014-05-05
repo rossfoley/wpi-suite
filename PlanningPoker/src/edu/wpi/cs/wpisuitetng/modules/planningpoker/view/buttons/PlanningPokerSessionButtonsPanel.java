@@ -180,6 +180,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	 */
 	public void enableButtonsForSession(PlanningPokerSession session) {
 		if (session == null) {
+			disableAllButtons();
 			return;
 		}
 		
