@@ -14,18 +14,15 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddDeckController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
-/**this class manages all decks and keeps track of a list of all of them
- * 
- * 
- * @author amandaadkins
+/**
+ * This class manages all decks and keeps track of a list of all of them
  *
  */
 public class DeckListModel extends AbstractListModel {
 	
 	/** 
-	 * the list in which all the decks for a project are contained
+	 * The list in which all the decks for a project are contained
 	 */
 	private final List<Deck> existingDecks;
 	private int nextID; // the next available id for a deck
@@ -63,6 +60,7 @@ public class DeckListModel extends AbstractListModel {
 	}
 	
 	public void addDeck(Deck newDeck){
+		
 		newDeck.setId(getNextID());
 		if (newDeck.getDeckName().equals("")){
 			newDeck.setDeckName(newDeck.autoName());
@@ -104,8 +102,16 @@ public class DeckListModel extends AbstractListModel {
 		return null;
 	}
 	
+	/**
+	 * @return	The next Deck ID to use
+	 */
 	public int getNextID(){
-		return nextID++;
+		int id = 0;
+		for (Deck d: existingDecks) {
+			if (id <= d.getId())
+				id = d.getId();
+		}
+		return ++id;
 	}
 	
 	/**

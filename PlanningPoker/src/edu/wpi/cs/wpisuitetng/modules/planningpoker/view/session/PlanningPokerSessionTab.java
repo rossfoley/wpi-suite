@@ -629,7 +629,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 					saveFields();
 					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
-
+					
 					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
 
