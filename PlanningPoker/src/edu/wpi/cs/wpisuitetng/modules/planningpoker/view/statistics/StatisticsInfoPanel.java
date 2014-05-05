@@ -72,6 +72,8 @@ public class StatisticsInfoPanel extends JPanel {
 	private Requirement aReq; 
 	private final PlanningPokerSession session;
 	
+	private boolean isAutofilledMean = false;
+	
 	public StatisticsInfoPanel(PlanningPokerSession aSession) {
 		session = aSession; 
 		lblReqName = new JLabel("Name:");
@@ -136,10 +138,12 @@ public class StatisticsInfoPanel extends JPanel {
 			if (session.getReqsWithExportedEstimatesList().contains(aReq)) {
 				Integer existingReqEstimate = RequirementModel.getInstance().getRequirement(currentReqID).getEstimate();
 				estimateField.setText(existingReqEstimate.toString());
+				isAutofilledMean = false;
 				submitFinalEstimateButton.setText("Resubmit Final Estimate");
 			}
 			else {
 				estimateField.setText(formatMeanAsInt(session.getReqEstimateStats().get(currentReqID)));
+				isAutofilledMean = true;
 				submitFinalEstimateButton.setText("Submit Final Estimate");
 			}
 			
@@ -208,6 +212,9 @@ public class StatisticsInfoPanel extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				estimateSubmittedMessage.setVisible(false);
 				estimateUnchangedMessage.setVisible(false);
+				if (isAutofilledMean) {
+					estimateField.setText("");
+				}
 			}
 		});
 		

@@ -148,10 +148,8 @@ public class StatisticsReqTable extends JTable {
 	public void paintComponent(Graphics g)
 	{
 		if(!initialized) {
-			try {
-				GetSessionController.getInstance().retrieveSessions();
-				initialized = true;
-			} catch (Exception e) {}
+			GetSessionController.getInstance().retrieveSessions();
+			initialized = true;
 		}
 
 		super.paintComponent(g);
