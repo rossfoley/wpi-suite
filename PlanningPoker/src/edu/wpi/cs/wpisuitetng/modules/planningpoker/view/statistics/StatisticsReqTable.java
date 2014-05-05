@@ -73,7 +73,7 @@ public class StatisticsReqTable extends JTable {
 		
 		/* Create double-click event listener */
 		addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				int rowNumber = rowAtPoint(getMousePosition());
 				// If the row exists
 				if (tableRows.containsKey(rowNumber)) {
