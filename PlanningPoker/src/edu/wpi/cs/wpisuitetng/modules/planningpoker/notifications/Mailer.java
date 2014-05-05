@@ -140,7 +140,7 @@ public class Mailer {
 				Transport.send(message);
 			}catch (MessagingException mex) {
 				// try using alternate email address
-				if (alternate == 7) {
+				if (alternate == 6) {
 					mex.printStackTrace();
 					return false; // unless we already are
 				}
