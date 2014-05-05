@@ -200,10 +200,11 @@ public class CreateDeck extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fireDeckEvent(createDeck());
+				System.out.println("There are: " + DeckListModel.getInstance().getDecks().size() + " decks after creating that deck.");
 			}
 		});
 
-		// Create cancel button
+		// Cancel button
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override

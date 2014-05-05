@@ -60,6 +60,7 @@ public class DeckListModel extends AbstractListModel {
 	}
 	
 	public void addDeck(Deck newDeck){
+		
 		newDeck.setId(getNextID());
 		if (newDeck.getDeckName().equals("")){
 			newDeck.setDeckName(newDeck.autoName());
@@ -102,7 +103,12 @@ public class DeckListModel extends AbstractListModel {
 	}
 	
 	public int getNextID(){
-		return nextID++;
+		int id = 0;
+		for (Deck d: existingDecks) {
+			if (id <= d.getId())
+				id = d.getId();
+		}
+		return ++id;
 	}
 	
 	/**

@@ -629,7 +629,14 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 					saveFields();
 					pokerSession.setGameState(SessionState.OPEN);
 					submitSessionToDatabase();
-
+					System.out.println(pokerSession.getSessionDeckID());
+					System.out.println(DeckListModel.getInstance().getDeck(pokerSession.getSessionDeckID()));
+					List<Deck> testDecks = new LinkedList<Deck>();
+					testDecks = DeckListModel.getInstance().getDecks();
+					for(Deck d:testDecks){
+						System.out.println("Deck: " + d.getDeckName() + " has ID: " + d.getId());
+					}
+					
 					final List<String> recipients = new LinkedList<String>();
 					List<EmailAddress> emailRecipients = null;
 
