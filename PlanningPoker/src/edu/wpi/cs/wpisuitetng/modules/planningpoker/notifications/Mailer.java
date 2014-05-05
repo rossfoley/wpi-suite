@@ -24,6 +24,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
 /**
@@ -32,11 +33,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
  */
 public class Mailer {
 	private final Properties properties;
-	private final Session session;
+	private Session session;
 
 	private final String username = "wpisuiteplanningpoker@gmail.com";
 	private final String password = "Q1W2E3ASDF";
+	
+	private final String username2 = "wpisuiteplanningpoker2@gmail.com";
+	private final String password2 = "Q1W2E3ASDF";
 
+	private boolean isAlternate;
 	//Validate
 
 	/**
@@ -45,6 +50,8 @@ public class Mailer {
 	 */
 	public Mailer()
 	{
+		// Uses primary credentials
+		isAlternate = false;
 		// Get system properties
 		properties = System.getProperties();
 
@@ -72,6 +79,8 @@ public class Mailer {
 		});
 	}
 
+	
+	
 	/**
 	 * Sends an email to the given recipient with the given subject as it's subject and the given body as its content.
 	 * @param recipient The email of who you want to send the mail to. It needs to be a proper email address
@@ -80,8 +89,6 @@ public class Mailer {
 	 * @return True if email was sent successfully, false otherwise.
 	 */
 	public boolean mailTo(String recipient, String subject, String body){
-		//System.out.println("starting to mail");
-
 		if (recipient == null || subject == null || body == null) {
 			return false;
 		}
@@ -124,7 +131,19 @@ public class Mailer {
 				// Send message
 				Transport.send(message);
 			}catch (MessagingException mex) {
-				mex.printStackTrace();
+				// try using alternate email address
+				if (isAlternate) {
+					mex.printStackTrace();
+					return false; // unless we already are
+				}
+				isAlternate = true;
+				session = Session.getInstance(properties,
+						new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username2, password2);
+					}
+				});
+				mailTo(recipient, subject, body);
 			}
 		}
 		if (!isValidSender){
@@ -174,6 +193,13 @@ public class Mailer {
 		if (recipients == null || planningPokerSession == null) {
 			return null;
 		}
+		
+		String url = ConfigManager.getConfig().getCoreUrl().toString();
+        int offset = 3;
+        if (url.endsWith("/API/")) {
+            offset++;
+        }
+        String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
 
 		boolean thisValid;
 		if (planningPokerSession.getEndDate() != null) { 
@@ -188,7 +214,9 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. Its end date is: " + endTime + ".  \n\nGood Luck! \n\n --Your Development Team");
+						" has been started. Its end date is: " + endTime + ".  "
+						+ finalUrl +
+						"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
 				}
@@ -198,7 +226,9 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. The session doesn't currently have an end date. \n\nGood Luck! \n\n --Your Development Team");
+						" has been started. The session doesn't currently have an end date. "
+						+ finalUrl +
+						"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
 				}
