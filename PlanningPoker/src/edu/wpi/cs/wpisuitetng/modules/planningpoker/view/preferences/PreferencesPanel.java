@@ -45,9 +45,11 @@ import javax.swing.event.DocumentListener;
 
 /**
  * This class implements an interface to manage user preferences.
+ * @author theTeam8s
+ * @version 1.0
  */
 public class PreferencesPanel extends JPanel {
-	private JTextField txtEnterEmailHere;
+	private final JTextField txtEnterEmailHere;
 	JLabel lblEmailErrorText;
 	JLabel lblEmailSubmitted;
 	
@@ -56,7 +58,7 @@ public class PreferencesPanel extends JPanel {
 	/**
 	 * Constructs the Preferences Panel
 	 */
-	public PreferencesPanel() {		
+	public PreferencesPanel() {
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 
@@ -125,8 +127,8 @@ public class PreferencesPanel extends JPanel {
 		});
 		
 		txtEnterEmailHere.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {	
-				String email = txtEnterEmailHere.getText();	
+			public void mousePressed(MouseEvent e) {
+				final String email = txtEnterEmailHere.getText();	
 				if (email.equals("Enter Email Here...")){
 					txtEnterEmailHere.setText("");
 				}
@@ -142,16 +144,16 @@ public class PreferencesPanel extends JPanel {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				String email = txtEnterEmailHere.getText();	
+				final String email = txtEnterEmailHere.getText();
 				if (email.equals("")) {
 					btnSubmit.setEnabled(false);
 					txtEnterEmailHere.setText("Enter Email Here...");
 					lblEmailErrorText.setVisible(false);
-				}				
-			}			
+				}
+			}
 		});
 
-		JLabel lblPreferences = new JLabel("Preferences");
+		final JLabel lblPreferences = new JLabel("Preferences");
 		springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblPreferences, 0, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, lblPreferences, 0, SpringLayout.EAST, this);
@@ -164,13 +166,13 @@ public class PreferencesPanel extends JPanel {
 	private void displayMessages() {
 		// Get rid of submission message if necessary
 		lblEmailSubmitted.setVisible(false);
-		String email = txtEnterEmailHere.getText();
+		final String email = txtEnterEmailHere.getText();
 		// Should be a special case
 		if (email.equals("")) {
 			lblEmailErrorText.setVisible(false);
 			btnSubmit.setEnabled(false);
 		}
-		else if (validateEmail(email) == true) {
+		else if (validateEmail(email)) {
 			lblEmailErrorText.setText("Valid Email");
 			lblEmailErrorText.setForeground(Color.BLUE);
 			lblEmailErrorText.setVisible(true);
@@ -185,7 +187,8 @@ public class PreferencesPanel extends JPanel {
 	}
 	
 	/**
-	 * This method contains all the functionality of user hitting the submit button for the email box.
+	 * This method contains all the functionality of user 
+	 * hitting the submit button for the email box.
 	 */
 	void submitEmail() {
 		// Give immediate user feedback
@@ -209,7 +212,7 @@ public class PreferencesPanel extends JPanel {
 			emailRecipients = emailAddressModel.getEmailAddresses();
 		}
 		catch (Exception E) {
-
+			System.out.print(E.getMessage());
 		}
 		
 		final String userName = ConfigManager.getConfig().getUserName();
@@ -226,21 +229,24 @@ public class PreferencesPanel extends JPanel {
 		else {
 			EmailAddressModel.getInstance().addEmail(newEmail);
 		}
-		// Save when this happened so the success message can go away in 10 mins, not sticking around indefinitely
+		// Save when this happened so the success message can 
+		//    go away in 10 mins, not sticking around indefinitely
 		emailLastSubmitted = System.currentTimeMillis();
 	}
 
 	/**
 	 * This function validates a given email address for form.
+	 * @param email the email to be checked
+	 * @return whether the email is valid
 	 */
 	boolean validateEmail(String email) {
-		String localEmailCopy = new String (email);
+		final String localEmailCopy = new String (email);
 		
 		// Built in validation has bugs, re-implementing myself
 		
 		//Split into substrings
-		int atPos = localEmailCopy.indexOf('@');
-		int lastAtPos = localEmailCopy.lastIndexOf('@');
+		final int atPos = localEmailCopy.indexOf('@');
+		final int lastAtPos = localEmailCopy.lastIndexOf('@');
 		
 		if (atPos == -1) return false;
 		if (atPos != lastAtPos) return false;
@@ -249,7 +255,7 @@ public class PreferencesPanel extends JPanel {
 		
 		// + - * / \ [ ] | , ; : parentheses ? ^ < > # $ % &  
 		// See if built in validation checks these -- YES
-		InternetAddress internetAddress;
+		final InternetAddress internetAddress;
 		try {
 			internetAddress = new InternetAddress(localEmailCopy);
 			internetAddress.validate();
@@ -261,11 +267,11 @@ public class PreferencesPanel extends JPanel {
 		}
 		
 		// make sure first part has size
-		String part1 = new String(localEmailCopy.substring(0, atPos));
+		final String part1 = new String(localEmailCopy.substring(0, atPos));
 		if (part1.length() < 1) return false;
 		
 		// test if second part is at last a.a
-		String part2 = new String (localEmailCopy.substring(atPos+1));
+		final String part2 = new String (localEmailCopy.substring(atPos + 1));
 		
 		if (part2.length() < 3) return false;
 		if (part2.indexOf('.') == -1) return false;
@@ -282,7 +288,7 @@ public class PreferencesPanel extends JPanel {
 	 */
 	public void repaint(Graphics g) {
 		super.repaint();
-		if (System.currentTimeMillis() > emailLastSubmitted + 1000*60*10) {
+		if (System.currentTimeMillis() > emailLastSubmitted + 1000 * 60 * 10) {
 			lblEmailSubmitted.setVisible(false);
 		}
 	}
