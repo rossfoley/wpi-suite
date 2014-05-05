@@ -35,10 +35,12 @@ public class DeckListPanel extends JScrollPane
 
 	private final List<Deck> decks;
 	private transient Vector<DeckListener> deckListeners;
+	private DeckViewer parent;
 
-	public DeckListPanel(List<Deck> decks) {		
+	public DeckListPanel(List<Deck> decks, DeckViewer parent) {		
 		setName("Deck List Scroll Panel");
 		this.decks = decks;
+		this.parent = parent;
 
 		// Add deck names to the list model
 		listModel = new DefaultListModel<>();
@@ -99,8 +101,14 @@ public class DeckListPanel extends JScrollPane
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
         if ((e.getValueIsAdjusting() == false) && (deckList.getSelectedIndex() >= 0)) {
-            	fireDeckSelectionEvent(decks.get(deckList.getSelectedIndex()));
+        	parent.setLastDeck(decks.get(deckList.getSelectedIndex()));
+        	fireDeckSelectionEvent(decks.get(deckList.getSelectedIndex()));
         }
+	}
+	
+	public void setSelectedDeck(Deck deck) {
+		int pos = decks.indexOf(deck);
+		deckList.setSelectedIndex(pos);
 	}
 	
 }
