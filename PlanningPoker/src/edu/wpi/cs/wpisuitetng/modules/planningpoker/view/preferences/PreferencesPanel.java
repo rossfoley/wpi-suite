@@ -35,7 +35,7 @@ import javax.swing.event.DocumentListener;
 
 /**
  * 
- * @author Andrew Leonard
+ * @author Andrew Leonard, Cameron Peterson
  *
  */
 
@@ -43,12 +43,12 @@ import javax.swing.event.DocumentListener;
  * This class implements an interface to manage user preferences.
  */
 public class PreferencesPanel extends JPanel {
-	private final JTextField txtEnterEmailHere;
+	private JTextField txtEnterEmailHere;
 	JLabel lblEmailErrorText;
 	JLabel lblEmailSubmitted;
 	
 	long emailLastSubmitted;
-	
+	JButton btnSubmit = new JButton("Submit");
 	/**
 	 * Constructs the Preferences Panel
 	 */
@@ -70,7 +70,6 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, lblSub, -240, SpringLayout.EAST, this);
 		add(lblSub);
 
-		final JButton btnSubmit = new JButton("Submit");
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnSubmit, 0, SpringLayout.VERTICAL_CENTER, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -30, SpringLayout.EAST, this);
@@ -101,83 +100,23 @@ public class PreferencesPanel extends JPanel {
 				submitEmail();
 			}
 		});
-
+		
 		// Add live listener to input text field for live validation
 		txtEnterEmailHere.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				// Get rid of submission message if necessary
-				lblEmailSubmitted.setVisible(false);
-				final String email = txtEnterEmailHere.getText();
-				// Should be a special case
-				if (email.equals("")) {
-					lblEmailErrorText.setVisible(false);
-					btnSubmit.setEnabled(false);
-				}
-				else if (validateEmail(email) == true) {
-					lblEmailErrorText.setText("Valid Email");
-					lblEmailErrorText.setForeground(Color.BLUE);
-					lblEmailErrorText.setVisible(true);
-					btnSubmit.setEnabled(true);
-				}
-				else {
-					lblEmailErrorText.setText("Invalid Email");
-					lblEmailErrorText.setForeground(Color.RED);
-					lblEmailErrorText.setVisible(true);
-					btnSubmit.setEnabled(false);
-				}
+				displayMessages();
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				// Get rid of submission message if necessary
-				lblEmailSubmitted.setVisible(false);
-				final String email = txtEnterEmailHere.getText();
-				// Should be a special case
-				if (email.equals("")) {
-					lblEmailErrorText.setVisible(false);
-					btnSubmit.setEnabled(false);
-				}
-
-				else if (validateEmail(email) == true) {
-					lblEmailErrorText.setText("Valid Email");
-					lblEmailErrorText.setForeground(Color.BLUE);
-					lblEmailErrorText.setVisible(true);
-					btnSubmit.setEnabled(true);
-				}
-				else {
-					lblEmailErrorText.setText("Invalid Email");
-					lblEmailErrorText.setForeground(Color.RED);
-					lblEmailErrorText.setVisible(true);
-					btnSubmit.setEnabled(false);
-				}
-
+				displayMessages();
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// Get rid of submission message if necessary
-				lblEmailSubmitted.setVisible(false);
-				final String email = txtEnterEmailHere.getText();
 
-				// Should be a special case
-				if (email.equals("")) {
-					lblEmailErrorText.setVisible(false);
-					btnSubmit.setEnabled(false);
-				}
-
-				else if (validateEmail(email) == true) {
-					lblEmailErrorText.setText("Valid Email");
-					lblEmailErrorText.setForeground(Color.BLUE);
-					lblEmailErrorText.setVisible(true);
-					btnSubmit.setEnabled(true);
-				}
-				else {
-					lblEmailErrorText.setText("Invalid Email");
-					lblEmailErrorText.setForeground(Color.RED);
-					lblEmailErrorText.setVisible(true);
-					btnSubmit.setEnabled(false);
-				}
+				displayMessages();
 			}
 		});
 
@@ -191,7 +130,32 @@ public class PreferencesPanel extends JPanel {
 		add(lblPreferences);
 	}
 
-
+	private void displayMessages() {
+		// Get rid of submission message if necessary
+		lblEmailSubmitted.setVisible(false);
+		String email = txtEnterEmailHere.getText();
+		if (email.equals("Enter Email Here...")){
+			txtEnterEmailHere.setText("");
+		}
+		// Should be a special case
+		else if (email.equals("")) {
+			lblEmailErrorText.setVisible(false);
+			btnSubmit.setEnabled(false);
+		}
+		else if (validateEmail(email) == true) {
+			lblEmailErrorText.setText("Valid Email");
+			lblEmailErrorText.setForeground(Color.BLUE);
+			lblEmailErrorText.setVisible(true);
+			btnSubmit.setEnabled(true);
+		}
+		else {
+			lblEmailErrorText.setText("Invalid Email");
+			lblEmailErrorText.setForeground(Color.RED);
+			lblEmailErrorText.setVisible(true);
+			btnSubmit.setEnabled(false);
+		}
+	}
+	
 	/**
 	 * This method contains all the functionality of user hitting the submit button for the email box.
 	 */
