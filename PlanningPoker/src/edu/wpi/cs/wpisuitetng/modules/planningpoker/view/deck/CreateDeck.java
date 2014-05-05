@@ -166,7 +166,14 @@ public class CreateDeck extends JPanel {
 				final int [] toRemove = cardTable.getSelectedRows();
 
 				for (int index : toRemove) {
-					removeCard((int) cardTable.getValueAt(index, 0));
+					int cardvalue;
+					try {
+						cardvalue = Integer.parseInt((String) cardTable.getValueAt(index, 0));
+					}
+					catch (Exception ex) {
+						cardvalue = (int)cardTable.getValueAt(index, 0);
+					}
+					removeCard(cardvalue);
 				}
 				lblNoCardsError.setForeground(Color.RED);
 				refresh();
