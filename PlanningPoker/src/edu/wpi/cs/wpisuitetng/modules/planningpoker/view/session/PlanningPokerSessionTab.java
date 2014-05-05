@@ -605,6 +605,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		// Start button event handler
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button Start pressed!");
 				final List<Requirement> requirements =  requirementPanel.getSelected();
 				List<Integer> oldRequirements = new LinkedList<Integer>();
 				List<Integer> newRequirements = new LinkedList<Integer>();
@@ -616,7 +617,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				
+				System.out.println("How many changes made in session: " + changes);
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
@@ -1081,6 +1082,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	
 	public int notifyUserOfReqChanges(List<Integer> oldReqs, List<Integer> newReqs) {
+		System.out.println("Executing notifyUserofReqChanges function().");
 		LinkedList<Integer> changes = checkIfReqsChangedByConflict(oldReqs, newReqs);
 		if (changes == null) return -1;
 		String message = "If you continue, the following requirements that were previously in this session will be removed.\n" +

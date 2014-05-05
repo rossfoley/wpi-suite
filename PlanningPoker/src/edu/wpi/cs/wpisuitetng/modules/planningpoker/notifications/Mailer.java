@@ -33,11 +33,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
  */
 public class Mailer {
 	private final Properties properties;
-	private final Session session;
+	private Session session;
 
 	private final String username = "wpisuiteplanningpoker@gmail.com";
 	private final String password = "Q1W2E3ASDF";
+	
+	private final String username2 = "wpisuiteplanningpoker2@gmail.com";
+	private final String password2 = "Q1W2E3ASDF";
 
+	private boolean isAlternate;
 	//Validate
 
 	/**
@@ -46,6 +50,8 @@ public class Mailer {
 	 */
 	public Mailer()
 	{
+		// Uses primary credentials
+		isAlternate = false;
 		// Get system properties
 		properties = System.getProperties();
 
@@ -73,6 +79,8 @@ public class Mailer {
 		});
 	}
 
+	
+	
 	/**
 	 * Sends an email to the given recipient with the given subject as it's subject and the given body as its content.
 	 * @param recipient The email of who you want to send the mail to. It needs to be a proper email address
@@ -81,7 +89,6 @@ public class Mailer {
 	 * @return True if email was sent successfully, false otherwise.
 	 */
 	public boolean mailTo(String recipient, String subject, String body){
-
 		if (recipient == null || subject == null || body == null) {
 			return false;
 		}
@@ -125,6 +132,18 @@ public class Mailer {
 				Transport.send(message);
 			}catch (MessagingException mex) {
 				System.out.println(mex.getMessage());
+				if (isAlternate) {
+					mex.printStackTrace();
+					return false; // unless we already are
+				}
+				isAlternate = true;
+				session = Session.getInstance(properties,
+						new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username2, password2);
+					}
+				});
+				mailTo(recipient, subject, body);
 			}
 		}
 
