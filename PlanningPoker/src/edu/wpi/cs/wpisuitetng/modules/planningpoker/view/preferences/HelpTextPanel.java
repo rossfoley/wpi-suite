@@ -47,7 +47,7 @@ public class HelpTextPanel extends JPanel{
 
 	public void setPage(String newPage) {
 		try {
-			content.setPage(new URL(baseURL + newPage));
+			content.setPage(new URL(baseURL + newPage + ".html"));
 		} catch (Exception e) {}
 	}
 }

@@ -27,8 +27,8 @@ public class HelpTreePanel extends JScrollPane implements MouseListener, TreeSel
 				{
 					DefaultMutableTreeNode rootNode;
 					rootNode = new DefaultMutableTreeNode("Getting Started");
-						HelpPanelItem whatIs = new HelpPanelItem("What is Planning Poker?", "whatis.html"),
-									  whereDo = new HelpPanelItem("Where do I start?", "wheredo.html");
+						HelpPanelItem whatIs = new HelpPanelItem("What is Planning Poker?", "whatis"),
+									  whereDo = new HelpPanelItem("Where do I start?", "wheredo");
 						rootNode.add(new DefaultMutableTreeNode(whatIs));
 						rootNode.add(new DefaultMutableTreeNode(whereDo));
 					add(rootNode);
