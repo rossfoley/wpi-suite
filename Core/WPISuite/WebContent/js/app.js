@@ -312,7 +312,11 @@
             for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
               card = _ref1[_k];
               if (_ref2 = card.value(), __indexOf.call(selectedCards, _ref2) >= 0) {
-                _results.push(card.selected(true));
+                if (card.value() > 0) {
+                  _results.push(card.selected(true));
+                } else {
+                  _results.push(void 0);
+                }
               } else {
                 _results.push(void 0);
               }
@@ -370,6 +374,13 @@
           }
         };
       })(this);
+      this.voteError = ko.computed((function(_this) {
+        return function() {
+          var vote;
+          vote = _this.voteValue();
+          return _this.voteValue.error() !== null;
+        };
+      })(this));
     }
 
     return EstimateViewModel;

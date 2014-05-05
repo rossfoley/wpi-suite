@@ -611,6 +611,14 @@ public class DeckVotingPanel extends JPanel
 	public int getEstimate() {
 		return userEstimate;
 	}
+	
+	/**
+	 * Sets the submit button's visibility
+	 * @param isVisible	If the submit button should be visible or not
+	 */
+	public void setSubmitButtonVisible(boolean isVisible) {
+		submitButton.setVisible(isVisible);
+	}
 
 	/**
 	 * @return returns true if the estimate is valid (i.e. non-negative) 

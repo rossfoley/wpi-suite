@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
@@ -164,6 +166,7 @@ public class ViewEventController {
 		
 		if (comp instanceof OptionsOverviewPanel){
 			helpPanel = null;
+			TimingManager.getInstance().removePollable((IPollable) comp);
 		}
 		
 		main.remove(comp);
@@ -186,50 +189,7 @@ public class ViewEventController {
 		return main;
 	}
 
-	/**
-	 * Closes all of the tabs besides the overview tab in the main view.
-	 * 
-	 */
-	public void closeAllTabs() {
-		final int tabCount = main.getTabCount();
 
-		for (int i = tabCount - 1; i >= 0; i--) {
-			Component toBeRemoved = main.getComponentAt(i);
-			if(toBeRemoved instanceof OverviewPanel) {
-				continue;
-			}
-			if (toBeRemoved instanceof OptionsOverviewPanel) {
-				helpPanel = null;
-			}
-			main.removeTabAt(i);
-		}
-
-		openSessionTabHashTable = new HashMap<PlanningPokerSession, JComponent>();
-		main.repaint();
-	}
-
-	/**
-	 * Closes all the tabs except for the one that was clicked.
-	 * 
-	 */
-	public void closeOthers() {
-		final int tabCount = main.getTabCount();
-		final Component selected = main.getSelectedComponent();
-
-		for (int i = tabCount - 1; i >= 0; i--) {
-			Component toBeRemoved = main.getComponentAt(i);
-			if (toBeRemoved == selected) {
-				continue;
-			}
-			if (toBeRemoved instanceof OptionsOverviewPanel){
-				helpPanel = null;
-			}
-
-			main.removeTabAt(i);
-		}
-		main.repaint();
-
-	}
 	
 	/**
 	 * Displays the details of the session that is clicked on 
