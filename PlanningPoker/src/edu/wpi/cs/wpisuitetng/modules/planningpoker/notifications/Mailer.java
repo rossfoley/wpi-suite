@@ -37,11 +37,19 @@ public class Mailer {
 
 	private final String username = "wpisuiteplanningpoker@gmail.com";
 	private final String password = "Q1W2E3ASDF";
-	
-	private final String username2 = "wpisuiteplanningpoker2@gmail.com";
-	private final String password2 = "Q1W2E3ASDF";
 
-	private boolean isAlternate;
+	private final String usernames[] = {
+			"wpisuiteplanningpoker@gmail.com",
+			"wpisuiteplanningpoker2@gmail.com",
+			"wpisuiteplanningpoker3@gmail.com",
+			"wpisuiteplanningpoker4@gmail.com",
+			"wpisuiteplanningpoker5@gmail.com",
+			"wpisuiteplanningpoker6@gmail.com"
+
+	};
+
+	private int alternate;
+
 	//Validate
 
 	/**
@@ -51,7 +59,7 @@ public class Mailer {
 	public Mailer()
 	{
 		// Uses primary credentials
-		isAlternate = false;
+		alternate = 0;
 		// Get system properties
 		properties = System.getProperties();
 
@@ -79,8 +87,8 @@ public class Mailer {
 		});
 	}
 
-	
-	
+
+
 	/**
 	 * Sends an email to the given recipient with the given subject as it's subject and the given body as its content.
 	 * @param recipient The email of who you want to send the mail to. It needs to be a proper email address
@@ -132,24 +140,25 @@ public class Mailer {
 				Transport.send(message);
 			}catch (MessagingException mex) {
 				// try using alternate email address
-				if (isAlternate) {
+				if (alternate == 7) {
 					mex.printStackTrace();
 					return false; // unless we already are
 				}
-				isAlternate = true;
+				alternate++;
 				session = Session.getInstance(properties,
 						new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username2, password2);
+						return new PasswordAuthentication(usernames[alternate], password);
 					}
 				});
 				mailTo(recipient, subject, body);
+
 			}
 		}
 
 		return isValidSender && isValidReciever;
 	}
-	
+
 	/**
 	 * Mails the people in the List of recipients with the subject and body of the message as specified
 	 * @param recipients List of email addresses formated as a string to send the given message to
@@ -187,7 +196,7 @@ public class Mailer {
 		if (recipients == null || planningPokerSession == null) {
 			return null;
 		}
-		
+
 		String url = ConfigManager.getConfig().getCoreUrl().toString();
         int offset = 3;
         if (url.endsWith("/API/")) {
@@ -205,7 +214,7 @@ public class Mailer {
 			final String minute = formatMinute(planningPokerSession.getEndDate());
 			final String am_pm = formatAM_PM(planningPokerSession.getEndDate());
 			final String endTime = month + "/" + day + "/" + year + " at " + hour + ":" + minute + am_pm;
-			
+
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
@@ -231,7 +240,7 @@ public class Mailer {
 		}
 		return didNotSendTo;
 	}
-	
+
 	/**
 	 * Sends an email to the given list of recipients notifying them that a given Planning Poker Session has ended
 	 * @param recipients List of email addresses to notify of the start of a Planning Poker Session
