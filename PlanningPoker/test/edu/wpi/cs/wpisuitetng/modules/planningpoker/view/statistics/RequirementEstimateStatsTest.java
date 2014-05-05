@@ -34,7 +34,9 @@ public class RequirementEstimateStatsTest {
 		testStats.add(new Estimate(7, 7, UUID.randomUUID()));
 		testStats.add(new Estimate(8, 8, UUID.randomUUID()));
 		assertEquals(4.2, testStats.getMean(), 0.01);
-		testStats.add(new Estimate(13, 13, UUID.randomUUID()));
+		testStats.add(new Estimate(9, 13, UUID.randomUUID()));
+		assertEquals(5.66, testStats.getMean(), 0.01);
+		testStats.add(new Estimate(10, 0, UUID.randomUUID()));
 		assertEquals(5.66, testStats.getMean(), 0.01);
 	}
 	
@@ -53,6 +55,9 @@ public class RequirementEstimateStatsTest {
 		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
 		testStats.refreshAll();
 		assertEquals(5, testStats.getMedian(), 0.1);
+		testStats.add(new Estimate(10, 0, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(5, testStats.getMedian(), 0.1);
 	}
 	
 	@Test
@@ -68,6 +73,9 @@ public class RequirementEstimateStatsTest {
 		testStats.refreshAll();
 		assertEquals(2.8, testStats.getStdDev(), 0.1);
 		testStats.add(new Estimate(9, 9, UUID.randomUUID()));
+		testStats.refreshAll();
+		assertEquals(3.1, testStats.getStdDev(), 0.1);
+		testStats.add(new Estimate(10, 0, UUID.randomUUID()));
 		testStats.refreshAll();
 		assertEquals(3.1, testStats.getStdDev(), 0.1);
 	}

@@ -266,7 +266,7 @@ public class ViewEventController {
 	 * Getter for the hash table of tabs open for sessions
 	 * @return	The hash table mapping sessions to the display components
 	 */
-	protected Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
+	public Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
 		return openSessionTabHashTable;
 	}
 	

@@ -9,9 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,6 +17,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /** 
  *  This class is the panel that is shown when viewing statistics on a session
@@ -28,7 +26,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	private StatisticsReqTable reqTable;
 	private JScrollPane tablePanel;
 	private JPanel reqOverviewTablePanel = new JPanel();
-	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
 	
 	private StatisticsDetailPanel detailPanel;
 	private SpringLayout reqOverviewLayout = new SpringLayout();
@@ -48,7 +45,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel(activeSession);
 		
-		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
+		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
 		reqTable.addSelectedRequirementListener(new SelectedRequirementListener() {
 			@Override
 			public void setSelectedRequirement(SelectedRequirementEvent e) {
@@ -65,22 +62,12 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.EAST, submitFinalEstimatesBtn, -10, SpringLayout.EAST, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
 		reqOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
-		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				reqTable.updateFinalEstimates(activeSession);
-			}
-		});
-		
 		
 		reqOverviewTablePanel.add(tablePanel);
-		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 		
 		// Put the overview table and sidebar into the tab
 		setLeftComponent(tablePanel);
@@ -90,6 +77,11 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
         setEnabled(true);
         
         reqTable.refresh(activeSession);
+        
+	}
+	
+	public void refresh() {
+		reqTable.refresh(activeSession);
 	}
 	
 	/**

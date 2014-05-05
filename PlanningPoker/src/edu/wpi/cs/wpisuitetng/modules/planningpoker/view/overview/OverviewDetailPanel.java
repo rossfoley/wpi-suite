@@ -69,7 +69,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		// Put the info panel and table panel into the split pane
 		this.setTopComponent(infoPanel);
 		this.setBottomComponent(tablePanel);
-		this.setResizeWeight(0.5); 
+		this.setResizeWeight(0.5);
 		
 		// Makes the split pane divide 50/50 for each portion
 		final Dimension d = new Dimension(200, 200);
