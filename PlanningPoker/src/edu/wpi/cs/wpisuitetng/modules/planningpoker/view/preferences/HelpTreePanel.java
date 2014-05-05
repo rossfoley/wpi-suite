@@ -27,43 +27,37 @@ public class HelpTreePanel extends JScrollPane implements MouseListener, TreeSel
 				{
 					HelpPanelItem whatIs = new HelpPanelItem("What is Planning Poker?", "whatis"),
 							whereDo = new HelpPanelItem("Where do I start?", "wheredo"),
-							createNewSession = new HelpPanelItem("Create or edit a Planning Poker Session", "createnewsession"),
+							createNewSession = new HelpPanelItem("Create or Edit a Planning Poker Session", "createnewsession"),
 							createNewDeck = new HelpPanelItem("Creating a new deck", "createnewdeck"),
 							createNewReq = new HelpPanelItem("Creating a new requirement", "createnewreq"),
-							voteOnSession = new HelpPanelItem("Voting on a session", "voteonsession"),
-							votePanel = new HelpPanelItem("The voting panel", "createdeck"),
-							deckStyles = new HelpPanelItem("Deck Styles", "createdeck"),
-							viewSessionDetails = new HelpPanelItem("Viewing session details", "createdeck"),
-							makeFinalEst = new HelpPanelItem("Making final estimates", "createdeck"),
-							sendFinalEst = new HelpPanelItem("Sending final estimates", "createdeck"),
-							Archive = new HelpPanelItem("Archiving a session", "createdeck");
+							votePanel = new HelpPanelItem("The voting panel", "votepanel"),
+							deckStyles = new HelpPanelItem("Deck Styles", "deckstyles"),
+							viewSessionDetails = new HelpPanelItem("Viewing session details", "sessiondetails"),
+							makeFinalEst = new HelpPanelItem("Making final estimates", "makefinalest"),
+							sendFinalEst = new HelpPanelItem("Sending final estimates", "sendfinalest"),
+							Archive = new HelpPanelItem("Archiving a session", "archive");
 							
 					
 					DefaultMutableTreeNode rootNode;
 					rootNode = new DefaultMutableTreeNode("Getting Started");
-//						HelpPanelItem whatIs = new HelpPanelItem("What is Planning Poker?", "whatis"),
-//									  whereDo = new HelpPanelItem("Where do I start?", "wheredo");
 						rootNode.add(new DefaultMutableTreeNode(whatIs));
 						rootNode.add(new DefaultMutableTreeNode(whereDo));
 					add(rootNode);
 					rootNode = new DefaultMutableTreeNode("Creating or editing a session");
-//						createNewSession = new HelpPanelItem("Create or edit a Planning Poker Session", "createnewsession"),
-//						createNewDeck = new HelpPanelItem("Creating a new deck", "createdeck"),
-//						createNewReq = new HelpPanelItem("Creating a new requirement", "createreq");
 						rootNode.add(new DefaultMutableTreeNode(createNewSession));
 						rootNode.add(new DefaultMutableTreeNode(createNewDeck));
 						rootNode.add(new DefaultMutableTreeNode(createNewReq));
 					add(rootNode);
 					rootNode = new DefaultMutableTreeNode("Voting on a session");
-						rootNode.add(new DefaultMutableTreeNode("The voting panel"));
-						rootNode.add(new DefaultMutableTreeNode("Voting methods"));
+						rootNode.add(new DefaultMutableTreeNode(votePanel));
+						rootNode.add(new DefaultMutableTreeNode(deckStyles));
 					add(rootNode);
 					rootNode = new DefaultMutableTreeNode("Viewing session statistics");
-						rootNode.add(new DefaultMutableTreeNode("Viewing session details"));
-						rootNode.add(new DefaultMutableTreeNode("Making final estimates"));
-						rootNode.add(new DefaultMutableTreeNode("Sending final estimates"));
+						rootNode.add(new DefaultMutableTreeNode(viewSessionDetails));
+						rootNode.add(new DefaultMutableTreeNode(makeFinalEst));
+						rootNode.add(new DefaultMutableTreeNode(sendFinalEst));
 					add(rootNode);
-					add(new DefaultMutableTreeNode("Archiving a session"));
+					add(new DefaultMutableTreeNode(Archive));
 				}
 			}
 		));
