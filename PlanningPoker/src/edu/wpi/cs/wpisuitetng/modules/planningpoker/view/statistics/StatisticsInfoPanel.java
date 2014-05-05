@@ -401,7 +401,6 @@ public class StatisticsInfoPanel extends JPanel {
 				hadValidReason = false;
 			}
 			else {
-				System.out.println("explanation was: " + explanation);
 				session.addReqWithExplainedChange(reqToSendFinalEstimate.getId(), explanation);
 			}
 		}
