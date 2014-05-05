@@ -67,7 +67,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	/**
 	 * Clears out the current tree and rebuilds it
 	 */
-	public void refresh() {
+	public synchronized void refresh() {
 		final TreeNode rootNode = createNodes();
 		tree = new JTree(rootNode);
         
