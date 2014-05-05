@@ -78,7 +78,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
         
         reqTable.refresh(activeSession);
         
-        ViewEventController.getInstance().setStatisticsPanel(this);
 	}
 	
 	public void refresh() {
