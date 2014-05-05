@@ -58,7 +58,7 @@ public class EstimatedIcon implements Icon {
 	 * @see javax.swing.Icon#paintIcon(Component, Graphics, int, int) */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		g.setColor(new Color(0, 255, 0));
+		g.setColor(new Color(0, 150, 10));
 		g.fillOval(x, y, width, height);
 	}
 
