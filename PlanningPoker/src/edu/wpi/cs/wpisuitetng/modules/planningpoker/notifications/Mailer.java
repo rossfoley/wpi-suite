@@ -42,10 +42,7 @@ public class Mailer {
 			"wpisuiteplanningpoker@gmail.com",
 			"wpisuiteplanningpoker2@gmail.com",
 			"wpisuiteplanningpoker3@gmail.com",
-			"wpisuiteplanningpoker4@gmail.com",
-			"wpisuiteplanningpoker5@gmail.com",
-			"wpisuiteplanningpoker6@gmail.com"
-
+			"wpisuiteplanningpoker4@gmail.com"
 	};
 
 	private int alternate;
@@ -140,7 +137,7 @@ public class Mailer {
 				Transport.send(message);
 			}catch (MessagingException mex) {
 				// try using alternate email address
-				if (alternate == 6) {
+				if (alternate == 3) {
 					mex.printStackTrace();
 					return false; // unless we already are
 				}
