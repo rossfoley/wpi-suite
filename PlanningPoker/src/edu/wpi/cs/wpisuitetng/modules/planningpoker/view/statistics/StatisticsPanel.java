@@ -11,7 +11,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import java.awt.Dimension;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -19,7 +18,6 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /** 
  *  This class is the panel that is shown when viewing statistics on a session
