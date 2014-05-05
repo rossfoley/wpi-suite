@@ -35,6 +35,8 @@ public class StatisticsDetailPanel extends JSplitPane {
 
 		currentSession = session;
 		setOrientation(JSplitPane.VERTICAL_SPLIT);
+		setEnabled(false);
+		setDividerLocation(275);
 		
 		// Create the voted user table
 		userTable = new StatisticsUserTable(currentSession, -1);
@@ -67,7 +69,7 @@ public class StatisticsDetailPanel extends JSplitPane {
 		
 		// Keeps the upper panel large enough to show all components 
 		Dimension dInfo = new Dimension(450, 250);
-		Dimension dTable = new Dimension(450, 300);
+		Dimension dTable = new Dimension(450, 200);
         infoPanel.setMinimumSize(dInfo);
         infoPanel.setPreferredSize(dInfo);
         tablePanel.setMinimumSize(dTable);
