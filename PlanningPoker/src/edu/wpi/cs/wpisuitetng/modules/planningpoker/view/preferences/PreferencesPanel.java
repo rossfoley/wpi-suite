@@ -68,7 +68,7 @@ public class PreferencesPanel extends JPanel {
 		add(lblSub);
 
 		final JButton btnSubmit = new JButton("Submit");
-		springLayout.putConstraint(SpringLayout.NORTH, btnSubmit, -1, SpringLayout.NORTH, txtEnterEmailHere);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnSubmit, 0, SpringLayout.VERTICAL_CENTER, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -30, SpringLayout.EAST, this);
 		add(btnSubmit);
