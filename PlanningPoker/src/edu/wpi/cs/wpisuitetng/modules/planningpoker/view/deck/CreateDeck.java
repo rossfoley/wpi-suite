@@ -295,7 +295,7 @@ public class CreateDeck extends JPanel {
 
 		/* Create double-click event listener */
 		cardTable.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				validateButtons();
 			}
 		});
@@ -518,14 +518,16 @@ public class CreateDeck extends JPanel {
 	/**
 	 * Adds a card based on the number currently in txtCardValue
 	 */
-	public void addCardPressed(){
-		try {
-			final int value = Integer.parseInt(txtCardValue.getText());
-			addCard(value);
-			txtCardValue.setText("");
-			refresh();
-		} catch (NumberFormatException ex) {
-			System.out.print(ex.getMessage());
+	private void addCardPressed(){
+		if(btnAddCard.isEnabled()){
+			try {
+				final int value = Integer.parseInt(txtCardValue.getText());
+				addCard(value);
+				txtCardValue.setText("");
+				refresh();
+			} catch (NumberFormatException ex) {
+				System.out.print(ex.getMessage());
+			}
 		}
 	}
 

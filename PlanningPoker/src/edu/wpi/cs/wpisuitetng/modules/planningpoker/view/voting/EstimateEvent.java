@@ -12,14 +12,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting;
 import java.util.EventObject;
 
 public class EstimateEvent extends EventObject {
-	private final double estimate;
+	private final int estimate;
 
-	public EstimateEvent(Object source, double e) {
+	public EstimateEvent(Object source, int e) {
 		super(source);
 		estimate = e;
 	}
 	
-	public double getEstimate() {
+	public int getEstimate() {
 		return estimate;
 	}
 }

@@ -36,6 +36,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -62,7 +63,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.CreateDeck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckEvent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck.DeckListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementSelectionView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementsSelectedEvent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.requirementselection.RequirementsSelectedListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewMode;
 
 /**
@@ -103,6 +107,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private int endHour;
 	private int endMinutes;
 	private boolean isUsingDeck;
+	private int sessionDeckID;
 	private Deck sessionDeck;
 	private JLabel lblSessionEndTime;
 	private JLabel lblEndDate;
@@ -133,7 +138,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	public PlanningPokerSessionTab(PlanningPokerSession existingSession) {
 		pokerSession = existingSession;
-		//System.out.println(pokerSession.getRequirementIDs());
 		originalReqs = pokerSession.getRequirementIDs();
 		requirementPanel = new RequirementSelectionView(pokerSession);
 		viewMode = (ViewMode.EDITING);
@@ -142,22 +146,23 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		endDateCheckBox.setSelected(dateHasBeenSet);
 		// Update the fields current deck being used
 		isUsingDeck = existingSession.isUsingDeck();
-		sessionDeck = existingSession.getSessionDeck();
+		sessionDeckID = existingSession.getSessionDeckID();
+		sessionDeck = DeckListModel.getInstance().getDeck(sessionDeckID);
 
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
 
 		editedDescription = true;
 
-		this.buildLayouts();
-		this.displayPanel(firstPanel);
+		buildLayouts();
+		displayPanel(firstPanel);
 	}
 
 	private void buildLayouts() {
 		// Apply the layout and build the panels
-		this.setLayout(layout);
-		this.buildFirstPanel();
-		this.buildSecondPanel();
+		setLayout(layout);
+		buildFirstPanel();
+		buildSecondPanel();
 	}
 
 	/**
@@ -269,11 +274,15 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		disabledDatePicker.add(disabledButton, BorderLayout.LINE_END);
 
 		// Setup colors and initial values for the panel elements
+		final JScrollPane descrScroll = new JScrollPane();		
 		textFieldDescription.setToolTipText("");
 		textFieldDescription.setText(pokerSession.getDescription());
 		textFieldSessionField.setText(pokerSession.getName());
 		textFieldSessionField.setColumns(10);
 		textFieldDescription.setColumns(10);
+		textFieldDescription.setLineWrap(true);
+		textFieldDescription.setWrapStyleWord(true);
+		descrScroll.setViewportView(textFieldDescription);
 		comboTime.setBackground(Color.WHITE);
 		comboAMPM.setBackground(Color.WHITE);
 		comboTime.setEnabled(false);
@@ -308,13 +317,13 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblSessionDescription, 6, SpringLayout.SOUTH, textFieldSessionField);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblSessionDescription, 0, SpringLayout.WEST, lblSessionName);
 
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, textFieldDescription, 6, SpringLayout.SOUTH, lblSessionDescription);
-		firstPanelLayout.putConstraint(SpringLayout.WEST, textFieldDescription, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.SOUTH, textFieldDescription, -250, SpringLayout.SOUTH, sessionDetailPanel);
-		firstPanelLayout.putConstraint(SpringLayout.EAST, textFieldDescription, -10, SpringLayout.EAST, sessionDetailPanel);					
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, descrScroll, 6, SpringLayout.SOUTH, lblSessionDescription);
+		firstPanelLayout.putConstraint(SpringLayout.WEST, descrScroll, 0, SpringLayout.WEST, lblSessionName);
+		firstPanelLayout.putConstraint(SpringLayout.SOUTH, descrScroll, -250, SpringLayout.SOUTH, sessionDetailPanel);
+		firstPanelLayout.putConstraint(SpringLayout.EAST, descrScroll, -10, SpringLayout.EAST, sessionDetailPanel);					
 
 		firstPanelLayout.putConstraint(SpringLayout.WEST, endDateCheckBox, 0, SpringLayout.WEST, lblSessionName);
-		firstPanelLayout.putConstraint(SpringLayout.NORTH, endDateCheckBox, 6, SpringLayout.SOUTH, textFieldDescription);
+		firstPanelLayout.putConstraint(SpringLayout.NORTH, endDateCheckBox, 6, SpringLayout.SOUTH, descrScroll);
 
 		firstPanelLayout.putConstraint(SpringLayout.NORTH, lblEndDate, 6, SpringLayout.SOUTH, endDateCheckBox);
 		firstPanelLayout.putConstraint(SpringLayout.WEST, lblEndDate, 0, SpringLayout.WEST, lblSessionName);
@@ -500,7 +509,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		sessionDetailPanel.add(lblSessionName);
 		sessionDetailPanel.add(textFieldSessionField);
 		sessionDetailPanel.add(lblSessionDescription);
-		sessionDetailPanel.add(textFieldDescription);
+		sessionDetailPanel.add(descrScroll);
 		sessionDetailPanel.add(lblEndDate);
 		sessionDetailPanel.add(comboTime);
 		sessionDetailPanel.add(comboAMPM);
@@ -521,7 +530,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	private void buildSecondPanel() {
 		secondPanel.setLayout(secondPanelLayout);
 		
-		final JButton btnSave = new JButton("Save");
+		final JButton btnSave = new JButton("Save as Pending");
 		final JButton btnBack = new JButton("Back");
 		final JButton btnStart = new JButton("Start");
 		final JButton btnCancel = new JButton("Cancel");
@@ -551,7 +560,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		//Position the Start button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnStart, 0, SpringLayout.SOUTH, btnSave);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, btnStart, -70, SpringLayout.EAST, btnSave);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnStart, -10, SpringLayout.WEST, btnSave);
 
 		// Position the back button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnBack, -10, SpringLayout.SOUTH, secondPanel);
@@ -559,7 +568,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		// Position the cancel button
 		secondPanelLayout.putConstraint(SpringLayout.SOUTH, btnCancel, 0, SpringLayout.SOUTH, btnStart);
-		secondPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -70, SpringLayout.EAST, btnStart);
+		secondPanelLayout.putConstraint(SpringLayout.EAST, btnCancel, -10, SpringLayout.WEST, btnStart);
 
 
 
@@ -596,6 +605,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		// Start button event handler
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button Start pressed!");
 				final List<Requirement> requirements =  requirementPanel.getSelected();
 				List<Integer> oldRequirements = new LinkedList<Integer>();
 				List<Integer> newRequirements = new LinkedList<Integer>();
@@ -607,7 +617,7 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 				}
 				
 				int changes = notifyUserOfReqChanges(oldRequirements, newRequirements);
-				
+				System.out.println("How many changes made in session: " + changes);
 				if (requirements.isEmpty()) {
 					secondPanel.revalidate();
 					secondPanel.repaint();
@@ -637,7 +647,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 					for (int i = 0; i < emailRecipients.size(); i++) {
 						recipients.add(emailRecipients.get(i).getEmail());
 					}
-					final Mailer mailer = new Mailer();
 					
 					final Thread t = new Thread(new Runnable() {
 						@Override
@@ -649,8 +658,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 					t.setDaemon(true);
 					t.start();
 				}
-				//final GetEmailController getEmailController = GetEmailController.getInstance();
-				//getEmailController.retrieveEmails();
 			}
 		});
 
@@ -877,7 +884,12 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		pokerSession.setName(textFieldSessionField.getText());
 		pokerSession.setDescription(textFieldDescription.getText());
-		pokerSession.setSessionDeck(sessionDeck);
+		if (sessionDeck == null){
+			pokerSession.setSessionDeckID(-1);
+		}
+		else {
+			pokerSession.setSessionDeckID(sessionDeck.getId());
+		}
 		pokerSession.setUsingDeck(isUsingDeck);
 		pokerSession.setSessionCreatorName(ConfigManager.getConfig().getUserName());
 		pokerSession.setRequirements(requirementPanel.getSelected());
@@ -1034,12 +1046,13 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 			return true;
 		}
 		// Check if the poker deck was changed
-		if ((unmodifiedSession.getSessionDeck() == null) ^ (pokerSession.getSessionDeck() == null)) {
+		if (!(unmodifiedSession.isUsingDeck()) == (pokerSession.isUsingDeck())) {
 			return true;
 		}
-		if ((unmodifiedSession.getSessionDeck() != null) && // If one is null, both are null
-				(!unmodifiedSession.getSessionDeck().equals(pokerSession.getSessionDeck()))) {
-			return true;
+		if (unmodifiedSession.isUsingDeck()){
+			if (unmodifiedSession.getSessionDeckID() != pokerSession.getSessionDeckID()){
+				return true;
+			}
 		}
 		// Check if the requirements were changed
 		if (!unmodifiedSession.getRequirementIDs().equals(pokerSession.getRequirementIDs())) {
@@ -1069,12 +1082,14 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	 */
 	
 	public int notifyUserOfReqChanges(List<Integer> oldReqs, List<Integer> newReqs) {
+		System.out.println("Executing notifyUserofReqChanges function().");
 		LinkedList<Integer> changes = checkIfReqsChangedByConflict(oldReqs, newReqs);
 		if (changes == null) return -1;
 		String message = "If you continue, the following requirements that were previously in this session will be removed.\n" +
 		"If you did not discard them, they have been or are being estimated in other sessions.\n\n";
 		for (Integer i : changes) {
-			message = message + "Requirement " + Integer.toString(i) + "\n";
+			Requirement req = RequirementModel.getInstance().getRequirement(i);
+			message = message + req.getName() + "\n";
 		}
 		final int result = JOptionPane.showConfirmDialog(this, message , "Continue Removing Requirements?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		return result;

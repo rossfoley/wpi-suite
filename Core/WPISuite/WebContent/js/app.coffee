@@ -7,9 +7,15 @@ class PlanningPokerViewModel
     @planningPokerSessions = ko.observableArray([])
     @requirements = []
     @team = []
+    @decks = []
     @activeSession = ko.observable()
     # Get the current username
-    @username = window.location.search.split('=')[1]
+    firstSplit = window.location.search.split('&')
+    if firstSplit.length > 1
+      @username = firstSplit[0].split('=')[1]
+      @querySession = firstSplit[1].split('=')[1]
+    else
+      @username = window.location.search.split('=')[1]
 
     # Load in the requirements
     $.ajax
@@ -21,18 +27,29 @@ class PlanningPokerViewModel
           requirement['voteValue'] = 0
         @requirements = data
 
+    # Load in the decks
+    $.ajax
+      dataType: 'json'
+      url: 'API/planningpoker/deck'
+      async: no
+      success: (data) =>
+        @decks = data
+
     # Load in the planning poker sessions
     $.ajax
       dataType: 'json'
       url: 'API/core/user'
       async: no
       success: (data) => 
-        @team = data
+        for user in data
+          unless user['username'] in @team
+            @team.push user['username']
 
     @params = 
       requirements: @requirements
       team: @team
       username: @username
+      decks: @decks
 
     # Load in the planning poker sessions
     $.ajax
@@ -51,6 +68,7 @@ class PlanningPokerViewModel
       @activeSession(session)
 
     @checkForUpdates = =>
+      # First load in the requirements
       $.ajax
         dataType: 'json'
         url: 'API/requirementmanager/requirement'
@@ -59,11 +77,19 @@ class PlanningPokerViewModel
             requirement['voteValue'] = 0
           @requirements = data
           @params.requirements = data
+          # Then load in the decks
           $.ajax
-            type: 'GET'
             dataType: 'json'
-            url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates'
-            success: @applyUpdates
+            url: 'API/planningpoker/deck'
+            success: (data) =>
+              @decks = data
+              @params.decks = data
+              # Finally get the new sessions
+              $.ajax
+                type: 'GET'
+                dataType: 'json'
+                url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates'
+                success: @applyUpdates
 
     @applyUpdates = (updates) =>
       for changedSession in updates
@@ -78,6 +104,12 @@ class PlanningPokerViewModel
 
     # Check for new updates every 5 seconds
     setInterval @checkForUpdates, 5000
+
+    # If the session query string was provided, make it the active session
+    if @querySession
+      for session in @planningPokerSessions()
+        if @querySession == session.uuid()
+          @activeSession(session)
 
 
 #################################
@@ -95,6 +127,11 @@ class SessionViewModel
     # Set up the session fields as observable fields
     for field, value of data
       @[field] = ko.observable(value)
+
+    # Find the session's deck
+    for deck in @params.decks
+      if deck['id'] == @sessionDeckID()
+        @sessionDeck = ko.observable(deck)
 
     @params = params
     @params['usingDeck'] = @isUsingDeck()
@@ -118,7 +155,8 @@ class SessionViewModel
         for estimate in @estimates()
           if estimate['requirementID'] == requirement['id']
             # If a person already has an estimate, add them to voterList
-            voterList.push estimate['ownerName']
+            if estimate['vote'] > -1
+              voterList.push estimate['ownerName']
 
             # If the current user has an estimate, update the vote in userEstimate
             if estimate['ownerName'] == @username
@@ -157,6 +195,7 @@ class EstimateViewModel
     @deck = ko.observable(params.deck)
     @username = params.username
     @voted = ko.observableArray(voterList)
+    @showSuccessMessage = ko.observable(false)
     @voteValue = ko.observable(0).extend
       required:
         message: 'Please enter a vote!'
@@ -208,7 +247,8 @@ class EstimateViewModel
         # Now mark the cards as selected
         for card in @cards()
           if card.value() in selectedCards
-            card.selected(yes)
+            if card.value() > 0
+              card.selected(yes)
       else
         # If there is no deck, then just set the value of the input
         @voteValue(value)
@@ -223,19 +263,29 @@ class EstimateViewModel
         cardViewModel.selected(yes)
 
     @submitVote = =>
-      @estimate().vote(parseInt(@totalValue()))
-      $.ajax
-        type: 'POST'
-        dataType: 'json'
-        url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
-        data: ko.toJSON(@estimate())
-        success: (data) => 
-          unless @username in @voted()
-            @voted.push @username
+      unless @voteValue.error()
+        @estimate().vote(parseInt(@totalValue()))
+        $.ajax
+          type: 'POST'
+          dataType: 'json'
+          url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website'
+          data: ko.toJSON(@estimate())
+          success: (data) => 
+            unless @username in @voted()
+              @voted.push @username
+            # Show a success message
+            @showSuccessMessage(true)
+            # Fade out the success message after 2 seconds
+            setTimeout (=> @showSuccessMessage(false)), 2000
 
     @applyUpdate = (update) =>
       unless update['ownerName'] in @voted()
-        @voted.push update['ownerName']
+        if update['vote'] > -1
+          @voted.push update['ownerName']
+
+    @voteError = ko.computed =>
+      vote = @voteValue() # Access voteValue to ensure this updates correctly
+      @voteValue.error() != null
 
 
 #####################################
@@ -262,5 +312,17 @@ class CardViewModel
 ############################################
 
 $ ->
+  ko.bindingHandlers.fadeVisible =
+    init: (element, valueAccessor) ->
+        value = valueAccessor()
+        $(element).toggle(ko.utils.unwrapObservable(value))
+
+    update: (element, valueAccessor) ->
+        value = valueAccessor()
+        if ko.utils.unwrapObservable(value)
+          $(element).fadeIn('fast')
+        else
+          $(element).fadeOut('fast')
+
   window.PokerVM = new PlanningPokerViewModel()
   ko.applyBindings(window.PokerVM)

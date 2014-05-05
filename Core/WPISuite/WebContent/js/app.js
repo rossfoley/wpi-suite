@@ -5,11 +5,19 @@
 
   PlanningPokerViewModel = (function() {
     function PlanningPokerViewModel() {
+      var firstSplit, session, _i, _len, _ref;
       this.planningPokerSessions = ko.observableArray([]);
       this.requirements = [];
       this.team = [];
+      this.decks = [];
       this.activeSession = ko.observable();
-      this.username = window.location.search.split('=')[1];
+      firstSplit = window.location.search.split('&');
+      if (firstSplit.length > 1) {
+        this.username = firstSplit[0].split('=')[1];
+        this.querySession = firstSplit[1].split('=')[1];
+      } else {
+        this.username = window.location.search.split('=')[1];
+      }
       $.ajax({
         dataType: 'json',
         url: 'API/requirementmanager/requirement',
@@ -27,18 +35,39 @@
       });
       $.ajax({
         dataType: 'json',
+        url: 'API/planningpoker/deck',
+        async: false,
+        success: (function(_this) {
+          return function(data) {
+            return _this.decks = data;
+          };
+        })(this)
+      });
+      $.ajax({
+        dataType: 'json',
         url: 'API/core/user',
         async: false,
         success: (function(_this) {
           return function(data) {
-            return _this.team = data;
+            var user, _i, _len, _ref, _results;
+            _results = [];
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              user = data[_i];
+              if (_ref = user['username'], __indexOf.call(_this.team, _ref) < 0) {
+                _results.push(_this.team.push(user['username']));
+              } else {
+                _results.push(void 0);
+              }
+            }
+            return _results;
           };
         })(this)
       });
       this.params = {
         requirements: this.requirements,
         team: this.team,
-        username: this.username
+        username: this.username,
+        decks: this.decks
       };
       $.ajax({
         dataType: 'json',
@@ -82,10 +111,18 @@
               _this.requirements = data;
               _this.params.requirements = data;
               return $.ajax({
-                type: 'GET',
                 dataType: 'json',
-                url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates',
-                success: _this.applyUpdates
+                url: 'API/planningpoker/deck',
+                success: function(data) {
+                  _this.decks = data;
+                  _this.params.decks = data;
+                  return $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates',
+                    success: _this.applyUpdates
+                  });
+                }
               });
             }
           });
@@ -116,6 +153,15 @@
         };
       })(this);
       setInterval(this.checkForUpdates, 5000);
+      if (this.querySession) {
+        _ref = this.planningPokerSessions();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          session = _ref[_i];
+          if (this.querySession === session.uuid()) {
+            this.activeSession(session);
+          }
+        }
+      }
     }
 
     return PlanningPokerViewModel;
@@ -124,7 +170,7 @@
 
   SessionViewModel = (function() {
     function SessionViewModel(data, params) {
-      var estimate, field, requirement, userEstimate, value, voterList, _i, _j, _len, _len1, _ref, _ref1, _ref2;
+      var deck, estimate, field, requirement, userEstimate, value, voterList, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3;
       this.parent = parent;
       this.allRequirements = ko.observableArray(params.requirements);
       this.team = ko.observableArray(params.team);
@@ -134,6 +180,13 @@
         value = data[field];
         this[field] = ko.observable(value);
       }
+      _ref = this.params.decks;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        deck = _ref[_i];
+        if (deck['id'] === this.sessionDeckID()) {
+          this.sessionDeck = ko.observable(deck);
+        }
+      }
       this.params = params;
       this.params['usingDeck'] = this.isUsingDeck();
       this.params['deck'] = {};
@@ -141,10 +194,10 @@
         this.params['deck'] = this.sessionDeck();
       }
       this.requirementEstimates = ko.observableArray([]);
-      _ref = this.allRequirements();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        requirement = _ref[_i];
-        if (_ref1 = requirement['id'], __indexOf.call(this.requirementIDs(), _ref1) >= 0) {
+      _ref1 = this.allRequirements();
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        requirement = _ref1[_j];
+        if (_ref2 = requirement['id'], __indexOf.call(this.requirementIDs(), _ref2) >= 0) {
           userEstimate = {
             sessionID: this.uuid(),
             requirementID: requirement['id'],
@@ -152,11 +205,13 @@
             vote: 0
           };
           voterList = [];
-          _ref2 = this.estimates();
-          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-            estimate = _ref2[_j];
+          _ref3 = this.estimates();
+          for (_k = 0, _len2 = _ref3.length; _k < _len2; _k++) {
+            estimate = _ref3[_k];
             if (estimate['requirementID'] === requirement['id']) {
-              voterList.push(estimate['ownerName']);
+              if (estimate['vote'] > -1) {
+                voterList.push(estimate['ownerName']);
+              }
               if (estimate['ownerName'] === this.username) {
                 userEstimate['vote'] = estimate['vote'];
               }
@@ -167,12 +222,12 @@
       }
       this.requirements = ko.computed((function(_this) {
         return function() {
-          var result, _k, _len2, _ref3, _ref4;
+          var result, _l, _len3, _ref4, _ref5;
           result = [];
-          _ref3 = _this.allRequirements();
-          for (_k = 0, _len2 = _ref3.length; _k < _len2; _k++) {
-            requirement = _ref3[_k];
-            if (_ref4 = requirement['id'], __indexOf.call(_this.requirementIDs(), _ref4) >= 0) {
+          _ref4 = _this.allRequirements();
+          for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
+            requirement = _ref4[_l];
+            if (_ref5 = requirement['id'], __indexOf.call(_this.requirementIDs(), _ref5) >= 0) {
               result.push(requirement);
             }
           }
@@ -181,17 +236,17 @@
       })(this));
       this.applyUpdate = (function(_this) {
         return function(update) {
-          var changedEstimate, requirementEstimate, _k, _len2, _ref3, _results;
-          _ref3 = update['estimates'];
+          var changedEstimate, requirementEstimate, _l, _len3, _ref4, _results;
+          _ref4 = update['estimates'];
           _results = [];
-          for (_k = 0, _len2 = _ref3.length; _k < _len2; _k++) {
-            changedEstimate = _ref3[_k];
+          for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
+            changedEstimate = _ref4[_l];
             _results.push((function() {
-              var _l, _len3, _ref4, _results1;
-              _ref4 = this.requirementEstimates();
+              var _len4, _m, _ref5, _results1;
+              _ref5 = this.requirementEstimates();
               _results1 = [];
-              for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
-                requirementEstimate = _ref4[_l];
+              for (_m = 0, _len4 = _ref5.length; _m < _len4; _m++) {
+                requirementEstimate = _ref5[_m];
                 if (changedEstimate['requirementID'] === requirementEstimate.requirement()['id']) {
                   _results1.push(requirementEstimate.applyUpdate(changedEstimate));
                 } else {
@@ -220,6 +275,7 @@
       this.deck = ko.observable(params.deck);
       this.username = params.username;
       this.voted = ko.observableArray(voterList);
+      this.showSuccessMessage = ko.observable(false);
       this.voteValue = ko.observable(0).extend({
         required: {
           message: 'Please enter a vote!'
@@ -293,7 +349,11 @@
             for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
               card = _ref1[_k];
               if (_ref2 = card.value(), __indexOf.call(selectedCards, _ref2) >= 0) {
-                _results.push(card.selected(true));
+                if (card.value() > 0) {
+                  _results.push(card.selected(true));
+                } else {
+                  _results.push(void 0);
+                }
               } else {
                 _results.push(void 0);
               }
@@ -320,29 +380,44 @@
       })(this);
       this.submitVote = (function(_this) {
         return function() {
-          _this.estimate().vote(parseInt(_this.totalValue()));
-          return $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
-            data: ko.toJSON(_this.estimate()),
-            success: function(data) {
-              var _ref1;
-              if (_ref1 = _this.username, __indexOf.call(_this.voted(), _ref1) < 0) {
-                return _this.voted.push(_this.username);
+          if (!_this.voteValue.error()) {
+            _this.estimate().vote(parseInt(_this.totalValue()));
+            return $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: 'API/Advanced/planningpoker/planningpokersession/update-estimate-website',
+              data: ko.toJSON(_this.estimate()),
+              success: function(data) {
+                var _ref1;
+                if (_ref1 = _this.username, __indexOf.call(_this.voted(), _ref1) < 0) {
+                  _this.voted.push(_this.username);
+                }
+                _this.showSuccessMessage(true);
+                return setTimeout((function() {
+                  return _this.showSuccessMessage(false);
+                }), 2000);
               }
-            }
-          });
+            });
+          }
         };
       })(this);
       this.applyUpdate = (function(_this) {
         return function(update) {
           var _ref1;
           if (_ref1 = update['ownerName'], __indexOf.call(_this.voted(), _ref1) < 0) {
-            return _this.voted.push(update['ownerName']);
+            if (update['vote'] > -1) {
+              return _this.voted.push(update['ownerName']);
+            }
           }
         };
       })(this);
+      this.voteError = ko.computed((function(_this) {
+        return function() {
+          var vote;
+          vote = _this.voteValue();
+          return _this.voteValue.error() !== null;
+        };
+      })(this));
     }
 
     return EstimateViewModel;
@@ -371,6 +446,22 @@
   })();
 
   $(function() {
+    ko.bindingHandlers.fadeVisible = {
+      init: function(element, valueAccessor) {
+        var value;
+        value = valueAccessor();
+        return $(element).toggle(ko.utils.unwrapObservable(value));
+      },
+      update: function(element, valueAccessor) {
+        var value;
+        value = valueAccessor();
+        if (ko.utils.unwrapObservable(value)) {
+          return $(element).fadeIn('fast');
+        } else {
+          return $(element).fadeOut('fast');
+        }
+      }
+    };
     window.PokerVM = new PlanningPokerViewModel();
     return ko.applyBindings(window.PokerVM);
   });

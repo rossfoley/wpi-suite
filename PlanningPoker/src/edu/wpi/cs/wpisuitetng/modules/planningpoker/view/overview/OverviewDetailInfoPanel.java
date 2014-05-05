@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,11 +25,12 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * The general information (name, description etc) for a given session
@@ -109,6 +111,8 @@ public class OverviewDetailInfoPanel extends JPanel {
 				PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
 				OverviewTreePanel treePanel = ViewEventController.getInstance().getOverviewTreePanel();
 				treePanel.refresh();
+				updateOverviewButton(currentSession);
+				ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(currentSession);
 			}
 		});
 	}
@@ -129,7 +133,44 @@ public class OverviewDetailInfoPanel extends JPanel {
 		sessionCreatorDisplay.setText("Session Creator: " + session.getSessionCreatorName());
 		
 	
+		updateOverviewButton(session);
 		
+	
+		// Change end date
+		String endDate, endTime;
+		try {
+			endDate = DateFormat.getDateInstance(DateFormat.FULL)
+					.format(session.getEndDate().getTime());
+		} catch (NullPointerException ex) {
+			endDate = "No end date";
+		}
+		endDateDisplay.setText(endDate);
+		
+		// Change end time
+		try {
+			final GregorianCalendar sessionDate = session.getEndDate();
+			final String hour = formatHour(sessionDate);
+			final String minute = formatMinute(sessionDate);
+			final String am_pm = formatAM_PM(sessionDate);
+			endTime = hour + ":" + minute + am_pm;
+			
+		} catch (NullPointerException ex) {
+			endTime = "No end time";
+		}
+		endTimeDisplay.setText(endTime);
+		
+		
+		// Change deck name
+		if (session.isUsingDeck()) {
+			Deck sessionDeck = DeckListModel.getInstance().getDeck(session.getSessionDeckID());	
+			deckDisplay.setText(sessionDeck.getDeckName());
+		}
+		else {
+			deckDisplay.setText("None");
+		}
+	}
+	
+	public void updateOverviewButton(PlanningPokerSession session){
 		//restrict ability to open/end voting on/close a session to session creator
 		if ((ConfigManager.getConfig().getUserName().equals(session.getSessionCreatorName())) && ((session.getGameState() == SessionState.PENDING) || 
 				(session.getGameState() == SessionState.OPEN) || (session.getGameState() == SessionState.VOTINGENDED)) || (session.getGameState() == SessionState.CLOSED)){
@@ -158,42 +199,10 @@ public class OverviewDetailInfoPanel extends JPanel {
 				else {
 					overviewDetailButton.setEnabled(true);
 				}
-			}
+		}
 		else {
 				overviewDetailButton.setVisible(false);
 			}
-		}
-		
-		// Change end date
-		String endDate, endTime;
-		try {
-			endDate = DateFormat.getDateInstance(DateFormat.FULL)
-					.format(session.getEndDate().getTime());
-		} catch (NullPointerException ex) {
-			endDate = "No end date";
-		}
-		endDateDisplay.setText(endDate);
-		
-		// Change end time
-		try {
-			final GregorianCalendar sessionDate = session.getEndDate();
-			final String hour = formatHour(sessionDate);
-			final String minute = formatMinute(sessionDate);
-			final String am_pm = formatAM_PM(sessionDate);
-			endTime = hour + ":" + minute + am_pm;
-			
-		} catch (NullPointerException ex) {
-			endTime = "No end time";
-		}
-		endTimeDisplay.setText(endTime);
-		
-		
-		// Change deck name
-		if (session.isUsingDeck()) {
-			deckDisplay.setText(session.getSessionDeck().getDeckName());
-		}
-		else {
-			deckDisplay.setText("None");
 		}
 	}
 	
@@ -254,7 +263,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, endDateDisplay, 75, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.WEST, endTimeDisplay, 6, SpringLayout.EAST, lblEndTime);
 		springLayout.putConstraint(SpringLayout.EAST, lblSessionName, -6, SpringLayout.WEST, sessionNameDisplay);
-		springLayout.putConstraint(SpringLayout.WEST, sessionNameDisplay, 105, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, sessionNameDisplay, 107, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblSessionDescription);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -16, SpringLayout.NORTH, lblEndDate);
@@ -277,7 +286,7 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblEndTime, 155, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblEndTime, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblEndTime, 69, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblEndTime, 71, SpringLayout.WEST, this); 
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblDeck, 173, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblDeck, 10, SpringLayout.WEST, this);
@@ -285,15 +294,15 @@ public class OverviewDetailInfoPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.NORTH, endDateDisplay, 137, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, endDateDisplay, 151, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, endDateDisplay, 328, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, endDateDisplay, 5, SpringLayout.EAST, lblEndTime);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, endTimeDisplay, 155, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, endTimeDisplay, 169, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, endTimeDisplay, 328, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, endTimeDisplay, 5, SpringLayout.EAST, lblEndTime);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, deckDisplay, 173, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckDisplay, 187, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, deckDisplay, 328, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, deckDisplay, 5, SpringLayout.EAST, lblEndTime);
 		
 		springLayout.putConstraint(SpringLayout.SOUTH, sessionCreatorDisplay, 0, SpringLayout.SOUTH, lblSessionName);
 		springLayout.putConstraint(SpringLayout.EAST, sessionCreatorDisplay, -10, SpringLayout.EAST, this);
@@ -321,6 +330,19 @@ public class OverviewDetailInfoPanel extends JPanel {
 			allMatched &= foundThisOne;
 		}
 		return allMatched;
+	}
+	
+	/**
+	 * clear all information from the table
+	 */
+	public void clearPanel(){
+		overviewDetailButton.setVisible(false);
+		sessionNameDisplay.setText("");
+		sessionDescriptionDisplay.setText("");
+		endDateDisplay.setText("");
+		endTimeDisplay.setText("");
+		deckDisplay.setText("");
+		sessionCreatorDisplay.setText("");
 	}
 	
 }

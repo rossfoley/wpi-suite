@@ -16,7 +16,7 @@
           $('#badPassAlert').css({
             display: 'block'
           });
-          return $('#badPassAlert').html('ERROR: Invalid Details Provided!');
+          return $('#badPassAlert').html('Error: Invalid Details Provided!');
         }
       });
       $.ajax({
@@ -28,12 +28,16 @@
           return console.log('Error setting project!');
         },
         success: function() {
-          var url;
+          var queryString, url;
           url = "" + window.location.protocol + "//" + window.location.hostname;
           if (window.location.port) {
             url += ":" + window.location.port;
           }
           url += "/WPISuite/planningpoker.html?username=" + ($('#username').val());
+          queryString = window.location.search.split('=');
+          if (queryString.length > 1) {
+            url += "&session=" + queryString[1];
+          }
           return window.location = url;
         }
       });
