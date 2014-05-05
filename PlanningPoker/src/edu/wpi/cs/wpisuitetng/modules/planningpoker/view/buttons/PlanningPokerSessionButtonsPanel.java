@@ -37,7 +37,7 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	private final JButton createButton = new JButton("<html>Create <br /> Session</html>");
 	private final JButton editButton = new JButton("<html>Edit <br /> Session</html>");
 	private final JButton voteButton = new JButton("<html>Vote on<br/> Session</html>");
-	private final JButton statisticsButton = new JButton("<html>View<br /> Statistics</html>");
+	private final JButton statisticsButton = new JButton("<html>View<br /> Results</html>");
 	private final JButton helpButton = new JButton("<html>Help &<br /> Options</html>");
 	private final JPanel contentPanel = new JPanel();
 
