@@ -131,7 +131,7 @@ public class Mailer {
 				// Send message
 				Transport.send(message);
 			}catch (MessagingException mex) {
-				System.out.println(mex.getMessage());
+				// try using alternate email address
 				if (isAlternate) {
 					mex.printStackTrace();
 					return false; // unless we already are
@@ -187,6 +187,13 @@ public class Mailer {
 		if (recipients == null || planningPokerSession == null) {
 			return null;
 		}
+		
+		String url = ConfigManager.getConfig().getCoreUrl().toString();
+        int offset = 3;
+        if (url.endsWith("/API/")) {
+            offset++;
+        }
+        String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
 
 		boolean thisValid;
 		
@@ -209,7 +216,8 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. Its end date is: " + endTime + ".  To vote on this session, you can login to Janeway or go to "
+
+						" has been started. Its end date is: " + endTime + ".  \n\n"
 						+ finalUrl +
 						"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
@@ -221,8 +229,9 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. The session doesn't currently have an end date. To vote on this session, you can login to Janeway or go to " 
-						+ finalUrl +	
+						
+						" has been started. The session doesn't currently have an end date. "
+						+ finalUrl +
 						"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
