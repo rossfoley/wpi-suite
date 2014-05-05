@@ -197,13 +197,6 @@ public class Mailer {
 
 		boolean thisValid;
 		
-		String url = ConfigManager.getConfig().getCoreUrl().toString();
-		int offset = 3;
-		if (url.endsWith("/API/")) {
-			offset++;
-		}
-		String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
-		
 		if (planningPokerSession.getEndDate() != null) { 
 			final int day = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().DAY_OF_MONTH);
 			final int month = (1 + planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().MONTH));
