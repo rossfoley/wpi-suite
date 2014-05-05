@@ -13,26 +13,47 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
+import javax.swing.UIManager;
+import java.awt.Font;
+import java.awt.Color;
 
 public class HelpTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener{
 	public HelpTreePanel() {
 		
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"What is Planning Poker?", 
-					"The Overview Panel", "Creating a Planning Poker Session", 
-					"Editing a Planning Poker Session", "Voting in a Planning Poker Session", 
-					"Viewing Session Statistics", "Setting the Final Estimates"};
-			public int getSize() {
-				return values.length;
+		JTree tree = new JTree();
+		tree.setForeground(Color.WHITE);
+		tree.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		tree.setBackground(Color.WHITE);
+		tree.setModel(new DefaultTreeModel(
+			new DefaultMutableTreeNode("Planning Poker Help Guide") {
+				{
+					DefaultMutableTreeNode node_1;
+					node_1 = new DefaultMutableTreeNode("Getting Started");
+						node_1.add(new DefaultMutableTreeNode("What is Planning Poker?"));
+						node_1.add(new DefaultMutableTreeNode("Where do I start?"));
+					add(node_1);
+					node_1 = new DefaultMutableTreeNode("Creating or editing a session");
+						node_1.add(new DefaultMutableTreeNode("Create a new Planning Poker session"));
+						node_1.add(new DefaultMutableTreeNode("Creating a new deck"));
+						node_1.add(new DefaultMutableTreeNode("Creating a new requirement"));
+					add(node_1);
+					node_1 = new DefaultMutableTreeNode("Voting on a session");
+						node_1.add(new DefaultMutableTreeNode("The voting panel"));
+						node_1.add(new DefaultMutableTreeNode("Voting methods"));
+					add(node_1);
+					node_1 = new DefaultMutableTreeNode("Viewing session statistics");
+						node_1.add(new DefaultMutableTreeNode("Viewing session details"));
+						node_1.add(new DefaultMutableTreeNode("Making final estimates"));
+						node_1.add(new DefaultMutableTreeNode("Sending final estimates"));
+					add(node_1);
+					add(new DefaultMutableTreeNode("Archiving a session"));
+				}
 			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		list.setToolTipText("");
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		setRowHeaderView(list);
+		));
+		setViewportView(tree);
+		for (int i = 0; i < tree.getRowCount(); i++) {
+	         tree.expandRow(i);
+	}
 	}
 
 	@Override

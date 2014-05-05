@@ -125,7 +125,9 @@ public class MainView extends JTabbedPane {
 					overviewPanel.repaint();
 					PlanningPokerSession session = 
 							ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+					if (session != null) {
 					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
+					}
 				}
 				// Otherwise, disable all buttons
 				else {
