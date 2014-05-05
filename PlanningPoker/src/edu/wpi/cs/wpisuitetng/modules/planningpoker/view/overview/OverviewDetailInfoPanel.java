@@ -391,7 +391,12 @@ public class OverviewDetailInfoPanel extends JPanel {
 					allowedIDs.add(i);
 				}
 			}
-			currentSession.setRequirementIDs(allowedIDs);
+			if (allowedIDs.size() > 0) {
+				currentSession.setRequirementIDs(allowedIDs);
+			}
+			else {
+				finish = false;
+			}
 		}
 		
 		return finish;
