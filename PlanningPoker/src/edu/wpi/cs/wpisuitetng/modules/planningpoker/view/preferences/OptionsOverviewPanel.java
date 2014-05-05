@@ -85,7 +85,7 @@ public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 	public void parseComboBoxOptions(){
 		int index = comboBoxOptions.getSelectedIndex();
 		int dividerLocation = getDividerLocation();
-		if (index!=previousLowerScreenIndex){
+		if (index != previousLowerScreenIndex) {
 			previousLowerScreenIndex = index;
 			switch (index){
 			case 0:
@@ -110,6 +110,5 @@ public class OptionsOverviewPanel extends JSplitPane implements IPollable {
 	@Override
 	public void pollFunction() {
 		deckOverviewPanel.refresh();
-		System.out.println("refreshing deck overview");
 	}
 }

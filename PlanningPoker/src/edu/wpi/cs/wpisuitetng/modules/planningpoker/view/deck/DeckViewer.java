@@ -219,59 +219,45 @@ public class DeckViewer extends JSplitPane {
 	public void refresh(){
 		final List<Deck> newDecks = DeckListModel.getInstance().getDecks();
 		boolean noNewDecks = true;
-		/* for (Deck newDeck:newDecks){
-			boolean deckFound = false;
-			for (Deck oldDeck:decks){
-				if (oldDeck.getId() == newDeck.getId()) {
-					deckFound = true;
-				}
-			}		
-			if (!deckFound){
-				noNewDecks = false;
-			}
-		} */
-		
-		//if (!noNewDecks){
-			decks = newDecks;
-			deckListPanel = new DeckListPanel(decks);
-			tablePanel.setViewportView(deckListPanel);
-			deckListPanel.addDeckListener(new DeckListener() {
-				@Override
-				public void deckSubmitted(DeckEvent e){
-					
-					buildDeckPanel(e.getDeck());
-					tablePanel.setViewportView(deckListPanel);
-					tablePanel.setMinimumSize(new Dimension(0, 400));
-					
-					viewDeckPanel.setMinimumSize(new Dimension(300, 300));
-					
-					createDeckButton.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							openCreateDeckPanel();
-						}
-					});
-					
-					createDeckPanel = new CreateDeck();
-					createDeckPanel.addDeckListener(new DeckListener() {
-						@Override
-						public void deckSubmitted(DeckEvent e) {
-							if (e.getDeck() == null) {
-								closeCreateDeckPanel();
-							}
-							else {
-								newDeckCreated(e.getDeck());
-							}
-						}
-					}); 					
-					setLeftComponent(deckOverviewPanel);
-					setRightComponent(viewDeckPanel);
-					setDividerLocation(225);
-				}
 
-			});
-		//}
-		System.out.println("refreshing");
+		decks = newDecks;
+		deckListPanel = new DeckListPanel(decks);
+		tablePanel.setViewportView(deckListPanel);
+		deckListPanel.addDeckListener(new DeckListener() {
+			@Override
+			public void deckSubmitted(DeckEvent e){
+				
+				buildDeckPanel(e.getDeck());
+				tablePanel.setViewportView(deckListPanel);
+				tablePanel.setMinimumSize(new Dimension(0, 400));
+				
+				viewDeckPanel.setMinimumSize(new Dimension(300, 300));
+				
+				createDeckButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						openCreateDeckPanel();
+					}
+				});
+				
+				createDeckPanel = new CreateDeck();
+				createDeckPanel.addDeckListener(new DeckListener() {
+					@Override
+					public void deckSubmitted(DeckEvent e) {
+						if (e.getDeck() == null) {
+							closeCreateDeckPanel();
+						}
+						else {
+							newDeckCreated(e.getDeck());
+						}
+					}
+				}); 					
+				setLeftComponent(deckOverviewPanel);
+				setRightComponent(viewDeckPanel);
+				setDividerLocation(225);
+			}
+
+		});
 	}
 	
 	public void buildCreateDeckButtonPanel(){

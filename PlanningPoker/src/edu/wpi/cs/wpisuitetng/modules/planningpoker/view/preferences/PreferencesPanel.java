@@ -91,7 +91,7 @@ public class PreferencesPanel extends JPanel {
 			lblEmailErrorText.setVisible(emailError);
 			final EmailAddress newEmail = new EmailAddress();
 			newEmail.setEmail(email);
-			newEmail.setOwnerName(ConfigManager.getInstance().getConfig().getUserName());
+			newEmail.setOwnerName(ConfigManager.getConfig().getUserName());
 
 
 			final GetEmailController getEmailController = GetEmailController.getInstance();
@@ -106,7 +106,7 @@ public class PreferencesPanel extends JPanel {
 			catch (Exception E) {
 
 			}
-			final String userName = ConfigManager.getInstance().getConfig().getUserName();
+			final String userName = ConfigManager.getConfig().getUserName();
 			for (int i = 0; i < emailRecipients.size(); i++) {
 				if (userName.equals(emailRecipients.get(i).getOwnerName())) {
 					userHasEmail = true;

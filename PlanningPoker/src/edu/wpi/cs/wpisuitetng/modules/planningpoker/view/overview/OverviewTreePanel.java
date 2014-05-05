@@ -49,9 +49,9 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 */
 	public OverviewTreePanel()
 	{
-        this.setViewportView(tree);
+        setViewportView(tree);
         ViewEventController.getInstance().setOverviewTree(this);
-		this.refresh();  
+		refresh();  
 		initialized = false;
 	}
 	
@@ -76,7 +76,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
 		
 		for(PlanningPokerSession session : sessions) {
-			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
+			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session);
 			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
 
 			if (session.isClosed()) {
@@ -105,7 +105,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
         
         tree.setDropMode(DropMode.ON);
         
-        this.setViewportView(tree); //make panel display the tree
+        setViewportView(tree); //make panel display the tree
         
         ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
 	}
