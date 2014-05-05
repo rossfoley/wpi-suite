@@ -32,7 +32,7 @@ public class HelpTreePanel extends JScrollPane implements MouseListener, TreeSel
 							createNewReq = new HelpPanelItem("Creating a new requirement", "createnewreq"),
 							votePanel = new HelpPanelItem("The voting panel", "votepanel"),
 							deckStyles = new HelpPanelItem("Deck Styles", "deckstyles"),
-							viewSessionDetails = new HelpPanelItem("Viewing session details", "sessiondetails"),
+							viewSessionDetails = new HelpPanelItem("Viewing session results", "sessiondetails"),
 							Archive = new HelpPanelItem("Archiving a session", "archive");
 							
 					
