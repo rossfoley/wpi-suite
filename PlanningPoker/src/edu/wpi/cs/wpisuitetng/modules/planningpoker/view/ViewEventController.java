@@ -9,7 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import javax.swing.JComponent;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
@@ -78,6 +76,13 @@ public class ViewEventController {
 		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
 	
+	/** 
+	 * disable all session specific buttons
+	 */
+	public void disableButtons(){
+		planningPokerSessionButtonsPanel.disableAllButtons();
+	}
+	
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
@@ -105,6 +110,7 @@ public class ViewEventController {
 		main.invalidate(); //force the tabbedpane to redraw.
 		main.repaint();
 		main.setSelectedComponent(panel);
+		planningPokerSessionButtonsPanel.disableAllButtons();
 	}
 
 	/**
@@ -135,20 +141,19 @@ public class ViewEventController {
 	public PlanningPokerSessionButtonsPanel getPlanningPokerSessionButtonsPanel() {
 		return planningPokerSessionButtonsPanel;
 	}
-	
-	
 
 	/**
 	 * Removes the tab for the given JComponent
 	 * @param comp the component to remove
+	 * @return	If the tab was successfully removed
 	 */
-	public void removeTab(JComponent comp)
+	public boolean removeTab(JComponent comp)
 	{
 		// Check if the tab is a PlanningPokerSession create/edit tab
 		if (comp instanceof PlanningPokerSessionTab) {
 			// Only remove if it is ready to remove
 			if(!((PlanningPokerSessionTab)comp).readyToRemove()) {
-				return;
+				return false;
 			}
 		}
 		// Check if the tab contains a planning poker session
@@ -157,6 +162,8 @@ public class ViewEventController {
 		}
 		
 		main.remove(comp);
+		disableButtons();
+		return true;
 	}
 
 	/**
@@ -174,48 +181,6 @@ public class ViewEventController {
 	public MainView getMainView() {
 		return main;
 	}
-
-	/**
-	 * Closes all of the tabs besides the overview tab in the main view.
-	 * 
-	 */
-	public void closeAllTabs() {
-		final int tabCount = main.getTabCount();
-
-		for (int i = tabCount - 1; i >= 0; i--) {
-			Component toBeRemoved = main.getComponentAt(i);
-			if(toBeRemoved instanceof OverviewPanel) continue;
-			main.removeTabAt(i);
-		}
-
-		openSessionTabHashTable = new HashMap<PlanningPokerSession, JComponent>();
-		main.repaint();
-	}
-
-	/**
-	 * Closes all the tabs except for the one that was clicked.
-	 * 
-	 */
-	public void closeOthers() {
-		final int tabCount = main.getTabCount();
-		final Component selected = main.getSelectedComponent();
-
-		for (int i = tabCount - 1; i >= 0; i--) {
-			Component toBeRemoved = main.getComponentAt(i);
-
-			if (toBeRemoved instanceof OverviewPanel) {
-				continue;
-			}
-			
-			if (toBeRemoved == selected) {
-				continue;
-			}
-
-			main.removeTabAt(i);
-		}
-		main.repaint();
-
-	}
 	
 	/**
 	 * Displays the details of the session that is clicked on 
@@ -229,99 +194,106 @@ public class ViewEventController {
 		overviewDetailPanel.updatePanel(displaySession);
 	}
 	
-	public void sendEstimatesFromSession(){
-		overviewDetailPanel.replaceTable();
-	}
-
-	/** 
-	 * Opens a Edit Session tab for the input session if a tab is not already
-	 * open for the session.
-	 * @param toEdit	The session to edit
-	 */
-	public void editSession(PlanningPokerSession toEdit)
-	{
-		// Check if the session is already open in a tab
-		if (!openSessionTabHashTable.containsKey(toEdit)) {
-			// eventually want to add session to edit as an argument
-			final PlanningPokerSessionTab editPanel = new PlanningPokerSessionTab(toEdit);
-			
-			final StringBuilder tabName = new StringBuilder();
-			final int subStringLength = toEdit.getName().length() > 6 ? 7 : toEdit.getName().length();
-			tabName.append(toEdit.getName().substring(0,subStringLength));
-			if(toEdit.getName().length() > 6) tabName.append("..");
-			
-			main.addTab(tabName.toString(), null, editPanel, toEdit.getName());
-			openSessionTabHashTable.put(editPanel.getDisplaySession(), editPanel);
-			main.invalidate();
-			main.repaint();
-			main.setSelectedComponent(editPanel);
-		}
-		else
-		{
-			main.setSelectedComponent(openSessionTabHashTable.get(toEdit));
-		}		
-			
-	}
-
 	/**
-	 * Opens a Voting tab for the input session if a tab is not already
-	 * open for the session.
-	 * @param toVoteOn	The session to vote on
+	 * Opens the input session for the specified operation
+	 * @param session	The session to open
+	 * @param tabType	The desired tab type
 	 */
-	public void voteOnSession(PlanningPokerSession toVoteOn) {
-		// Check if the session is already open in a tab
-		if (!openSessionTabHashTable.containsKey(toVoteOn)) {
-			final VotingPage votingPanel = new VotingPage(toVoteOn);
-			
-			final StringBuilder tabName = new StringBuilder();
-			final int subStringLength = toVoteOn.getName().length() > 6 ? 7 : toVoteOn.getName().length();
-			tabName.append(toVoteOn.getName().substring(0,subStringLength));
-			if(toVoteOn.getName().length() > 6) tabName.append("..");
-			
-			main.addTab(tabName.toString(), null, votingPanel, toVoteOn.getName());
-			openSessionTabHashTable.put(votingPanel.getDisplaySession(), votingPanel);
-			main.invalidate();
-			main.repaint();
-			main.setSelectedComponent(votingPanel);
+	private void openNewSessionTab(PlanningPokerSession session, ViewMode tabType) {
+		final JComponent sessionComp;
+		// Create the panel based on the input ViewMode
+		switch(tabType) {
+			case EDITING:
+				sessionComp = new PlanningPokerSessionTab(session);
+				break;
+			case VOTING:
+				sessionComp = new VotingPage(session);
+				break;
+			case STATISTICS:
+				sessionComp = new StatisticsPanel(session);
+				break;
+			default:	// The view type is invalid,
+				throw new IllegalArgumentException("Cannot create session tab. ViewMode is invalid");
 		}
-		else {
-			main.setSelectedComponent(openSessionTabHashTable.get(toVoteOn));
+		
+		final StringBuilder tabName = new StringBuilder();
+		final int subStringLength = session.getName().length() > 6 ? 7 : session.getName().length();
+		tabName.append(session.getName().substring(0,subStringLength));
+		if (session.getName().length() > 6) {
+			tabName.append("..");
 		}
+		
+		main.addTab(tabName.toString(), null, sessionComp, session.getName());
+		openSessionTabHashTable.put(((ISessionTab) sessionComp).getDisplaySession(), sessionComp);
+		main.invalidate(); //force the tabbedpane to redraw.
+		main.repaint();
+		main.setSelectedComponent(sessionComp);
+		
+		planningPokerSessionButtonsPanel.disableAllButtons();
 	}
 	
 	/**
-	 * Opens a Statistics tab for the input session if a tab is not already
-	 * open for the session.
-	 * @param viewStats	The session to view statistics for
+	 * Opens the input session for the specified operation
+	 * This will close the existing tab if it is of a different ViewMode.
+	 * If they are the same ViewMode, it will simply set that tab as the selected component
+	 * @param session	The session to open
+	 * @param tabType	The desired tab type
 	 */
-	public void openStatisticsTab(PlanningPokerSession viewStats){
-		// Check if the session is already open in a tab
-		if (!openSessionTabHashTable.containsKey(viewStats)) {
-			final StatisticsPanel statisticsPanel = new StatisticsPanel(viewStats);
-			
-			final StringBuilder tabName = new StringBuilder();
-			final int subStringLength = viewStats.getName().length() > 6 ? 7 : viewStats.getName().length();
-			tabName.append(viewStats.getName().substring(0,subStringLength));
-			if (viewStats.getName().length() > 6) {
-				tabName.append("..");
+	public void openSessionTab(PlanningPokerSession session, ViewMode tabType) {
+		// If the session is already opened
+		if (openSessionTabHashTable.containsKey(session)) {
+			// Retrieve the current JComponent and ViewMode for this session
+			JComponent sessionTab = openSessionTabHashTable.get(session);
+			ViewMode currViewMode = getComponentSessionViewMode(sessionTab);
+			// If the current and desired ViewModes are the same, open as desired
+			main.setSelectedComponent(sessionTab);
+			// Otherwise close the existing tab, and reopen as desired
+			if (!currViewMode.equals(tabType)) {
+				// Only open the new tab if the existing tab is successfully removed
+				if (removeTab(sessionTab)) {
+					openNewSessionTab(session, tabType);
+					planningPokerSessionButtonsPanel.disableAllButtons();
+				}
 			}
-			
-			main.addTab(tabName.toString(), null, statisticsPanel, viewStats.getName());
-			main.invalidate(); //force the tabbedpane to redraw.
-			main.repaint();
-			main.setSelectedComponent(statisticsPanel);
-		} else {
-			main.setSelectedComponent(openSessionTabHashTable.get(viewStats));
+		}
+		// Otherwise the tab does not exist yet. Create it and open
+		else {
+			openNewSessionTab(session, tabType);
 		}
 	}
-	
 
 	/**
 	 * Getter for the hash table of tabs open for sessions
 	 * @return	The hash table mapping sessions to the display components
 	 */
-	protected Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
+	public Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
 		return openSessionTabHashTable;
+	}
+	
+	/**
+	 * Returns what type of tab a session is open as
+	 * @param comp	The JComponent to check
+	 * @return	The session ViewMode of the component
+	 */
+	public ViewMode getComponentSessionViewMode(JComponent comp) {
+		// Make sure the component exists
+		if (comp == null) {
+			return ViewMode.NONE;
+		}
+		// If the session is open for editing 
+		if (comp instanceof PlanningPokerSessionTab) {
+			return ViewMode.EDITING;
+		}
+		// If the session is open for voting
+		if (comp instanceof VotingPage) {
+			return ViewMode.VOTING;
+		}
+		// If the session is open for statistics viewing 
+		if (comp instanceof StatisticsPanel) {
+			return ViewMode.STATISTICS;
+		}
+		// Otherwise it is not a planning poker session related component!
+		return ViewMode.NONE;
 	}
 	
 }

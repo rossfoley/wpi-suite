@@ -80,11 +80,25 @@ public class DeckListModel extends AbstractListModel {
 	 * Finds a deck with the deck numbers matching the given list
 	 * 
 	 * @param deckNums list of numbers to match to decks in decklistmodel
+	 * @return the deck whose numbers match deckNums
 	 */
 	public Deck getDeck(List<Integer> deckNums){
 		for (Deck d:existingDecks){
 			if (d.getNumbersInDeck().equals(deckNums)){
 				return d;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * @param deckID the ID of the deck to search for
+	 * @return the deck with the specified ID
+	 */
+	public Deck getDeck(int deckID) {
+		for (Deck deck : existingDecks){
+			if (deck.getId() == deckID) {
+				return deck;
 			}
 		}
 		return null;

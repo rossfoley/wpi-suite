@@ -20,6 +20,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -30,13 +31,13 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetSessionControl
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewMode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 
 /**
  * Displays all sessions in a tree for the left side of the overview panel
  * @see requirementmanager.view.overview.overviewtree
- * @author Randy Acheson
  * @version 4/18/14
  */
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
@@ -51,15 +52,8 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	{
         this.setViewportView(tree);
         ViewEventController.getInstance().setOverviewTree(this);
-		this.refresh();  
+		this.refresh();
 		initialized = false;
-		// Disable all toolbar buttons on initialization
-		try {
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
-			ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableStatisticsButton();
-		} catch (NullPointerException ex) {} // Do nothing if the toolbar has not been instantiated yet
 	}
 	
 	/**
@@ -71,20 +65,105 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	}
 	
 	/**
-	 * This will wipe out the current tree and rebuild it
+	 * Clears out the current tree and rebuilds it
 	 */
-	public void refresh() {
+	public synchronized void refresh() {
+		final TreeNode rootNode = createNodes();
+		tree = new JTree(rootNode);
+        
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
+		}
+		
+		OverviewDetailPanel overviewPanel = ViewEventController.getInstance().getOverviewDetailPanel();
+		if (overviewPanel != null) {
+			overviewPanel.clearPanel();
+			ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel);
+		}
+		// Tell it that it can only select one thing at a time
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.setToggleClickCount(0);
+ 
+        // Set to custom cell renderer so that icons make sense
+        tree.setCellRenderer(new CustomTreeCellRenderer());
+        // Add a listener to check for clicking
+        tree.addMouseListener(this);
+        tree.addTreeSelectionListener(this);
+        
+        tree.setDropMode(DropMode.ON);
+        
+        setViewportView(tree); //make panel display the tree
+        // Update the ViewEventControler so it contains the right tree
+        ViewEventController.getInstance().setOverviewTree(this);
+        // Disable all buttons if nothing is selected
+        if (tree.getLastSelectedPathComponent() == null) {
+        	try {
+        		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableAllButtons();
+        	} catch (NullPointerException ex) {
+        		System.out.println("OverviewTree: Buttons panel not created yet. Cannot disable");
+        	}
+        }
+	}
+	
+	/**
+	 * Method mousePressed.
+	 * @param e MouseEvent
+	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent) */
+	@Override
+	public void mousePressed(MouseEvent e) {
+		final int x = e.getX();
+		final int y = e.getY();
+
+		final TreePath treePath = tree.getPathForLocation(x, y);
+		// If the treePath exists
+		if(treePath != null) {
+			// If the node exists in the tree
+			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+			if(node != null) {
+				// If the node is a PlanningPokerSession
+				if (node.getUserObject() instanceof PlanningPokerSession) {
+					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
+
+					if(e.getClickCount() == 2) {
+						doubleClickOpenSession(session);
+					} else {
+
+						displaySession(session);
+					}
+				}
+				else {
+					OverviewDetailPanel overviewDetails = ViewEventController.getInstance().getOverviewDetailPanel();
+					overviewDetails.clearPanel();
+					ViewEventController.getInstance().setOverviewDetailPanel(overviewDetails);
+				}
+			}
+		}
+	}
+	
+	private TreeNode createNodes() {
 		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
 		
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
 		final DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
 		final DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
 		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
-		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
+		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Archived Sessions");
+		
+		OverviewDetailPanel overviewPanel = ViewEventController.getInstance().getOverviewDetailPanel();
+		if (overviewPanel != null) {
+			overviewPanel.clearPanel();
+			ViewEventController.getInstance().setOverviewDetailPanel(overviewPanel);
+		}
 		
 		for(PlanningPokerSession session : sessions) {
 			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session); //make a new session node to add
-			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
+			boolean isOwner = false;
+			try {
+				isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
+			}
+			catch (NullPointerException e) {
+				
+			}
 
 			if (session.isClosed()) {
 				closedSessions.add(newSessionNode);
@@ -102,78 +181,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		top.add(endedSessions);
 		top.add(closedSessions);
 		
-        tree = new JTree(top); //create the tree with the top node as the top
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
-        tree.setToggleClickCount(0);
- 
-        tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
-        tree.addMouseListener(this); //add a listener to check for clicking
-        tree.addTreeSelectionListener(this);
-        
-        tree.setDropMode(DropMode.ON);
-        
-        this.setViewportView(tree); //make panel display the tree
-        
-        ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
-
-        //System.out.println("finished refreshing the tree");
-	}
-	
-	/**
-	 * Method mousePressed.
-	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent) */
-	@Override
-	public void mousePressed(MouseEvent e) {
-		final int x = e.getX();
-		final int y = e.getY();
-
-		final TreePath treePath = tree.getPathForLocation(x, y);
-			
-		if(treePath != null) {
-			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
-			
-			if(node != null) {
-				
-				if (node.getUserObject() instanceof PlanningPokerSession) {
-					final PlanningPokerSession session = (PlanningPokerSession)node.getUserObject();
-					final String sessionOwner = session.getSessionCreatorName();
-
-					// Disable everything by default
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEditButton();
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableVoteButton();
-					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableEndVoteButton();
-					
-					// If the current user is the owner of the session
-					if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
-						// Enable editing if pending					
-						if (session.isPending()) {
-							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
-						}
-						// Allow end of voting if open and editing if no estimates yet
-						else if (session.isOpen()) {
-							ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEndVoteButton();
-							// If no estimates yet, allow editing
-							if (session.isEditable()) {
-								ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableEditButton();
-							}
-						}
-					}
-					
-					// If session is open, allow voting
-					if (session.isOpen()) {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableVoteButton();
-					}
-					
-					// If the session is ended or closed, allow the user to view statistics
-					if (session.isEnded() || session.isClosed()) {
-						ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableStatisticsButton();
-					}
-					
-					displaySession(session);
-				}
-			}
-		}
+		return top;
 	}
 	
 	/**
@@ -181,6 +189,7 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @param session The session that has been selected
 	 */
 	protected void displaySession(PlanningPokerSession session) {
+		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
 		ViewEventController.getInstance().displayDetailedSession(session);
 	}
 	
@@ -216,8 +225,10 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
 	/**
-	 * @return the tree */
+	 * @return the tree
+	 */
 	public JTree getTree() {
 		return tree;
 	}
@@ -236,5 +247,27 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 		}
 
 		super.paintComponent(g);
+	}
+	
+	/**
+	 * in case of double click, opens up the appropriate panel
+	 * @param session	The planningPoker session to use
+	 */
+	public void doubleClickOpenSession(PlanningPokerSession session) {
+		final String sessionOwner = session.getSessionCreatorName();
+		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
+			if (session.isPending()) {
+				//if doubleclick and session is pending, open up an editing panel
+				ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
+			}
+		}
+		if (session.isOpen()) {
+			// If doubleclick and session is open, open up a voting panel
+			ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
+		}
+			// If doubleclick and session is ended or closed , open up a statistics panel
+		if (session.isEnded() || session.isClosed()) {
+			ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
+		}
 	}
 }

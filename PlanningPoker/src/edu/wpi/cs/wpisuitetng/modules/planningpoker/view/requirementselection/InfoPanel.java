@@ -59,7 +59,13 @@ public class InfoPanel extends JPanel {
 	}
 	
 	public void setRequirement(Requirement requirement){
-		name.setText(requirement.getName());
-		description.setText(requirement.getDescription());
+		if (requirement != null) {
+			name.setText(requirement.getName());
+			description.setText(requirement.getDescription());
+		}
+		else {
+			name.setText("");
+			description.setText("");
+		}
 	}
 }

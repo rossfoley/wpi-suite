@@ -69,7 +69,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		// Put the info panel and table panel into the split pane
 		this.setTopComponent(infoPanel);
 		this.setBottomComponent(tablePanel);
-		this.setResizeWeight(0.5); 
+		this.setResizeWeight(0.5);
 		
 		// Makes the split pane divide 50/50 for each portion
 		final Dimension d = new Dimension(200, 200);
@@ -233,8 +233,7 @@ public class OverviewDetailPanel extends JSplitPane {
 		sendEstimatesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final ArrayList<Integer> selectedReqIDs = selectToUpdateTable.getSelectedReqs();
-				final RequirementModel reqs = RequirementModel.getInstance();
-				if (selectedReqIDs.size() == 0){
+				if (selectedReqIDs.size() == 0) {
 					sendErrorMessage.setVisible(true);
 				}
 				else {
@@ -307,6 +306,15 @@ public class OverviewDetailPanel extends JSplitPane {
 	 */
 	public boolean isOnSelectionTable(){
 		return onSelectionTable; 
+	}
+	
+	/**
+	 * clears the overview detail panel of all session specific information
+	 */
+	public void clearPanel(){
+		reqTable.clearTable();
+		infoPanel.clearPanel();
+		ViewEventController.getInstance().disableButtons();
 	}
 }
 

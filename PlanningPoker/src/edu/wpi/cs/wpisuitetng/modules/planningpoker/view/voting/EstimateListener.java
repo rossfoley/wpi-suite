@@ -15,7 +15,7 @@ import java.util.EventListener;
  * A contract between a EstimateEvent source and listener classes
  */
 public class EstimateListener implements EventListener {
-	private double estimate;
+	private int estimate;
 	
 	/**
 	 *  Called whenever an estimate has been submitted by an
@@ -26,7 +26,7 @@ public class EstimateListener implements EventListener {
 	}
 	
 
-	public double getEstimate() {
+	public int getEstimate() {
 		return estimate;
 	}
 	

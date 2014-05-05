@@ -11,13 +11,13 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DropMode;
@@ -36,7 +36,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 
 /**
@@ -52,46 +51,42 @@ public class StatisticsReqTable extends JTable {
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	private final HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
 	private int rowNumber = 0;
-	private StatisticsDetailPanel detailPanel;
-	private StatisticsInfoPanel infoPanel;
+	private transient Vector<SelectedRequirementListener> listeners;
+	
 	/**
 	 * Sets initial table view
 	 * @param data	Initial data to fill StatisticsReqTable
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
 	public StatisticsReqTable(Object[][] data, String[] columnNames) {
+		
 		tableModel = new DefaultTableModel(data, columnNames);
-		this.setModel(tableModel);
-		this.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
-		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		this.setDragEnabled(true);
-        this.setDropMode(DropMode.ON);
+		setModel(tableModel);
+		setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
+		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setDropMode(DropMode.ON);
     
-		this.getTableHeader().setReorderingAllowed(false);
-		this.setAutoCreateRowSorter(true);
+		getTableHeader().setReorderingAllowed(false);
+		setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
-
 		initialized = false;
 		
 		/* Create double-click event listener */
-		this.addMouseListener(new MouseAdapter() {
+		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				rowNumber = rowAtPoint(getMousePosition());
-				try {
-					infoPanel.setCurrentReqID(tableRows.get(rowNumber));
+				int rowNumber = rowAtPoint(getMousePosition());
+				// If the row exists
+				if (tableRows.containsKey(rowNumber)) {
+					fireSelectedRequirementEvent(tableRows.get(rowNumber));
 				}
-				catch (NullPointerException ex){}
 			}
-		}); 
+		});
 	}
 	
 	/**
 	 * updates StatistcsReqTable with the contents of the requirement model
 	 */
 	public void refresh(PlanningPokerSession session) {
-		// TODO Implement Your Vote, Estimate columns
-		// Currently is 0 for every estimate
-		
 		final Set<Integer> requirementIDs = session.getRequirementIDs();
 		final RequirementModel reqs = RequirementModel.getInstance();
 		int vote = 0;
@@ -118,26 +113,21 @@ public class StatisticsReqTable extends JTable {
 			tableModel.addRow(new Object[]{
 					reqName,
 					vote,
-					estimate});	
+					estimate});
 			
 			tableRows.put(rowID, requirementID);
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
-		for(Integer i: tableRows.keySet()){
-			String key = i.toString();
-			String value = tableRows.get(i).toString();
-			System.out.println(key + ":" + value);
-		}
 	}
 	
 	@Override 
 	public boolean isCellEditable(int row, int col) {
-		return col == 2;
+		return false;
 	}
 	
 	/**
-	 * @return the changedByRefresh 
+	 * @return the changedByRefresh
 	 */
 	public boolean wasChangedByRefresh() {
 		return changedByRefresh;
@@ -185,7 +175,6 @@ public class StatisticsReqTable extends JTable {
 
     }
 	
-	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
 		HashMap<Integer, Integer> finalEstimates = session.getFinalEstimates();
 		int reqID = reqToFind.getId();
@@ -193,14 +182,11 @@ public class StatisticsReqTable extends JTable {
 			Integer est = finalEstimates.get(reqID);
 			return est.toString();
 		}
-		return "-";		
+		return "-";	
 	}
 
 	public int getSelectedReq() {
 		return tableRows.get(rowNumber);
-	}
-	public void setInfoPanel(StatisticsInfoPanel panel) {
-		infoPanel = panel;
 	}
 	
 	/**
@@ -217,19 +203,64 @@ public class StatisticsReqTable extends JTable {
 			}
 			catch (NumberFormatException e) {
 				isInteger = false;
-				// add error message for nonnegative integers only
 			}
 			if (isInteger){
 				if (numberEst >= 0){
 					int reqID = tableRows.get(i);
 					currentSession.addFinalEstimate(reqID, numberEst);
 				}
-				/* else {
-					add error message for nonnegative integers only
-				} */
 			}
 		}
 		PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(currentSession);
 		refresh(currentSession);
 	}
+
+	
+	/**
+	 * Adds a listener for SelectedRequirementEvents
+	 */
+	synchronized public void addSelectedRequirementListener(SelectedRequirementListener l) {
+		if (listeners == null) {
+			listeners = new Vector<SelectedRequirementListener>();
+		}
+		listeners.addElement(l);
+	}  
+
+	/**
+	 * Remove a listener for SelectedRequirementEvents
+	 */
+	synchronized public void removeSelectedRequirementListener(SelectedRequirementListener l) {
+		if (listeners == null) {
+			listeners = new Vector<SelectedRequirementListener>();
+		}
+		else {
+			listeners.removeElement(l);
+		}
+	}
+
+	/**
+	 * Fire an EstimateEvent to all registered listeners
+	 */
+	protected void fireSelectedRequirementEvent(int requirementID) {
+		// Do nothing if we have no listeners
+		if (listeners != null && !listeners.isEmpty()) {
+			// Create the event object to send
+			final SelectedRequirementEvent event = 
+					new SelectedRequirementEvent(this, requirementID);
+
+			// Make a copy of the listener list in case anyone adds/removes listeners
+			final Vector<SelectedRequirementListener> targets;
+			synchronized (this) {
+				targets = (Vector<SelectedRequirementListener>) listeners.clone();
+			}
+
+			// Walk through the listener list and call the estimateSubmitted method in each
+			final Enumeration<SelectedRequirementListener> e = targets.elements();
+			while (e.hasMoreElements()) {
+				SelectedRequirementListener l = e.nextElement();
+				l.setSelectedRequirement(event);
+			}
+		}
+	}
+	
 }

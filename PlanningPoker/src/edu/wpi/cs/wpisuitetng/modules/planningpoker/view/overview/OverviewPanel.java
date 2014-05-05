@@ -21,6 +21,20 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class OverviewPanel extends JSplitPane {
 
 	private final OverviewTreePanel treePanel;
+	/**
+	 * @return the treePanel
+	 */
+	public OverviewTreePanel getTreePanel() {
+		return treePanel;
+	}
+
+	/**
+	 * @return the detailPanel
+	 */
+	public OverviewDetailPanel getDetailPanel() {
+		return detailPanel;
+	}
+
 	private final OverviewDetailPanel detailPanel;
 	
 	public OverviewPanel() {
@@ -32,7 +46,7 @@ public class OverviewPanel extends JSplitPane {
 		// Put the overview tree and detail panel into this tab
 		this.setLeftComponent(treePanel);
 		this.setRightComponent(detailPanel);
-		this.setResizeWeight(0.2);  // set the right screen to not show by default
+		this.setResizeWeight(0.2); 
 
 		ViewEventController.getInstance().setOverviewTree(treePanel);
 		ViewEventController.getInstance().setOverviewDetailPanel(detailPanel);	

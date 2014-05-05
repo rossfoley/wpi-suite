@@ -24,6 +24,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 
 /**
@@ -32,11 +33,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
  */
 public class Mailer {
 	private final Properties properties;
-	private final Session session;
+	private Session session;
 
-	private final String username = "theteam8s@gmail.com";
-	private final String password = "TheTeam8";
+	private final String username = "wpisuiteplanningpoker@gmail.com";
+	private final String password = "Q1W2E3ASDF";
+	
+	private final String username2 = "wpisuiteplanningpoker2@gmail.com";
+	private final String password2 = "Q1W2E3ASDF";
 
+	private boolean isAlternate;
 	//Validate
 
 	/**
@@ -45,6 +50,8 @@ public class Mailer {
 	 */
 	public Mailer()
 	{
+		// Uses primary credentials
+		isAlternate = false;
 		// Get system properties
 		properties = System.getProperties();
 
@@ -72,6 +79,8 @@ public class Mailer {
 		});
 	}
 
+	
+	
 	/**
 	 * Sends an email to the given recipient with the given subject as it's subject and the given body as its content.
 	 * @param recipient The email of who you want to send the mail to. It needs to be a proper email address
@@ -80,8 +89,6 @@ public class Mailer {
 	 * @return True if email was sent successfully, false otherwise.
 	 */
 	public boolean mailTo(String recipient, String subject, String body){
-		//System.out.println("starting to mail");
-
 		if (recipient == null || subject == null || body == null) {
 			return false;
 		}
@@ -124,14 +131,20 @@ public class Mailer {
 				// Send message
 				Transport.send(message);
 			}catch (MessagingException mex) {
-				mex.printStackTrace();
+				System.out.println(mex.getMessage());
+				if (isAlternate) {
+					mex.printStackTrace();
+					return false; // unless we already are
+				}
+				isAlternate = true;
+				session = Session.getInstance(properties,
+						new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username2, password2);
+					}
+				});
+				mailTo(recipient, subject, body);
 			}
-		}
-		if (!isValidSender){
-			System.out.println(username + " is not a valid email address");	
-		}
-		if (!isValidReciever){
-			System.out.println(recipient + " is not a valid email address");
 		}
 
 		return isValidSender && isValidReciever;
@@ -176,6 +189,14 @@ public class Mailer {
 		}
 
 		boolean thisValid;
+		
+		String url = ConfigManager.getConfig().getCoreUrl().toString();
+		int offset = 3;
+		if (url.endsWith("/API/")) {
+			offset++;
+		}
+		String finalUrl = url.substring(0, url.length() - offset) + "login.html?session=" + planningPokerSession.getUuid().toString();
+		
 		if (planningPokerSession.getEndDate() != null) { 
 			final int day = planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().DAY_OF_MONTH);
 			final int month = (1 + planningPokerSession.getEndDate().get(planningPokerSession.getEndDate().MONTH));
@@ -184,11 +205,13 @@ public class Mailer {
 			final String minute = formatMinute(planningPokerSession.getEndDate());
 			final String am_pm = formatAM_PM(planningPokerSession.getEndDate());
 			final String endTime = month + "/" + day + "/" + year + " at " + hour + ":" + minute + am_pm;
-
+			
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. Its end date is: " + endTime + ".  \n\nGood Luck! \n\n --Your Development Team");
+						" has been started. Its end date is: " + endTime + ".  To vote on this session, you can login to Janeway or go to "
+						+ finalUrl +
+						"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
 				}
@@ -198,7 +221,9 @@ public class Mailer {
 			for (String recipient : recipients) {
 				thisValid = mailTo(recipient, "Planning Poker Session: " + planningPokerSession.getName() + 
 						" Has been started", "The Session: " + planningPokerSession.getName() + 
-						" has been started. The session doesn't currently have an end date. \n\nGood Luck! \n\n --Your Development Team");
+						" has been started. The session doesn't currently have an end date. To vote on this session, you can login to Janeway or go to " 
+						+ finalUrl +	
+						"\n\nGood Luck! \n\n --Your Development Team");
 				if (!thisValid) {
 					didNotSendTo.add(recipient);
 				}
