@@ -146,8 +146,10 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		endDateCheckBox.setSelected(dateHasBeenSet);
 		// Update the fields current deck being used
 		isUsingDeck = existingSession.isUsingDeck();
+
 		sessionDeckID = existingSession.getSessionDeckID();
 		sessionDeck = DeckListModel.getInstance().getDeck(sessionDeckID);
+
 
 		// Create 
 		unmodifiedSession.copyFrom(existingSession);
@@ -368,6 +370,9 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 
 		// Handle the time dropdowns
 		populateTimeDropdown();
+		if ((viewMode == ViewMode.EDITING) && (pokerSession.hasEndDate())) {
+			setTimeDropdown();
+		}
 		parseTimeDropdowns();
 		setDeckDropdown();
 		// Set the default deck name for the session
@@ -379,9 +384,6 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 		catch (NullPointerException ex) {}
 
 		haveEndDate = handleCheckBox();
-		if ((viewMode == ViewMode.EDITING) && (pokerSession.hasEndDate())) {
-			setTimeDropdown();
-		}
 
 		// Handle changes in session name field
 		textFieldSessionField.getDocument().addDocumentListener(new DocumentListener() {
@@ -740,18 +742,25 @@ public class PlanningPokerSessionTab extends JPanel implements ISessionTab {
 	}
 
 	public void setTimeDropdown() {
+		GregorianCalendar pokerDate = pokerSession.getEndDate();
+		
 		int hour = pokerSession.getEndDate().get(Calendar.HOUR_OF_DAY);
 		final int minute = pokerSession.getEndDate().get(Calendar.MINUTE);
 		String ampm = "AM";
 		if (hour > 12) {
 			hour -= 12;
 			ampm = "PM";
-		} else if (hour == 0) {
-			hour = 12;
+		} 
+		else if (hour == 12){
+			ampm = "PM";
 		}
+		else if (hour == 0) {
+			hour = 12;
+		} 
 		final String selectedHour = String.format("%d:%02d", hour, minute);
 		comboTime.setSelectedItem(selectedHour);
 		comboAMPM.setSelectedItem(ampm);
+		parseTimeDropdowns();
 	}
 
 	public void setDeckDropdown(){
