@@ -29,11 +29,15 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession.SessionState;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.notifications.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -113,6 +117,34 @@ public class OverviewDetailInfoPanel extends JPanel {
 				}
 				else if (currentSession.getGameState() == SessionState.OPEN){
 					currentSession.setGameState(SessionState.VOTINGENDED);
+					final List<String> recipients = new LinkedList<String>();
+					List<EmailAddress> emailRecipients = null;
+
+					final GetEmailController getEmailController = GetEmailController.getInstance();
+					getEmailController.retrieveEmails();
+
+					final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+					try {
+						emailRecipients = emailAddressModel.getEmailAddresses();
+				}
+					catch (Exception E) {
+
+					}
+
+					for (int i = 0; i < emailRecipients.size(); i++) {
+						recipients.add(emailRecipients.get(i).getEmail());
+					}
+					
+					final Thread t = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							final Mailer mailer = new Mailer();
+							mailer.notifyOfPlanningPokerSessionClose(recipients, currentSession);
+						}
+					});
+					t.setDaemon(true);
+					t.start();
+					
 				}
 				else if (currentSession.getGameState() == SessionState.VOTINGENDED){
 					currentSession.setGameState(SessionState.CLOSED);
