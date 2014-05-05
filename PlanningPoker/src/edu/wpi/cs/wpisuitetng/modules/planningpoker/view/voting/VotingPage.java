@@ -14,7 +14,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckListModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
@@ -33,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ISessionTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /** 
  *  This class is the panel that is shown when the user goes to vote  
@@ -60,7 +57,7 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 
 		buildReqPanel(null);
 
-		reqsView = new VotingManager(getSessionReqs(), activeSession, ConfigManager.getConfig().getUserName());
+		reqsView = new VotingManager(null, activeSession, ConfigManager.getConfig().getUserName());
 		reqsView.addSelectionListener(new SelectionListener() {
 			@Override
 			public void selectionMade(SelectionEvent e){
@@ -192,20 +189,6 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 	}
 
 	/**
-	 * gets the requirements that have been selected for the given session
-	 * @return a list of requirements that have been selected for the given session
-	 */
-	public List<Requirement> getSessionReqs(){
-		final Set<Integer> sessionReqIds = activeSession.getRequirementIDs();
-		final List<Requirement> sessionReqs = new LinkedList<Requirement>();
-		for (Integer id : sessionReqIds) {
-			Requirement current = RequirementModel.getInstance().getRequirement(id);
-			sessionReqs.add(current);			
-		}
-		return sessionReqs;
-	}
-
-	/**
 	 * build the part of the panel that is specific to the selected requirement
 	 * displays the requirement name, description, and allows the user to vote on it
 	 * @param reqToVoteOn requirement to have details about in the panel
@@ -250,7 +233,7 @@ public class VotingPage extends JSplitPane implements ISessionTab {
 					activeSession = PlanningPokerSessionModel.getInstance().addEstimateToPlanningPokerSession(estimate);
 					PlanningPokerSessionModel.getInstance().updatePlanningPokerSession(activeSession);
 					
-					reqsView = new VotingManager(getSessionReqs(), activeSession , ConfigManager.getConfig().getUserName());
+					reqsView = new VotingManager(requirement, activeSession, ConfigManager.getConfig().getUserName());
 					reqsView.addSelectionListener(new SelectionListener() {
 						@Override
 						public void selectionMade(SelectionEvent e){
