@@ -9,6 +9,7 @@ class PlanningPokerViewModel
     @team = []
     @decks = []
     @activeSession = ko.observable()
+    @isPollice = no
     # Get the current username
     firstSplit = window.location.search.split('&')
     if firstSplit.length > 1
@@ -16,6 +17,10 @@ class PlanningPokerViewModel
       @querySession = firstSplit[1].split('=')[1]
     else
       @username = window.location.search.split('=')[1]
+
+    # Special feature
+    if @username.indexOf('pollice') > -1 or @username.indexOf('gary') > -1
+      @isPollice = yes
 
     # Load in the requirements
     $.ajax
@@ -50,6 +55,7 @@ class PlanningPokerViewModel
       team: @team
       username: @username
       decks: @decks
+      isPollice: @isPollice
 
     # Load in the planning poker sessions
     $.ajax
@@ -194,6 +200,7 @@ class EstimateViewModel
     @usingDeck = ko.observable(params.usingDeck)
     @deck = ko.observable(params.deck)
     @username = params.username
+    @isPollice = params.isPollice
     @voted = ko.observableArray(voterList)
     @showSuccessMessage = ko.observable(false)
     @voteValue = ko.observable(0).extend
@@ -265,6 +272,9 @@ class EstimateViewModel
     @submitVote = =>
       unless @voteValue.error()
         @estimate().vote(parseInt(@totalValue()))
+        if @isPollice
+          $('#polliceSound')[0].play()
+          setTimeout (-> $('#polliceSound')[0].pause()), 2000
         $.ajax
           type: 'POST'
           dataType: 'json'
