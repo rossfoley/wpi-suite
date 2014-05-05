@@ -25,28 +25,35 @@ public class HelpTreePanel extends JScrollPane implements MouseListener, TreeSel
 		tree.setModel(new DefaultTreeModel(
 			new DefaultMutableTreeNode("Planning Poker Help Guide") {
 				{
+					HelpPanelItem whatIs = new HelpPanelItem("What is Planning Poker?", "whatis"),
+							whereDo = new HelpPanelItem("Where do I start?", "wheredo"),
+							createNewSession = new HelpPanelItem("Create or Edit a Planning Poker Session", "createnewsession"),
+							createNewDeck = new HelpPanelItem("Creating a new deck", "createnewdeck"),
+							createNewReq = new HelpPanelItem("Creating a new requirement", "createnewreq"),
+							votePanel = new HelpPanelItem("The voting panel", "votepanel"),
+							deckStyles = new HelpPanelItem("Deck Styles", "deckstyles"),
+							viewSessionDetails = new HelpPanelItem("Viewing session results", "sessiondetails"),
+							Archive = new HelpPanelItem("Archiving a session", "archive");
+							
+					
 					DefaultMutableTreeNode rootNode;
 					rootNode = new DefaultMutableTreeNode("Getting Started");
-						HelpPanelItem whatIs = new HelpPanelItem("What is Planning Poker?", "whatis"),
-									  whereDo = new HelpPanelItem("Where do I start?", "wheredo");
 						rootNode.add(new DefaultMutableTreeNode(whatIs));
 						rootNode.add(new DefaultMutableTreeNode(whereDo));
 					add(rootNode);
 					rootNode = new DefaultMutableTreeNode("Creating or editing a session");
-						rootNode.add(new DefaultMutableTreeNode("Create a new Planning Poker session"));
-						rootNode.add(new DefaultMutableTreeNode("Creating a new deck"));
-						rootNode.add(new DefaultMutableTreeNode("Creating a new requirement"));
+						rootNode.add(new DefaultMutableTreeNode(createNewSession));
+						rootNode.add(new DefaultMutableTreeNode(createNewDeck));
+						rootNode.add(new DefaultMutableTreeNode(createNewReq));
 					add(rootNode);
 					rootNode = new DefaultMutableTreeNode("Voting on a session");
-						rootNode.add(new DefaultMutableTreeNode("The voting panel"));
-						rootNode.add(new DefaultMutableTreeNode("Voting methods"));
+						rootNode.add(new DefaultMutableTreeNode(votePanel));
+						rootNode.add(new DefaultMutableTreeNode(deckStyles));
 					add(rootNode);
 					rootNode = new DefaultMutableTreeNode("Viewing session statistics");
-						rootNode.add(new DefaultMutableTreeNode("Viewing session details"));
-						rootNode.add(new DefaultMutableTreeNode("Making final estimates"));
-						rootNode.add(new DefaultMutableTreeNode("Sending final estimates"));
+						rootNode.add(new DefaultMutableTreeNode(viewSessionDetails));
 					add(rootNode);
-					add(new DefaultMutableTreeNode("Archiving a session"));
+					add(new DefaultMutableTreeNode(Archive));
 				}
 			}
 		));
