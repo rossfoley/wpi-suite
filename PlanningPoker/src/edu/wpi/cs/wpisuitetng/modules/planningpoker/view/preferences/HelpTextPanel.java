@@ -36,7 +36,7 @@ public class HelpTextPanel extends JPanel{
 		URL startingURL;
 		baseURL = Network.getInstance().makeRequest("docs/PlanningPoker/", HttpMethod.GET).getUrl().toString().replace("API/", "");
 		try {
-			startingURL = new URL(baseURL + "start.html");
+			startingURL = new URL(baseURL + "whatis.html");
 			content = new JEditorPane(startingURL);
 			content.setEditable(false);
 		} catch (Exception e) {}
