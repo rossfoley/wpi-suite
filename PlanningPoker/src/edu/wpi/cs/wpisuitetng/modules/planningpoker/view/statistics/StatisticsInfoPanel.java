@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -409,7 +410,10 @@ public class StatisticsInfoPanel extends JPanel {
 			session.addRequirementToExportedList(reqToSendFinalEstimate.getId());
 			UpdateRequirementController.getInstance().updateRequirement(reqToSendFinalEstimate);
 			RequirementManagerController.getInstance().refreshReqManagerTable();
-			ViewEventController.getInstance().getStatisticsPanel().refresh();
+			JComponent statisticsPanel = ViewEventController.getInstance().getOpenSessionTabHashTable().get(session);
+			if (statisticsPanel != null && statisticsPanel instanceof StatisticsPanel) {
+				((StatisticsPanel)statisticsPanel).refresh();
+			}
 			ViewEventController.getInstance().getOverviewDetailPanel().updatePanel(session);
 			estimateSubmittedMessage.setVisible(true);
 		}

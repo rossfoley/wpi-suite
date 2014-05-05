@@ -35,7 +35,6 @@ public class ViewEventController {
 	private OverviewDetailPanel overviewDetailPanel = null;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
-	private StatisticsPanel statisticsPanel = null;
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -184,21 +183,6 @@ public class ViewEventController {
 	}
 	
 	/**
-	 * @return the statistics panel
-	 */
-	public StatisticsPanel getStatisticsPanel() {
-		return statisticsPanel;
-	}
-	
-	/**
-	 * set statisticsPanel equal to the given StatisticsPanel
-	 * @param statPanel
-	 */
-	public void setStatisticsPanel(StatisticsPanel statPanel) {
-		statisticsPanel = statPanel;
-	}
-	
-	/**
 	 * Displays the details of the session that is clicked on 
 	 */
 	public void displayDetailedSession(PlanningPokerSession displaySession)
@@ -282,7 +266,7 @@ public class ViewEventController {
 	 * Getter for the hash table of tabs open for sessions
 	 * @return	The hash table mapping sessions to the display components
 	 */
-	protected Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
+	public Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
 		return openSessionTabHashTable;
 	}
 	
