@@ -28,7 +28,7 @@ import javax.swing.event.ChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.PreferencesPanel;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.PreferencesPanel;
 
 /**
  * This class sets the main view when user goes to the PlanningPoker tab
@@ -52,8 +52,6 @@ public class MainView extends JTabbedPane {
 	public MainView() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		this.addTab("Current Sessions", overviewPanel);
-		this.addTab("Preferences", new PreferencesPanel());
-
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
 
@@ -125,7 +123,9 @@ public class MainView extends JTabbedPane {
 					overviewPanel.repaint();
 					PlanningPokerSession session = 
 							ViewEventController.getInstance().getOverviewDetailPanel().getCurrentSession();
+					if (session != null) {
 					ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
+					}
 				}
 				// Otherwise, disable all buttons
 				else {
@@ -165,7 +165,7 @@ public class MainView extends JTabbedPane {
 	public void insertTab(String title, Icon icon, Component component,
 			String tip, int index) {
 		super.insertTab(title, icon, component, tip, index);
-		if (!(component instanceof OverviewPanel || component instanceof PreferencesPanel)) {
+		if (!(component instanceof OverviewPanel)) {// || component instanceof PreferencesPanel)) {
 			setTabComponentAt(index, new ClosableTabComponent(this));
 		}
 	}

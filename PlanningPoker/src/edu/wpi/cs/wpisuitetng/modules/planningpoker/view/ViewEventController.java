@@ -9,15 +9,22 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.IPollable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.timingmanager.TimingManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerSessionButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewDetailPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.HelpTextPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.HelpTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.preferences.OptionsOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.session.PlanningPokerSessionTab;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics.StatisticsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.voting.VotingPage;
@@ -35,6 +42,9 @@ public class ViewEventController {
 	private OverviewDetailPanel overviewDetailPanel = null;
 	private PlanningPokerSessionButtonsPanel planningPokerSessionButtonsPanel;
 	private Map<PlanningPokerSession, JComponent> openSessionTabHashTable = new HashMap<>();
+	private OptionsOverviewPanel helpPanel = null;
+	private HelpTextPanel helpTextPanel;
+	private HelpTreePanel helpListPanel;
 
 	/**
 	 * Default constructor for ViewEventController.  Is protected to prevent instantiation.
@@ -161,6 +171,11 @@ public class ViewEventController {
 			openSessionTabHashTable.remove(((ISessionTab)comp).getDisplaySession());
 		}
 		
+		if (comp instanceof OptionsOverviewPanel){
+			helpPanel = null;
+			TimingManager.getInstance().removePollable((IPollable) comp);
+		}
+		
 		main.remove(comp);
 		disableButtons();
 		return true;
@@ -181,6 +196,8 @@ public class ViewEventController {
 	public MainView getMainView() {
 		return main;
 	}
+
+
 	
 	/**
 	 * Displays the details of the session that is clicked on 
@@ -295,5 +312,33 @@ public class ViewEventController {
 		// Otherwise it is not a planning poker session related component!
 		return ViewMode.NONE;
 	}
+
+	public void openOptionsAndHelpScreen() {
+		if (helpPanel != null){
+			main.setSelectedComponent(helpPanel);
+		}
+		else {
+			helpPanel = new OptionsOverviewPanel();
+			JComponent comp = helpPanel;
+			main.addTab("Options", null, comp, "Options and Help");
+			main.setSelectedComponent(helpPanel);
+		}
+		
+	}
+
+	public void setHelpTree(HelpTreePanel treePanel) {
+		this.helpListPanel = treePanel;
+	}
 	
+	public HelpTreePanel getHelpTree() {
+		return helpListPanel;
+	}
+
+	public void setHelpTextPanel(HelpTextPanel helpTextPanel) {
+		this.helpTextPanel = helpTextPanel;
+	}
+	
+	public HelpTextPanel getHelpTextPanel() {
+		return helpTextPanel;
+	}
 }
