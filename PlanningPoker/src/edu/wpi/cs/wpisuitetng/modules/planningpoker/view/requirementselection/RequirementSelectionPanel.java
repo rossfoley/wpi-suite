@@ -225,7 +225,7 @@ public class RequirementSelectionPanel extends JPanel{
 		final SpringLayout sl_panelNewReq = new SpringLayout();
 		panelNewReq.setLayout(sl_panelNewReq);
 
-		btnNewReq = new JButton("New Req");
+		btnNewReq = new JButton("New Requirement");
 		sl_panelNewReq.putConstraint(SpringLayout.NORTH, btnNewReq, 5, SpringLayout.NORTH, panelNewReq);
 		sl_panelNewReq.putConstraint(SpringLayout.WEST, btnNewReq, 5, SpringLayout.WEST, panelNewReq);
 		sl_panelNewReq.putConstraint(SpringLayout.SOUTH, btnNewReq, -5, SpringLayout.SOUTH, panelNewReq);
