@@ -33,8 +33,6 @@ public class HelpTreePanel extends JScrollPane implements MouseListener, TreeSel
 							votePanel = new HelpPanelItem("The voting panel", "votepanel"),
 							deckStyles = new HelpPanelItem("Deck Styles", "deckstyles"),
 							viewSessionDetails = new HelpPanelItem("Viewing session details", "sessiondetails"),
-							makeFinalEst = new HelpPanelItem("Making final estimates", "makefinalest"),
-							sendFinalEst = new HelpPanelItem("Sending final estimates", "sendfinalest"),
 							Archive = new HelpPanelItem("Archiving a session", "archive");
 							
 					
@@ -54,8 +52,6 @@ public class HelpTreePanel extends JScrollPane implements MouseListener, TreeSel
 					add(rootNode);
 					rootNode = new DefaultMutableTreeNode("Viewing session statistics");
 						rootNode.add(new DefaultMutableTreeNode(viewSessionDetails));
-						rootNode.add(new DefaultMutableTreeNode(makeFinalEst));
-						rootNode.add(new DefaultMutableTreeNode(sendFinalEst));
 					add(rootNode);
 					add(new DefaultMutableTreeNode(Archive));
 				}
