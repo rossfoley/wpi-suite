@@ -17,7 +17,9 @@ import static org.junit.Assert.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
+
 
 
 
@@ -39,7 +41,7 @@ public class MailerTest {
 	/**
 	 * Tests sending to a singular email Address
 	 */
-	@Test
+	@Ignore
 	public void testSendingSolo(){
 		final Mailer mail = new Mailer();
 		assertTrue(mail.mailTo("emailAddress@Somehost.com", "Test1", "This is a test message"));
@@ -50,7 +52,7 @@ public class MailerTest {
 	 * Tests sending to a list of people
 	 * should only "fail" at sending to one person
 	 */
-	@Test
+	@Ignore
 	public void testSendingGroup() {
 		final List<String> recipients = new LinkedList<String>();
 		recipients.add("emailAddress@Somehost.com");
@@ -69,7 +71,7 @@ public class MailerTest {
 	 * Tests sending a message at the start of a PlanningPokerSession
 	 * should only "fail" at sending to one person
 	 */
-	@Test
+	@Ignore
 	public void testSendPlanningPokerStart() {
 		final PlanningPokerSession session = new PlanningPokerSession();
 		session.setName("Name");
@@ -91,7 +93,7 @@ public class MailerTest {
 	 * Tests sending a message at the end of a PlanningPokerSession
 	 * should only "fail" at sending to one person
 	 */
-	@Test
+	@Ignore
 	public void testSendPlanningPokerClose() {
 		final PlanningPokerSession session = new PlanningPokerSession();
 		session.setName("Name");
