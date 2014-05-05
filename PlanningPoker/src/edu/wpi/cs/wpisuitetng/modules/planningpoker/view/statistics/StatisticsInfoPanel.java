@@ -330,8 +330,6 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, -122, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, meanDisplay, 75, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.WEST, medianDisplay, 6, SpringLayout.EAST, lblMedian);
-		//springLayout.putConstraint(SpringLayout.EAST, lblReqName, -6, SpringLayout.WEST, reqNameDisplay);
-		//springLayout.putConstraint(SpringLayout.WEST, reqNameDisplay, 10, SpringLayout.EAST, lblReqName);
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblReqDescription);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -16, SpringLayout.NORTH, lblMean);
@@ -342,7 +340,6 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblReqName, 10, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameDisplay, 0, SpringLayout.NORTH, lblReqName);
-		//springLayout.putConstraint(SpringLayout.SOUTH, reqNameDisplay, 25, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, reqNameDisplay, 10, SpringLayout.EAST, lblReqName);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblReqDescription, 36, SpringLayout.NORTH, this);
