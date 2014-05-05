@@ -52,8 +52,7 @@ public class CardFactory {
 		}
 
 		    final Graphics2D g = curImage.createGraphics();
-		    //g.setFont(g.getFont().deriveFont(16f));
-		    g.setFont(new Font("Tahoma", Font.BOLD, 16));
+		    g.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		    g.setColor(Color.RED);
 		    int xloc = 7;
 		    if (cardNum > 9){
@@ -99,7 +98,7 @@ public class CardFactory {
 		
 		if (fm.stringWidth(s) > w){
 			g.setFont(g.getFont().deriveFont(
-					g.getFont().getSize2D() * (((float)w) / fm.stringWidth(s))));
+					g.getFont().getSize2D() * (((float)w) / (fm.stringWidth(s) + 4))));
 			fm = g.getFontMetrics();
 		}
 
