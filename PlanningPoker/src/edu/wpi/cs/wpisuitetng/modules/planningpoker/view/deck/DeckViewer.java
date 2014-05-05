@@ -205,7 +205,7 @@ public class DeckViewer extends JSplitPane {
 		}
 		viewDeckPanel.setOrientation(VERTICAL_SPLIT);
 		viewDeckPanel.setDividerSize(0);
-		viewDeckPanel.setDividerLocation(viewDeckPanel.getSize().height-200);
+		viewDeckPanel.setDividerLocation(viewDeckPanel.getSize().height-264);
 		cardDisplayPanel.setMinimumSize(new Dimension(100, 225));
 		
 		viewDeckPanel.setEnabled(false);
