@@ -20,6 +20,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -40,9 +41,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
  * @version 4/18/14
  */
 public class OverviewTreePanel extends JScrollPane implements MouseListener, TreeSelectionListener {
-
 	private JTree tree;
 	private boolean initialized;
+	private PlanningPokerSession lastSelected;
 	
 	/**
 	 * Sets up the left hand panel of the overview
@@ -51,63 +52,52 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	{
         setViewportView(tree);
         ViewEventController.getInstance().setOverviewTree(this);
-		refresh();  
+		refresh();
 		initialized = false;
 	}
 	
 	/**
-	 * Method valueChanged.
-	 * @see javax.swing.event.TreeSelectionListener#valueChanged(TreeSelectionEvent) */
-	@Override
-	public void valueChanged(TreeSelectionEvent e) {
-		
-	}
-	
-	/**
-	 * This will wipe out the current tree and rebuild it
+	 * Clears out the current tree and rebuilds it
 	 */
-	public void refresh() {
-		final List<PlanningPokerSession> sessions = PlanningPokerSessionModel.getInstance().getPlanningPokerSessions(); //retrieve the list of sessions
-		
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
-		final DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
-		final DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
-		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
-		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Closed Sessions");
-		
-		for(PlanningPokerSession session : sessions) {
-			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session);
-			boolean isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
-
-			if (session.isClosed()) {
-				closedSessions.add(newSessionNode);
-			} else if (session.isEnded()) {
-				endedSessions.add(newSessionNode);
-			} else if (session.isOpen()) {
-				openSessions.add(newSessionNode);
-			} else if (session.isPending() && isOwner) {
-				pendingSessions.add(newSessionNode);
-			}
+	public synchronized void refresh() {
+		final TreeNode rootNode = createNodes();
+		tree = new JTree(rootNode);
+        
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
 		}
 		
-		top.add(pendingSessions);
-		top.add(openSessions);
-		top.add(endedSessions);
-		top.add(closedSessions);
-		
-        tree = new JTree(top); //create the tree with the top node as the top
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
+		// Tell it that it can only select one thing at a time
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setToggleClickCount(0);
  
-        tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
-        tree.addMouseListener(this); //add a listener to check for clicking
+        // Set to custom cell renderer so that icons make sense
+        tree.setCellRenderer(new CustomTreeCellRenderer());
+        // Add a listener to check for clicking
+        tree.addMouseListener(this);
         tree.addTreeSelectionListener(this);
         
         tree.setDropMode(DropMode.ON);
         
         setViewportView(tree); //make panel display the tree
-        
-        ViewEventController.getInstance().setOverviewTree(this); //update the ViewEventControler so it contains the right tree
+        // Update the ViewEventControler so it contains the right tree
+        ViewEventController.getInstance().setOverviewTree(this);
+
+        // Disable all buttons and clear the detail panel if no session selected
+		final OverviewDetailPanel overviewPanel = ViewEventController.getInstance().getOverviewDetailPanel();
+        if (lastSelected == null) {
+        	try {
+        		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().disableAllButtons();
+        		overviewPanel.clearPanel();
+        	} catch (NullPointerException ex) {
+        		System.out.println("OverviewTree: Buttons panel not created yet. Cannot disable");
+        	}
+        }
+        // Select the last session and display the details
+        else {
+			overviewPanel.updatePanel(lastSelected);
+			tree.setSelectionPath(findSessionTreePath(lastSelected, (DefaultMutableTreeNode) rootNode));
+        }
 	}
 	
 	/**
@@ -135,9 +125,57 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 
 						displaySession(session);
 					}
+					lastSelected = session;	// Keep track of the last selected session
+				}
+				else {
+					OverviewDetailPanel overviewDetails = ViewEventController.getInstance().getOverviewDetailPanel();
+					overviewDetails.clearPanel();
+					ViewEventController.getInstance().setOverviewDetailPanel(overviewDetails);
 				}
 			}
 		}
+	}
+	
+	private TreeNode createNodes() {
+		// Retrieve the list of sessions
+		final List<PlanningPokerSession> sessions =
+				PlanningPokerSessionModel.getInstance().getPlanningPokerSessions();
+		
+		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("All Sessions"); //makes a starting node
+		final DefaultMutableTreeNode pendingSessions = new DefaultMutableTreeNode("My Pending Sessions");
+		final DefaultMutableTreeNode openSessions = new DefaultMutableTreeNode("Open Sessions");
+		final DefaultMutableTreeNode endedSessions = new DefaultMutableTreeNode("Ended Sessions");
+		final DefaultMutableTreeNode closedSessions = new DefaultMutableTreeNode("Archived Sessions");
+		
+		for(PlanningPokerSession session : sessions) {
+			// Make a new session node to add
+			DefaultMutableTreeNode newSessionNode = new DefaultMutableTreeNode(session);
+			boolean isOwner = false;
+			try {
+				isOwner = session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName());
+			}
+			catch (NullPointerException e) {}
+
+			if (session.isClosed()) {
+				closedSessions.add(newSessionNode);
+			}
+			else if (session.isEnded()) {
+				endedSessions.add(newSessionNode);
+			}
+			else if (session.isOpen()) {
+				openSessions.add(newSessionNode);
+			}
+			else if (session.isPending() && isOwner) {
+				pendingSessions.add(newSessionNode);
+			}
+		}
+		
+		top.add(pendingSessions);
+		top.add(openSessions);
+		top.add(endedSessions);
+		top.add(closedSessions);
+		
+		return top;
 	}
 	
 	/**
@@ -145,41 +183,9 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 	 * @param session The session that has been selected
 	 */
 	protected void displaySession(PlanningPokerSession session) {
+		lastSelected = session;	// Keep track of the last displayed/selected session
 		ViewEventController.getInstance().getPlanningPokerSessionButtonsPanel().enableButtonsForSession(session);
 		ViewEventController.getInstance().displayDetailedSession(session);
-	}
-	
-	
-	/**
-	 * Method mouseClicked.
-	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent) */
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	/**
-	 * Method mouseReleased.
-	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mouseReleased(MouseEvent) */
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	/**
-	 * Method mouseEntered.
-	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mouseEntered(MouseEvent) */
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	/**
-	 * Method mouseExited.
-	 * @param e MouseEvent
-	 * @see java.awt.event.MouseListener#mouseExited(MouseEvent) */
-	@Override
-	public void mouseExited(MouseEvent e) {
 	}
 	
 	/**
@@ -201,29 +207,91 @@ public class OverviewTreePanel extends JScrollPane implements MouseListener, Tre
 				initialized = true;
 			} catch (Exception e) {}
 		}
-
 		super.paintComponent(g);
 	}
 	
 	/**
-	 * in case of double click, opens up the appropriate panel
+	 * In case of double click, opens up the appropriate panel
 	 * @param session	The planningPoker session to use
 	 */
 	public void doubleClickOpenSession(PlanningPokerSession session) {
 		final String sessionOwner = session.getSessionCreatorName();
 		if (sessionOwner.equals(ConfigManager.getConfig().getUserName())) {
 			if (session.isPending()) {
-				//if doubleclick and session is pending, open up an editing panel
+				// If double-click and session is pending, open up an editing panel
 				ViewEventController.getInstance().openSessionTab(session, ViewMode.EDITING);
 			}
 		}
 		if (session.isOpen()) {
-			// If doubleclick and session is open, open up a voting panel
+			// If double-click and session is open, open up a voting panel
 			ViewEventController.getInstance().openSessionTab(session, ViewMode.VOTING);
 		}
-			// If doubleclick and session is ended or closed , open up a statistics panel
+			// If double-click and session is ended or closed , open up a statistics panel
 		if (session.isEnded() || session.isClosed()) {
 			ViewEventController.getInstance().openSessionTab(session, ViewMode.STATISTICS);
 		}
+	}
+	
+	/**
+	 * Finds the path to the input session in the tree
+	 * @param	
+	 * @return	The path to the session in the tree
+	 */
+	private TreePath findSessionTreePath(PlanningPokerSession session, DefaultMutableTreeNode root) {
+		// If the root is a leaf
+		if (root.isLeaf()) {
+			Object obj = root.getUserObject();
+			// If the object is a planning poker session
+			if (obj instanceof PlanningPokerSession) {
+				if (((PlanningPokerSession)obj).getID() == session.getID()) {
+					return new TreePath(root.getPath());
+				}
+			}
+			return null;
+		}
+		TreePath tPath;
+
+		// Search tree for session
+		for (int i = 0; i < root.getChildCount(); i++) {
+			tPath = findSessionTreePath(session, (DefaultMutableTreeNode) root.getChildAt(i));
+			// If the path is non-null, then this is the path we want!
+			if (tPath != null) {
+				return tPath;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * Method valueChanged.
+	 * @see javax.swing.event.TreeSelectionListener#valueChanged(TreeSelectionEvent)
+	 */
+	@Override
+	public void valueChanged(TreeSelectionEvent e) {
+		
 	}
 }

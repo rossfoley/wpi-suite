@@ -86,6 +86,13 @@ public class ViewEventController {
 		planningPokerSessionButtonsPanel = buttonsPanel;
 	}
 	
+	/** 
+	 * disable all session specific buttons
+	 */
+	public void disableButtons(){
+		planningPokerSessionButtonsPanel.disableAllButtons();
+	}
+	
 	/**
 	 * Sets the main view to the given view.
 	 * @param mainview MainView
@@ -170,6 +177,7 @@ public class ViewEventController {
 		}
 		
 		main.remove(comp);
+		disableButtons();
 		return true;
 	}
 
@@ -275,7 +283,7 @@ public class ViewEventController {
 	 * Getter for the hash table of tabs open for sessions
 	 * @return	The hash table mapping sessions to the display components
 	 */
-	protected Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
+	public Map<PlanningPokerSession, JComponent> getOpenSessionTabHashTable() {
 		return openSessionTabHashTable;
 	}
 	

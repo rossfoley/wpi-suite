@@ -83,7 +83,7 @@ public class DeckListModelTest {
 	@Test
 	public void testGetNextID() {
 		int currentID = DeckListModel.getInstance().getNextID();
-		assertEquals(++currentID, DeckListModel.getInstance().getNextID());
+		assertEquals(currentID, DeckListModel.getInstance().getNextID());
 	}
 
 	@Test
@@ -130,5 +130,20 @@ public class DeckListModelTest {
 		// Make sure they are the same size
 		assertEquals(listToTest.length, actualDecks.size());
 	}
-
+	
+	@Test
+	public void testGetDeckByID() {
+		Deck d1 = new Deck(), d2 = new Deck();
+		d1.setDeckName("d1");
+		d2.setDeckName("d2");
+		
+		DeckListModel.getInstance().emptyModel();
+		DeckListModel.getInstance().addDeck(d1);
+		DeckListModel.getInstance().addDeck(d2);
+		// Figure out the new ID of Deck d1
+		int d1ID = DeckListModel.getInstance().getNextID() - 2;
+		
+		Deck result = DeckListModel.getInstance().getDeck(d1ID);
+		assertTrue(result.getDeckName().equals("d1"));
+	}
 }

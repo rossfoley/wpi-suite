@@ -7,6 +7,7 @@ class PlanningPokerViewModel
     @planningPokerSessions = ko.observableArray([])
     @requirements = []
     @team = []
+    @decks = []
     @activeSession = ko.observable()
     # Get the current username
     firstSplit = window.location.search.split('&')
@@ -26,18 +27,29 @@ class PlanningPokerViewModel
           requirement['voteValue'] = 0
         @requirements = data
 
+    # Load in the decks
+    $.ajax
+      dataType: 'json'
+      url: 'API/planningpoker/deck'
+      async: no
+      success: (data) =>
+        @decks = data
+
     # Load in the planning poker sessions
     $.ajax
       dataType: 'json'
       url: 'API/core/user'
       async: no
       success: (data) => 
-        @team = data
+        for user in data
+          unless user['username'] in @team
+            @team.push user['username']
 
     @params = 
       requirements: @requirements
       team: @team
       username: @username
+      decks: @decks
 
     # Load in the planning poker sessions
     $.ajax
@@ -56,6 +68,7 @@ class PlanningPokerViewModel
       @activeSession(session)
 
     @checkForUpdates = =>
+      # First load in the requirements
       $.ajax
         dataType: 'json'
         url: 'API/requirementmanager/requirement'
@@ -64,11 +77,19 @@ class PlanningPokerViewModel
             requirement['voteValue'] = 0
           @requirements = data
           @params.requirements = data
+          # Then load in the decks
           $.ajax
-            type: 'GET'
             dataType: 'json'
-            url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates'
-            success: @applyUpdates
+            url: 'API/planningpoker/deck'
+            success: (data) =>
+              @decks = data
+              @params.decks = data
+              # Finally get the new sessions
+              $.ajax
+                type: 'GET'
+                dataType: 'json'
+                url: 'API/Advanced/planningpoker/planningpokersession/check-for-updates'
+                success: @applyUpdates
 
     @applyUpdates = (updates) =>
       for changedSession in updates
@@ -106,6 +127,11 @@ class SessionViewModel
     # Set up the session fields as observable fields
     for field, value of data
       @[field] = ko.observable(value)
+
+    # Find the session's deck
+    for deck in @params.decks
+      if deck['id'] == @sessionDeckID()
+        @sessionDeck = ko.observable(deck)
 
     @params = params
     @params['usingDeck'] = @isUsingDeck()

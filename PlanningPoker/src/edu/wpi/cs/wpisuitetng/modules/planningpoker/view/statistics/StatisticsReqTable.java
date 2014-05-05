@@ -25,10 +25,8 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -53,7 +51,6 @@ public class StatisticsReqTable extends JTable {
 	private final Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 	private final HashMap<Integer, Integer> tableRows = new HashMap<Integer, Integer>();
 	private int rowNumber = 0;
-	private PlanningPokerSession currentSession;
 	private transient Vector<SelectedRequirementListener> listeners;
 	
 	/**
@@ -61,8 +58,7 @@ public class StatisticsReqTable extends JTable {
 	 * @param data	Initial data to fill StatisticsReqTable
 	 * @param columnNames	Column headers of OverviewReqTable
 	 */
-	public StatisticsReqTable(Object[][] data, String[] columnNames, PlanningPokerSession aSession) {
-		currentSession = aSession; 
+	public StatisticsReqTable(Object[][] data, String[] columnNames) {
 		
 		tableModel = new DefaultTableModel(data, columnNames);
 		setModel(tableModel);
@@ -77,7 +73,7 @@ public class StatisticsReqTable extends JTable {
 		
 		/* Create double-click event listener */
 		addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				int rowNumber = rowAtPoint(getMousePosition());
 				// If the row exists
 				if (tableRows.containsKey(rowNumber)) {
@@ -127,28 +123,7 @@ public class StatisticsReqTable extends JTable {
 	
 	@Override 
 	public boolean isCellEditable(int row, int col) {
-		return (col == 2);
-	}
-	
-	@Override 
-	public void editingStopped(ChangeEvent e) {
-		super.editingStopped(e);
-		boolean isInteger = true;
-		int numberEst = -1;
-		try {
-			numberEst = Integer.parseInt(((TableCellEditor) e.getSource()).getCellEditorValue().toString());
-		}
-		catch (NumberFormatException ne) {
-			isInteger = false;
-			// add error message for nonnegative integers only
-		}
-		super.editingStopped(e);
-		if (isInteger) {
-			if (numberEst >= 0) {
-				int reqID = tableRows.get(editingRow + 1);
-				currentSession.addFinalEstimate(reqID, numberEst);
-			}
-		}
+		return false;
 	}
 	
 	/**
@@ -173,10 +148,8 @@ public class StatisticsReqTable extends JTable {
 	public void paintComponent(Graphics g)
 	{
 		if(!initialized) {
-			try {
-				GetSessionController.getInstance().retrieveSessions();
-				initialized = true;
-			} catch (Exception e) {}
+			GetSessionController.getInstance().retrieveSessions();
+			initialized = true;
 		}
 
 		super.paintComponent(g);
@@ -200,7 +173,6 @@ public class StatisticsReqTable extends JTable {
 
     }
 	
-	
 	private String getFinalEstimate(Requirement reqToFind, PlanningPokerSession session){
 		HashMap<Integer, Integer> finalEstimates = session.getFinalEstimates();
 		int reqID = reqToFind.getId();
@@ -213,10 +185,6 @@ public class StatisticsReqTable extends JTable {
 
 	public int getSelectedReq() {
 		return tableRows.get(rowNumber);
-	}
-	
-	public void setSession(PlanningPokerSession aSession) {
-		currentSession = aSession; 
 	}
 	
 	/**

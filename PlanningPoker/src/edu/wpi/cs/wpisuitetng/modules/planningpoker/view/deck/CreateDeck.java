@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deck;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -166,7 +167,14 @@ public class CreateDeck extends JPanel {
 				final int [] toRemove = cardTable.getSelectedRows();
 
 				for (int index : toRemove) {
-					removeCard((int) cardTable.getValueAt(index, 0));
+					int cardvalue;
+					try {
+						cardvalue = Integer.parseInt((String) cardTable.getValueAt(index, 0));
+					}
+					catch (Exception ex) {
+						cardvalue = (int)cardTable.getValueAt(index, 0);
+					}
+					removeCard(cardvalue);
 				}
 				lblNoCardsError.setForeground(Color.RED);
 				refresh();
@@ -195,7 +203,7 @@ public class CreateDeck extends JPanel {
 			}
 		});
 
-		// Create cancel button
+		// Cancel button
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -295,7 +303,7 @@ public class CreateDeck extends JPanel {
 
 		/* Create double-click event listener */
 		cardTable.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				validateButtons();
 			}
 		});
@@ -350,6 +358,12 @@ public class CreateDeck extends JPanel {
 		// Disable the create button if no deck name
 		if (txtDeckName.getText().equals("")) {
 			btnCreate.setEnabled(false);
+			lblDeckNameError.setText("A deck name is required");
+			lblDeckNameError.setVisible(true);
+		}
+		else if (deckNameExist(txtDeckName.getText())) {
+			btnCreate.setEnabled(false);
+			lblDeckNameError.setText("Deck name already exists");
 			lblDeckNameError.setVisible(true);
 		}
 		else {
@@ -366,6 +380,21 @@ public class CreateDeck extends JPanel {
 
 		// Disable add card button if no text entered
 		warnCardValue();
+	}
+
+	/**
+	 * Checks whether the desired deck name is already a deck name in the model 
+	 * @return	If the deck name already exists
+	 */
+	private boolean deckNameExist(String deckName) {
+		List<Deck> decks = DeckListModel.getInstance().getDecks();
+		// Check all decks if the name is the same
+		for (Deck d : decks) {
+			if (deckName.equals(d.getDeckName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -518,14 +547,16 @@ public class CreateDeck extends JPanel {
 	/**
 	 * Adds a card based on the number currently in txtCardValue
 	 */
-	public void addCardPressed(){
-		try {
-			final int value = Integer.parseInt(txtCardValue.getText());
-			addCard(value);
-			txtCardValue.setText("");
-			refresh();
-		} catch (NumberFormatException ex) {
-			System.out.print(ex.getMessage());
+	private void addCardPressed(){
+		if(btnAddCard.isEnabled()){
+			try {
+				final int value = Integer.parseInt(txtCardValue.getText());
+				addCard(value);
+				txtCardValue.setText("");
+				refresh();
+			} catch (NumberFormatException ex) {
+				System.out.print(ex.getMessage());
+			}
 		}
 	}
 

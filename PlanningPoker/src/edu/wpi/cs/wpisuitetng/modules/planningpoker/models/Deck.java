@@ -190,7 +190,7 @@ public class Deck extends AbstractModel {
 	 * @return string containing the default name for a deck
 	 */
 	public String autoName(){
-		final String newDeckName = "Deck " + Integer.toString(id);
+		final String newDeckName = "Deck " + Integer.toString(DeckListModel.getInstance().getNextID());
 		return newDeckName;
 	}	
 	

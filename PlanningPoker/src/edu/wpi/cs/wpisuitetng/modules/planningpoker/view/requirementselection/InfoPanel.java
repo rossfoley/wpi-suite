@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -36,7 +35,6 @@ public class InfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, name, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, name, -10, SpringLayout.EAST, this);
 		name.setEditable(false);
-		name.setBorder((new JTextField()).getBorder());
 		add(name);
 		name.setColumns(10);
 		
@@ -46,6 +44,7 @@ public class InfoPanel extends JPanel {
 		add(lblRequirementDescription);
 		
 		final JScrollPane descrScroll = new JScrollPane();
+		descrScroll.setBorder(name.getBorder());
 		add(descrScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, descrScroll, 6, SpringLayout.SOUTH, lblRequirementDescription);
 		springLayout.putConstraint(SpringLayout.WEST, descrScroll, 0, SpringLayout.WEST, lblRequirementname);
@@ -55,15 +54,14 @@ public class InfoPanel extends JPanel {
 		descrScroll.setViewportView(description);
 		description.setEditable(false);
 		description.setLineWrap(true);
-		description.setBorder((new JTextField()).getBorder());
 	}
 	
 	public void setRequirement(Requirement requirement){
-		if(requirement != null){
+		if (requirement != null) {
 			name.setText(requirement.getName());
 			description.setText(requirement.getDescription());
 		}
-		else{
+		else {
 			name.setText("");
 			description.setText("");
 		}

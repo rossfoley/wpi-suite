@@ -196,6 +196,11 @@ public class PlanningPokerSessionButtonsPanel extends ToolbarGroupView{
 	 * @param session	The planningPoker session to use
 	 */
 	public void enableButtonsForSession(PlanningPokerSession session) {
+		if (session == null) {
+			disableAllButtons();
+			return;
+		}
+		
 		final String sessionOwner = session.getSessionCreatorName();
 
 		// Disable everything by default

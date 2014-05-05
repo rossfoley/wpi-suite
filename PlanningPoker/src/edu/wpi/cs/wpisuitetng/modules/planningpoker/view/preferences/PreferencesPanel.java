@@ -1,10 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2014 WPI-Suite
+ * Copyright (c) 2012-2014 -- WPI Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
  * Contributors: The Team8s
  ******************************************************************************/
 
@@ -19,34 +18,53 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetEmailController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddress;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+import java.awt.Font;
+
+import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
- * @author Andrew Leonard
+ * 
+ * @author Andrew Leonard, Cameron Peterson
  *
+ */
+
+/**
+ * This class implements an interface to manage user preferences.
+ * @author theTeam8s
+ * @version 1.0
  */
 public class PreferencesPanel extends JPanel {
 	private final JTextField txtEnterEmailHere;
-	private boolean emailError = false;
 	JLabel lblEmailErrorText;
-
-
+	JLabel lblEmailSubmitted;
+	
+	long emailLastSubmitted;
+	JButton btnSubmit = new JButton("Submit");
+	/**
+	 * Constructs the Preferences Panel
+	 */
 	public PreferencesPanel() {
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 
 		txtEnterEmailHere = new JTextField();
-		springLayout.putConstraint(SpringLayout.WEST, txtEnterEmailHere, 31, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, txtEnterEmailHere, -129, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, txtEnterEmailHere, 30, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, txtEnterEmailHere, -120, SpringLayout.EAST, this);
 		txtEnterEmailHere.setText("Enter Email Here...");
 		add(txtEnterEmailHere);
 		txtEnterEmailHere.setColumns(10);
@@ -58,20 +76,29 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, lblSub, -240, SpringLayout.EAST, this);
 		add(lblSub);
 
-		final JButton btnSubmit = new JButton("Submit");
-		springLayout.putConstraint(SpringLayout.NORTH, btnSubmit, -1, SpringLayout.NORTH, txtEnterEmailHere);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnSubmit, 0, SpringLayout.VERTICAL_CENTER, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
-		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -34, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -30, SpringLayout.EAST, this);
 		add(btnSubmit);
+		btnSubmit.setEnabled(false);
 
 		lblEmailErrorText = new JLabel("Invalid Email");
-		lblEmailErrorText.setForeground(Color.RED);
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmailErrorText, 6, SpringLayout.SOUTH, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, lblEmailErrorText, 31, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, lblEmailErrorText, 20, SpringLayout.SOUTH, txtEnterEmailHere);
-		springLayout.putConstraint(SpringLayout.EAST, lblEmailErrorText, 0, SpringLayout.EAST, txtEnterEmailHere);
+		springLayout.putConstraint(SpringLayout.SOUTH, lblEmailErrorText, -187, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblEmailErrorText, -129, SpringLayout.EAST, this);
+		lblEmailErrorText.setForeground(Color.RED);
 		add(lblEmailErrorText);
-		lblEmailErrorText.setVisible(emailError);
+
+		lblEmailSubmitted = new JLabel("Submitted");
+		springLayout.putConstraint(SpringLayout.NORTH, lblEmailSubmitted, 0, SpringLayout.NORTH, lblEmailErrorText);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblEmailSubmitted, 0, SpringLayout.HORIZONTAL_CENTER, btnSubmit);
+		lblEmailSubmitted.setForeground(Color.BLUE);
+		add(lblEmailSubmitted);
+
+
+		lblEmailErrorText.setVisible(false);
+		lblEmailSubmitted.setVisible(false);
 
 		// Add functionality to submit
 		btnSubmit.addActionListener(new ActionListener() {
@@ -79,66 +106,190 @@ public class PreferencesPanel extends JPanel {
 				submitEmail();
 			}
 		});
+		
+		// Add live listener to input text field for live validation
+		txtEnterEmailHere.getDocument().addDocumentListener(new DocumentListener() {
 
-	}
-
-	void submitEmail() {
-		final String email = txtEnterEmailHere.getText();
-
-		// Validate
-		if (validateEmail(email) == true) {
-			emailError = false;
-			lblEmailErrorText.setVisible(emailError);
-			final EmailAddress newEmail = new EmailAddress();
-			newEmail.setEmail(email);
-			newEmail.setOwnerName(ConfigManager.getConfig().getUserName());
-
-
-			final GetEmailController getEmailController = GetEmailController.getInstance();
-			getEmailController.retrieveEmails();
-			List<EmailAddress> emailRecipients = null;
-			boolean userHasEmail = false;
-
-			final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
-			try {
-				emailRecipients = emailAddressModel.getEmailAddresses();
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				displayMessages();
 			}
-			catch (Exception E) {
 
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				displayMessages();
 			}
-			final String userName = ConfigManager.getConfig().getUserName();
-			for (int i = 0; i < emailRecipients.size(); i++) {
-				if (userName.equals(emailRecipients.get(i).getOwnerName())) {
-					userHasEmail = true;
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+
+				displayMessages();
+			}
+		});
+		
+		txtEnterEmailHere.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				final String email = txtEnterEmailHere.getText();	
+				if (email.equals("Enter Email Here...")){
+					txtEnterEmailHere.setText("");
 				}
 			}
-
-			if (userHasEmail) {
-				EmailAddressModel.getInstance().updateEmailAddress(newEmail);
-			}
-			else {
-				EmailAddressModel.getInstance().addEmail(newEmail);
-			}
-		}
-		else {
-			emailError = true;
-			lblEmailErrorText.setVisible(emailError);
-		}
+		});
 		
+		txtEnterEmailHere.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
 
+			@Override
+			public void focusLost(FocusEvent e) {
+				final String email = txtEnterEmailHere.getText();
+				if (email.equals("")) {
+					btnSubmit.setEnabled(false);
+					txtEnterEmailHere.setText("Enter Email Here...");
+					lblEmailErrorText.setVisible(false);
+				}
+			}
+		});
 
+		final JLabel lblPreferences = new JLabel("Preferences");
+		springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblPreferences, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, lblPreferences, 0, SpringLayout.EAST, this);
+		lblPreferences.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPreferences.setVerticalAlignment(SwingConstants.TOP);
+		lblPreferences.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		add(lblPreferences);
 	}
 
-	boolean validateEmail(String email) {
-
-		try {
-			final InternetAddress valid = new InternetAddress(email);
-			valid.validate();
+	private void displayMessages() {
+		// Get rid of submission message if necessary
+		lblEmailSubmitted.setVisible(false);
+		final String email = txtEnterEmailHere.getText();
+		// Should be a special case
+		if (email.equals("")) {
+			lblEmailErrorText.setVisible(false);
+			btnSubmit.setEnabled(false);
 		}
-		catch (AddressException e) {
+		else if (validateEmail(email)) {
+			lblEmailErrorText.setText("Valid Email");
+			lblEmailErrorText.setForeground(Color.BLUE);
+			lblEmailErrorText.setVisible(true);
+			btnSubmit.setEnabled(true);
+		}
+		else {
+			lblEmailErrorText.setText("Invalid Email");
+			lblEmailErrorText.setForeground(Color.RED);
+			lblEmailErrorText.setVisible(true);
+			btnSubmit.setEnabled(false);
+		}
+	}
+	
+	/**
+	 * This method contains all the functionality of user 
+	 * hitting the submit button for the email box.
+	 */
+	void submitEmail() {
+		// Give immediate user feedback
+		lblEmailSubmitted.setVisible(true);
+		
+		// Grab input and make new email address
+		final String email = txtEnterEmailHere.getText();
+		final EmailAddress newEmail = new EmailAddress();
+		newEmail.setEmail(email);
+		ConfigManager.getInstance();
+		newEmail.setOwnerName(ConfigManager.getConfig().getUserName());
+
+		// Check if user already has email address in system
+		final GetEmailController getEmailController = GetEmailController.getInstance();
+		getEmailController.retrieveEmails();
+		List<EmailAddress> emailRecipients = null;
+		boolean userHasEmail = false;
+
+		final EmailAddressModel emailAddressModel = EmailAddressModel.getInstance();
+		try {
+			emailRecipients = emailAddressModel.getEmailAddresses();
+		}
+		catch (Exception E) {
+			System.out.print(E.getMessage());
+		}
+		
+		final String userName = ConfigManager.getConfig().getUserName();
+		for (int i = 0; i < emailRecipients.size(); i++) {
+			if (userName.equals(emailRecipients.get(i).getOwnerName())) {
+				userHasEmail = true;
+			}
+		}
+
+		// Depending on whether the user already has an email, the call gets modified.
+		if (userHasEmail) {
+			EmailAddressModel.getInstance().updateEmailAddress(newEmail);
+		}
+		else {
+			EmailAddressModel.getInstance().addEmail(newEmail);
+		}
+		// Save when this happened so the success message can 
+		//    go away in 10 mins, not sticking around indefinitely
+		emailLastSubmitted = System.currentTimeMillis();
+	}
+
+	/**
+	 * This function validates a given email address for form.
+	 * @param email the email to be checked
+	 * @return whether the email is valid
+	 */
+	boolean validateEmail(String email) {
+		final String localEmailCopy = new String (email);
+		
+		// Built in validation has bugs, re-implementing myself
+		
+		//Split into substrings
+		final int atPos = localEmailCopy.indexOf('@');
+		final int lastAtPos = localEmailCopy.lastIndexOf('@');
+		
+		if (atPos == -1) return false;
+		if (atPos != lastAtPos) return false;
+		
+		if (localEmailCopy.indexOf(',') != - 1) return false;
+		
+		// + - * / \ [ ] | , ; : parentheses ? ^ < > # $ % &  
+		// See if built in validation checks these -- YES
+		final InternetAddress internetAddress;
+		try {
+			internetAddress = new InternetAddress(localEmailCopy);
+			internetAddress.validate();
+			
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
 			return false;
 		}
+		
+		// make sure first part has size
+		final String part1 = new String(localEmailCopy.substring(0, atPos));
+		if (part1.length() < 1) return false;
+		
+		// test if second part is at last a.a
+		final String part2 = new String (localEmailCopy.substring(atPos + 1));
+		
+		if (part2.length() < 3) return false;
+		if (part2.indexOf('.') == -1) return false;
+		if (part2.indexOf('.') ==  part2.length() - 1) return false;
 
 		return true;
+	}
+
+
+	/**
+	 * Calls the super classes repaint and them implements a timeout for email submission
+	 * success message.
+	 * @param g
+	 */
+	public void repaint(Graphics g) {
+		super.repaint();
+		if (System.currentTimeMillis() > emailLastSubmitted + 1000 * 60 * 10) {
+			lblEmailSubmitted.setVisible(false);
+		}
 	}
 }

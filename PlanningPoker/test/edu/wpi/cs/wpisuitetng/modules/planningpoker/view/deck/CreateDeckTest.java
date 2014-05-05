@@ -53,7 +53,7 @@ public class CreateDeckTest {
 		}
 		
 		Deck expectedDeck = new Deck(expectedCards, false);
-		expectedDeck.setDeckName("Deck 0");
+		expectedDeck.setDeckName("Deck 5");
 		
 		Deck createdDeck = deckPanel.createDeck();
 		// Check Deck name
@@ -75,25 +75,35 @@ public class CreateDeckTest {
 			expectedCards.add(i);
 		}
 		
-		final Deck expectedDeck = new Deck(expectedCards, false);
-		expectedDeck.setDeckName("Deck 0");
+		Deck expectedDeck = new Deck(expectedCards, false);
+		expectedDeck.setDeckName("Deck 3");
 		
 		// Setup the DeckListener
-		deckPanel.addDeckListener(new DeckListener() {
-			@Override
-			public void deckSubmitted(DeckEvent e) {
-				final Deck newDeck = e.getDeck();
-				// Check Deck name
-				assertEquals(expectedDeck.getDeckName(), newDeck.getDeckName());
-				// Check allow-multi-selection
-				assertFalse(newDeck.getAllowMultipleSelections());
-				// Check if the cards are the same
-				assertTrue(expectedDeck.getNumbersInDeck().equals(newDeck.getNumbersInDeck()));
-			}
-		});
+		DeckListener dList = new DeckListener();
+		deckPanel.addDeckListener(dList);
 		
 		// Fire the DeckEvent
 		deckPanel.fireDeckEvent(deckPanel.createDeck());
+		// Check Deck name
+		assertEquals(expectedDeck.getDeckName(), dList.getDeck().getDeckName());
+		// Check allow-multi-selection
+		assertFalse(dList.getDeck().getAllowMultipleSelections());
+		// Check if the cards are the same
+		assertTrue(expectedDeck.getNumbersInDeck().equals(dList.getDeck().getNumbersInDeck()));
+		
+		// Remove the DeckListener
+		expectedDeck = new Deck(new ArrayList<Integer>(), false);
+		dList.deckSubmitted(new DeckEvent(this, expectedDeck));	// Reset deck to an empty deck
+		deckPanel.removeDeckListener(dList);
+		
+		deckPanel.fireDeckEvent(deckPanel.createDeck());
+		// Check Deck name
+		assertEquals(expectedDeck.getDeckName(), dList.getDeck().getDeckName());
+		// Check allow-multi-selection
+		assertEquals(expectedDeck.getAllowMultipleSelections(), dList.getDeck().getAllowMultipleSelections());
+		// Check if the cards are the same
+		assertTrue(expectedDeck.getNumbersInDeck().equals(dList.getDeck().getNumbersInDeck()));		
+		
 	}
 
 }

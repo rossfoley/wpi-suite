@@ -9,6 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateEmailContro
  * @version 1.0
  * Interacts with the controller for adding, updating and removing email addresses.
  */
-public class EmailAddressModel extends AbstractListModel {
+public class EmailAddressModel extends AbstractListModel implements FocusListener {
 
 	/** 
 	 * the list in which all the emails for a project are contained
@@ -157,6 +159,18 @@ public class EmailAddressModel extends AbstractListModel {
 	 */
 	public void emptyModel(){
 		emailAddresses.clear();
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// TODO Auto-generated method stub
+	
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

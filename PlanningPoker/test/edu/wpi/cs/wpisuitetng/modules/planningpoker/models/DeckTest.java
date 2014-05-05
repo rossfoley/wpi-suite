@@ -102,11 +102,11 @@ public class DeckTest {
 	}
 	
 	@Test
-	public void testconstructor() {
+	public void testConstructor() {
 		Deck construct = new Deck();
 		boolean testFalse = false;
 		
-		assertEquals("Deck 0", construct.getDeckName());
+		assertEquals("Deck 6", construct.getDeckName());
 		assertEquals(testFalse, construct.getAllowMultipleSelections());
 	}
 	

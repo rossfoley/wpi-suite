@@ -9,10 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -28,7 +26,6 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 	private StatisticsReqTable reqTable;
 	private JScrollPane tablePanel;
 	private JPanel reqOverviewTablePanel = new JPanel();
-	private JButton submitFinalEstimatesBtn = new JButton("Submit Final Estimates");
 	
 	private StatisticsDetailPanel detailPanel;
 	private SpringLayout reqOverviewLayout = new SpringLayout();
@@ -48,7 +45,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		// Create the user table panel and detail panel
 		detailPanel = new StatisticsDetailPanel(activeSession);
 		
-		reqTable = new StatisticsReqTable(reqData, reqColumnNames, activeSession);
+		reqTable = new StatisticsReqTable(reqData, reqColumnNames);
 		reqTable.addSelectedRequirementListener(new SelectedRequirementListener() {
 			@Override
 			public void setSelectedRequirement(SelectedRequirementEvent e) {
@@ -62,34 +59,30 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
 		tablePanel = new JScrollPane(reqTable);
+		tablePanel.setMinimumSize(new Dimension(405, 300));
 		
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, submitFinalEstimatesBtn, -10, SpringLayout.SOUTH, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.EAST, submitFinalEstimatesBtn, -10, SpringLayout.EAST, reqOverviewTablePanel);
-		reqOverviewLayout.putConstraint(SpringLayout.SOUTH, tablePanel, -10, SpringLayout.NORTH, submitFinalEstimatesBtn);
 		reqOverviewLayout.putConstraint(SpringLayout.EAST, tablePanel, -10, SpringLayout.EAST, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.NORTH, tablePanel, 10, SpringLayout.NORTH, reqOverviewTablePanel);
 		reqOverviewLayout.putConstraint(SpringLayout.WEST, tablePanel, 10, SpringLayout.WEST, reqOverviewTablePanel);
 		
-		submitFinalEstimatesBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				reqTable.updateFinalEstimates(activeSession);
-			}
-		});
-		
 		
 		reqOverviewTablePanel.add(tablePanel);
-		reqOverviewTablePanel.add(submitFinalEstimatesBtn);
 		
 		// Put the overview table and sidebar into the tab
 		setLeftComponent(tablePanel);
 		setRightComponent(detailPanel);
 		
-		setDividerLocation(400);
+		setDividerLocation(405);
         setEnabled(true);
         
         reqTable.refresh(activeSession);
+        
+	}
+	
+	public void refresh() {
+		reqTable.refresh(activeSession);
 	}
 	
 	/**
