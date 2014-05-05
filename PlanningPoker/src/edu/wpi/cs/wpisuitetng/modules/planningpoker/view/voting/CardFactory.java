@@ -53,7 +53,7 @@ public class CardFactory {
 
 		    final Graphics2D g = curImage.createGraphics();
 		    g.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		    g.setColor(Color.RED);
+		    g.setColor(Color.BLACK);
 		    int xloc = 7;
 		    if (cardNum > 9){
 		    	xloc = 4;
