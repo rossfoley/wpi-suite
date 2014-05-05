@@ -102,6 +102,9 @@ public class DeckListModel extends AbstractListModel {
 		return null;
 	}
 	
+	/**
+	 * @return	The next Deck ID to use
+	 */
 	public int getNextID(){
 		int id = 0;
 		for (Deck d: existingDecks) {
