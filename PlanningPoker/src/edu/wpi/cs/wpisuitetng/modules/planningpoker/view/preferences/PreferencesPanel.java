@@ -68,7 +68,7 @@ public class PreferencesPanel extends JPanel {
 		add(lblSub);
 
 		final JButton btnSubmit = new JButton("Submit");
-		springLayout.putConstraint(SpringLayout.NORTH, btnSubmit, -1, SpringLayout.NORTH, txtEnterEmailHere);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnSubmit, 0, SpringLayout.VERTICAL_CENTER, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.WEST, btnSubmit, 6, SpringLayout.EAST, txtEnterEmailHere);
 		springLayout.putConstraint(SpringLayout.EAST, btnSubmit, -30, SpringLayout.EAST, this);
 		add(btnSubmit);
@@ -79,14 +79,13 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblEmailErrorText, 31, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblEmailErrorText, -187, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, lblEmailErrorText, -129, SpringLayout.EAST, this);
-		lblEmailErrorText.setForeground(Color.BLACK);
+		lblEmailErrorText.setForeground(Color.RED);
 		add(lblEmailErrorText);
 
-		lblEmailSubmitted = new JLabel("Submitted Email!");
+		lblEmailSubmitted = new JLabel("Submitted");
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmailSubmitted, 0, SpringLayout.NORTH, lblEmailErrorText);
-		springLayout.putConstraint(SpringLayout.WEST, lblEmailSubmitted, -10, SpringLayout.WEST, btnSubmit);
-		springLayout.putConstraint(SpringLayout.EAST, lblEmailSubmitted, -26, SpringLayout.EAST, this);
-		lblEmailSubmitted.setForeground(new Color(50, 205, 50));
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblEmailSubmitted, 0, SpringLayout.HORIZONTAL_CENTER, btnSubmit);
+		lblEmailSubmitted.setForeground(Color.BLUE);
 		add(lblEmailSubmitted);
 
 
@@ -116,13 +115,13 @@ public class PreferencesPanel extends JPanel {
 
 				else if (validateEmail(email) == true) {
 					lblEmailErrorText.setText("Valid Email");
-					lblEmailErrorText.setForeground(Color.GREEN);
+					lblEmailErrorText.setForeground(Color.BLUE);
 					lblEmailErrorText.setVisible(true);
 					btnSubmit.setEnabled(true);
 				}
 				else {
 					lblEmailErrorText.setText("Invalid Email");
-					lblEmailErrorText.setForeground(Color.BLACK);
+					lblEmailErrorText.setForeground(Color.RED);
 					lblEmailErrorText.setVisible(true);
 					btnSubmit.setEnabled(false);
 				}
@@ -141,13 +140,13 @@ public class PreferencesPanel extends JPanel {
 
 				else if (validateEmail(email) == true) {
 					lblEmailErrorText.setText("Valid Email");
-					lblEmailErrorText.setForeground(Color.GREEN);
+					lblEmailErrorText.setForeground(Color.BLUE);
 					lblEmailErrorText.setVisible(true);
 					btnSubmit.setEnabled(true);
 				}
 				else {
 					lblEmailErrorText.setText("Invalid Email");
-					lblEmailErrorText.setForeground(Color.BLACK);
+					lblEmailErrorText.setForeground(Color.RED);
 					lblEmailErrorText.setVisible(true);
 					btnSubmit.setEnabled(false);
 				}
@@ -167,13 +166,13 @@ public class PreferencesPanel extends JPanel {
 
 				else if (validateEmail(email) == true) {
 					lblEmailErrorText.setText("Valid Email");
-					lblEmailErrorText.setForeground(Color.GREEN);
+					lblEmailErrorText.setForeground(Color.BLUE);
 					lblEmailErrorText.setVisible(true);
 					btnSubmit.setEnabled(true);
 				}
 				else {
 					lblEmailErrorText.setText("Invalid Email");
-					lblEmailErrorText.setForeground(Color.BLACK);
+					lblEmailErrorText.setForeground(Color.RED);
 					lblEmailErrorText.setVisible(true);
 					btnSubmit.setEnabled(false);
 				}
@@ -184,7 +183,6 @@ public class PreferencesPanel extends JPanel {
 		JLabel lblPreferences = new JLabel("Preferences");
 		springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblPreferences, 0, SpringLayout.WEST, this);
-		//springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, lblPreferences, 0, SpringLayout.EAST, this);
 		lblPreferences.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPreferences.setVerticalAlignment(SwingConstants.TOP);
