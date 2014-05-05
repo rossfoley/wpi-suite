@@ -9,6 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.statistics;
 
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -59,6 +61,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		reqTable.getColumnModel().getColumn(2).setMaxWidth(100); // Final Estimate
 		
 		tablePanel = new JScrollPane(reqTable);
+		tablePanel.setMinimumSize(new Dimension(405, 300));
 		
 		reqOverviewTablePanel.setLayout(reqOverviewLayout);
 		
@@ -73,7 +76,7 @@ public class StatisticsPanel extends JSplitPane implements ISessionTab {
 		setLeftComponent(tablePanel);
 		setRightComponent(detailPanel);
 		
-		setDividerLocation(400);
+		setDividerLocation(405);
         setEnabled(true);
         
         reqTable.refresh(activeSession);

@@ -25,6 +25,7 @@ import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.RequirementManagerController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerSessionModel;
@@ -142,8 +143,14 @@ public class StatisticsInfoPanel extends JPanel {
 				submitFinalEstimateButton.setText("Submit Final Estimate");
 			}
 			
-			submitFinalEstimateButton.setEnabled(true);
-			estimateField.setEnabled(true);
+			if (session.getSessionCreatorName().equals(ConfigManager.getConfig().getUserName())) {
+				submitFinalEstimateButton.setEnabled(true);
+				estimateField.setEnabled(true);
+			}
+			else {
+				submitFinalEstimateButton.setEnabled(false);
+				estimateField.setEnabled(false);
+			}
 			
 			/**
 			 *  change mean display
