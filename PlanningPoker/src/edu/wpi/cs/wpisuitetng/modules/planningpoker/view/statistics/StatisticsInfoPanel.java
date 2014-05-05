@@ -376,7 +376,7 @@ public class StatisticsInfoPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, stdDevDisplay, 187, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, stdDevDisplay, 328, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, enterEstimateLabel, 11, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, enterEstimateLabel, 35, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, enterEstimateLabel, 0, SpringLayout.HORIZONTAL_CENTER, estimateField);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, estimateField, 10, SpringLayout.SOUTH, enterEstimateLabel);
