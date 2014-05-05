@@ -65,11 +65,12 @@ public class StatisticsDetailPanel extends JSplitPane {
 		setRightComponent(reqOverviewTablePanel);
 		setResizeWeight(0.5); 
 		
-		// Makes the split pane divide 50/50 for each portion
-		Dimension d = new Dimension(100, 100);
-        infoPanel.setMinimumSize(d);
-        infoPanel.setPreferredSize(d);
-        tablePanel.setMinimumSize(d);
+		// Keeps the upper panel large enough to show all components 
+		Dimension dInfo = new Dimension(450, 250);
+		Dimension dTable = new Dimension(450, 300);
+        infoPanel.setMinimumSize(dInfo);
+        infoPanel.setPreferredSize(dInfo);
+        tablePanel.setMinimumSize(dTable);
 	}
 	
 	/**
