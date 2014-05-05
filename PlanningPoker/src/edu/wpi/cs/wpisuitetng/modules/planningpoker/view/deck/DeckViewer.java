@@ -39,6 +39,7 @@ public class DeckViewer extends JSplitPane {
 	private SpringLayout deckOverviewLayout = new SpringLayout();
 	private CreateDeck createDeckPanel;
 	private JScrollPane tablePanel = new JScrollPane();
+	private Deck lastSelectedDeck;
 	
 	/**
 	 * 	Constructor for creating the deck viewer panel
@@ -54,7 +55,7 @@ public class DeckViewer extends JSplitPane {
 		
 		buildDeckPanel(decks.get(0));
 
-		deckListPanel = new DeckListPanel(decks);
+		deckListPanel = new DeckListPanel(decks, this);
 		deckListPanel.addDeckListener(new DeckListener() {
 			@Override
 			public void deckSubmitted(DeckEvent e){
@@ -221,7 +222,8 @@ public class DeckViewer extends JSplitPane {
 		boolean noNewDecks = true;
 
 		decks = newDecks;
-		deckListPanel = new DeckListPanel(decks);
+		deckListPanel = new DeckListPanel(decks, this);
+		deckListPanel.setSelectedDeck(lastSelectedDeck);
 		tablePanel.setViewportView(deckListPanel);
 		deckListPanel.addDeckListener(new DeckListener() {
 			@Override
@@ -328,5 +330,8 @@ public class DeckViewer extends JSplitPane {
 		deckOverviewPanel.add(createDeckButton);
 	}
 	
+	public void setLastDeck(Deck deck) {
+		lastSelectedDeck = deck;
+	}
 
 }
