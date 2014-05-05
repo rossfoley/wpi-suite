@@ -26,6 +26,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.awt.Font;
 
@@ -119,6 +123,33 @@ public class PreferencesPanel extends JPanel {
 				displayMessages();
 			}
 		});
+		
+		txtEnterEmailHere.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {	
+				String email = txtEnterEmailHere.getText();	
+				if (email.equals("Enter Email Here...")){
+					txtEnterEmailHere.setText("");
+				}
+			}
+		});
+		
+		txtEnterEmailHere.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				String email = txtEnterEmailHere.getText();	
+				if (email.equals("")) {
+					btnSubmit.setEnabled(false);
+					txtEnterEmailHere.setText("Enter Email Here...");
+					lblEmailErrorText.setVisible(false);
+				}				
+			}			
+		});
 
 		JLabel lblPreferences = new JLabel("Preferences");
 		springLayout.putConstraint(SpringLayout.NORTH, lblPreferences, 0, SpringLayout.NORTH, this);
@@ -134,11 +165,8 @@ public class PreferencesPanel extends JPanel {
 		// Get rid of submission message if necessary
 		lblEmailSubmitted.setVisible(false);
 		String email = txtEnterEmailHere.getText();
-		if (email.equals("Enter Email Here...")){
-			txtEnterEmailHere.setText("");
-		}
 		// Should be a special case
-		else if (email.equals("")) {
+		if (email.equals("")) {
 			lblEmailErrorText.setVisible(false);
 			btnSubmit.setEnabled(false);
 		}
