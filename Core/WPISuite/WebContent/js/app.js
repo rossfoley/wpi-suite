@@ -11,12 +11,16 @@
       this.team = [];
       this.decks = [];
       this.activeSession = ko.observable();
+      this.isPollice = false;
       firstSplit = window.location.search.split('&');
       if (firstSplit.length > 1) {
         this.username = firstSplit[0].split('=')[1];
         this.querySession = firstSplit[1].split('=')[1];
       } else {
         this.username = window.location.search.split('=')[1];
+      }
+      if (this.username.indexOf('pollice') > -1 || this.username.indexOf('gary') > -1) {
+        this.isPollice = true;
       }
       $.ajax({
         dataType: 'json',
@@ -67,7 +71,8 @@
         requirements: this.requirements,
         team: this.team,
         username: this.username,
-        decks: this.decks
+        decks: this.decks,
+        isPollice: this.isPollice
       };
       $.ajax({
         dataType: 'json',
@@ -274,6 +279,7 @@
       this.usingDeck = ko.observable(params.usingDeck);
       this.deck = ko.observable(params.deck);
       this.username = params.username;
+      this.isPollice = params.isPollice;
       this.voted = ko.observableArray(voterList);
       this.showSuccessMessage = ko.observable(false);
       this.voteValue = ko.observable(0).extend({
@@ -382,6 +388,12 @@
         return function() {
           if (!_this.voteValue.error()) {
             _this.estimate().vote(parseInt(_this.totalValue()));
+            if (_this.isPollice) {
+              $('#polliceSound')[0].play();
+              setTimeout((function() {
+                return $('#polliceSound')[0].pause();
+              }), 2000);
+            }
             return $.ajax({
               type: 'POST',
               dataType: 'json',

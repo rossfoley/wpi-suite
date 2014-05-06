@@ -73,3 +73,11 @@
   margin-right: 0;
   line-height: 30px;
 }
+
+.pollice {
+  background: url('../images/pollice.jpg') repeat;
+}
+
+.pollice table.table {
+  background-color: white;
+}
